@@ -3,21 +3,16 @@ namespace video
 {
 	enum imageList;
 	SDL_Surface *screen;
-	SDL_Surface* images[numImages];
+	SDL_Surface *images[numImages];
 	bool video::init()
 	{
-		if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-			printf("Unable to initialize SDL: %s\n", SDL_GetError());
-			return false;
-		}
+		SDL_Init(SDL_INIT_VIDEO);
 
-		screen = SDL_SetVideoMode(640, 480, 16, SDL_HWSURFACE | SDL_DOUBLEBUF);
-		if (screen == 0) {
-			printf("Unable to set video mode: %s\n", SDL_GetError());
-			return false;
-		}
+		SDL_SetVideoMode(640, 480, 16, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
-		SDL_WM_SetCaption("Marshmallow Duel", "Marshmallow Duel");
+		SDL_WM_SetCaption("Marshmallow Duel: Percy's Return", "Marshmallow Duel: Percy's Return");
+
+		screen = SDL_GetVideoSurface();
 
 		loadAll();
 		return true;
@@ -47,6 +42,7 @@ namespace video
 			printf("IMG_LoadPNG_RW: %s\n", IMG_GetError());
 			return false;
 		}
+		SDL_SetColorKey(video::images[code], SDL_SRCCOLORKEY, 0);
 		return true;
 	}
 };

@@ -10,7 +10,7 @@ void player::init()
 	rect2.w = 24;
 	run.numFrames = 4;
 	run.delay = 100;
-	WALKSPEED = 1;
+	WALKSPEED = 32;
 	velocityX = 0;
 	run.frames[0] = video::images[video::run0];
 	run.frames[1] = video::images[video::run1];
@@ -22,21 +22,36 @@ void player::init()
 void player::input()
 {
 	Uint8 *keystate = SDL_GetKeyState(0);
-	if ( keystate[SDLK_RIGHT] ) 
-		rightPress = true;
-	else
+	if ( keystate[SDLK_RIGHT] ){
+		if (!rightPress){
+			lastTime2 = SDL_GetTicks();
+			rightPress = true;
+		}
+	}else
 		rightPress = false;
-	if ( keystate[SDLK_LEFT] ) 
-		leftPress = true;
-	else
+
+	if ( keystate[SDLK_LEFT] ){
+		if (!leftPress){
+			lastTime2 = SDL_GetTicks();
+			leftPress = true;
+		}
+	}else
 		leftPress = false;
-	velocityX = (rightPress - leftPress) * WALKSPEED;	
+
+	velocityX = (rightPress - leftPress) * WALKSPEED;
+	printf("%f\n",velocityX);
 }
 
 void player::update()
 {
 	input();
-	rect2.x += velocityX;
+	temp = velocityX * (SDL_GetTicks() - lastTime2)/1000.0;
+	if (temp >= 1 || temp <= -1){
+		lastTime2 = SDL_GetTicks();
+		rect2.x += temp;
+	}
+	
+	// += 1;
 	//find out if enough time has passed
 	if( run.delay < (SDL_GetTicks() - lastTime) )
 	{
@@ -49,6 +64,7 @@ void player::update()
 			currentFrame = 0;
 		}
 		SDL_BlitSurface(run.frames[currentFrame], &run.frames[currentFrame]->clip_rect, video::screen, &rect2);
-		SDL_Flip(video::screen);
+		
 	}
+	
 }

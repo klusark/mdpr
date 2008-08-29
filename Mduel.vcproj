@@ -83,7 +83,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetFile)&quot; ../Mduel.exe"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;$(TargetFileName)&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -111,8 +111,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="3"
 				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="0"
 				AdditionalIncludeDirectories="C:\code\SDL\include"
 				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"

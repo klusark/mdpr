@@ -12,7 +12,7 @@ class player
 		SDL_Rect rect2;
 		short currentFrame;
 		Uint32 lastTime;
-
+		Uint32 lastTime2;
 		struct animation
 		{
 			short numFrames;
@@ -22,8 +22,10 @@ class player
 		};
 		bool rightPress;
 		bool leftPress;
+		double temp;
+
 		short WALKSPEED;
-		short velocityX;
+		double velocityX;
 
 		//animaitons
 		animation run;
