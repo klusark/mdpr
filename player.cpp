@@ -39,17 +39,18 @@ void player::input()
 		leftPress = false;
 
 	velocityX = (rightPress - leftPress) * WALKSPEED;
-	printf("%f\n",velocityX);
+	
 }
 
 void player::update()
 {
 	input();
-	temp = velocityX * (SDL_GetTicks() - lastTime2)/1000.0;
-	if (temp >= 1 || temp <= -1){
+	xMove = velocityX * (SDL_GetTicks() - lastTime2)/1000.0;
+	if (xMove >= 1 || xMove <= -1){
 		lastTime2 = SDL_GetTicks();
-		rect2.x += temp;
+		rect2.x += (Sint16)xMove;
 	}
+	//printf("%f\n", xMove);
 	
 	// += 1;
 	//find out if enough time has passed

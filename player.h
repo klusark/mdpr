@@ -22,7 +22,7 @@ class player
 		};
 		bool rightPress;
 		bool leftPress;
-		double temp;
+		double xMove;
 
 		short WALKSPEED;
 		double velocityX;

@@ -25,7 +25,7 @@ void game::mainLoop()
 	getInput();
 	Player1.update();
 	SDL_Flip(video::screen);
-	SDL_Delay(1);
+	//SDL_Delay(1);
 	return;
 }
 
