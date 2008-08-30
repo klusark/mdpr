@@ -44,6 +44,10 @@ void player::input()
 	}else
 		leftPress = false;
 
+	if (rightPress && leftPress){
+		lastTime2 = SDL_GetTicks();
+	}
+
 	if (!rightPress && !leftPress){
 		currAnimation = noAnimation;
 		image = stand;
