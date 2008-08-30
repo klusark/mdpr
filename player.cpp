@@ -4,14 +4,17 @@ void player::init()
 {
     currentFrame = 0;
     lastTime = SDL_GetTicks();
-	rect2.x = 50;
-	rect2.y = 50;
-	rect2.h = 24;
-	rect2.w = 24;
+	stand = video::images[video::stand];
+	currAnimation = noAnimation;
+	rect.x = 50;
+	rect.y = 50;
+	rect.h = 24;
+	rect.w = 24;
 	run.numFrames = 4;
 	run.delay = 100;
 	WALKSPEED = 32;
 	velocityX = 0;
+	image = stand;
 	run.frames[0] = video::images[video::run0];
 	run.frames[1] = video::images[video::run1];
 	run.frames[2] = video::images[video::run2];
@@ -26,17 +29,25 @@ void player::input()
 		if (!rightPress){
 			lastTime2 = SDL_GetTicks();
 			rightPress = true;
+			currAnimation = run;
 		}
 	}else
 		rightPress = false;
+		
 
 	if ( keystate[SDLK_LEFT] ){
 		if (!leftPress){
 			lastTime2 = SDL_GetTicks();
 			leftPress = true;
+			currAnimation = run;
 		}
 	}else
 		leftPress = false;
+
+	if (!rightPress && !leftPress){
+		currAnimation = noAnimation;
+		image = stand;
+	}
 
 	velocityX = (rightPress - leftPress) * WALKSPEED;
 	
@@ -44,28 +55,36 @@ void player::input()
 
 void player::update()
 {
+	rect2 = rect;
 	input();
 	xMove = velocityX * (SDL_GetTicks() - lastTime2)/1000.0;
 	if (xMove >= 1 || xMove <= -1){
 		lastTime2 = SDL_GetTicks();
 		rect2.x += (Sint16)xMove;
 	}
-	//printf("%f\n", xMove);
+	animate(currAnimation);
+
+	SDL_FillRect(video::screen, &rect, 0);
+	SDL_BlitSurface(image, 0, video::screen, &rect2);
+	rect = rect2;
 	
-	// += 1;
-	//find out if enough time has passed
-	if( run.delay < (SDL_GetTicks() - lastTime) )
-	{
-		currentFrame++;
-		lastTime = SDL_GetTicks();
-		
-		//if we reached the end
-		if(currentFrame >= run.numFrames)
+}
+
+void player::animate(animation currAnimation){
+	if (currAnimation.numFrames){
+		if(currAnimation.delay < (SDL_GetTicks() - lastTime) )
 		{
-			currentFrame = 0;
+			currentFrame++;
+			lastTime = SDL_GetTicks();
+			
+			//if we reached the end
+			if(currentFrame >= currAnimation.numFrames)
+			{
+				currentFrame = 0;
+			}
+			rect.x-=1;
+			image = currAnimation.frames[currentFrame];
+			
 		}
-		SDL_BlitSurface(run.frames[currentFrame], &run.frames[currentFrame]->clip_rect, video::screen, &rect2);
-		
 	}
-	
 }

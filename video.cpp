@@ -8,7 +8,7 @@ namespace video
 	{
 		SDL_Init(SDL_INIT_VIDEO);
 
-		SDL_SetVideoMode(640, 480, 16, SDL_HWSURFACE | SDL_DOUBLEBUF);
+		SDL_SetVideoMode(640, 480, 16, SDL_HWSURFACE |SDL_HWACCEL | SDL_DOUBLEBUF);
 
 		SDL_WM_SetCaption("Marshmallow Duel: Percy's Return", "Marshmallow Duel: Percy's Return");
 

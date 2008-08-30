@@ -9,17 +9,22 @@ class player
 		void init();
 		void update();
 		void input();
-		SDL_Rect rect2;
-		short currentFrame;
-		Uint32 lastTime;
-		Uint32 lastTime2;
 		struct animation
 		{
 			short numFrames;
-			SDL_Surface* frames[4];
+			SDL_Surface *frames[4];
 			Uint32 delay;
 			
 		};
+		void animate(animation currAnimation);
+		SDL_Rect rect2;
+		SDL_Rect rect;
+		short currentFrame;
+		Uint32 lastTime;
+		Uint32 lastTime2;
+		SDL_Surface *image;
+		SDL_Surface *stand;
+
 		bool rightPress;
 		bool leftPress;
 		double xMove;
@@ -28,6 +33,8 @@ class player
 		double velocityX;
 
 		//animaitons
+		animation currAnimation;
+		animation noAnimation;
 		animation run;
 		
 };
