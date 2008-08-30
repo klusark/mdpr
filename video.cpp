@@ -2,10 +2,9 @@
 
 namespace video
 {
-	enum imageList;
 	SDL_Surface *screen;
 	SDL_Surface *images[numImages];
-	void video::init()
+	void init()
 	{
 		SDL_Init(SDL_INIT_VIDEO);
 
@@ -19,9 +18,9 @@ namespace video
 		return;
 	}
 
-	void video::loadAll()
+	void loadAll()
 	{
-
+		//player
 		loadImage("stand", stand);
 
 		loadImage("run0", run0);
@@ -37,11 +36,14 @@ namespace video
 		loadImage("upjump2", upjump2);
 		loadImage("upjump3", upjump3);
 		loadImage("upjump4", upjump4);
+		
+		//world
+		loadImage("platform", platform);
 
 		return;
 	}
 
-	bool video::loadImage(char* file, short code)
+	bool loadImage(char* file, short code)
 	{
 
 		// load sample.png into image
@@ -54,11 +56,11 @@ namespace video
 			printf("IMG_LoadPNG_RW: %s\n", IMG_GetError());
 			return false;
 		}
-		SDL_SetColorKey(video::images[code], SDL_SRCCOLORKEY, 0);
+		//SDL_SetColorKey(video::images[code], SDL_SRCCOLORKEY, 0);
 		return true;
 	}
 	
-	void video::switchBuf()
+	void switchBuf()
 	{
 		SDL_Flip(screen);
 		return;

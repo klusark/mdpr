@@ -2,6 +2,7 @@
 #define player_h
 
 #include "video.hpp"
+#include "game.hpp"
 
 class player
 {
@@ -18,20 +19,23 @@ class player
 		};
 		void animate(animation currAnimation);
 		void registerAnimations();
-		SDL_Rect rect2;
 		SDL_Rect rect;
 		short currentFrame;
 		Uint32 lastTime;
-		Uint32 lastTime2;
+		Uint32 lastTimeX;
+		Uint32 lastTimeY;
 		SDL_Surface *image;
 		SDL_Surface *stand;
 
 		bool rightPress;
 		bool leftPress;
-		double xMove;
 
-		short WALKSPEED;
+		double xMove;
+		double yMove;
+		short walkspeed;
+		short gravity;
 		double velocityX;
+		double velocityY;
 
 		//animaitons
 		animation currAnimation;

@@ -11,8 +11,9 @@ namespace video
 	extern void loadAll();
 	extern void switchBuf();
 
-	extern enum imageList
-	{	//player images
+	enum imageList
+	{	
+		//player images
 		stand,
 
 		run0,
@@ -29,7 +30,11 @@ namespace video
 		upjump3,
 		upjump4,
 
-		numImages,//total number of images
+		//world
+		platform,
+
+		//total number of images
+		numImages,
 	};
 	extern SDL_Surface *screen;
 	extern SDL_Surface* images[numImages];

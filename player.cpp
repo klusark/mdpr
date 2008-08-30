@@ -10,7 +10,8 @@ void player::init()
 	rect.y = 50;
 	rect.h = 24;
 	rect.w = 24;
-	WALKSPEED = 32;
+	walkspeed = 32;
+	gravity = 8;
 	velocityX = 0;
 	registerAnimations();
 	return;
@@ -21,7 +22,7 @@ void player::input()
 	Uint8 *keystate = SDL_GetKeyState(0);
 	if ( keystate[SDLK_RIGHT] ){
 		if (!rightPress){
-			lastTime2 = SDL_GetTicks();
+			lastTimeX = SDL_GetTicks();
 			rightPress = true;
 			currAnimation = run;
 		}
@@ -32,7 +33,7 @@ void player::input()
 
 	if ( keystate[SDLK_LEFT] ){
 		if (!leftPress){
-			lastTime2 = SDL_GetTicks();
+			lastTimeX = SDL_GetTicks();
 			leftPress = true;
 			currAnimation = run;
 		}
@@ -41,7 +42,7 @@ void player::input()
 	}
 
 	if (rightPress && leftPress){
-		lastTime2 = SDL_GetTicks();
+		lastTimeX = SDL_GetTicks();
 	}
 
 	if (!rightPress && !leftPress){
@@ -49,24 +50,32 @@ void player::input()
 		image = stand;
 	}
 
-	velocityX = (rightPress - leftPress) * WALKSPEED;
+	velocityX = (rightPress - leftPress) * walkspeed;
 	
 }
 
 void player::update()
 {
-	rect2 = rect;
+	
 	input();
-	xMove = velocityX * (SDL_GetTicks() - lastTime2)/1000.0;
+	xMove = velocityX * (SDL_GetTicks() - lastTimeX)/1000.0;
 	if (xMove >= 1 || xMove <= -1){
-		lastTime2 = SDL_GetTicks();
-		rect2.x += (Sint16)xMove;
+		lastTimeX = SDL_GetTicks();
+		rect.x += (Sint16)xMove;
 	}
+	if (!game::checkCollision(rect, game::platforms[0])){
+		yMove = velocityY * (SDL_GetTicks() - lastTimeY)/1000.0;
+		if (yMove >= 1 || yMove <= -1){
+			lastTimeY = SDL_GetTicks();
+			rect.y += (Sint16)yMove;
+		}
+	}else{
+	}
+	velocityY = 8;
+
 	animate(currAnimation);
 	
-	SDL_FillRect(video::screen, &rect, 0);//gets rid of old image
-	SDL_BlitSurface(image, 0, video::screen, &rect2);
-	rect = rect2;
+	SDL_BlitSurface(SDL_DisplayFormat(image), 0, video::screen, &rect);
 	
 }
 

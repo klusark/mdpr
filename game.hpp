@@ -10,6 +10,9 @@ namespace game
 	extern void mainLoop();
 	extern void getInput();
 	extern void init();
+	extern void drawPlatforms();
+	extern bool checkCollision(SDL_Rect rectA, SDL_Rect rectB);
+	extern SDL_Rect platforms[4];
 }
 
 #endif
