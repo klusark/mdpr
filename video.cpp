@@ -1,4 +1,5 @@
-#include "video.h"
+#include "video.hpp"
+
 namespace video
 {
 	enum imageList;
@@ -20,11 +21,23 @@ namespace video
 
 	void video::loadAll()
 	{
+
 		loadImage("stand", stand);
+
 		loadImage("run0", run0);
 		loadImage("run1", run1);
 		loadImage("run2", run2);
 		loadImage("run3", run3);
+
+		loadImage("crouch0", crouch0);
+		loadImage("crouch1", crouch1);
+
+		loadImage("upjump0", upjump0);
+		loadImage("upjump1", upjump1);
+		loadImage("upjump2", upjump2);
+		loadImage("upjump3", upjump3);
+		loadImage("upjump4", upjump4);
+
 		return;
 	}
 

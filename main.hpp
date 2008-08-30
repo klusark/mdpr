@@ -3,9 +3,9 @@
 #include <stdlib.h>
 //#include <SDL.h>
 
-#include "video.h"
-#include "game.h"
-#include "menu.h"
+#include "video.hpp"
+#include "game.hpp"
+#include "menu.hpp"
 //#include "player.h"
 
 

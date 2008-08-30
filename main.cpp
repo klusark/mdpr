@@ -1,4 +1,5 @@
-#include "main.h"
+#include "main.hpp"
+
 short currState = 1;
 bool running = true;
 int main(int argc, char *argv[])

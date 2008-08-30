@@ -1,4 +1,4 @@
-#include "game.h"
+#include "game.hpp"
 
 player Player1;
 Uint32 LastTime = SDL_GetTicks();

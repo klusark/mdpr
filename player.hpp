@@ -1,8 +1,8 @@
 #ifndef player_h
 #define player_h
 
-//#include "main.h"
-#include "video.h"
+#include "video.hpp"
+
 class player
 {
 	public:
@@ -17,6 +17,7 @@ class player
 			
 		};
 		void animate(animation currAnimation);
+		void registerAnimations();
 		SDL_Rect rect2;
 		SDL_Rect rect;
 		short currentFrame;
@@ -36,6 +37,7 @@ class player
 		animation currAnimation;
 		animation noAnimation;
 		animation run;
+		animation upjump;
 		
 };
 #endif

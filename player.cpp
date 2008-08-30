@@ -1,4 +1,4 @@
-#include "player.h"
+#include "player.hpp"
 
 void player::init()
 {
@@ -10,15 +10,9 @@ void player::init()
 	rect.y = 50;
 	rect.h = 24;
 	rect.w = 24;
-	run.numFrames = 4;
-	run.delay = 100;
 	WALKSPEED = 32;
 	velocityX = 0;
-	image = stand;
-	run.frames[0] = video::images[video::run0];
-	run.frames[1] = video::images[video::run1];
-	run.frames[2] = video::images[video::run2];
-	run.frames[3] = video::images[video::run3];
+	registerAnimations();
 	return;
 }
 
@@ -31,8 +25,9 @@ void player::input()
 			rightPress = true;
 			currAnimation = run;
 		}
-	}else
+	}else{
 		rightPress = false;
+	}
 		
 
 	if ( keystate[SDLK_LEFT] ){
@@ -41,8 +36,9 @@ void player::input()
 			leftPress = true;
 			currAnimation = run;
 		}
-	}else
+	}else{
 		leftPress = false;
+	}
 
 	if (rightPress && leftPress){
 		lastTime2 = SDL_GetTicks();
@@ -67,7 +63,7 @@ void player::update()
 		rect2.x += (Sint16)xMove;
 	}
 	animate(currAnimation);
-
+	
 	SDL_FillRect(video::screen, &rect, 0);//gets rid of old image
 	SDL_BlitSurface(image, 0, video::screen, &rect2);
 	rect = rect2;
@@ -90,4 +86,25 @@ void player::animate(animation currAnimation){
 			image = currAnimation.frames[currentFrame];
 		}
 	}
+}
+
+void player::registerAnimations()
+{	
+	//run
+	run.numFrames = 4;
+	run.delay = 100;
+	run.frames[0] = video::images[video::run0];
+	run.frames[1] = video::images[video::run1];
+	run.frames[2] = video::images[video::run2];
+	run.frames[3] = video::images[video::run3];
+	
+	//upjump
+	upjump.numFrames = 5;
+	upjump.delay = 100;
+	upjump.frames[0] = video::images[video::upjump0];
+	upjump.frames[1] = video::images[video::upjump1];
+	upjump.frames[2] = video::images[video::upjump2];
+	upjump.frames[3] = video::images[video::upjump3];
+	upjump.frames[4] = video::images[video::upjump4];
+	return;
 }
