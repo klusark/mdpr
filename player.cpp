@@ -68,14 +68,14 @@ void player::update()
 	}
 	animate(currAnimation);
 
-	SDL_FillRect(video::screen, &rect, 0);
+	SDL_FillRect(video::screen, &rect, 0);//gets rid of old image
 	SDL_BlitSurface(image, 0, video::screen, &rect2);
 	rect = rect2;
 	
 }
 
 void player::animate(animation currAnimation){
-	if (currAnimation.numFrames){
+	if (currAnimation.numFrames){//check if set as noAnimation
 		if(currAnimation.delay < (SDL_GetTicks() - lastTime) )
 		{
 			currentFrame++;
@@ -86,9 +86,8 @@ void player::animate(animation currAnimation){
 			{
 				currentFrame = 0;
 			}
-			rect.x-=1;
+			rect.x -= 1; //otherwise there are left over pixels
 			image = currAnimation.frames[currentFrame];
-			
 		}
 	}
 }

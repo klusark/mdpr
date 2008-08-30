@@ -10,8 +10,6 @@ void game::init()
 
 void game::mainLoop()
 {
-
-
 	ShownFrames++;
  
     if((SDL_GetTicks() - LastTime) >= 1000)
@@ -24,11 +22,11 @@ void game::mainLoop()
 
 	getInput();
 	Player1.update();
-	SDL_Flip(video::screen);
+	video::switchBuf();
 	return;
 }
 
-int game::getInput()
+void game::getInput()
 {
 	SDL_Event event;
 
@@ -39,5 +37,5 @@ int game::getInput()
 				break;
 		}
 	}
-	return 0;
+	return;
 }

@@ -5,9 +5,10 @@
 
 namespace video
 {
-	extern bool init();
+	extern void init();
 	extern bool loadImage(char* file, short code);
-	extern bool loadAll();
+	extern void loadAll();
+	extern void switchBuf();
 
 	extern enum imageList
 	{

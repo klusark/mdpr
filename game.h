@@ -3,14 +3,13 @@
 
 #include "main.h"
 #include "player.h"
-//#include "video.h"
+#include "video.h"
 
 namespace game
 {
 	extern void mainLoop();
-	extern int getInput();
+	extern void getInput();
 	extern void init();
-	//extern player Player1;
 }
 
 #endif
