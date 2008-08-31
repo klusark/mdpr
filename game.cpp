@@ -6,44 +6,55 @@ namespace game
 	player Player1;
 	Uint32 LastTime = SDL_GetTicks();
 	unsigned int ShownFrames = 0;
+	Uint32 wait = (Uint32)(1000 / 60);
+	Uint32 bticks, cticks;
+
+	//game::init
+	//Gets the game setup
+	//Parameters: None
+	//Return: None
 	void init()
 	{
 		Player1.init();
 	}
 
+	//game::mainLoop
+	//The main loop for ingame
+	//Parameters: None
+	//Return: None
 	void mainLoop()
 	{
+		bticks = SDL_GetTicks();
+		//calc fps
 		ShownFrames++;
-	 
 		if((SDL_GetTicks() - LastTime) >= 1000)
 		{
-			printf("%li\n",ShownFrames);
+			printf("%li\n", ShownFrames);
 	 
 			ShownFrames = 0;
 			LastTime = SDL_GetTicks();
 		}
-		SDL_FillRect(video::screen, &video::screen->clip_rect, SDL_MapRGB(video::screen->format, 0, 0, 0)); 
-		getInput();
+
 		drawPlatforms();
 		Player1.update();
 		video::switchBuf();
-		return;
-	}
+		//clear the screen
+		SDL_FillRect(video::screen, &video::screen->clip_rect, SDL_MapRGB(video::screen->format, 0, 0, 0)); 
 
-	void getInput()
-	{
-		SDL_Event event;
-
-		while(SDL_PollEvent(&event)) {
-			switch(event.type){
-				case SDL_QUIT:
-					running = 0;
-					break;
-			}
+		//limit the framerate
+		cticks = SDL_GetTicks();
+		if ((cticks - bticks) < wait){
+			//framerate exceeded limit....so we wait the difference
+			SDL_Delay(wait - (cticks - bticks));
 		}
+
 		return;
 	}
 
+	//game::drawPlatforms
+	//Draws all the platforms on the screen
+	//Parameters: None
+	//Return: None
 	void drawPlatforms()
 	{
 		
@@ -52,6 +63,7 @@ namespace game
 		SDL_BlitSurface(video::images[video::platform], 0, video::screen, &platforms[0]);
 		return;
 	}
+
 	//from lazyfoo TODO write my own
 	bool checkCollision(SDL_Rect rectA, SDL_Rect rectB)
 	{

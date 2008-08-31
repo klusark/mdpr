@@ -19,29 +19,21 @@ class player
 		};
 		void animate(animation currAnimation);
 		void registerAnimations();
+
 		SDL_Rect rect;
-		short currentFrame;
-		Uint32 lastTime;
-		Uint32 lastTimeX;
-		Uint32 lastTimeY;
-		SDL_Surface *image;
-		SDL_Surface *stand;
 
-		bool rightPress;
-		bool leftPress;
+		Uint32 lastTime, lastTimeX, lastTimeY;
 
-		double xMove;
-		double yMove;
-		short walkspeed;
-		short gravity;
-		double velocityX;
-		double velocityY;
+		SDL_Surface *image, *stand;
+
+		bool rightPress, leftPress;
+
+		double xMove, yMove, velocityX, velocityY;
+
+		short walkspeed, gravity, currentFrame;
 
 		//animaitons
-		animation currAnimation;
-		animation noAnimation;
-		animation run;
-		animation upjump;
+		animation currAnimation, noAnimation, run, upjump;
 		
 };
 #endif

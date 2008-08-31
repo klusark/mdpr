@@ -36,8 +36,7 @@ namespace video
 		//total number of images
 		numImages,
 	};
-	extern SDL_Surface *screen;
-	extern SDL_Surface* images[numImages];
+	extern SDL_Surface *screen, *images[numImages];
 
 }
 #endif

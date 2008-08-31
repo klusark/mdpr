@@ -14,6 +14,7 @@ enum States
 	inMenu,
 	inGame,
 };
+extern void mainLoop();
 extern short currState;
 extern bool running;
 

@@ -6,6 +6,7 @@
 namespace menu
 {
 	extern void init();
+	extern void mainLoop();
 
 }
 

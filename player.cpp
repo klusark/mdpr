@@ -1,5 +1,9 @@
 #include "player.hpp"
 
+//player::init
+//sets up the player
+//Parameters: None
+//Return: None
 void player::init()
 {
     currentFrame = 0;
@@ -17,6 +21,10 @@ void player::init()
 	return;
 }
 
+//player::input
+//handles all the keyboard input for the player
+//Parameters: None
+//Return: None
 void player::input()
 {
 	Uint8 *keystate = SDL_GetKeyState(0);
@@ -54,15 +62,23 @@ void player::input()
 	
 }
 
+//player::update
+//does all the per-frame actions.
+//Parameters: None
+//Return: None
 void player::update()
 {
 	
 	input();
+
+	//Moving on the X
 	xMove = velocityX * (SDL_GetTicks() - lastTimeX)/1000.0;
 	if (xMove >= 1 || xMove <= -1){
 		lastTimeX = SDL_GetTicks();
 		rect.x += (Sint16)xMove;
 	}
+
+	//gravity
 	if (!game::checkCollision(rect, game::platforms[0])){
 		yMove = velocityY * (SDL_GetTicks() - lastTimeY)/1000.0;
 		if (yMove >= 1 || yMove <= -1){
@@ -74,11 +90,16 @@ void player::update()
 	velocityY = 8;
 
 	animate(currAnimation);
-	
+
+	//render the player onto the screen
 	SDL_BlitSurface(SDL_DisplayFormat(image), 0, video::screen, &rect);
 	
 }
 
+//player::animate
+//animates the player sprite
+//Parameters: the current animation
+//Return: None
 void player::animate(animation currAnimation){
 	if (currAnimation.numFrames){//check if set as noAnimation
 		if(currAnimation.delay < (SDL_GetTicks() - lastTime) )
@@ -91,12 +112,16 @@ void player::animate(animation currAnimation){
 			{
 				currentFrame = 0;
 			}
-			rect.x -= 1; //otherwise there are left over pixels
+
 			image = currAnimation.frames[currentFrame];
 		}
 	}
 }
 
+//player::registerAnimations
+//gets all the animations for the player ready
+//Parameters: None
+//Return: None
 void player::registerAnimations()
 {	
 	//run
