@@ -4,7 +4,7 @@ namespace game
 {
 	SDL_Rect platforms[4];
 	player Player1;
-	Uint32 LastTime = SDL_GetTicks();
+//	Uint32 LastTime = SDL_GetTicks();
 	unsigned int ShownFrames = 0;
 	Uint32 wait = (Uint32)(1000 / 60);
 	Uint32 bticks, cticks;
@@ -26,14 +26,14 @@ namespace game
 	{
 		bticks = SDL_GetTicks();
 		//calc fps
-		ShownFrames++;
+		/*ShownFrames++;
 		if((SDL_GetTicks() - LastTime) >= 1000)
 		{
 			printf("%li\n", ShownFrames);
 	 
 			ShownFrames = 0;
 			LastTime = SDL_GetTicks();
-		}
+		}*/
 
 		drawPlatforms();
 		Player1.update();

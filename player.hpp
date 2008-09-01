@@ -12,13 +12,15 @@ class player
 		void input();
 		struct animation
 		{
-			short numFrames;
+			char numFrames, repeat;
 			SDL_Surface *frames[4];
 			Uint32 delay;
 			
 		};
 		void animate(animation currAnimation);
 		void registerAnimations();
+		
+		
 
 		SDL_Rect rect;
 
@@ -26,14 +28,16 @@ class player
 
 		SDL_Surface *image, *stand;
 
-		bool rightPress, leftPress;
+		bool rightPress, leftPress, downPress, upPress;
 
 		double xMove, yMove, velocityX, velocityY;
 
 		short walkspeed, gravity, currentFrame;
+		//keys
+		short left, right, down, up;
 
 		//animaitons
-		animation currAnimation, noAnimation, run, upjump;
+		animation currAnimation, noAnimation, run, upjump, crouch;
 		
 };
 #endif

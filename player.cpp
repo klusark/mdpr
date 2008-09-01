@@ -18,6 +18,13 @@ void player::init()
 	gravity = 8;
 	velocityX = 0;
 	registerAnimations();
+
+	//keys
+	up = SDLK_UP;
+	down = SDLK_DOWN;
+	right = SDLK_RIGHT;
+	left = SDLK_LEFT;
+
 	return;
 }
 
@@ -28,7 +35,9 @@ void player::init()
 void player::input()
 {
 	Uint8 *keystate = SDL_GetKeyState(0);
-	if ( keystate[SDLK_RIGHT] ){
+
+	//pressing right
+	if (keystate[right]){
 		if (!rightPress){
 			lastTimeX = SDL_GetTicks();
 			rightPress = true;
@@ -38,8 +47,8 @@ void player::input()
 		rightPress = false;
 	}
 		
-
-	if ( keystate[SDLK_LEFT] ){
+	//pressing left
+	if (keystate[left]){
 		if (!leftPress){
 			lastTimeX = SDL_GetTicks();
 			leftPress = true;
@@ -49,11 +58,22 @@ void player::input()
 		leftPress = false;
 	}
 
+	//pressing up
+	if (keystate[up]){
+
+	}
+
+	//pressing down
+	if (keystate[down]){
+		downPress = true;
+		currAnimation = crouch;
+	}
+
 	if (rightPress && leftPress){
 		lastTimeX = SDL_GetTicks();
 	}
 
-	if (!rightPress && !leftPress){
+	if (!rightPress && !leftPress && !downPress){
 		currAnimation = noAnimation;
 		image = stand;
 	}
@@ -104,16 +124,21 @@ void player::animate(animation currAnimation){
 	if (currAnimation.numFrames){//check if set as noAnimation
 		if(currAnimation.delay < (SDL_GetTicks() - lastTime) )
 		{
+			image = currAnimation.frames[currentFrame];
+
 			currentFrame++;
 			lastTime = SDL_GetTicks();
 			
 			//if we reached the end
-			if(currentFrame >= currAnimation.numFrames)
+			if(currentFrame >= currAnimation.numFrames && currAnimation.repeat)
 			{
+				currentFrame = 0;
+			}else{
+				currAnimation = noAnimation;
 				currentFrame = 0;
 			}
 
-			image = currAnimation.frames[currentFrame];
+			
 		}
 	}
 }
@@ -127,6 +152,7 @@ void player::registerAnimations()
 	//run
 	run.numFrames = 4;
 	run.delay = 100;
+	run.repeat = 1;
 	run.frames[0] = video::images[video::run0];
 	run.frames[1] = video::images[video::run1];
 	run.frames[2] = video::images[video::run2];
@@ -135,10 +161,18 @@ void player::registerAnimations()
 	//upjump
 	upjump.numFrames = 5;
 	upjump.delay = 100;
+	upjump.repeat = 0;
 	upjump.frames[0] = video::images[video::upjump0];
 	upjump.frames[1] = video::images[video::upjump1];
 	upjump.frames[2] = video::images[video::upjump2];
 	upjump.frames[3] = video::images[video::upjump3];
 	upjump.frames[4] = video::images[video::upjump4];
+
+	//crouch
+	crouch.numFrames = 2;
+	crouch.delay = 100;
+	crouch.repeat = 0;
+	crouch.frames[0] = video::images[video::crouch0];
+	crouch.frames[1] = video::images[video::crouch1];
 	return;
 }

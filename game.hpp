@@ -13,6 +13,7 @@ namespace game
 	extern bool checkCollision(SDL_Rect rectA, SDL_Rect rectB);
 	extern SDL_Rect platforms[4];
 	extern Uint32 cticks, bticks, wait;
+
 }
 
 #endif

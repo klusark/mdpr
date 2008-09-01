@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
 	mainLoop();
 
 	exit(0);
-	return 0;
 }
 
 //mainLoop
