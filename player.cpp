@@ -6,10 +6,10 @@
 //Return: None
 void player::init()
 {
+	registerAnimations();
     currentFrame = 0;
-    lastTime = SDL_GetTicks();
-	stand = video::images[video::stand];
-	currAnimation = noAnimation;
+    lastTime = 0;
+	currAnimation = idle;
 	rect.x = 50;
 	rect.y = 50;
 	rect.h = 24;
@@ -17,7 +17,7 @@ void player::init()
 	walkspeed = 32;
 	gravity = 8;
 	velocityX = 0;
-	registerAnimations();
+	
 
 	//keys
 	up = SDLK_UP;
@@ -25,7 +25,6 @@ void player::init()
 	right = SDLK_RIGHT;
 	left = SDLK_LEFT;
 
-	return;
 }
 
 //player::input
@@ -41,10 +40,12 @@ void player::input()
 		if (!rightPress){
 			lastTimeX = SDL_GetTicks();
 			rightPress = true;
-			currAnimation = run;
+			currentFrame = 0;
 		}
 	}else{
-		rightPress = false;
+		if (rightPress){
+			rightPress = false;
+		}
 	}
 		
 	//pressing left
@@ -52,10 +53,18 @@ void player::input()
 		if (!leftPress){
 			lastTimeX = SDL_GetTicks();
 			leftPress = true;
-			currAnimation = run;
+			currentFrame = 0;
 		}
 	}else{
-		leftPress = false;
+		if (leftPress){
+			leftPress = false;
+		}
+	}
+
+	if (leftPress || rightPress){
+		currAnimation = run;
+	}else if(currAnimation.type == run.type){
+		currAnimation = idle;
 	}
 
 	//pressing up
@@ -65,18 +74,26 @@ void player::input()
 
 	//pressing down
 	if (keystate[down]){
-		downPress = true;
-		currAnimation = crouch;
+		if (!downPress){
+			downPress = true;
+			currAnimation = crouch;
+			currentFrame = 0;
+		}
+	}else{
+		if (downPress){ 
+			currAnimation = crouchup;
+			currentFrame = 0;
+			downPress = false;
+		}
 	}
 
 	if (rightPress && leftPress){
 		lastTimeX = SDL_GetTicks();
 	}
 
-	if (!rightPress && !leftPress && !downPress){
-		currAnimation = noAnimation;
-		image = stand;
-	}
+	//if (!rightPress && !leftPress && !downPress){
+	//	currAnimation = idle;
+	//}
 
 	velocityX = (rightPress - leftPress) * walkspeed;
 	
@@ -99,18 +116,19 @@ void player::update()
 	}
 
 	//gravity
-	if (!game::checkCollision(rect, game::platforms[0])){
+	/*if (!game::checkCollision(rect, game::platforms[0])){
 		yMove = velocityY * (SDL_GetTicks() - lastTimeY)/1000.0;
 		if (yMove >= 1 || yMove <= -1){
 			lastTimeY = SDL_GetTicks();
 			rect.y += (Sint16)yMove;
 		}
 	}else{
-	}
+	}*/
 	velocityY = 8;
 
 	animate(currAnimation);
-
+	if (!image)
+		image = video::images[video::stand];
 	//render the player onto the screen
 	SDL_BlitSurface(SDL_DisplayFormat(image), 0, video::screen, &rect);
 	
@@ -121,24 +139,27 @@ void player::update()
 //Parameters: the current animation
 //Return: None
 void player::animate(animation currAnimation){
-	if (currAnimation.numFrames){//check if set as noAnimation
-		if(currAnimation.delay < (SDL_GetTicks() - lastTime) )
-		{
-			image = currAnimation.frames[currentFrame];
-
+	if(currAnimation.delay < (SDL_GetTicks() - lastTime) )
+	{
+		image = currAnimation.frames[currentFrame];
+		if (currAnimation.holdEnd){
+			if (currentFrame != currAnimation.numFrames-1){
+				currentFrame++;
+			}
+		}else{
 			currentFrame++;
-			lastTime = SDL_GetTicks();
-			
-			//if we reached the end
-			if(currentFrame >= currAnimation.numFrames && currAnimation.repeat)
-			{
+		}
+		lastTime = SDL_GetTicks();
+		
+		//if we reached the end
+		if(currentFrame >= currAnimation.numFrames){
+			if (currAnimation.repeat){
 				currentFrame = 0;
 			}else{
-				currAnimation = noAnimation;
+				player::currAnimation = idle;
 				currentFrame = 0;
+				return;
 			}
-
-			
 		}
 	}
 }
@@ -149,7 +170,9 @@ void player::animate(animation currAnimation){
 //Return: None
 void player::registerAnimations()
 {	
+	
 	//run
+	run.type = runType;
 	run.numFrames = 4;
 	run.delay = 100;
 	run.repeat = 1;
@@ -172,7 +195,20 @@ void player::registerAnimations()
 	crouch.numFrames = 2;
 	crouch.delay = 100;
 	crouch.repeat = 0;
+	crouch.holdEnd = 1;
 	crouch.frames[0] = video::images[video::crouch0];
 	crouch.frames[1] = video::images[video::crouch1];
-	return;
+
+	crouchup.numFrames = 2;
+	crouchup.delay = 100;
+	crouchup.repeat = 0;
+	crouchup.frames[0] = video::images[video::crouch1];
+	crouchup.frames[1] = video::images[video::crouch0];
+
+	//idle
+	idle.type = idleType;
+	idle.numFrames = 1;
+	idle.delay = 100;
+	idle.repeat = 1;
+	idle.frames[0] = video::images[video::stand];
 }
