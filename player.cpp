@@ -130,7 +130,7 @@ void player::update()
 	if (!image)
 		image = video::images[video::stand];
 	//render the player onto the screen
-	SDL_BlitSurface(SDL_DisplayFormat(image), 0, video::screen, &rect);
+	SDL_BlitSurface(image, 0, video::screen, &rect);
 	
 }
 
