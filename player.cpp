@@ -66,9 +66,13 @@ void player::input()
 				leftPress = false;
 			}
 		}
+		velocityX = (rightPress - leftPress) * walkspeed;
+	}else{
+		lastTimeX = SDL_GetTicks();
+		velocityX = 0;
 	}
 
-	if (leftPress || rightPress && currAnimation.type != roll.type){
+	if (leftPress || rightPress && currAnimation.type != roll.type && currAnimation.type != crouch.type){
 		currAnimation = run;
 	}else if(currAnimation.type == run.type){
 		currAnimation = idle;
@@ -101,8 +105,8 @@ void player::input()
 	//if (!rightPress && !leftPress && !downPress){
 	//	currAnimation = idle;
 	//}
-
-	velocityX = (rightPress - leftPress) * walkspeed;
+	
+	
 	
 }
 
