@@ -35,33 +35,40 @@ void player::input()
 {
 	Uint8 *keystate = SDL_GetKeyState(0);
 
-	//pressing right
-	if (keystate[right]){
-		if (!rightPress){
-			lastTimeX = SDL_GetTicks();
-			rightPress = true;
-			currentFrame = 0;
+	//if not crouching
+	if (currAnimation.type != crouch.type){
+		//pressing right
+		if (keystate[right]){
+			if (!rightPress){
+				lastTimeX = SDL_GetTicks();
+				rightPress = true;
+				currentFrame = 0;
+			}
+			if (keystate[down]){
+				currAnimation = roll;
+				downPress = true;
+			}
+		}else{
+			if (rightPress){
+				rightPress = false;
+			}
 		}
-	}else{
-		if (rightPress){
-			rightPress = false;
-		}
-	}
-		
-	//pressing left
-	if (keystate[left]){
-		if (!leftPress){
-			lastTimeX = SDL_GetTicks();
-			leftPress = true;
-			currentFrame = 0;
-		}
-	}else{
-		if (leftPress){
-			leftPress = false;
+			
+		//pressing left
+		if (keystate[left]){
+			if (!leftPress){
+				lastTimeX = SDL_GetTicks();
+				leftPress = true;
+				currentFrame = 0;
+			}
+		}else{
+			if (leftPress){
+				leftPress = false;
+			}
 		}
 	}
 
-	if (leftPress || rightPress){
+	if (leftPress || rightPress && currAnimation.type != roll.type){
 		currAnimation = run;
 	}else if(currAnimation.type == run.type){
 		currAnimation = idle;
@@ -80,7 +87,7 @@ void player::input()
 			currentFrame = 0;
 		}
 	}else{
-		if (downPress){ 
+		if (downPress && currAnimation.type == crouchType){ 
 			currAnimation = crouchup;
 			currentFrame = 0;
 			downPress = false;
@@ -156,7 +163,11 @@ void player::animate(animation currAnimation){
 			if (currAnimation.repeat){
 				currentFrame = 0;
 			}else{
-				player::currAnimation = idle;
+				if (currAnimation.type == rollType){
+					player::currAnimation = crouch;
+				}else{
+					player::currAnimation = idle;
+				}
 				currentFrame = 0;
 				return;
 			}
@@ -192,6 +203,7 @@ void player::registerAnimations()
 	upjump.frames[4] = video::images[video::upjump4];
 
 	//crouch
+	crouch.type = crouchType;
 	crouch.numFrames = 2;
 	crouch.delay = 100;
 	crouch.repeat = 0;
@@ -204,6 +216,16 @@ void player::registerAnimations()
 	crouchup.repeat = 0;
 	crouchup.frames[0] = video::images[video::crouch1];
 	crouchup.frames[1] = video::images[video::crouch0];
+
+	//roll
+	roll.numFrames = 4;
+	roll.type = rollType;
+	roll.delay = 100;
+	roll.repeat = 0;
+	roll.frames[0] = video::images[video::roll0];
+	roll.frames[1] = video::images[video::roll1];
+	roll.frames[2] = video::images[video::roll2];
+	roll.frames[3] = video::images[video::roll3];
 
 	//idle
 	idle.type = idleType;

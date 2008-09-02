@@ -23,6 +23,11 @@ namespace video
 
 		crouch0,
 		crouch1,
+
+		roll0,
+		roll1,
+		roll2,
+		roll3,
 		
 		upjump0,
 		upjump1,

@@ -16,7 +16,7 @@ class player
 			SDL_Surface *frames[8];
 			Uint32 delay;
 			
-		};
+		}currAnimation, idle, run, upjump, crouch, crouchup, roll;
 		void animate(animation currAnimation);
 		void registerAnimations();
 		
@@ -35,8 +35,6 @@ class player
 		short walkspeed, gravity, currentFrame;
 		//keys
 		short up, down, right, left;
-		//animaitons
-		animation currAnimation, idle, run, upjump, crouch, crouchup;
 
 		enum animationTypes{
 			idleType,
@@ -44,6 +42,7 @@ class player
 			upjumpType,
 			crouchType,
 			crouchupType,
+			rollType,
 		};
 		
 };

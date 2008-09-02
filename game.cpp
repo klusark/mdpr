@@ -6,6 +6,7 @@ namespace game
 	player Player1;
 //	Uint32 LastTime = SDL_GetTicks();
 	unsigned int ShownFrames = 0;
+	//set frame max to 60fps
 	Uint32 wait = (Uint32)(1000 / 60);
 	Uint32 bticks, cticks;
 

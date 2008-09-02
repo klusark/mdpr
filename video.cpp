@@ -42,6 +42,11 @@ namespace video
 		loadImage("crouch0", crouch0);
 		loadImage("crouch1", crouch1);
 
+		loadImage("roll0", roll0);
+		loadImage("roll1", roll1);
+		loadImage("roll2", roll2);
+		loadImage("roll3", roll3);
+
 		loadImage("upjump0", upjump0);
 		loadImage("upjump1", upjump1);
 		loadImage("upjump2", upjump2);
