@@ -4,7 +4,7 @@ namespace game
 {
 	SDL_Rect platforms[4];
 	player Player1;
-//	Uint32 LastTime = SDL_GetTicks();
+	//Uint32 LastTime = SDL_GetTicks();
 	unsigned int ShownFrames = 0;
 	//set frame max to 60fps
 	Uint32 wait = (Uint32)(1000 / 60);
@@ -36,9 +36,10 @@ namespace game
 			LastTime = SDL_GetTicks();
 		}*/
 
-		drawPlatforms();
+		drawLevel();
 		Player1.update();
 		video::switchBuf();
+
 		//clear the screen
 		SDL_FillRect(video::screen, &video::screen->clip_rect, SDL_MapRGB(video::screen->format, 0, 0, 0)); 
 
@@ -52,11 +53,11 @@ namespace game
 		return;
 	}
 
-	//game::drawPlatforms
-	//Draws all the platforms on the screen
+	//game::drawLevel
+	//Draws all the platforms, ropes and emmiters
 	//Parameters: None
 	//Return: None
-	void drawPlatforms()
+	void drawLevel()
 	{
 		
 		platforms[0].x = 50;

@@ -3,6 +3,8 @@
 short currState = 1;
 bool running = true;
 SDL_Event events;
+char theme[32];
+
 
 //main
 //the start of the game
@@ -12,6 +14,9 @@ int main(int argc, char *argv[])
 {
 	//register SDL_Quit to run when exit() is run
 	atexit(SDL_Quit);
+
+	//theme. using main as the theme
+	sprintf(theme, "main");
 
 	//init SDL
 	video::init();

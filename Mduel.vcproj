@@ -135,7 +135,7 @@
 				AdditionalDependencies="SDL.lib SDLmain.lib SDL_image.lib"
 				AdditionalLibraryDirectories="C:\code\SDL\lib"
 				GenerateDebugInformation="false"
-				SubSystem="2"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				OptimizeForWindows98="0"

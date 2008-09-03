@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include "main.hpp"
+
 namespace video
 {
 	extern void init();
@@ -37,6 +39,8 @@ namespace video
 
 		//world
 		platform,
+
+		emitter,
 
 		//total number of images
 		numImages,

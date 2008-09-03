@@ -68,14 +68,19 @@ namespace video
 		SDL_RWops *rwop;
 		char files[32];
 
-		sprintf(files, "data/%s.png", file);
+		sprintf(files, "data/%s/%s.png", theme, file);
 		rwop = SDL_RWFromFile(files, "rb");
 		images[code] = IMG_LoadPNG_RW(rwop);
 
 		//check for errors
 		if(!images[code]){
-			printf("IMG_LoadPNG_RW: %s\n", IMG_GetError());
-			return false;
+			sprintf(files, "data/%s/%s.png", "main", file);
+			rwop = SDL_RWFromFile(files, "rb");
+			images[code] = IMG_LoadPNG_RW(rwop);
+			if(!images[code]){
+				printf("IMG_LoadPNG_RW: %s\n", IMG_GetError());
+				return false;
+			}
 		}
 		return true;
 	}
