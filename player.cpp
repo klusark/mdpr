@@ -134,7 +134,7 @@ void player::update()
 
 	//gravity
 	yMove = velocityY * (SDL_GetTicks() - lastTimeY)/1000.0;
-	if (yMove >= 1 || yMove <= -1){
+	if (yMove <= -1){
 		
 		lastTimeY = SDL_GetTicks();
 		for (int i = 0; i <= yMove; i++){
@@ -146,9 +146,11 @@ void player::update()
 
 			}
 		}
+	}else{
+		
 	}
 
-	velocityY = 8;
+	velocityY =-4;
 	animate(currAnimation);
 	if (!image)
 		image = video::images[video::stand];

@@ -4,7 +4,7 @@ namespace game
 {
 	SDL_Rect platforms[4];
 	player Player1;
-	//Uint32 LastTime = SDL_GetTicks();
+	Uint32 LastTime = SDL_GetTicks();
 	unsigned int ShownFrames = 0;
 	//set frame max to 60fps
 	Uint32 wait = (Uint32)(1000 / 60);
@@ -30,15 +30,16 @@ namespace game
 	void mainLoop()
 	{
 		bticks = SDL_GetTicks();
+
 		//calc fps
-		/*ShownFrames++;
+		ShownFrames++;
 		if((SDL_GetTicks() - LastTime) >= 1000)
 		{
 			printf("%li\n", ShownFrames);
 	 
 			ShownFrames = 0;
 			LastTime = SDL_GetTicks();
-		}*/
+		}
 		//draw the platforms
 		drawLevel();
 		//update player 1
@@ -65,8 +66,11 @@ namespace game
 	void drawLevel()
 	{
 		
-
-		SDL_BlitSurface(video::images[video::platform], &video::images[video::platform]->clip_rect, video::screen, &platforms[0]);
+		SDL_BlitSurface(video::images[video::platform], &video::images[video::platform]->clip_rect, video::screen, &game::platforms[0]);
+		game::platforms[0].x = 50;
+		game::platforms[0].y = 100;
+		game::platforms[0].h = 1;
+		game::platforms[0].w = 13;
 		return;
 	}
 
