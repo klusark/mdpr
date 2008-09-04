@@ -16,6 +16,10 @@ namespace game
 	//Return: None
 	void init()
 	{
+		game::platforms[0].x = 50;
+		game::platforms[0].y = 100;
+		game::platforms[0].h = 1;
+		game::platforms[0].w = 13;
 		Player1.init();
 	}
 
@@ -35,8 +39,9 @@ namespace game
 			ShownFrames = 0;
 			LastTime = SDL_GetTicks();
 		}*/
-
+		//draw the platforms
 		drawLevel();
+		//update player 1
 		Player1.update();
 		video::switchBuf();
 
@@ -60,9 +65,8 @@ namespace game
 	void drawLevel()
 	{
 		
-		platforms[0].x = 50;
-		platforms[0].y = 100;
-		SDL_BlitSurface(video::images[video::platform], 0, video::screen, &platforms[0]);
+
+		SDL_BlitSurface(video::images[video::platform], &video::images[video::platform]->clip_rect, video::screen, &platforms[0]);
 		return;
 	}
 

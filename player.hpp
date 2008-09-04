@@ -21,8 +21,7 @@ class player
 		void registerAnimations();
 		
 		
-
-		SDL_Rect rect;
+		SDL_Rect rect, feetRect;
 
 		Uint32 lastTime, lastTimeX, lastTimeY;
 

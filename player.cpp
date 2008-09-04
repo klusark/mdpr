@@ -14,6 +14,10 @@ void player::init()
 	rect.y = 50;
 	rect.h = 24;
 	rect.w = 24;
+	feetRect.h = 1;
+	feetRect.w = rect.w - (6 + 7); // 7 for the right side 6 for the left
+	feetRect.y = rect.y + (rect.h - feetRect.h);
+	feetRect.x = rect.x + 7;
 	walkspeed = 32;
 	gravity = 8;
 	velocityX = 0;
@@ -119,6 +123,8 @@ void player::update()
 	
 	input();
 
+	feetRect.x = rect.x + 7;
+	rect.y = feetRect.y - (rect.h - feetRect.h);
 	//Moving on the X
 	xMove = velocityX * (SDL_GetTicks() - lastTimeX)/1000.0;
 	if (xMove >= 1 || xMove <= -1){
@@ -127,21 +133,29 @@ void player::update()
 	}
 
 	//gravity
-	/*if (!game::checkCollision(rect, game::platforms[0])){
-		yMove = velocityY * (SDL_GetTicks() - lastTimeY)/1000.0;
-		if (yMove >= 1 || yMove <= -1){
-			lastTimeY = SDL_GetTicks();
-			rect.y += (Sint16)yMove;
-		}
-	}else{
-	}*/
-	velocityY = 8;
+	yMove = velocityY * (SDL_GetTicks() - lastTimeY)/1000.0;
+	if (yMove >= 1 || yMove <= -1){
+		
+		lastTimeY = SDL_GetTicks();
+		for (int i = 0; i <= yMove; i++){
+			feetRect.y += 1;
+			if (game::checkCollision(feetRect, game::platforms[0])){
+				feetRect.y -= 1;
+				rect.y = feetRect.y - (rect.h - feetRect.h);
+				break;
 
+			}
+		}
+	}
+
+	velocityY = 8;
 	animate(currAnimation);
 	if (!image)
 		image = video::images[video::stand];
 	//render the player onto the screen
+	//SDL_FillRect(video::screen, &feetRect, SDL_MapRGB(video::screen->format, 255, 255, 0));
 	SDL_BlitSurface(image, 0, video::screen, &rect);
+	 
 	
 }
 
