@@ -40,7 +40,7 @@ void player::input()
 	Uint8 *keystate = SDL_GetKeyState(0);
 
 	//if not crouching
-	if (currAnimation.type != crouch.type){
+	if (currAnimation.type != crouch.type && currAnimation.type != crouchup.type){
 		//pressing right
 		if (keystate[right]){
 			if (!rightPress){
@@ -65,6 +65,10 @@ void player::input()
 				leftPress = true;
 				currentFrame = 0;
 			}
+			if (keystate[down]){
+				currAnimation = roll;
+				downPress = true;
+			}
 		}else{
 			if (leftPress){
 				leftPress = false;
@@ -86,19 +90,20 @@ void player::input()
 	if (keystate[up]){
 
 	}
-
-	//pressing down
-	if (keystate[down]){
-		if (!downPress){
-			downPress = true;
-			currAnimation = crouch;
-			currentFrame = 0;
-		}
-	}else{
-		if (downPress && currAnimation.type == crouchType){ 
-			currAnimation = crouchup;
-			currentFrame = 0;
-			downPress = false;
+	if (currAnimation.type != run.type){
+		//pressing down
+		if (keystate[down]){
+			if (!downPress){
+				downPress = true;
+				currAnimation = crouch;
+				currentFrame = 0;
+			}
+		}else{
+			if (downPress && currAnimation.type == crouchType){ 
+				currAnimation = crouchup;
+				currentFrame = 0;
+				downPress = false;
+			}
 		}
 	}
 
@@ -150,12 +155,19 @@ void player::update()
 		
 	}
 
-	velocityY =-4;
+	velocityY = 4;
 	animate(currAnimation);
 	if (!image)
 		image = video::images[video::stand];
 	//render the player onto the screen
 	//SDL_FillRect(video::screen, &feetRect, SDL_MapRGB(video::screen->format, 255, 255, 0));
+	Uint32 pixels = (Uint32)image->pixels;
+
+	if(SDL_MUSTLOCK( image )){
+		SDL_LockSurface( image );
+	}
+	
+
 	SDL_BlitSurface(image, 0, video::screen, &rect);
 	 
 	
@@ -232,6 +244,7 @@ void player::registerAnimations()
 	crouch.frames[1] = video::images[video::crouch1];
 
 	crouchup.numFrames = 2;
+	crouchup.type = crouchupType;
 	crouchup.delay = 100;
 	crouchup.repeat = 0;
 	crouchup.frames[0] = video::images[video::crouch1];

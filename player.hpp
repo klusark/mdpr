@@ -43,6 +43,6 @@ class player
 			crouchupType,
 			rollType,
 		};
-		
+
 };
 #endif

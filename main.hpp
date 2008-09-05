@@ -15,7 +15,7 @@ enum States
 };
 
 extern void mainLoop();
-extern short currState;
+extern char currState;
 extern bool running;
 extern char theme[32];
 

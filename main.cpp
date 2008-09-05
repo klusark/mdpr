@@ -1,6 +1,6 @@
 #include "main.hpp"
 
-short currState = 1;
+char currState = 1;
 bool running = true;
 SDL_Event events;
 char theme[32];
@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
 	game::init();
 
 	//main loop
+	
 	mainLoop();
 
 	exit(0);
