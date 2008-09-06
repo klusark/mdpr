@@ -14,7 +14,7 @@ namespace video
 		SDL_Init(SDL_INIT_VIDEO);
 
 		//Make a window 640 by 480 with 32bit colour, hardware acceleration and double buffering
-		SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE |SDL_HWACCEL | SDL_DOUBLEBUF);
+		SDL_SetVideoMode(320, 240, 32, SDL_HWSURFACE |SDL_HWACCEL | SDL_DOUBLEBUF);
 
 		SDL_WM_SetCaption("Marshmallow Duel: Percy's Return", "Marshmallow Duel: Percy's Return");
 

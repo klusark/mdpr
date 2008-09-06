@@ -161,13 +161,6 @@ void player::update()
 		image = video::images[video::stand];
 	//render the player onto the screen
 	//SDL_FillRect(video::screen, &feetRect, SDL_MapRGB(video::screen->format, 255, 255, 0));
-	Uint32 pixels = (Uint32)image->pixels;
-
-	if(SDL_MUSTLOCK( image )){
-		SDL_LockSurface( image );
-	}
-	
-
 	SDL_BlitSurface(image, 0, video::screen, &rect);
 	 
 	

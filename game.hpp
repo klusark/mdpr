@@ -11,7 +11,7 @@ namespace game
 	extern void init();
 	extern void drawLevel();
 	extern bool checkCollision(SDL_Rect rectA, SDL_Rect rectB);
-	extern SDL_Rect platforms[4];
+	extern SDL_Rect platforms[16];
 	extern Uint32 cticks, bticks, wait;
 
 }
