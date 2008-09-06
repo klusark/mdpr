@@ -88,7 +88,11 @@ void player::input()
 
 	//pressing up
 	if (keystate[up]){
-
+		if (!upPress){
+			upPress = true;
+			currAnimation = upjump;
+			currentFrame = 0;
+		}
 	}
 	if (currAnimation.type != run.type){
 		//pressing down
@@ -136,26 +140,30 @@ void player::update()
 		lastTimeX = SDL_GetTicks();
 		rect.x += (Sint16)xMove;
 	}
-
+	bool breaks = false;
 	//gravity
 	yMove = velocityY * (SDL_GetTicks() - lastTimeY)/1000.0;
-	if (yMove <= -1){
-		
+	if (yMove >= 1){
 		lastTimeY = SDL_GetTicks();
 		for (int i = 0; i <= yMove; i++){
 			feetRect.y += 1;
-			if (game::checkCollision(feetRect, game::platforms[0])){
-				feetRect.y -= 1;
-				rect.y = feetRect.y - (rect.h - feetRect.h);
-				break;
+			for (int x = 0; i < 16;i++){
+				if (game::checkCollision(feetRect, level::platforms[i])){
+					feetRect.y -= 1;
+					rect.y = feetRect.y - (rect.h - feetRect.h);
+					breaks = true;
+					break;
 
+				}
 			}
+			if (breaks)
+				break;
 		}
 	}else{
 		
 	}
 
-	velocityY = 4;
+	velocityY = 16;
 	animate(currAnimation);
 	if (!image)
 		image = video::images[video::stand];

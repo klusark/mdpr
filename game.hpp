@@ -4,14 +4,14 @@
 #include "main.hpp"
 #include "player.hpp"
 #include "video.hpp"
+#include "bubble.hpp"
+#include "level.hpp"
 
 namespace game
 {
 	extern void mainLoop();
 	extern void init();
-	extern void drawLevel();
 	extern bool checkCollision(SDL_Rect rectA, SDL_Rect rectB);
-	extern SDL_Rect platforms[16];
 	extern Uint32 cticks, bticks, wait;
 
 }

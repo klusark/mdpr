@@ -20,11 +20,7 @@ class player
 		void animate(animation currAnimation);
 		void registerAnimations();
 		
-		
-		SDL_Rect rect, feetRect;
-
-		Uint32 lastTime, lastTimeX, lastTimeY;
-
+	private:
 		SDL_Surface *image;
 
 		bool rightPress, leftPress, downPress, upPress;
@@ -43,6 +39,10 @@ class player
 			crouchupType,
 			rollType,
 		};
+
+		SDL_Rect rect, feetRect;
+
+		Uint32 lastTime, lastTimeX, lastTimeY;
 
 };
 #endif
