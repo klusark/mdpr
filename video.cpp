@@ -4,6 +4,7 @@ namespace video
 {
 	SDL_Surface *screen;
 	SDL_Surface *images[numImages];
+	Uint32 bticks, cticks;
 
 	//video::init
 	//initializes the window for the program
@@ -53,6 +54,23 @@ namespace video
 		loadImage("upjump3", upjump3);
 		loadImage("upjump4", upjump4);
 		
+		//bubble
+		loadImage("bubble0", bubble0);
+		loadImage("bubble1", bubble1);
+		loadImage("bubble2", bubble2);
+
+		//powerups
+		loadImage("tenthousandvolts", tenthousandvolts);
+		loadImage("boot", boot);
+		loadImage("death", death);
+		loadImage("gun", gun);
+		loadImage("mine", mine);
+		loadImage("invis", invis);
+		loadImage("x", x);
+		loadImage("nade", nade);
+		loadImage("nuke", nuke);
+		loadImage("parachute", parachute);
+		
 		//world
 		loadImage("platform", platform);
 
@@ -83,6 +101,18 @@ namespace video
 			}
 		}
 		return true;
+	}
+
+	void limitFPS(short FPS)
+	{
+		Uint32 wait = (Uint32)(1000 / FPS);
+
+		cticks = SDL_GetTicks();
+		if ((cticks - bticks) < wait){
+			//framerate exceeded limit....so we wait the difference
+			SDL_Delay(wait - (cticks - bticks));
+		}
+		bticks = SDL_GetTicks();
 	}
 
 	//video::switchBuf

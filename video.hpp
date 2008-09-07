@@ -12,6 +12,7 @@ namespace video
 	extern bool loadImage(char* file, short code);
 	extern void loadAll();
 	extern void switchBuf();
+	extern void limitFPS(short FPS);
 
 	enum imageList
 	{	
@@ -36,6 +37,31 @@ namespace video
 		upjump2,
 		upjump3,
 		upjump4,
+
+		//bubble
+		bubble0,
+		bubble1,
+		bubble2,
+
+		//powerups
+		tenthousandvolts,
+		boot,
+		death,
+		gun,
+		mine,
+		invis,
+		x,
+		nade,
+		nuke,
+		parachute,
+
+		//effects
+		bubblepop0,
+		bubblepop1,
+
+		bubblestart0,
+		bubblestart1,
+		bubblestart2,
 
 		//world
 		platform,

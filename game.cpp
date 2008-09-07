@@ -2,20 +2,15 @@
 
 namespace game
 {
-	//define players
+	//players
 	player player1;
 	player player2;
 	
 	//bubbles
 	bubble bubble1;
-	
-	unsigned int ShownFrames = 0;
 
-	//set frame max to 60fps
-	Uint32 wait = (Uint32)(1000 / 60);
-
-	Uint32 bticks, cticks;
 	Uint32 LastTime = SDL_GetTicks();
+	unsigned int ShownFrames = 0;
 
 	//game::init
 	//Gets the game setup
@@ -62,19 +57,15 @@ namespace game
 
 		//update player 2
 		player2.update();
-		
+
+		//switch the buffer
 		video::switchBuf();
 
 		//clear the screen
 		SDL_FillRect(video::screen, &video::screen->clip_rect, SDL_MapRGB(video::screen->format, 0, 0, 0)); 
 
 		//limit the framerate
-		cticks = SDL_GetTicks();
-		if ((cticks - bticks) < wait){
-			//framerate exceeded limit....so we wait the difference
-			SDL_Delay(wait - (cticks - bticks));
-		}
-		bticks = SDL_GetTicks();
+		video::limitFPS(60);
 
 		return;
 	}
