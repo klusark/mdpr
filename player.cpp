@@ -152,8 +152,8 @@ void player::update()
 		lastTimeY = SDL_GetTicks();
 		for (int i = 0; i <= yMove; i++){
 			feetRect.y += 1;
-			for (int x = 0; i < 16;i++){
-				if (game::checkCollision(feetRect, level::platforms[i])){
+			for (int x = 0; x < 16; x++){
+				if (game::checkCollision(feetRect, level::platforms[x])){
 					feetRect.y -= 1;
 					rect.y = feetRect.y - (rect.h - feetRect.h);
 					breaks = true;
@@ -169,7 +169,7 @@ void player::update()
 	}
 
 	velocityY = 16;
-	animate(currAnimation);
+	animate();
 	if (!image)
 		image = video::images[video::stand];
 	//render the player onto the screen
@@ -181,9 +181,9 @@ void player::update()
 
 //player::animate
 //animates the player sprite
-//Parameters: the current animation
+//Parameters: None
 //Return: None
-void player::animate(animation currAnimation){
+void player::animate(){
 	if(currAnimation.delay < (SDL_GetTicks() - lastTime) )
 	{
 		image = currAnimation.frames[currentFrame];

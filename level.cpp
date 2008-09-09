@@ -4,7 +4,7 @@
 
 namespace level
 {
-	SDL_Rect platforms[16];
+	SDL_Rect platforms[16], edgeTop, edgeLeft, edgeBottom, edgeRight;
 	void level::init()
 	{
 		//bottom left
@@ -58,6 +58,27 @@ namespace level
 
 		level::platforms[15].x = 257;
 		level::platforms[15].y = 40;
+
+		edgeLeft.x = 0;
+		edgeLeft.y = 0;
+		edgeLeft.w = 1;
+		edgeLeft.h = 320;
+
+		edgeRight.x = 319;
+		edgeRight.y = 0;
+		edgeRight.w = 2;
+		edgeRight.h = 320;
+
+		edgeTop.x = 0;
+		edgeTop.y = 0;
+		edgeTop.w = 321;
+		edgeTop.h = 1;
+
+		edgeBottom.x = 0;
+		edgeBottom.y = 239;
+		edgeBottom.w = 320;
+		edgeBottom.h = 1;
+
 	}
 
 	void level::update()

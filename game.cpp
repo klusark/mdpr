@@ -1,4 +1,6 @@
 #include <SDL.h>
+#include <time.h>
+
 #include "main.hpp"
 #include "player.hpp"
 #include "video.hpp"
@@ -13,7 +15,9 @@ namespace game
 	player player2;
 	
 	//bubbles
+	bubble bubble0;
 	bubble bubble1;
+	bubble bubble2;
 
 	Uint32 LastTime = SDL_GetTicks();
 	unsigned int ShownFrames = 0;
@@ -24,15 +28,18 @@ namespace game
 	//Return: None
 	void init()
 	{
+		srand((unsigned)time(NULL));
 		//init the level
 		level::init();
-
+		
 		//init the players
 		player1.init();
 		player2.init();
 
 		//init the bubble
+		bubble0.init();
 		bubble1.init();
+		bubble2.init();
 	}
 
 	//game::mainLoop
@@ -56,7 +63,9 @@ namespace game
 		level::update();
 
 		//update the bubbles
+		bubble0.update();
 		bubble1.update();
+		bubble2.update();
 		
 		//update player 1
 		player1.update();

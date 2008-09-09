@@ -6,7 +6,12 @@ class player
 	public:
 		void init();
 		void update();
+			
+	private:
+		void animate();
 		void input();
+		void registerAnimations();
+
 		struct animation
 		{
 			char numFrames, repeat, holdEnd, type;
@@ -14,10 +19,7 @@ class player
 			Uint32 delay;
 			
 		}currAnimation, idle, run, upjump, crouch, crouchup, roll;
-		void animate(animation currAnimation);
-		void registerAnimations();
-		
-	private:
+
 		SDL_Surface *image;
 
 		bool rightPress, leftPress, downPress, upPress;
