@@ -1,4 +1,9 @@
+#include <SDL.h>
+#include "video.hpp"
+#include "game.hpp"
+#include "level.hpp"
 #include "player.hpp"
+
 
 //player::init
 //sets up the player

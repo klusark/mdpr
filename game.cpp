@@ -1,3 +1,9 @@
+#include <SDL.h>
+#include "main.hpp"
+#include "player.hpp"
+#include "video.hpp"
+#include "bubble.hpp"
+#include "level.hpp"
 #include "game.hpp"
 
 namespace game

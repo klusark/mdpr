@@ -1,4 +1,7 @@
+#include <SDL.h>
+#include "video.hpp"
 #include "level.hpp"
+
 namespace level
 {
 	SDL_Rect platforms[16];

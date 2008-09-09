@@ -1,12 +1,5 @@
 #ifndef main_h
 #define main_h
-#include <stdlib.h>
-#include <stdio.h>
-
-#include "video.hpp"
-#include "game.hpp"
-#include "menu.hpp"
-//#include "player.h"
 
 enum States
 {

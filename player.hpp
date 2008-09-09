@@ -1,9 +1,6 @@
 #ifndef player_h
 #define player_h
 
-#include "video.hpp"
-#include "game.hpp"
-
 class player
 {
 	public:

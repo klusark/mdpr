@@ -1,5 +1,3 @@
-#include "main.hpp"
-
 namespace level
 {
 	void init();

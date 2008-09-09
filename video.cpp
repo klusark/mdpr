@@ -1,3 +1,7 @@
+#include <SDL.h>
+#include <SDL_image.h>
+
+#include "main.hpp"
 #include "video.hpp"
 
 namespace video
@@ -103,6 +107,10 @@ namespace video
 		return true;
 	}
 
+	//video::limitFPS
+	//Limit the frames per second to FPS
+	//Parameters: FPS the max frames per second
+	//Return: None
 	void limitFPS(short FPS)
 	{
 		Uint32 wait = (Uint32)(1000 / FPS);

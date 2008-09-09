@@ -1,3 +1,4 @@
+#include <SDL.h>
 #include "bubble.hpp"
 
 void bubble::update()
@@ -7,5 +8,6 @@ void bubble::update()
 
 void bubble::init()
 {
-	//do stuff
+	rect.x = 100;
+	rect.y = 100;
 }

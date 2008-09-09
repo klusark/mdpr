@@ -1,11 +1,6 @@
 #ifndef video_h
 #define video_h
 
-#include <SDL.h>
-#include <SDL_image.h>
-
-#include "main.hpp"
-
 namespace video
 {
 	extern void init();

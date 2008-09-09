@@ -1,3 +1,10 @@
+#include <SDL.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+#include "video.hpp"
+#include "game.hpp"
+#include "menu.hpp"
 #include "main.hpp"
 
 char currState = 1;
