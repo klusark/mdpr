@@ -77,6 +77,7 @@ namespace video
 		
 		//world
 		loadImage("platform", platform);
+		loadImage("emitter", emitter);
 
 		return;
 	}

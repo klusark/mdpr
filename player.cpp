@@ -9,8 +9,9 @@
 //sets up the player
 //Parameters: None
 //Return: None
-void player::init()
+void player::init(char playerNumber)
 {
+	this->playerNumber = playerNumber;
 	registerAnimations();
     currentFrame = 0;
     lastTime = 0;
@@ -24,15 +25,22 @@ void player::init()
 	feetRect.y = rect.y + (rect.h - feetRect.h);
 	feetRect.x = rect.x + 7;
 	walkspeed = 32;
-	gravity = 8;
+	maxVelocityY = 32;
 	velocityX = 0;
 	
 
 	//keys
-	up = SDLK_UP;
-	down = SDLK_DOWN;
-	right = SDLK_RIGHT;
-	left = SDLK_LEFT;
+	if (this->playerNumber == 1){
+		up = SDLK_UP;
+		down = SDLK_DOWN;
+		right = SDLK_RIGHT;
+		left = SDLK_LEFT;
+	}else if (this->playerNumber == 2){
+		up = SDLK_w;
+		down = SDLK_s;
+		right = SDLK_d;
+		left = SDLK_a;
+	}
 
 }
 
@@ -43,89 +51,85 @@ void player::init()
 void player::input()
 {
 	Uint8 *keystate = SDL_GetKeyState(0);
-
-	//if not crouching
-	if (currAnimation.type != crouch.type && currAnimation.type != crouchup.type){
-		//pressing right
-		if (keystate[right]){
-			if (!rightPress){
-				lastTimeX = SDL_GetTicks();
-				rightPress = true;
-				currentFrame = 0;
+	if (onGround){
+		//if not crouching
+		if (currAnimation.type != crouch.type && currAnimation.type != crouchup.type){
+			//pressing right
+			if (keystate[right]){
+				if (!rightPress){
+					lastTimeX = SDL_GetTicks();
+					rightPress = true;
+					currentFrame = 0;
+				}
+				if (keystate[down]){
+					currAnimation = roll;
+					downPress = true;
+				}
+			}else{
+				if (rightPress){
+					rightPress = false;
+				}
 			}
+				
+			//pressing left
+			if (keystate[left]){
+				if (!leftPress){
+					lastTimeX = SDL_GetTicks();
+					leftPress = true;
+					currentFrame = 0;
+				}
+				if (keystate[down]){
+					currAnimation = roll;
+					downPress = true;
+				}
+			}else{
+				if (leftPress){
+					leftPress = false;
+				}
+			}
+			velocityX = (rightPress - leftPress) * walkspeed;
+		}else{
+			lastTimeX = SDL_GetTicks();
+			velocityX = 0;
+		}
+
+		if (leftPress || rightPress && currAnimation.type != roll.type && currAnimation.type != crouch.type){
+			currAnimation = run;
+		}else if(currAnimation.type == run.type){
+			currAnimation = idle;
+		}
+
+		//pressing up
+		if (keystate[up]){
+			if (!upPress){
+				upPress = true;
+				currAnimation = upjump;
+				currentFrame = 0;
+				velocityY = -16;
+			}
+		}
+
+		if (currAnimation.type != run.type){
+			//pressing down
 			if (keystate[down]){
-				currAnimation = roll;
-				downPress = true;
-			}
-		}else{
-			if (rightPress){
-				rightPress = false;
-			}
-		}
-			
-		//pressing left
-		if (keystate[left]){
-			if (!leftPress){
-				lastTimeX = SDL_GetTicks();
-				leftPress = true;
-				currentFrame = 0;
-			}
-			if (keystate[down]){
-				currAnimation = roll;
-				downPress = true;
-			}
-		}else{
-			if (leftPress){
-				leftPress = false;
+				if (!downPress){
+					downPress = true;
+					currAnimation = crouch;
+					currentFrame = 0;
+				}
+			}else{
+				if (downPress && currAnimation.type == crouchType){ 
+					currAnimation = crouchup;
+					currentFrame = 0;
+					downPress = false;
+				}
 			}
 		}
-		velocityX = (rightPress - leftPress) * walkspeed;
-	}else{
-		lastTimeX = SDL_GetTicks();
-		velocityX = 0;
-	}
 
-	if (leftPress || rightPress && currAnimation.type != roll.type && currAnimation.type != crouch.type){
-		currAnimation = run;
-	}else if(currAnimation.type == run.type){
-		currAnimation = idle;
-	}
-
-	//pressing up
-	if (keystate[up]){
-		if (!upPress){
-			upPress = true;
-			currAnimation = upjump;
-			currentFrame = 0;
+		if (rightPress && leftPress){
+			lastTimeX = SDL_GetTicks();
 		}
 	}
-	if (currAnimation.type != run.type){
-		//pressing down
-		if (keystate[down]){
-			if (!downPress){
-				downPress = true;
-				currAnimation = crouch;
-				currentFrame = 0;
-			}
-		}else{
-			if (downPress && currAnimation.type == crouchType){ 
-				currAnimation = crouchup;
-				currentFrame = 0;
-				downPress = false;
-			}
-		}
-	}
-
-	if (rightPress && leftPress){
-		lastTimeX = SDL_GetTicks();
-	}
-
-	//if (!rightPress && !leftPress && !downPress){
-	//	currAnimation = idle;
-	//}
-	
-	
-	
 }
 
 //player::update
@@ -145,35 +149,13 @@ void player::update()
 		lastTimeX = SDL_GetTicks();
 		rect.x += (Sint16)xMove;
 	}
-	bool breaks = false;
-	//gravity
-	yMove = velocityY * (SDL_GetTicks() - lastTimeY)/1000.0;
-	if (yMove >= 1){
-		lastTimeY = SDL_GetTicks();
-		for (int i = 0; i <= yMove; i++){
-			feetRect.y += 1;
-			for (int x = 0; x < 16; x++){
-				if (game::checkCollision(feetRect, level::platforms[x])){
-					feetRect.y -= 1;
-					rect.y = feetRect.y - (rect.h - feetRect.h);
-					breaks = true;
-					break;
+	//make the player fall
+	gravity();
 
-				}
-			}
-			if (breaks)
-				break;
-		}
-	}else{
-		
-	}
-
-	velocityY = 16;
+	//animate the player
 	animate();
-	if (!image)
-		image = video::images[video::stand];
+
 	//render the player onto the screen
-	//SDL_FillRect(video::screen, &feetRect, SDL_MapRGB(video::screen->format, 255, 255, 0));
 	SDL_BlitSurface(image, 0, video::screen, &rect);
 	 
 	
@@ -209,6 +191,43 @@ void player::animate(){
 				currentFrame = 0;
 				return;
 			}
+		}
+	}
+	//check if there is no image set and set the image to idle
+	if (!image)
+		image = video::images[video::stand];
+}
+
+void player::gravity()
+{
+	if (velocityY < maxVelocityY){
+		velocityY++;
+	}
+	onGround = false;
+	bool breaks = false;
+
+	yMove = velocityY * (SDL_GetTicks() - lastTimeY)/1000.0;
+	if (yMove >= 1){
+		lastTimeY = SDL_GetTicks();
+		for (int i = 0; i <= yMove; i++){
+			feetRect.y += 1;
+			for (int x = 0; x < 16; x++){
+				if (game::checkCollision(feetRect, level::platforms[x])){
+					feetRect.y -= 1;
+					rect.y = feetRect.y - (rect.h - feetRect.h);
+					breaks = true;
+					onGround = true;
+					break;
+
+				}
+			}
+			if (breaks)
+				break;
+		}
+	}else if (yMove <= -1){
+		lastTimeY = SDL_GetTicks();
+		for (int i = 0; i >= yMove; i--){
+			feetRect.y -= 1;
 		}
 	}
 }

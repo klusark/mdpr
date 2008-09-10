@@ -4,13 +4,14 @@
 class player
 {
 	public:
-		void init();
+		void init(char);
 		void update();
 			
 	private:
 		void animate();
 		void input();
 		void registerAnimations();
+		void gravity();
 
 		struct animation
 		{
@@ -22,11 +23,13 @@ class player
 
 		SDL_Surface *image;
 
-		bool rightPress, leftPress, downPress, upPress;
+		bool rightPress, leftPress, downPress, upPress, onGround;
 
-		double xMove, yMove, velocityX, velocityY;
+		double xMove, yMove, velocityX, velocityY, leftOverX;
 
-		short walkspeed, gravity, currentFrame;
+		char playerNumber;
+
+		short walkspeed, maxVelocityY, currentFrame;
 		//keys
 		short up, down, right, left;
 

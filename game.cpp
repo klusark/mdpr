@@ -33,8 +33,8 @@ namespace game
 		level::init();
 		
 		//init the players
-		player1.init();
-		player2.init();
+		player1.init(1);
+		player2.init(2);
 
 		//init the bubble
 		bubble0.init();

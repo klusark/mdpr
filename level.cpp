@@ -83,9 +83,18 @@ namespace level
 
 	void update()
 	{
+		//draw the platforms
 		for (char i = 0; i < 16; i++){
 			SDL_BlitSurface(video::images[video::platform], &video::images[video::platform]->clip_rect, video::screen, &level::platforms[i]);
 			level::platforms[i].h = 1;
 		}
+		//draw the ropes
+		//TODO
+
+		//draw the emitters
+		SDL_Rect emitter;
+		emitter.x = 120;
+		emitter.y = 0;
+		SDL_BlitSurface(video::images[video::emitter], &video::images[video::emitter]->clip_rect, video::screen, &emitter);
 	}
 }

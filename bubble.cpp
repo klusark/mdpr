@@ -14,17 +14,6 @@ void bubble::update()
 			currentFrame = 0;
 	}
 	
-	if (game::checkCollision(rect, level::edgeBottom)){
-		velocityY = -velocityY;
-	}
-	if (game::checkCollision(rect, level::edgeLeft)){
-		velocityX = -velocityX;
-	}
-	if (game::checkCollision(rect, level::edgeTop)){
-		velocityY = -velocityY;
-	}
-
-
 	xMove = velocityX * (SDL_GetTicks() - lastTimeX)/1000.0;
 	if (xMove >= 1){
 		lastTimeX = SDL_GetTicks();
@@ -45,6 +34,7 @@ void bubble::update()
 			}
 		}
 	}
+
 	yMove = velocityY * (SDL_GetTicks() - lastTimeY)/1000.0;
 	if (yMove >= 1){
 		lastTimeY = SDL_GetTicks();
@@ -64,16 +54,11 @@ void bubble::update()
 				break;
 			}
 		}
-	}
-
-	
-	
+	}	
 }
 
 void bubble::init()
 {
-	
-	
 	lastTime = SDL_GetTicks();
 	lastTimeX = SDL_GetTicks();
 	images[0] = video::images[video::bubble0];
