@@ -5,7 +5,7 @@
 namespace level
 {
 	SDL_Rect platforms[16], edgeTop, edgeLeft, edgeBottom, edgeRight;
-	void level::init()
+	void init()
 	{
 		//bottom left
 		level::platforms[0].x = 25;
@@ -81,7 +81,7 @@ namespace level
 
 	}
 
-	void level::update()
+	void update()
 	{
 		for (char i = 0; i < 16; i++){
 			SDL_BlitSurface(video::images[video::platform], &video::images[video::platform]->clip_rect, video::screen, &level::platforms[i]);

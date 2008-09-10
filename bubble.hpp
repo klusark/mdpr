@@ -11,8 +11,9 @@ class bubble
 	private:
 		SDL_Rect rect;
 		SDL_Surface *images[4];
-		char currentFrame, xMove, yMove;
-		Uint32 lastTime;
+		char currentFrame;
+		double xMove, yMove, velocityX, velocityY;
+		Uint32 lastTime, lastTimeX, lastTimeY;
 		int randomNum;
 
 };

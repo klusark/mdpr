@@ -15,20 +15,57 @@ void bubble::update()
 	}
 	
 	if (game::checkCollision(rect, level::edgeBottom)){
-		yMove = -yMove;
+		velocityY = -velocityY;
 	}
 	if (game::checkCollision(rect, level::edgeLeft)){
-		xMove = -xMove;
+		velocityX = -velocityX;
 	}
 	if (game::checkCollision(rect, level::edgeTop)){
-		yMove = -yMove;
+		velocityY = -velocityY;
 	}
-	if (game::checkCollision(rect, level::edgeRight)){
-		xMove = -xMove;
+
+
+	xMove = velocityX * (SDL_GetTicks() - lastTimeX)/1000.0;
+	if (xMove >= 1){
+		lastTimeX = SDL_GetTicks();
+		for (int i = 0; i <= xMove; i++){
+			rect.x += 1;
+			if (game::checkCollision(rect, level::edgeRight)){
+				velocityX = -velocityX;
+				break;
+			}
+		}
+	}else if (xMove <= -1){
+		lastTimeX = SDL_GetTicks();
+		for (int i = 0; i >= xMove; i--){
+			rect.x -= 1;
+			if (game::checkCollision(rect, level::edgeLeft)){
+				velocityX = -velocityX;
+				break;
+			}
+		}
 	}
-	rect.x += xMove;
-	rect.y += yMove;
-	
+	yMove = velocityY * (SDL_GetTicks() - lastTimeY)/1000.0;
+	if (yMove >= 1){
+		lastTimeY = SDL_GetTicks();
+		for (int i = 0; i <= yMove; i++){
+			rect.y += 1;
+			if (game::checkCollision(rect, level::edgeBottom)){
+				velocityY = -velocityY;
+				break;
+			}
+		}
+	}else if (yMove <= -1){
+		lastTimeY = SDL_GetTicks();
+		for (int i = 0; i >= yMove; i--){
+			rect.y -= 1;
+			if (game::checkCollision(rect, level::edgeTop)){
+				velocityY = -velocityY;
+				break;
+			}
+		}
+	}
+
 	
 	
 }
@@ -38,6 +75,7 @@ void bubble::init()
 	
 	
 	lastTime = SDL_GetTicks();
+	lastTimeX = SDL_GetTicks();
 	images[0] = video::images[video::bubble0];
 	images[1] = video::images[video::bubble1];
 	images[2] = video::images[video::bubble2];
@@ -55,6 +93,6 @@ void bubble::init()
 	rect.w = 16;
 	rect.h = 16;
 	currentFrame = 0;
-	xMove = rand()%5;
-	yMove = rand()%5;
+	velocityX = rand() % 30 + 30;
+	velocityY = rand() % 30 + 30;
 }
