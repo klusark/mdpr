@@ -15,9 +15,7 @@ namespace game
 	player player2;
 	
 	//bubbles
-	bubble bubble0;
-	bubble bubble1;
-	bubble bubble2;
+	bubble bubble[3];
 
 	Uint32 LastTime = SDL_GetTicks();
 	unsigned int ShownFrames = 0;
@@ -36,10 +34,10 @@ namespace game
 		player1.init(1);
 		player2.init(2);
 
-		//init the bubble
-		bubble0.init();
-		bubble1.init();
-		bubble2.init();
+		//init the bubbles
+		for (int i = 0; i<3; i++){
+			bubble[i].init();
+		}
 	}
 
 	//game::mainLoop
@@ -63,10 +61,10 @@ namespace game
 		level::update();
 
 		//update the bubbles
-		bubble0.update();
-		bubble1.update();
-		bubble2.update();
-		
+		for (int i = 0; i<3; i++){
+			bubble[i].update();
+		}
+
 		//update player 1
 		player1.update();
 

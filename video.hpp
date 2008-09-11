@@ -38,7 +38,7 @@ namespace video
 		bubble1,
 		bubble2,
 
-		//powerups
+		//weapons
 		tenthousandvolts,
 		boot,
 		death,

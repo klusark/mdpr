@@ -12,10 +12,11 @@
 void player::init(char playerNumber)
 {
 	this->playerNumber = playerNumber;
+	image = video::images[video::stand];
 	registerAnimations();
     currentFrame = 0;
     lastTime = 0;
-	currAnimation = idle;
+	this->currAnimation = idle;
 	rect.x = 50;
 	rect.y = 50;
 	rect.h = 24;
@@ -155,8 +156,11 @@ void player::update()
 	//animate the player
 	animate();
 
+	if (!image)
+		image = video::images[video::stand];
+
 	//render the player onto the screen
-	SDL_BlitSurface(image, 0, video::screen, &rect);
+	SDL_BlitSurface(this->image, 0, video::screen, &rect);
 	 
 	
 }
@@ -184,18 +188,15 @@ void player::animate(){
 				currentFrame = 0;
 			}else{
 				if (currAnimation.type == rollType){
-					player::currAnimation = crouch;
+					this->currAnimation = crouch;
 				}else{
-					player::currAnimation = idle;
+					this->currAnimation = idle;
 				}
 				currentFrame = 0;
 				return;
 			}
 		}
 	}
-	//check if there is no image set and set the image to idle
-	if (!image)
-		image = video::images[video::stand];
 }
 
 void player::gravity()
