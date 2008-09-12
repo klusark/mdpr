@@ -78,7 +78,7 @@ namespace game
 		SDL_FillRect(video::screen, &video::screen->clip_rect, SDL_MapRGB(video::screen->format, 0, 0, 0)); 
 
 		//limit the framerate
-		video::limitFPS(60);
+		//video::limitFPS(60);
 
 		return;
 	}

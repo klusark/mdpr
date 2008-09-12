@@ -2,6 +2,9 @@ namespace level
 {
 	void init();
 	void update();
-	extern SDL_Rect platforms[16], edgeTop, edgeLeft, edgeBottom, edgeRight;
+	void platform();
+	void rope();
+	void edge();
+	extern SDL_Rect platforms[16], edgeTop, edgeLeft, edgeBottom, edgeRight, emitter[3], ropes[4];
 
 }

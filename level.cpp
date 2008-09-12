@@ -4,8 +4,46 @@
 
 namespace level
 {
-	SDL_Rect platforms[16], edgeTop, edgeLeft, edgeBottom, edgeRight;
+	SDL_Rect platforms[16], edgeTop, edgeLeft, edgeBottom, edgeRight, emitter[3], ropes[4];
+
 	void init()
+	{
+		//init the platforms
+		platform();
+
+		//init the ropes
+		rope();
+
+		//init the edges
+		edge();
+
+		//emitters;
+		emitter[0].x = 155;
+		emitter[0].y = 0;
+	}
+
+	void update()
+	{
+		//draw the platforms
+		for (char i = 0; i < 16; i++){
+			SDL_BlitSurface(video::images[video::platform], &video::images[video::platform]->clip_rect, video::screen, &level::platforms[i]);
+			level::platforms[i].h = 1;
+		}
+		//draw the ropes
+		//TODO
+
+		//draw the emitters
+		//TODO get more emitters
+		SDL_BlitSurface(video::images[video::emitter], &video::images[video::emitter]->clip_rect, video::screen, &emitter[0]);
+	}
+
+	void rope()
+	{
+		ropes[0].x = 80;
+		ropes[0].y = 19;
+	}
+
+	void platform()
 	{
 		//bottom left
 		level::platforms[0].x = 25;
@@ -59,6 +97,11 @@ namespace level
 		level::platforms[15].x = 257;
 		level::platforms[15].y = 40;
 
+	}
+
+	void edge()
+	{
+		
 		edgeLeft.x = 0;
 		edgeLeft.y = 0;
 		edgeLeft.w = 1;
@@ -75,26 +118,8 @@ namespace level
 		edgeTop.h = 1;
 
 		edgeBottom.x = 0;
-		edgeBottom.y = 239;
+		edgeBottom.y = 199;
 		edgeBottom.w = 320;
 		edgeBottom.h = 1;
-
-	}
-
-	void update()
-	{
-		//draw the platforms
-		for (char i = 0; i < 16; i++){
-			SDL_BlitSurface(video::images[video::platform], &video::images[video::platform]->clip_rect, video::screen, &level::platforms[i]);
-			level::platforms[i].h = 1;
-		}
-		//draw the ropes
-		//TODO
-
-		//draw the emitters
-		SDL_Rect emitter;
-		emitter.x = 120;
-		emitter.y = 0;
-		SDL_BlitSurface(video::images[video::emitter], &video::images[video::emitter]->clip_rect, video::screen, &emitter);
 	}
 }

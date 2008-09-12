@@ -23,12 +23,15 @@ void bubble::update()
 
 	SDL_Surface *newImage = SDL_ConvertSurface(images[currentFrame], images[currentFrame]->format, images[currentFrame]->flags);
 
-	SDL_BlitSurface(images[currentFrame], 0, newImage, 0);
+	//SDL_BlitSurface(images[currentFrame], 0, newImage, 0);
 
 	SDL_BlitSurface(weaponImages[currentWeapon], 0, newImage, 0);
 
 	//show the image
 	SDL_BlitSurface(newImage, 0, video::screen, &rect);
+
+	//No leaks
+	SDL_FreeSurface(newImage);
 
 }
 
@@ -41,14 +44,14 @@ void bubble::init()
 	images[2] = video::images[video::bubble2];
 	randomNum = rand()%3;
 	if (randomNum == 0){
-		rect.x = 100;
-		rect.y = 100;
+		rect.x = 155;
+		rect.y = 5;
 	}else if (randomNum == 1){
-		rect.x = 50;
-		rect.y = 50;
+		rect.x = 5;
+		rect.y = 95;
 	}else if (randomNum == 2){
-		rect.x = 150;
-		rect.y = 150;
+		rect.x = 315;
+		rect.y = 95;
 	}
 	rect.w = 16;
 	rect.h = 16;
