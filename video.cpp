@@ -6,8 +6,7 @@
 
 namespace video
 {
-	SDL_Surface *screen;
-	SDL_Surface *images[numImages];
+	SDL_Surface *screen, *images[numImages];
 	Uint32 bticks, cticks;
 
 	//video::init
@@ -19,12 +18,11 @@ namespace video
 		SDL_Init(SDL_INIT_VIDEO);
 
 		//Make a window 320 by 200 with 32bit colour, hardware acceleration and double buffering
-		SDL_SetVideoMode(320, 200, 32, SDL_HWSURFACE |SDL_HWACCEL | SDL_DOUBLEBUF);
+		screen = SDL_SetVideoMode(320, 200, 32, SDL_HWSURFACE |SDL_HWACCEL | SDL_DOUBLEBUF);
 
 		SDL_WM_SetCaption("Marshmallow Duel: Percy's Return", "Marshmallow Duel: Percy's Return");
 
-		screen = SDL_GetVideoSurface();
-
+		//load all the images
 		loadAll();
 		return;
 	}
