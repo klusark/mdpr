@@ -9,20 +9,15 @@
 #include "game.hpp"
 
 /*
-* the name space all the game stuff
-* TODO change this to a class
-*/
-
-/*
 * gets the game setup
 */
-void game::init()
+void Game::init()
 {
 	//seed the prng with the current time
 	srand((unsigned)time(NULL));
 
 	//init the level
-	level::init();
+	level.init();
 	
 	//init the players
 	player1.init(1);
@@ -37,7 +32,7 @@ void game::init()
 /*
 * the main loop for ingame
 */
-void game::mainLoop()
+void Game::mainLoop()
 {
 	
 	//calc fps
@@ -51,7 +46,7 @@ void game::mainLoop()
 	}
 
 	//draw the level
-	level::update();
+	level.update();
 
 	//update the bubbles
 	for (int i = 0; i<3; i++){
@@ -77,7 +72,7 @@ void game::mainLoop()
 }
 
 //from lazyfoo TODO write my own
-bool game::checkCollision(SDL_Rect rectA, SDL_Rect rectB)
+bool Game::checkCollision(SDL_Rect rectA, SDL_Rect rectB)
 {
 	//The sides of the rectangles
 	int leftA, leftB;

@@ -3,8 +3,9 @@
 
 #include "bubble.hpp"
 #include "player.hpp"
+#include "level.hpp"
 
-class game
+class Game
 {
 	public:
 		void mainLoop();
@@ -27,6 +28,7 @@ class game
 		player player1;
 		player player2;
 
+		Level level;
 
 
 		Uint32 lastTime;

@@ -48,8 +48,8 @@ void player::collide()
 {
 	//colliding with a bubble
 	for (char i = 0; i<3; i++){
-		if (Game.checkCollision(rect, Game.bubbles[i].rect)){
-			Game.bubbles[i].collided();
+		if (game.checkCollision(rect, game.bubbles[i].rect)){
+			game.bubbles[i].collided();
 		}
 	}
 }
@@ -249,7 +249,7 @@ void player::moveY()
 		for (int i = 0; i <= yMove; i++){
 			feetRect.y += 1;
 			for (int x = 0; x < 16; x++){
-				if (Game.checkCollision(feetRect, level::platforms[x])){
+				if (game.checkCollision(feetRect, game.level.platforms[x])){
 					feetRect.y -= 1;
 					rect.y = feetRect.y - (rect.h - feetRect.h);
 					breaks = true;

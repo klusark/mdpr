@@ -108,16 +108,16 @@ void bubble::init()
 	rect.h = 16;
 
 	//weapon images
-	weaponImages[Game.tenthousandvolts] =	video::images[video::tenthousandvolts];
-	weaponImages[Game.boot] =				video::images[video::boot];
-	weaponImages[Game.death] =				video::images[video::death];
-	weaponImages[Game.gun] =				video::images[video::gun];
-	weaponImages[Game.mine] =				video::images[video::mine];
-	weaponImages[Game.invis] =				video::images[video::invis];
-	weaponImages[Game.x] =					video::images[video::x];
-	weaponImages[Game.nade] =				video::images[video::nade];
-	weaponImages[Game.nuke] =				video::images[video::nuke];
-	weaponImages[Game.parachute] =			video::images[video::parachute];
+	weaponImages[game.tenthousandvolts] =	video::images[video::tenthousandvolts];
+	weaponImages[game.boot] =				video::images[video::boot];
+	weaponImages[game.death] =				video::images[video::death];
+	weaponImages[game.gun] =				video::images[video::gun];
+	weaponImages[game.mine] =				video::images[video::mine];
+	weaponImages[game.invis] =				video::images[video::invis];
+	weaponImages[game.x] =					video::images[video::x];
+	weaponImages[game.nade] =				video::images[video::nade];
+	weaponImages[game.nuke] =				video::images[video::nuke];
+	weaponImages[game.parachute] =			video::images[video::parachute];
 	hide = true;
 	
 }
@@ -133,7 +133,7 @@ void bubble::moveX()
 		lastTimeX = SDL_GetTicks();
 		for (int i = 0; i <= xMove; i++){
 			rect.x += 1;
-			if (Game.checkCollision(rect, level::edgeRight)){
+			if (game.checkCollision(rect, game.level.edgeRight)){
 				velocityX = -velocityX;
 				break;
 			}
@@ -143,7 +143,7 @@ void bubble::moveX()
 		lastTimeX = SDL_GetTicks();
 		for (int i = 0; i >= xMove; i--){
 			rect.x -= 1;
-			if (Game.checkCollision(rect, level::edgeLeft)){
+			if (game.checkCollision(rect, game.level.edgeLeft)){
 				velocityX = -velocityX;
 				break;
 			}
@@ -162,7 +162,7 @@ void bubble::moveY()
 		lastTimeY = SDL_GetTicks();
 		for (int i = 0; i <= yMove; i++){
 			rect.y += 1;
-			if (Game.checkCollision(rect, level::edgeBottom)){
+			if (game.checkCollision(rect, game.level.edgeBottom)){
 				velocityY = -velocityY;
 				break;
 			}
@@ -172,7 +172,7 @@ void bubble::moveY()
 		lastTimeY = SDL_GetTicks();
 		for (int i = 0; i >= yMove; i--){
 			rect.y -= 1;
-			if (Game.checkCollision(rect, level::edgeTop)){
+			if (game.checkCollision(rect, game.level.edgeTop)){
 				velocityY = -velocityY;
 				break;
 			}

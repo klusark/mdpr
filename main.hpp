@@ -8,7 +8,7 @@ enum States
 	inGame,
 };
 
-extern game Game;
+extern Game game;
 
 extern void mainLoop();
 extern char currState;

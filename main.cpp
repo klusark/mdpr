@@ -11,7 +11,7 @@ char currState = 1;
 bool running = true;
 SDL_Event events;
 char theme[32];
-game Game;
+Game game;
 
 /*
 * the start of the game
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
 	//get the game setup
 	//TODO! when menu works move this to the menu
-	Game.init();
+	game.init();
 
 	//main loop
 	
@@ -59,7 +59,7 @@ void mainLoop()
 				menu::mainLoop();
 				break;
 			case inGame:
-				Game.mainLoop();
+				game.mainLoop();
 				break;
 		}
 	}
