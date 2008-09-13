@@ -12,11 +12,10 @@ bool running = true;
 SDL_Event events;
 char theme[32];
 
-
-//main
-//the start of the game
-//Parameters: number of command line args, the command line args
-//Return: None
+/*
+* the start of the game
+* Param: number of command line args, the command line args. Auto filled on startup
+*/
 int main(int argc, char *argv[])
 {
 	//register SDL_Quit to run when exit() is run
@@ -38,11 +37,9 @@ int main(int argc, char *argv[])
 
 	exit(0);
 }
-
-//mainLoop
-//the main loop for the game
-//Parameters: None
-//Return: None
+/*
+*the main loop for the game
+*/
 void mainLoop()
 {
 	while (running){
@@ -54,6 +51,7 @@ void mainLoop()
 					break;
 			}
 		}
+
 		switch(currState)
 		{
 			case inMenu:
@@ -64,5 +62,4 @@ void mainLoop()
 				break;
 		}
 	}
-	return;
 }

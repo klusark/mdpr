@@ -5,59 +5,106 @@
 #include "game.hpp"
 #include "bubble.hpp"
 
+/*
+* update the bubble every frame
+*/
 void bubble::update()
 {
-	
-	if(100 < (SDL_GetTicks() - lastTime) ){
+	//if the bubble is not hidden
+	if (!hide){
+		//animate
+		if(100 < (SDL_GetTicks() - lastTime) ){
+			lastTime = SDL_GetTicks();
+			currentFrame++;
+			if (currentFrame >= 3)
+				currentFrame = 0;
+		}
+
+		//move on the x
+		moveX();
+
+		//move on the y
+		moveY();
+
+		SDL_Surface *newImage = SDL_ConvertSurface(images[currentFrame], images[currentFrame]->format, images[currentFrame]->flags);
+
+		//SDL_BlitSurface(images[currentFrame], 0, newImage, 0);
+
+		SDL_BlitSurface(weaponImages[currentWeapon], 0, newImage, 0);
+
+		//show the image
+		SDL_BlitSurface(newImage, 0, video::screen, &rect);
+
+		//No leaks
+		SDL_FreeSurface(newImage);
+
+	}else{
+		//do stuff when hiden
+
+		//get the timers going
 		lastTime = SDL_GetTicks();
-		currentFrame++;
-		if (currentFrame >= 3)
-			currentFrame = 0;
+		lastTimeX = SDL_GetTicks();
+		lastTimeY = SDL_GetTicks();
+
+		//get a radom new weapon
+		currentWeapon = rand() % 9;
+
+		//get a radom posiiton
+		randomNum = rand()%3;
+		if (randomNum == 0){
+			rect.x = 155;
+			rect.y = 5;
+		}else if (randomNum == 1){
+			rect.x = 5;
+			rect.y = 95;
+		}else if (randomNum == 2){
+			rect.x = 315;
+			rect.y = 95;
+		}
+
+		//get a radom velocity
+		velocityX = rand() % 25 + 45;
+		velocityY = rand() % 25 + 45;
+
+		//make the bubble go down some times
+		if (rand() % 2)
+			velocityY = -velocityY;
+
+		//make the bubble do to the side some times
+		if (rand() % 2)
+			velocityX = -velocityX;
+
+		currentFrame = 0;
+		
+		hide = false;
+		
 	}
-
-	//move on the x
-	moveX();
-
-	//move on the y
-	moveY();
-
-	SDL_Surface *newImage = SDL_ConvertSurface(images[currentFrame], images[currentFrame]->format, images[currentFrame]->flags);
-
-	//SDL_BlitSurface(images[currentFrame], 0, newImage, 0);
-
-	SDL_BlitSurface(weaponImages[currentWeapon], 0, newImage, 0);
-
-	//show the image
-	SDL_BlitSurface(newImage, 0, video::screen, &rect);
-
-	//No leaks
-	SDL_FreeSurface(newImage);
-
 }
 
+/*
+* hide the bubble when it colides with the player
+*/
+void bubble::collided()
+{
+	//hide the bubble
+	hide = true;
+
+	//move it to the corner
+	rect.x = 0;
+	rect.y = 0;
+}
+
+/*
+* init the bubble
+*/
 void bubble::init()
 {
-	lastTime = SDL_GetTicks();
-	lastTimeX = SDL_GetTicks();
 	images[0] = video::images[video::bubble0];
 	images[1] = video::images[video::bubble1];
 	images[2] = video::images[video::bubble2];
-	randomNum = rand()%3;
-	if (randomNum == 0){
-		rect.x = 155;
-		rect.y = 5;
-	}else if (randomNum == 1){
-		rect.x = 5;
-		rect.y = 95;
-	}else if (randomNum == 2){
-		rect.x = 315;
-		rect.y = 95;
-	}
+
 	rect.w = 16;
 	rect.h = 16;
-	currentFrame = 0;
-	velocityX = rand() % 30 + 30;
-	velocityY = rand() % 30 + 30;
 
 	//weapon images
 	weaponImages[game::tenthousandvolts] =	video::images[video::tenthousandvolts];
@@ -70,14 +117,17 @@ void bubble::init()
 	weaponImages[game::nade] =				video::images[video::nade];
 	weaponImages[game::nuke] =				video::images[video::nuke];
 	weaponImages[game::parachute] =			video::images[video::parachute];
-
-	currentWeapon = rand() % 9;
-
+	hide = true;
+	
 }
 
+/*
+* move the bubble on the X axis
+*/
 void bubble::moveX()
 {
 	xMove = velocityX * (SDL_GetTicks() - lastTimeX)/1000.0;
+	//if going right
 	if (xMove >= 1){
 		lastTimeX = SDL_GetTicks();
 		for (int i = 0; i <= xMove; i++){
@@ -87,6 +137,7 @@ void bubble::moveX()
 				break;
 			}
 		}
+	//if going left
 	}else if (xMove <= -1){
 		lastTimeX = SDL_GetTicks();
 		for (int i = 0; i >= xMove; i--){
@@ -99,9 +150,13 @@ void bubble::moveX()
 	}
 }
 
+/*
+* move the bubble on the Y axis
+*/
 void bubble::moveY()
 {
 	yMove = velocityY * (SDL_GetTicks() - lastTimeY)/1000.0;
+	//if going down
 	if (yMove >= 1){
 		lastTimeY = SDL_GetTicks();
 		for (int i = 0; i <= yMove; i++){
@@ -111,6 +166,7 @@ void bubble::moveY()
 				break;
 			}
 		}
+	//if going up
 	}else if (yMove <= -1){
 		lastTimeY = SDL_GetTicks();
 		for (int i = 0; i >= yMove; i--){

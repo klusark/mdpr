@@ -4,6 +4,53 @@
 #include "level.hpp"
 #include "player.hpp"
 
+//player::update
+//does all the per-frame actions.
+//Parameters: None
+//Return: None
+void player::update()
+{
+	//get keyboard input
+	input();
+
+	//todo put this in a funtion
+	feetRect.x = rect.x + 7;
+	rect.y = feetRect.y - (rect.h - feetRect.h);
+
+	//move on the X
+	moveX();
+
+	//make the player fall
+	moveY();
+
+	//animate the player
+	animate();
+	
+	//collide with the other player and the bubbles
+	collide();
+	
+	//make sure that image is set
+	if (!image)
+		image = video::images[video::stand];
+
+	//drawn the player onto the screen
+	SDL_BlitSurface(this->image, 0, video::screen, &rect);
+	 
+}
+
+//player::collide
+//handles all the collsions other than with platforms
+//Parameters: None
+//Return: None
+void player::collide()
+{
+	//colliding with a bubble
+	for (char i = 0; i<3; i++){
+		if (game::checkCollision(rect, game::bubbles[i].rect)){
+			game::bubbles[i].collided();
+		}
+	}
+}
 
 //player::init
 //sets up the player
@@ -52,6 +99,7 @@ void player::init(char playerNumber)
 void player::input()
 {
 	Uint8 *keystate = SDL_GetKeyState(0);
+	//if touching the ground
 	if (onGround){
 		//if not crouching
 		if (currAnimation.type != crouch.type && currAnimation.type != crouchup.type){
@@ -133,43 +181,12 @@ void player::input()
 	}
 }
 
-//player::update
-//does all the per-frame actions.
-//Parameters: None
-//Return: None
-void player::update()
-{
-	
-	input();
-
-	feetRect.x = rect.x + 7;
-	rect.y = feetRect.y - (rect.h - feetRect.h);
-	//Moving on the X
-	xMove = velocityX * (SDL_GetTicks() - lastTimeX)/1000.0;
-	if (xMove >= 1 || xMove <= -1){
-		lastTimeX = SDL_GetTicks();
-		rect.x += (Sint16)xMove;
-	}
-	//make the player fall
-	gravity();
-
-	//animate the player
-	animate();
-
-	if (!image)
-		image = video::images[video::stand];
-
-	//render the player onto the screen
-	SDL_BlitSurface(this->image, 0, video::screen, &rect);
-	 
-	
-}
-
 //player::animate
 //animates the player sprite
 //Parameters: None
 //Return: None
-void player::animate(){
+void player::animate()
+{
 	if(currAnimation.delay < (SDL_GetTicks() - lastTime) )
 	{
 		image = currAnimation.frames[currentFrame];
@@ -199,7 +216,24 @@ void player::animate(){
 	}
 }
 
-void player::gravity()
+//player::moveX
+//moves the player on the x axis
+//Parameters: None
+//Return: None
+void player::moveX()
+{
+	xMove = velocityX * (SDL_GetTicks() - lastTimeX)/1000.0;
+	if (xMove >= 1 || xMove <= -1){
+		lastTimeX = SDL_GetTicks();
+		rect.x += (Sint16)xMove;
+	}
+}
+
+//player::moveY
+//makes the player fall and colide with platforms
+//Parameters: None
+//Return: None
+void player::moveY()
 {
 	if (velocityY < maxVelocityY){
 		velocityY++;

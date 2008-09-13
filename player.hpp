@@ -11,7 +11,9 @@ class player
 		void animate();
 		void input();
 		void registerAnimations();
-		void gravity();
+		void moveY();
+		void moveX();
+		void collide();
 
 		struct animation
 		{

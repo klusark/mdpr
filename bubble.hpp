@@ -3,21 +3,21 @@
 
 class bubble
 {
-	
 	public:
 		void update();
 		void init();
+		void collided();
+		SDL_Rect rect;
 
 	private:
 		void moveX();
 		void moveY();
-		SDL_Rect rect;
-		SDL_Surface *images[3];
-		char currentFrame, currentWeapon;
+
+		bool hide;
+		char currentFrame, currentWeapon, randomNum;
 		double xMove, yMove, velocityX, velocityY;
 		Uint32 lastTime, lastTimeX, lastTimeY;
-		int randomNum;
-		SDL_Surface *weaponImages[10];
+		SDL_Surface *weaponImages[10], *images[3];
 
 };
 

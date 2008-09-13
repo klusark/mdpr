@@ -8,6 +8,10 @@
 #include "level.hpp"
 #include "game.hpp"
 
+/*
+* the name space all the game stuff
+* TODO change this to a class
+*/
 namespace game
 {
 	//players
@@ -15,18 +19,19 @@ namespace game
 	player player2;
 	
 	//bubbles
-	bubble bubble[3];
+	bubble bubbles[3];
 
-	Uint32 LastTime = SDL_GetTicks();
-	unsigned int ShownFrames = 0;
+	Uint32 lastTime = SDL_GetTicks();
+	unsigned int shownFrames = 0;
 
-	//game::init
-	//Gets the game setup
-	//Parameters: None
-	//Return: None
+	/*
+	* gets the game setup
+	*/
 	void init()
 	{
+		//seed the prng with the current time
 		srand((unsigned)time(NULL));
+
 		//init the level
 		level::init();
 		
@@ -36,25 +41,24 @@ namespace game
 
 		//init the bubbles
 		for (int i = 0; i<3; i++){
-			bubble[i].init();
+			bubbles[i].init();
 		}
 	}
 
-	//game::mainLoop
-	//The main loop for ingame
-	//Parameters: None
-	//Return: None
+	/*
+	* the main loop for ingame
+	*/
 	void mainLoop()
 	{
 		
 		//calc fps
-		ShownFrames++;
-		if((SDL_GetTicks() - LastTime) >= 1000)
+		shownFrames++;
+		if((SDL_GetTicks() - lastTime) >= 1000)
 		{
-			printf("%li\n", ShownFrames);
+			printf("%li\n", shownFrames);
 	 
-			ShownFrames = 0;
-			LastTime = SDL_GetTicks();
+			shownFrames = 0;
+			lastTime = SDL_GetTicks();
 		}
 
 		//draw the level
@@ -62,7 +66,7 @@ namespace game
 
 		//update the bubbles
 		for (int i = 0; i<3; i++){
-			bubble[i].update();
+			bubbles[i].update();
 		}
 
 		//update player 1
@@ -127,6 +131,5 @@ namespace game
 		//If none of the sides from A are outside B
 		return true;
 	}
-
 
 }

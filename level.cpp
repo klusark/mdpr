@@ -2,10 +2,17 @@
 #include "video.hpp"
 #include "level.hpp"
 
+/*
+* the level namespace
+* TODO change this to a class
+*/
 namespace level
 {
 	SDL_Rect platforms[16], edgeTop, edgeLeft, edgeBottom, edgeRight, emitter[3], ropes[4];
 
+	/*
+	* init the level
+	*/
 	void init()
 	{
 		//init the platforms
@@ -22,6 +29,9 @@ namespace level
 		emitter[0].y = 0;
 	}
 
+	/*
+	* draw the level
+	*/
 	void update()
 	{
 		//draw the platforms
@@ -37,12 +47,18 @@ namespace level
 		SDL_BlitSurface(video::images[video::emitter], &video::images[video::emitter]->clip_rect, video::screen, &emitter[0]);
 	}
 
+	/*
+	* setup the ropes
+	*/
 	void rope()
 	{
 		ropes[0].x = 80;
 		ropes[0].y = 19;
 	}
 
+	/*
+	* setup the platforms
+	*/
 	void platform()
 	{
 		//bottom left
@@ -99,6 +115,9 @@ namespace level
 
 	}
 
+	/*
+	* set up the edges
+	*/
 	void edge()
 	{
 		
