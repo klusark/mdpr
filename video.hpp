@@ -8,6 +8,10 @@ namespace video
 	extern void loadAll();
 	extern void switchBuf();
 	extern void limitFPS(short FPS);
+	extern void clear(SDL_Rect rect);
+	extern void addImageQueue(SDL_Surface *image, SDL_Rect rect);
+	extern void blitImageQueue();
+
 
 	enum imageList
 	{	
@@ -66,6 +70,7 @@ namespace video
 		//total number of images
 		numImages,
 	};
+
 	extern SDL_Surface *screen, *images[numImages];
 
 }

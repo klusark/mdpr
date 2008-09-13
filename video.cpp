@@ -9,6 +9,12 @@ namespace video
 	SDL_Surface *screen, *images[numImages];
 	Uint32 bticks, cticks;
 
+	struct queue
+	{
+		SDL_Surface *image;
+		SDL_Rect rect;
+	}imageQueue[5];
+	char queueSize = 0;
 	//video::init
 	//initializes the window for the program
 	//Parameters: None
@@ -129,6 +135,26 @@ namespace video
 	void switchBuf()
 	{
 		SDL_Flip(screen);
-		return;
+	}
+
+	void clear(SDL_Rect rect)
+	{
+		SDL_FillRect(screen, &rect, SDL_MapRGB(screen->format, 0, 0, 0)); 
+	}
+	
+	void addImageQueue(SDL_Surface *image, SDL_Rect rect)
+	{
+		imageQueue[queueSize].image = SDL_ConvertSurface(image, image->format, image->flags);
+		imageQueue[queueSize].rect = rect;
+		queueSize++;
+	}
+
+	void blitImageQueue()
+	{
+		for (char i = 0; i < queueSize; i++){
+			SDL_BlitSurface(imageQueue[i].image, 0, video::screen, &imageQueue[i].rect);
+			SDL_FreeSurface(imageQueue[i].image);
+		}
+		queueSize = 0;
 	}
 };

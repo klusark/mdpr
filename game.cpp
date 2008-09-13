@@ -45,9 +45,6 @@ void Game::mainLoop()
 		lastTime = SDL_GetTicks();
 	}
 
-	//draw the level
-	level.update();
-
 	//update the bubbles
 	for (int i = 0; i<3; i++){
 		bubbles[i].update();
@@ -59,14 +56,19 @@ void Game::mainLoop()
 	//update player 2
 	player2.update();
 
+	//draw the level
+	level.update();
+
+	video::blitImageQueue();
+
 	//switch the buffer
 	video::switchBuf();
 
 	//clear the screen
-	SDL_FillRect(video::screen, &video::screen->clip_rect, SDL_MapRGB(video::screen->format, 0, 0, 0)); 
-
+	//SDL_FillRect(video::screen, &video::screen->clip_rect, SDL_MapRGB(video::screen->format, 0, 0, 0)); 
+	
 	//limit the framerate
-	//video::limitFPS(60);
+	video::limitFPS(60);
 
 	return;
 }

@@ -2,12 +2,6 @@
 #include "video.hpp"
 #include "level.hpp"
 
-/*
-* the level namespace
-* TODO change this to a class
-*/
-
-//SDL_Rect platforms[16], edgeTop, edgeLeft, edgeBottom, edgeRight, emitter[3], ropes[4];
 
 /*
 * init the level

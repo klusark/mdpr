@@ -11,8 +11,10 @@
 */
 void bubble::update()
 {
+	video::clear(rect);
 	//if the bubble is not hidden
 	if (!hide){
+		
 		//animate
 		if(100 < (SDL_GetTicks() - lastTime) ){
 			lastTime = SDL_GetTicks();
@@ -34,7 +36,8 @@ void bubble::update()
 		SDL_BlitSurface(weaponImages[currentWeapon], 0, newImage, 0);
 
 		//show the image
-		SDL_BlitSurface(newImage, 0, video::screen, &rect);
+		video::addImageQueue(newImage, rect);
+		//SDL_BlitSurface(newImage, 0, video::screen, &rect);
 
 		//No leaks
 		SDL_FreeSurface(newImage);
@@ -87,12 +90,12 @@ void bubble::update()
 */
 void bubble::collided()
 {
+
 	//hide the bubble
 	hide = true;
 
-	//move it to the corner
-	rect.x = 0;
-	rect.y = 0;
+	//TODO display poping animation
+
 }
 
 /*

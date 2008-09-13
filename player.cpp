@@ -12,6 +12,9 @@
 //Return: None
 void player::update()
 {
+	//clear the old image
+	video::clear(rect);
+
 	//get keyboard input
 	input();
 
@@ -36,7 +39,8 @@ void player::update()
 		image = video::images[video::stand];
 
 	//drawn the player onto the screen
-	SDL_BlitSurface(this->image, 0, video::screen, &rect);
+	
+	video::addImageQueue(image, rect);
 	 
 }
 
@@ -49,7 +53,9 @@ void player::collide()
 	//colliding with a bubble
 	for (char i = 0; i<3; i++){
 		if (game.checkCollision(rect, game.bubbles[i].rect)){
-			game.bubbles[i].collided();
+			if (!game.bubbles[i].hide){
+				game.bubbles[i].collided();
+			}
 		}
 	}
 }
