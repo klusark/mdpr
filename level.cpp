@@ -28,12 +28,17 @@ void Level::init()
 void Level::update()
 {
 	//draw the platforms
-	for (char i = 0; i < 16; i++){
+	for (short i = 0; i < 16; i++){
 		SDL_BlitSurface(video::images[video::platform], &video::images[video::platform]->clip_rect, video::screen, &Level::platforms[i]);
 		Level::platforms[i].h = 1;
 	}
 	//draw the ropes
 	//TODO
+	SDL_FillRect(video::screen, &ropes[0], SDL_MapRGB(video::screen->format, 144, 96, 0)); 
+	SDL_Rect ropeRect;
+	ropeRect.x = ropes[0].x - 2;
+	ropeRect.y = ropes[0].y - 5;
+	SDL_BlitSurface(video::images[video::ropetop], &video::images[video::ropetop]->clip_rect, video::screen, &ropeRect);
 
 	//draw the emitters
 	//TODO get more emitters
@@ -47,6 +52,9 @@ void Level::rope()
 {
 	ropes[0].x = 80;
 	ropes[0].y = 19;
+	ropes[0].w = 1;
+	ropes[0].h = 150;
+	
 }
 
 /*
@@ -117,21 +125,21 @@ void Level::edge()
 	edgeLeft.x = 0;
 	edgeLeft.y = 0;
 	edgeLeft.w = 1;
-	edgeLeft.h = 320;
+	edgeLeft.h = video::height;
 
-	edgeRight.x = 319;
+	edgeRight.x = video::width - 1;
 	edgeRight.y = 0;
-	edgeRight.w = 2;
-	edgeRight.h = 320;
+	edgeRight.w = 1;
+	edgeRight.h = video::width;
 
 	edgeTop.x = 0;
 	edgeTop.y = 0;
-	edgeTop.w = 321;
+	edgeTop.w = video::width + 1;
 	edgeTop.h = 1;
 
 	edgeBottom.x = 0;
-	edgeBottom.y = 199;
-	edgeBottom.w = 320;
+	edgeBottom.y = video::height - 1;
+	edgeBottom.w = video::width;
 	edgeBottom.h = 1;
 }
 

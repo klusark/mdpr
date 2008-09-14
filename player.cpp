@@ -38,8 +38,7 @@ void player::update()
 	if (!image)
 		image = video::images[video::stand];
 
-	//drawn the player onto the screen
-	
+	//add the current frame and position to the image queue
 	video::addImageQueue(image, rect);
 	 
 }
@@ -51,9 +50,10 @@ void player::update()
 void player::collide()
 {
 	//colliding with a bubble
-	for (char i = 0; i<3; i++){
-		if (game.checkCollision(rect, game.bubbles[i].rect)){
+	for (short i = 0; i<3; i++){
+		if (game.checkCollision(currAnimation.animationRect, game.bubbles[i].rect)){
 			if (!game.bubbles[i].hide){
+				currentWeapon = game.bubbles[i].currentWeapon;
 				game.bubbles[i].collided();
 			}
 		}
@@ -195,6 +195,8 @@ void player::input()
 //Return: None
 void player::animate()
 {
+	currAnimation.animationRect.x = rect.x + currAnimation.xOffset;
+	currAnimation.animationRect.y = rect.y + currAnimation.yOffset;
 	if(currAnimation.delay < (SDL_GetTicks() - lastTime) )
 	{
 		image = currAnimation.frames[currentFrame];
@@ -287,12 +289,17 @@ void player::registerAnimations()
 	run.numFrames = 4;
 	run.delay = 100;
 	run.repeat = 1;
+	run.animationRect.h = 23;
+	run.animationRect.w = 16;
+	run.xOffset = 4;
+	run.yOffset = 1;
 	run.frames[0] = video::images[video::run0];
 	run.frames[1] = video::images[video::run1];
 	run.frames[2] = video::images[video::run2];
 	run.frames[3] = video::images[video::run3];
 	
 	//upjump
+	upjump.type = upjumpType;
 	upjump.numFrames = 5;
 	upjump.delay = 100;
 	upjump.repeat = 0;
@@ -311,16 +318,16 @@ void player::registerAnimations()
 	crouch.frames[0] = video::images[video::crouch0];
 	crouch.frames[1] = video::images[video::crouch1];
 
-	crouchup.numFrames = 2;
 	crouchup.type = crouchupType;
+	crouchup.numFrames = 2;
 	crouchup.delay = 100;
 	crouchup.repeat = 0;
 	crouchup.frames[0] = video::images[video::crouch1];
 	crouchup.frames[1] = video::images[video::crouch0];
 
 	//roll
-	roll.numFrames = 4;
 	roll.type = rollType;
+	roll.numFrames = 4;
 	roll.delay = 100;
 	roll.repeat = 0;
 	roll.frames[0] = video::images[video::roll0];
@@ -333,5 +340,9 @@ void player::registerAnimations()
 	idle.numFrames = 1;
 	idle.delay = 100;
 	idle.repeat = 1;
+	idle.animationRect.h = 23;
+	idle.animationRect.w = 13;
+	idle.xOffset = 5;
+	idle.yOffset = 1;
 	idle.frames[0] = video::images[video::stand];
 }

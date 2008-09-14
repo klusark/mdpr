@@ -39,7 +39,7 @@ void Game::mainLoop()
 	shownFrames++;
 	if((SDL_GetTicks() - lastTime) >= 1000)
 	{
-		printf("%li\n", shownFrames);
+		printf("%u\n", shownFrames);
  
 		shownFrames = 0;
 		lastTime = SDL_GetTicks();
@@ -59,14 +59,12 @@ void Game::mainLoop()
 	//draw the level
 	level.update();
 
+	//blit the images in the queue
 	video::blitImageQueue();
 
 	//switch the buffer
 	video::switchBuf();
 
-	//clear the screen
-	//SDL_FillRect(video::screen, &video::screen->clip_rect, SDL_MapRGB(video::screen->format, 0, 0, 0)); 
-	
 	//limit the framerate
 	video::limitFPS(60);
 

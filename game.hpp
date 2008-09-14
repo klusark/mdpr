@@ -31,8 +31,7 @@ class Game
 		Level level;
 
 
-		Uint32 lastTime;
-		unsigned int shownFrames;
+		Uint32 lastTime, shownFrames;
 };
 
 #endif

@@ -9,13 +9,15 @@ class bubble
 		void collided();
 		SDL_Rect rect;
 		bool hide;
+		short currentWeapon;
 
 	private:
 		void moveX();
 		void moveY();
 
 		
-		char currentFrame, currentWeapon, randomNum;
+		char randomNum;
+		short currentFrame;
 		double xMove, yMove, velocityX, velocityY;
 		Uint32 lastTime, lastTimeX, lastTimeY;
 		SDL_Surface *weaponImages[10], *images[3];

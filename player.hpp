@@ -14,12 +14,15 @@ class player
 		void moveY();
 		void moveX();
 		void collide();
+		
+		short currentWeapon;
 
 		struct animation
 		{
-			char numFrames, repeat, holdEnd, type;
+			char numFrames, repeat, holdEnd, type, xOffset, yOffset;
 			SDL_Surface *frames[8];
 			Uint32 delay;
+			SDL_Rect animationRect;
 			
 		}currAnimation, idle, run, upjump, crouch, crouchup, roll;
 

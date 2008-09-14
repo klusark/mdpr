@@ -11,6 +11,7 @@ namespace video
 	extern void clear(SDL_Rect rect);
 	extern void addImageQueue(SDL_Surface *image, SDL_Rect rect);
 	extern void blitImageQueue();
+	extern short width, height;
 
 
 	enum imageList
@@ -66,6 +67,8 @@ namespace video
 		platform,
 
 		emitter,
+
+		ropetop,
 
 		//total number of images
 		numImages,

@@ -8,13 +8,14 @@ namespace video
 {
 	SDL_Surface *screen, *images[numImages];
 	Uint32 bticks, cticks;
+	short width, height;
 
 	struct queue
 	{
 		SDL_Surface *image;
 		SDL_Rect rect;
 	}imageQueue[5];
-	char queueSize = 0;
+	short queueSize = 0;
 	//video::init
 	//initializes the window for the program
 	//Parameters: None
@@ -24,7 +25,9 @@ namespace video
 		SDL_Init(SDL_INIT_VIDEO);
 
 		//Make a window 320 by 200 with 32bit colour, hardware acceleration and double buffering
-		screen = SDL_SetVideoMode(320, 200, 32, SDL_HWSURFACE |SDL_HWACCEL | SDL_DOUBLEBUF);
+		width = 320;
+		height = 200;
+		screen = SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE |SDL_HWACCEL | SDL_DOUBLEBUF);
 
 		SDL_WM_SetCaption("Marshmallow Duel: Percy's Return", "Marshmallow Duel: Percy's Return");
 
@@ -81,7 +84,10 @@ namespace video
 		
 		//world
 		loadImage("platform", platform);
+
 		loadImage("emitter", emitter);
+
+		loadImage("ropetop", ropetop);
 
 		return;
 	}
@@ -151,7 +157,7 @@ namespace video
 
 	void blitImageQueue()
 	{
-		for (char i = 0; i < queueSize; i++){
+		for (short i = 0; i < queueSize; i++){
 			SDL_BlitSurface(imageQueue[i].image, 0, video::screen, &imageQueue[i].rect);
 			SDL_FreeSurface(imageQueue[i].image);
 		}
