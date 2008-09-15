@@ -81,7 +81,7 @@ void player::init(char playerNumber)
 	feetRect.y = rect.y + ((rect.h - feetRect.h) * video::scale);
 	feetRect.x = rect.x + 7 * video::scale;
 	walkspeed = 32 * video::scale;
-	maxVelocityY = 32 * video::scale;
+	maxVelocityY = 240 * video::scale;
 	velocityX = 0;
 	
 
@@ -162,7 +162,11 @@ void player::input()
 				upPress = true;
 				currAnimation = upjump;
 				currentFrame = 0;
-				velocityY = -16;
+				velocityY = -160;
+			}
+		}else{
+			if (upPress){
+				upPress = false;
 			}
 		}
 
@@ -245,8 +249,9 @@ void player::moveX()
 //Return: None
 void player::moveY()
 {
-	if (velocityY < maxVelocityY){
-		velocityY++;
+	velocityY += 7.5;
+	if (velocityY > maxVelocityY){
+		velocityY = maxVelocityY;
 	}
 	onGround = false;
 	bool breaks = false;
@@ -262,6 +267,7 @@ void player::moveY()
 					rect.y = feetRect.y - (rect.h - feetRect.h);
 					breaks = true;
 					onGround = true;
+					velocityY = 0;
 					break;
 
 				}
