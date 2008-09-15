@@ -205,6 +205,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SDL_rotozoom.c"
+				>
+			</File>
+			<File
 				RelativePath=".\video.cpp"
 				>
 			</File>

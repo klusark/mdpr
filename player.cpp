@@ -72,16 +72,16 @@ void player::init(char playerNumber)
     currentFrame = 0;
     lastTime = 0;
 	this->currAnimation = idle;
-	rect.x = 50;
-	rect.y = 50;
-	rect.h = 24;
-	rect.w = 24;
-	feetRect.h = 1;
-	feetRect.w = rect.w - (6 + 7); // 7 for the right side 6 for the left
-	feetRect.y = rect.y + (rect.h - feetRect.h);
-	feetRect.x = rect.x + 7;
-	walkspeed = 32;
-	maxVelocityY = 32;
+	rect.x = 50 * video::scale;
+	rect.y = 50 * video::scale;
+	rect.h = 24 * video::scale;
+	rect.w = 24 * video::scale;
+	feetRect.h = 1 * video::scale;
+	feetRect.w = rect.w - ((6 + 7) * video::scale); // 7 for the right side 6 for the left
+	feetRect.y = rect.y + ((rect.h - feetRect.h) * video::scale);
+	feetRect.x = rect.x + 7 * video::scale;
+	walkspeed = 32 * video::scale;
+	maxVelocityY = 32 * video::scale;
 	velocityX = 0;
 	
 
@@ -289,10 +289,10 @@ void player::registerAnimations()
 	run.numFrames = 4;
 	run.delay = 100;
 	run.repeat = 1;
-	run.animationRect.h = 23;
-	run.animationRect.w = 16;
-	run.xOffset = 4;
-	run.yOffset = 1;
+	run.animationRect.h = 23 * video::scale;
+	run.animationRect.w = 16 * video::scale;
+	run.xOffset = 4 * video::scale;
+	run.yOffset = 1 * video::scale;
 	run.frames[0] = video::images[video::run0];
 	run.frames[1] = video::images[video::run1];
 	run.frames[2] = video::images[video::run2];
@@ -340,9 +340,9 @@ void player::registerAnimations()
 	idle.numFrames = 1;
 	idle.delay = 100;
 	idle.repeat = 1;
-	idle.animationRect.h = 23;
-	idle.animationRect.w = 13;
-	idle.xOffset = 5;
-	idle.yOffset = 1;
+	idle.animationRect.h = 23 * video::scale;
+	idle.animationRect.w = 13 * video::scale;
+	idle.xOffset = 5 * video::scale;
+	idle.yOffset = 1 * video::scale;
 	idle.frames[0] = video::images[video::stand];
 }

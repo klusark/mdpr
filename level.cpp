@@ -50,10 +50,10 @@ void Level::update()
 */
 void Level::rope()
 {
-	ropes[0].x = 80;
-	ropes[0].y = 19;
-	ropes[0].w = 1;
-	ropes[0].h = 150;
+	ropes[0].x = 80 * video::scale;
+	ropes[0].y = 19 * video::scale;
+	ropes[0].w = 1 * video::scale;
+	ropes[0].h = 150 * video::scale;
 	
 }
 
@@ -62,58 +62,43 @@ void Level::rope()
 */
 void Level::platform()
 {
+	short yTemp, xTemp;
+	short i;
+
 	//bottom left
-	Level::platforms[0].x = 25;
-	Level::platforms[0].y = 168;
-
-	Level::platforms[1].x = 41;
-	Level::platforms[1].y = 168;
-
-	Level::platforms[2].x = 57;
-	Level::platforms[2].y = 168;
-
-	Level::platforms[3].x = 73;
-	Level::platforms[3].y = 168;
-
+	yTemp = 168 * video::scale;
+	xTemp = 25 * video::scale;
+	for (i = 0; i<=3; i++){
+		Level::platforms[i].x = xTemp;
+		Level::platforms[i].y = yTemp;
+		xTemp += 16 * video::scale;
+	}
+	
 	//bottom right
-	Level::platforms[4].x = 233;
-	Level::platforms[4].y = 168;
+	xTemp = 233 * video::scale;
+	for (i = 4; i<=7; i++){
+		Level::platforms[i].x = xTemp;
+		Level::platforms[i].y = yTemp;
+		xTemp += 16 * video::scale;
+	}
 
-	Level::platforms[5].x = 249;
-	Level::platforms[5].y = 168;
-
-	Level::platforms[6].x = 265;
-	Level::platforms[6].y = 168;
-
-	Level::platforms[7].x = 281;
-	Level::platforms[7].y = 168;
 
 	//top left
-	Level::platforms[8].x = 49;
-	Level::platforms[8].y = 40;
-
-	Level::platforms[9].x = 65;
-	Level::platforms[9].y = 40;
-
-	Level::platforms[10].x = 81;
-	Level::platforms[10].y = 40;
-
-	Level::platforms[11].x = 97;
-	Level::platforms[11].y = 40;
+	yTemp = 40 * video::scale;
+	xTemp = 49 * video::scale;
+	for (i = 8; i<=11; i++){
+		Level::platforms[i].x = xTemp;
+		Level::platforms[i].y = yTemp;
+		xTemp += 16 * video::scale;
+	}
 
 	//top right
-	Level::platforms[12].x = 209;
-	Level::platforms[12].y = 40;
-
-	Level::platforms[13].x = 225;
-	Level::platforms[13].y = 40;
-
-	Level::platforms[14].x = 241;
-	Level::platforms[14].y = 40;
-
-	Level::platforms[15].x = 257;
-	Level::platforms[15].y = 40;
-
+	xTemp = 209 * video::scale;
+	for (i = 12; i<=15; i++){
+		Level::platforms[i].x = xTemp;
+		Level::platforms[i].y = yTemp;
+		xTemp += 16 * video::scale;
+	}
 }
 
 /*

@@ -11,7 +11,7 @@ namespace video
 	extern void clear(SDL_Rect rect);
 	extern void addImageQueue(SDL_Surface *image, SDL_Rect rect);
 	extern void blitImageQueue();
-	extern short width, height;
+	extern short width, height, scale;
 
 
 	enum imageList

@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include "SDL_rotozoom.h"
 #include "main.hpp"
 #include "video.hpp"
 
@@ -8,7 +9,7 @@ namespace video
 {
 	SDL_Surface *screen, *images[numImages];
 	Uint32 bticks, cticks;
-	short width, height;
+	short width, height, scale;
 
 	struct queue
 	{
@@ -24,9 +25,10 @@ namespace video
 	{
 		SDL_Init(SDL_INIT_VIDEO);
 
-		//Make a window 320 by 200 with 32bit colour, hardware acceleration and double buffering
-		width = 320;
-		height = 200;
+		//Make a window 320*scale by 200*scale with 32bit colour, hardware acceleration and double buffering
+		scale = 3;
+		width = 320 * scale;
+		height = 200 * scale;
 		screen = SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE |SDL_HWACCEL | SDL_DOUBLEBUF);
 
 		SDL_WM_SetCaption("Marshmallow Duel: Percy's Return", "Marshmallow Duel: Percy's Return");
@@ -104,7 +106,7 @@ namespace video
 		sprintf(files, "data/%s/%s.png", theme, file);
 		rwop = SDL_RWFromFile(files, "rb");
 		images[code] = IMG_LoadPNG_RW(rwop);
-
+		images[code] = rotozoomSurfaceXY(images[code], 0, scale, scale, 0);
 		//check for errors
 		if(!images[code]){
 			sprintf(files, "data/%s/%s.png", "main", file);

@@ -56,19 +56,19 @@ void bubble::update()
 		//get a radom posiiton
 		randomNum = rand()%3;
 		if (randomNum == 0){
-			rect.x = 155;
-			rect.y = 5;
+			rect.x = 155 * video::scale;
+			rect.y = 5 * video::scale;
 		}else if (randomNum == 1){
-			rect.x = 5;
-			rect.y = 95;
+			rect.x = 5 * video::scale;
+			rect.y = 95 * video::scale;
 		}else if (randomNum == 2){
-			rect.x = 315;
-			rect.y = 95;
+			rect.x = 315 * video::scale;
+			rect.y = 95 * video::scale;
 		}
 
 		//get a radom velocity
-		velocityX = rand() % 25 + 45;
-		velocityY = rand() % 25 + 45;
+		velocityX = (rand() % 25 + 45) * video::scale;
+		velocityY = (rand() % 25 + 45) * video::scale;
 
 		//make the bubble go down some times
 		if (rand() % 2)
@@ -107,8 +107,8 @@ void bubble::init()
 	images[1] = video::images[video::bubble1];
 	images[2] = video::images[video::bubble2];
 
-	rect.w = 16;
-	rect.h = 16;
+	rect.w = 16 * video::scale;
+	rect.h = 16 * video::scale;
 
 	//weapon images
 	weaponImages[game.tenthousandvolts] =	video::images[video::tenthousandvolts];
