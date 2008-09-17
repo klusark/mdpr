@@ -8,6 +8,10 @@ class Mass : public Sprite
 	public:
 		Mass();
 		~Mass();
+		void update();
+		void applyGravity();
+		/// Checks for collision with a platform
+		void checkPlatformCollision();
 };
 /*! \class Mass Mass.hpp "include/Mass.hpp"
  *  \brief The Mass class

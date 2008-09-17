@@ -1,8 +1,9 @@
 #include <stdio.h>
-#include "player.hpp"
+#include "Player.hpp"
 
 Player::Player(short playerNum)
 {
+	this->playerNum = playerNum;
 }
 
 Player::~Player()
@@ -11,6 +12,7 @@ Player::~Player()
 
 void Player::update()
 {
+	Mass::update();
 	//get the input
 	input();
 }

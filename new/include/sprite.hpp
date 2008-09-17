@@ -7,6 +7,7 @@ class Sprite
 		Sprite();
 		~Sprite();
 		void animate();
+		void update();
 };
 /*! \class Sprite Sprite.hpp "include/Sprite.hpp"
  *  \brief The Sprite class

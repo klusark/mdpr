@@ -10,6 +10,9 @@ class Player : public Mass
 		~Player();
 		void update();
 		void input();
+	private:
+		///1 or 2 depending on what player it is.
+		short playerNum;
 };
 
 /*! \class Player player.hpp "include/player.hpp"

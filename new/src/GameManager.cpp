@@ -1,5 +1,4 @@
-#include "gamemanager.hpp"
-#include "player.hpp"
+#include "GameManager.hpp"
 
 GameManager::GameManager()
 {
@@ -33,4 +32,19 @@ void GameManager::startGame()
 {
 	player1 = new Player(1);
 	player2 = new Player(2);
+	createLevel();
+}
+
+void GameManager::createLevel()
+{
+	createPlatforms();
+	createRopes();
+}
+
+void GameManager::createPlatforms()
+{
+}
+
+void GameManager::createRopes()
+{
 }
