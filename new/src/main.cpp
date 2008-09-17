@@ -1,8 +1,10 @@
-#include "Player.hpp"
 #include "GameManager.hpp"
-#include "SpriteManager.hpp"
 
 bool running = true;
+
+/**
+ * Main function for the game
+ */
 int main()
 {
 	GameManager *gm = new GameManager;
@@ -15,3 +17,5 @@ int main()
 	}
 	return 0;
 }
+/*! \mainpage Marshmallow Duel: Percy's Return
+*/

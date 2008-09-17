@@ -13,7 +13,12 @@ class GameManager : public SpriteManager
 		bool isActive();
 		void activate();
 		void startGame();
+
 	private:
+		void createLevel();
+		void createPlatforms();
+		void createRopes();
+
 		bool bActive;
 		///used to tell it gameStart should run its code
 		bool bStartGame;

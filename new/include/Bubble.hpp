@@ -3,7 +3,7 @@
 
 #include "Mass.hpp"
 
-class Bubble : public Mass
+class Bubble : public Sprite
 {
 	public:
 		Bubble();

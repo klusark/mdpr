@@ -1,4 +1,4 @@
-#include "spriteManager.hpp"
+#include "SpriteManager.hpp"
 
 SpriteManager::SpriteManager()
 {
