@@ -3,7 +3,6 @@
 
 #include "SpriteManager.hpp"
 
-
 class GameManager : public SpriteManager
 {
 	public:
@@ -18,6 +17,9 @@ class GameManager : public SpriteManager
 		void createLevel();
 		void createPlatforms();
 		void createRopes();
+		void createMallow();
+		void updateLevel();
+
 
 		bool bActive;
 		///used to tell it gameStart should run its code
@@ -27,6 +29,6 @@ class GameManager : public SpriteManager
 /*! \class GameManager GameManager.hpp "include/GameManager.hpp"
  *  \brief The GameManager class
  *
- * The GameManager class
+ * Manages everything in game
  */
 #endif

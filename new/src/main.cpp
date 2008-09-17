@@ -1,7 +1,5 @@
 #include "GameManager.hpp"
 
-bool running = true;
-
 /**
  * Main function for the game
  */
@@ -10,10 +8,16 @@ int main()
 	GameManager *gm = new GameManager;
 	//main loop
 	gm->activate();
-	while (running)
+	try
 	{
-		if (gm->isActive())
-			gm->tick();
+		//go untill an exception is raised
+		while (1)
+		{
+			if (gm->isActive())
+				gm->tick();
+		}
+	} catch(int exception) {
+		return exception;
 	}
 	return 0;
 }

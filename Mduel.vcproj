@@ -177,10 +177,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\bubble.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\effect.cpp"
 				>
 			</File>
@@ -201,17 +197,45 @@
 				>
 			</File>
 			<File
-				RelativePath=".\player.cpp"
+				RelativePath=".\SDL_rotozoom.c"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\SDL_rotozoom.c"
+				RelativePath=".\spriteManager.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\video.cpp"
 				>
 			</File>
+			<Filter
+				Name="sprite"
+				>
+				<File
+					RelativePath=".\bubble.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\player.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"

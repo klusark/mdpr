@@ -26,7 +26,7 @@ namespace video
 		SDL_Init(SDL_INIT_VIDEO);
 
 		//Make a window 320*scale by 200*scale with 32bit colour, hardware acceleration and double buffering
-		scale = 3;
+		scale = 1;
 		width = 320 * scale;
 		height = 200 * scale;
 		screen = SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE |SDL_HWACCEL | SDL_DOUBLEBUF);

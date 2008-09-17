@@ -1,7 +1,7 @@
 #ifndef BUBBLE_HPP
 #define BUBBLE_HPP
 
-#include "Mass.hpp"
+#include "Sprite.hpp"
 
 class Bubble : public Sprite
 {
