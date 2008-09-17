@@ -19,7 +19,8 @@ class player
 
 		struct animation
 		{
-			char numFrames, repeat, holdEnd, type, xOffset, yOffset;
+			char numFrames, repeat, holdEnd, type;
+			short xOffset, yOffset;
 			SDL_Surface *frames[8];
 			Uint32 delay;
 			SDL_Rect animationRect;
@@ -49,7 +50,7 @@ class player
 
 		SDL_Rect rect, feetRect;
 
-		Uint32 lastTime, lastTimeX, lastTimeY;
+		Uint32 lastTime, lastTimeX, lastTimeY, lastTimeGrav;
 
 };
 #endif

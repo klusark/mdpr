@@ -187,6 +187,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\Effect.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\Mass.cpp"
 					>
 				</File>
@@ -210,6 +214,10 @@
 				>
 				<File
 					RelativePath=".\include\Bubble.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\Effect.hpp"
 					>
 				</File>
 				<File

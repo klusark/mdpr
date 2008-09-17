@@ -16,6 +16,7 @@ void GameManager::tick()
 		startGame();
 		bStartGame = false;
 	SpriteManager::tick();
+	updateLevel();
 }
 
 bool GameManager::isActive()
@@ -32,6 +33,9 @@ void GameManager::startGame()
 {
 	player1 = new Player(1);
 	player2 = new Player(2);
+	for (short i = 0; i<3; ++i){
+		bubbles[i] = new Bubble;
+	}
 	createLevel();
 }
 
@@ -39,6 +43,7 @@ void GameManager::createLevel()
 {
 	createPlatforms();
 	createRopes();
+	createMallow();
 }
 
 void GameManager::createPlatforms()
@@ -46,5 +51,16 @@ void GameManager::createPlatforms()
 }
 
 void GameManager::createRopes()
+{
+}
+
+void GameManager::createMallow()
+{
+}
+
+/**
+* Updates the ropes, platforms, mallow and emitters
+*/
+void GameManager::updateLevel()
 {
 }

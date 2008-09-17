@@ -4,6 +4,7 @@
 Player::Player(short playerNum)
 {
 	this->playerNum = playerNum;
+	setCollisionType(player);
 }
 
 Player::~Player()
