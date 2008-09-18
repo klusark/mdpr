@@ -1,3 +1,6 @@
+#include "Player.hpp"
+#include "Bubble.hpp"
+#include "Effect.hpp"
 #include "GameManager.hpp"
 
 GameManager::GameManager(SDL_Surface *screen) : SpriteManager(screen)
@@ -32,8 +35,8 @@ void GameManager::activate()
 
 void GameManager::startGame()
 {
-	player1 = new Player(1);
-	player2 = new Player(2);
+	player1 = new Player(this);
+	player2 = new Player(this);
 	for (short i = 0; i<3; ++i){
 		bubbles[i] = new Bubble;
 	}

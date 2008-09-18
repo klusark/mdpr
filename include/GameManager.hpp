@@ -5,6 +5,8 @@
 
 #include "SpriteManager.hpp"
 
+class SpriteManager;
+
 class GameManager : public SpriteManager
 {
 	public:

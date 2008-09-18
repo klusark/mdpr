@@ -1,3 +1,6 @@
+#include "Player.hpp"
+#include "Bubble.hpp"
+#include "Effect.hpp"
 #include "SpriteManager.hpp"
 
 SpriteManager::SpriteManager(SDL_Surface *screen)
@@ -36,4 +39,10 @@ void SpriteManager::tick()
 void SpriteManager::checkCollions()
 {
 
+}
+
+void SpriteManager::addToImageQueue(){
+}
+
+void SpriteManager::drawImageQueue(){
 }
