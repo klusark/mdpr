@@ -127,7 +127,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				GenerateDebugInformation="true"
+				AdditionalDependencies="SDL.lib SDLmain.lib"
+				AdditionalLibraryDirectories=""
+				GenerateDebugInformation="false"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"

@@ -1,6 +1,7 @@
 #ifndef SPRITEANAGER_HPP
 #define SPRITEANAGER_HPP
 
+#include "SDL.h"
 #include <vector>
 
 #include "Player.hpp"
@@ -10,7 +11,7 @@
 class SpriteManager
 {
 	public:
-		SpriteManager();
+		SpriteManager(SDL_Surface *);
 		~SpriteManager();
 		void tick();
 		void checkCollions();
@@ -19,6 +20,8 @@ class SpriteManager
 		Player *player2;
 		Bubble *bubbles[3];
 		std::vector<Effect*> effects;
+	private:
+		SDL_Surface *screen;
 };
 /*! \class SpriteManager SpriteManager.hpp "include/SpriteManager.hpp"
  *  \brief The SpriteManager class

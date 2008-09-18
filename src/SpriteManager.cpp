@@ -1,7 +1,8 @@
 #include "SpriteManager.hpp"
 
-SpriteManager::SpriteManager()
+SpriteManager::SpriteManager(SDL_Surface *screen)
 {
+	this->screen = screen;
 }
 
 SpriteManager::~SpriteManager()

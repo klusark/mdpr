@@ -1,12 +1,14 @@
 #ifndef GAMEMANAGER_HPP
 #define GAMEMANAGER_HPP
 
+#include "SDL.h"
+
 #include "SpriteManager.hpp"
 
 class GameManager : public SpriteManager
 {
 	public:
-		GameManager();
+		GameManager(SDL_Surface*);
 		~GameManager();
 		void tick();
 		bool isActive();
@@ -20,10 +22,11 @@ class GameManager : public SpriteManager
 		void createMallow();
 		void updateLevel();
 
-
 		bool bActive;
 		///used to tell it gameStart should run its code
 		bool bStartGame;
+		///the main screen for the game
+		SDL_Surface *screen;
 		
 };
 /*! \class GameManager GameManager.hpp "include/GameManager.hpp"
