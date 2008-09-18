@@ -3,12 +3,16 @@
 
 #include "Sprite.hpp"
 
+class GameManager;
+
 class Effect : public Sprite
 {
 	public:
-		Effect();
+		Effect(GameManager *);
 		~Effect();
 		void update();
+	private:
+		GameManager *gm;
 };
 
 /*! \class Effect Effect.hpp "include/Effect.hpp"

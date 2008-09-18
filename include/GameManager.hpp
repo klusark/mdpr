@@ -1,21 +1,23 @@
 #ifndef GAMEMANAGER_HPP
 #define GAMEMANAGER_HPP
 
-#include "SDL.h"
-
 #include "SpriteManager.hpp"
 
 class SpriteManager;
+struct SDL_Surface;
 
 class GameManager : public SpriteManager
 {
 	public:
-		GameManager(SDL_Surface*);
+		GameManager(SDL_Surface *);
 		~GameManager();
 		void tick();
 		bool isActive();
 		void activate();
 		void startGame();
+		void addToImageQueue();
+		void drawImageQueue();
+		void clearRect(SDL_Rect);
 
 	private:
 		void createLevel();

@@ -16,13 +16,13 @@ class SpriteManager
 		~SpriteManager();
 		void tick();
 		void checkCollions();
-		void addToImageQueue();
-		void drawImageQueue();
+
 	protected:
 		Player *player1;
 		Player *player2;
 		Bubble *bubbles[3];
 		std::vector<Effect*> effects;
+
 	private:
 		SDL_Surface *screen;
 };

@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
 			if (gm->isActive()){
 				gm->tick();
 			}
+			SDL_Flip(screen);
 		}
 	} catch(int exception) {
 		return exception;

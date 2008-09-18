@@ -40,9 +40,3 @@ void SpriteManager::checkCollions()
 {
 
 }
-
-void SpriteManager::addToImageQueue(){
-}
-
-void SpriteManager::drawImageQueue(){
-}
