@@ -1,9 +1,8 @@
-#include <stdio.h>
 #include "Player.hpp"
 
-Player::Player(short playerNum)
+Player::Player(GameManager *sm)
 {
-	this->playerNum = playerNum;
+	this->sm = sm;
 	setCollisionType(player);
 }
 

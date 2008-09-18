@@ -4,9 +4,10 @@
 #include "SDL.h"
 #include <vector>
 
-#include "Player.hpp"
-#include "Bubble.hpp"
-#include "Effect.hpp"
+
+class Player;
+class Bubble;
+class Effect;
 
 class SpriteManager
 {
@@ -15,6 +16,8 @@ class SpriteManager
 		~SpriteManager();
 		void tick();
 		void checkCollions();
+		void addToImageQueue();
+		void drawImageQueue();
 	protected:
 		Player *player1;
 		Player *player2;
