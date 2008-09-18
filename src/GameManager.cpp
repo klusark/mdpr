@@ -1,9 +1,10 @@
 #include "GameManager.hpp"
 
-GameManager::GameManager()
+GameManager::GameManager(SDL_Surface *screen) : SpriteManager(screen)
 {
 	bActive = false;
 	bStartGame = true;
+	this->screen = screen;
 }
 
 GameManager::~GameManager()
@@ -39,6 +40,9 @@ void GameManager::startGame()
 	createLevel();
 }
 
+/**
+* Calls the functions that create the level
+*/
 void GameManager::createLevel()
 {
 	createPlatforms();
@@ -46,14 +50,23 @@ void GameManager::createLevel()
 	createMallow();
 }
 
+/**
+* Creates the platforms
+*/
 void GameManager::createPlatforms()
 {
 }
 
+/**
+* Creates the ropes
+*/
 void GameManager::createRopes()
 {
 }
 
+/**
+* Creates the Marshmallow at the bottom of the screen
+*/
 void GameManager::createMallow()
 {
 }
