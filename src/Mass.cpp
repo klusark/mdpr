@@ -1,7 +1,8 @@
 #include "Mass.hpp"
 
-Mass::Mass()
+Mass::Mass(GameManager *gm) : Sprite(gm)
 {
+	this->gm = gm;
 }
 
 Mass::~Mass()

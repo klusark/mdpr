@@ -1,8 +1,6 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-
-#include "GameManager.hpp"
 #include "Mass.hpp"
 
 class GameManager;
@@ -10,7 +8,7 @@ class GameManager;
 class Player : public Mass
 {
 	public:
-		Player(GameManager *sm);
+		Player(GameManager *);
 		~Player();
 		void update();
 		void input();
@@ -18,7 +16,7 @@ class Player : public Mass
 		///1 or 2 depending on what player it is.
 		short playerNum;
 
-		GameManager *sm;
+		GameManager *gm;
 };
 
 /*! \class Player player.hpp "include/player.hpp"

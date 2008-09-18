@@ -1,3 +1,5 @@
+#include "SDL.h"
+
 #include "Player.hpp"
 #include "Bubble.hpp"
 #include "Effect.hpp"
@@ -38,7 +40,7 @@ void GameManager::startGame()
 	player1 = new Player(this);
 	player2 = new Player(this);
 	for (short i = 0; i<3; ++i){
-		bubbles[i] = new Bubble;
+		bubbles[i] = new Bubble(this);
 	}
 	createLevel();
 }
@@ -79,4 +81,17 @@ void GameManager::createMallow()
 */
 void GameManager::updateLevel()
 {
+}
+
+void GameManager::addToImageQueue()
+{
+}
+
+void GameManager::drawImageQueue()
+{
+}
+
+void GameManager::clearRect(SDL_Rect rect)
+{
+	SDL_FillRect(screen, &rect, SDL_MapRGB(screen->format, 255, 0, 0));
 }

@@ -1,7 +1,11 @@
+#include "SDL.h"
+
+#include "GameManager.hpp"
 #include "Sprite.hpp"
 
-Sprite::Sprite()
+Sprite::Sprite(GameManager *gm)
 {
+	this->gm = gm;
 }
 
 Sprite::~Sprite()
@@ -10,6 +14,7 @@ Sprite::~Sprite()
 
 void Sprite::update()
 {
+	gm->clearRect(rect);
 	animate();
 }
 

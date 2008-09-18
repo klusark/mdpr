@@ -1,9 +1,13 @@
 #include "Player.hpp"
 
-Player::Player(GameManager *sm)
+Player::Player(GameManager *gm) : Mass(gm)
 {
-	this->sm = sm;
+	this->gm = gm;
 	setCollisionType(player);
+	rect.x = 50;
+	rect.y = 50;
+	rect.h = 50;
+	rect.w = 50;
 }
 
 Player::~Player()

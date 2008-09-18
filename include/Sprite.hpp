@@ -1,10 +1,15 @@
 #ifndef SPRITE_HPP
 #define SPRITE_HPP
 
+#include "SDL.h"
+
+class GameManager;
+struct SDL_Rect;
+
 class Sprite
 {
 	public:
-		Sprite();
+		Sprite(GameManager *);
 		~Sprite();
 		void animate();
 		void update();
@@ -28,6 +33,9 @@ class Sprite
 			int frames[8];
 
 		};
+		SDL_Rect rect;
+	private:
+		GameManager *gm;
 };
 /*! \class Sprite Sprite.hpp "include/Sprite.hpp"
  *  \brief The Sprite class
