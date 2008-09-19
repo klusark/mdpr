@@ -14,8 +14,9 @@ Sprite::~Sprite()
 
 void Sprite::update()
 {
-	//gm->clearRect(rect);
+	gm->clearRect(rect);
 	animate();
+	gm->addToImageQueue(image, rect);
 }
 
 void Sprite::animate()
@@ -29,6 +30,8 @@ void Sprite::animate()
 */
 void Sprite::move(short x, short y)
 {
+	rect.x += x;
+	rect.y += y;
 }
 
 /**

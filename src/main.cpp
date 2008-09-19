@@ -1,6 +1,5 @@
 #include "SDL.h"
 
-
 #include "GameManager.hpp"
 
 /**
@@ -21,7 +20,7 @@ int main(int argc, char *argv[])
 	try
 	{
 		//go untill an exception is raised
-		while (1){
+		for (;;){
 			SDL_Event events;
 			while (SDL_PollEvent(&events)){
 				if (events.type == SDL_QUIT){
@@ -32,7 +31,6 @@ int main(int argc, char *argv[])
 			if (gm->isActive()){
 				gm->tick();
 			}
-			SDL_Flip(screen);
 			if (SDL_GetTicks()-lastTime > 1000){
 				lastTime = SDL_GetTicks();
 				printf("%i\n",frames);
@@ -45,8 +43,6 @@ int main(int argc, char *argv[])
 		delete gm;
 		return exception;
 	}
-	delete gm;
-	return 0;
 }
 /*! \mainpage Marshmallow Duel: Percy's Return
 */

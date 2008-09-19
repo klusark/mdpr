@@ -34,6 +34,7 @@ class Sprite
 
 		};
 		SDL_Rect rect;
+		SDL_Surface *image;
 	private:
 		GameManager *gm;
 };

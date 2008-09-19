@@ -4,6 +4,7 @@
 #include "SpriteManager.hpp"
 #include <map>
 #include <string>
+#include <vector>
 
 class SpriteManager;
 struct SDL_Surface;
@@ -17,11 +18,18 @@ class GameManager : public SpriteManager
 		bool isActive();
 		void activate();
 		void startGame();
-		void addToImageQueue();
+		void addToImageQueue(SDL_Surface *, SDL_Rect);
 		void drawImageQueue();
 		void clearRect(SDL_Rect);
-		std::map<std::string, SDL_Surface*> images;
+		std::map<std::string, SDL_Surface *> images;
 		SDL_Surface *screen;
+		struct Queue
+		{
+			SDL_Surface *image;
+			SDL_Rect rect;
+		};
+		
+		std::vector<Queue*> imageQueue;
 	private:
 		void createLevel();
 		void createPlatforms();
@@ -34,6 +42,8 @@ class GameManager : public SpriteManager
 		///used to tell it gameStart should run its code
 		bool bStartGame;
 		///the main screen for the game
+
+
 		
 		
 		
