@@ -8,7 +8,7 @@ class GameManager;
 class Player : public Mass
 {
 	public:
-		Player(GameManager *);
+		Player(GameManager *, short);
 		~Player();
 		void update();
 		void input();
