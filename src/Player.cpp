@@ -1,3 +1,4 @@
+#include "GameManager.hpp"
 #include "Player.hpp"
 
 Player::Player(GameManager *gm) : Mass(gm)
@@ -17,6 +18,7 @@ Player::~Player()
 void Player::update()
 {
 	Mass::update();
+	SDL_BlitSurface(gm->images["stand"], 0, gm->screen, &rect);
 	//get the input
 	input();
 }

@@ -2,6 +2,8 @@
 #define GAMEMANAGER_HPP
 
 #include "SpriteManager.hpp"
+#include <map>
+#include <string>
 
 class SpriteManager;
 struct SDL_Surface;
@@ -18,19 +20,23 @@ class GameManager : public SpriteManager
 		void addToImageQueue();
 		void drawImageQueue();
 		void clearRect(SDL_Rect);
-
+		std::map<std::string, SDL_Surface*> images;
+		SDL_Surface *screen;
 	private:
 		void createLevel();
 		void createPlatforms();
 		void createRopes();
 		void createMallow();
 		void updateLevel();
+		void loadImages();
 
 		bool bActive;
 		///used to tell it gameStart should run its code
 		bool bStartGame;
 		///the main screen for the game
-		SDL_Surface *screen;
+		
+		
+		
 		
 };
 /*! \class GameManager GameManager.hpp "include/GameManager.hpp"
