@@ -1,4 +1,7 @@
 #include "SDL.h"
+#include <string>
+#include <map>
+#include "SDL_image.h"
 
 #include "Player.hpp"
 #include "Bubble.hpp"
@@ -10,6 +13,7 @@ GameManager::GameManager(SDL_Surface *screen) : SpriteManager(screen)
 	bActive = false;
 	bStartGame = true;
 	this->screen = screen;
+	loadImages();
 }
 
 GameManager::~GameManager()
@@ -94,4 +98,16 @@ void GameManager::drawImageQueue()
 void GameManager::clearRect(SDL_Rect rect)
 {
 	SDL_FillRect(screen, &rect, SDL_MapRGB(screen->format, 255, 0, 0));
+}
+
+void GameManager::loadImages()
+{
+	std::string imageList[] = {"stand", "run0"};
+	SDL_RWops *rwop;
+	char files[32];
+	for (short i = 0; i < 2; ++i){
+		sprintf(files, "data/main/%s.png", imageList[i]);
+		rwop = SDL_RWFromFile(files, "rb");
+		images[imageList[i]] = IMG_LoadPNG_RW(rwop);
+	}
 }

@@ -1,14 +1,7 @@
 #include "SDL.h"
-#include <map>
-#include <iostream>
-#include "stdio.h"
-#include <stdarg.h>
-#include "GameManager.hpp"
 
-void test(char * tests, ...)
-{
-	std::cout<<tests[1];
-}
+
+#include "GameManager.hpp"
 
 /**
  * Main function for the game
@@ -22,11 +15,7 @@ int main(int argc, char *argv[])
 	SDL_WM_SetCaption("Marshmallow Duel: Percy's Return", "Marshmallow Duel: Percy's Return");
 	Uint32 frames = 0, lastTime = 0;
 	GameManager *gm = new GameManager(screen);
-	//std::map<int, SDL_Surface*> test;
-	//test['i'] = screen;
-	//std::cout
-	test("hi","hid");
-	//printf
+
 	//main loop
 	gm->activate();
 	try
@@ -53,8 +42,10 @@ int main(int argc, char *argv[])
 			++frames;
 		}
 	} catch(int exception) {
+		delete gm;
 		return exception;
 	}
+	delete gm;
 	return 0;
 }
 /*! \mainpage Marshmallow Duel: Percy's Return

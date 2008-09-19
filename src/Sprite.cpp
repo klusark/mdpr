@@ -14,7 +14,7 @@ Sprite::~Sprite()
 
 void Sprite::update()
 {
-	gm->clearRect(rect);
+	//gm->clearRect(rect);
 	animate();
 }
 
