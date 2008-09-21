@@ -15,7 +15,7 @@ GameManager::GameManager(SDL_Surface *screen) : SpriteManager(screen)
 	bStartGame = true;
 	this->screen = screen;
 	loadImages();
-	//imageQueue.resize(3);
+	queuedImages = 0;
 }
 
 GameManager::~GameManager()
@@ -93,23 +93,17 @@ void GameManager::updateLevel()
 
 void GameManager::addToImageQueue(SDL_Surface *image, SDL_Rect rect)
 {
-	Queue tempQueue;
-	tempQueue.image = image;
-	tempQueue.rect = rect;
-	imageQueue.push_back(&tempQueue);
-	
+	imageQueue[queuedImages].image = image;
+	imageQueue[queuedImages].rect = rect;
+	++queuedImages;
 }
 
 void GameManager::drawImageQueue()
 {
-
-
-	for (std::vector<Queue*>::iterator Iter = this->imageQueue.begin(); Iter != this->imageQueue.end(); ++Iter){
-		//SDL_BlitSurface((*Iter)->image, 0, screen, &(*Iter)->rect);
+	for (short i = 0; i < queuedImages; ++i){
+		SDL_BlitSurface(imageQueue[i].image, 0, screen, &imageQueue[i].rect);
 	}
-	this->imageQueue.clear();
-	//imageQueue
-	
+	queuedImages = 0;
 }
 
 void GameManager::clearRect(SDL_Rect rect)
@@ -119,17 +113,18 @@ void GameManager::clearRect(SDL_Rect rect)
 
 void GameManager::loadImages()
 {
-	std::string imageList[] = {"stand", "run0", "run1"};
+	std::string imageList[] = {"stand", "run0", "run1", "bubble0", "bubble1", "bubble2" };
 	SDL_RWops *rwop;
-	std::string file;
-	for (short i = 0; i < 2; ++i){
-		
+	
+	for (short i = 0; i < 6; ++i){
+		std::string file;
 		file += "data/main/";
 		file += imageList[i];
 		file += ".png";
-		//static_cast<char>(file);
-		//sprintf(files, "data/main/%s.png", imageList[i]);
 		rwop = SDL_RWFromFile(file.c_str(), "rb");
 		images[imageList[i]] = IMG_LoadPNG_RW(rwop);
+		if (!images[imageList[i]])
+			printf("IMG_LoadPNG_RW: %s\n", IMG_GetError());
+
 	}
 }

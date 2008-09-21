@@ -29,7 +29,8 @@ class GameManager : public SpriteManager
 			SDL_Rect rect;
 		};
 		
-		std::vector<Queue*> imageQueue;
+		Queue imageQueue[16];
+		short queuedImages;
 	private:
 		void createLevel();
 		void createPlatforms();

@@ -6,6 +6,7 @@
 Sprite::Sprite(GameManager *gm)
 {
 	this->gm = gm;
+	currentFrame = 0;
 }
 
 Sprite::~Sprite()
@@ -21,6 +22,10 @@ void Sprite::update()
 
 void Sprite::animate()
 {
+	image = currentAnimation.frames[currentFrame];
+	++currentFrame;
+	if (currentFrame == currentAnimation.numFrames)
+		currentFrame = 0;
 }
 
 /**
@@ -41,4 +46,13 @@ void Sprite::move(short x, short y)
 void Sprite::setCollisionType(collisionTypes collision)
 {
 	collisionType = collision;
+}
+
+void Sprite::makeAnimaion(Animation &name, short numFrames, short delay, SDL_Surface *frames[])
+{
+	name.delay = delay;
+	name.numFrames = numFrames;
+	for (short i = 0; i<numFrames; ++i){
+		name.frames[i] = frames[i];
+	}
 }

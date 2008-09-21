@@ -15,16 +15,16 @@ SpriteManager::~SpriteManager()
 void SpriteManager::tick()
 {
 	if (player1 != 0){
-		player1->update();
+		//player1->update();
 	}
 
 	if (player2 != 0){
-		player2->update();
+		//player2->update();
 	}
 
 	for (short i = 0; i<3; ++i){
 		if (bubbles[i] != 0){
-			//bubbles[i]->update();
+			bubbles[i]->update();
 		}
 	}
 	//update any current effects
