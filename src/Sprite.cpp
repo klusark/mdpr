@@ -22,10 +22,13 @@ void Sprite::update()
 
 void Sprite::animate()
 {
-	image = currentAnimation.frames[currentFrame];
-	++currentFrame;
-	if (currentFrame == currentAnimation.numFrames)
-		currentFrame = 0;
+	if(currentAnimation.delay < (SDL_GetTicks() - lastAnimationTime)){
+		lastAnimationTime = SDL_GetTicks();
+		image = currentAnimation.frames[currentFrame];
+		++currentFrame;
+		if (currentFrame == currentAnimation.numFrames)
+			currentFrame = 0;
+	}
 }
 
 /**
@@ -48,11 +51,13 @@ void Sprite::setCollisionType(collisionTypes collision)
 	collisionType = collision;
 }
 
-void Sprite::makeAnimaion(Animation &name, short numFrames, short delay, SDL_Surface *frames[])
+Sprite::Animation Sprite::makeAnimaion( short numFrames, Uint16 delay, SDL_Surface *frames[])
 {
-	name.delay = delay;
-	name.numFrames = numFrames;
+	Animation animation;
+	animation.delay = delay;
+	animation.numFrames = numFrames;
 	for (short i = 0; i<numFrames; ++i){
-		name.frames[i] = frames[i];
+		animation.frames[i] = frames[i];
 	}
+	return animation;
 }

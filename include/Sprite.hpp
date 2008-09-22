@@ -31,18 +31,19 @@ class Sprite
 			///the number of frames in the animation
 			short numFrames;
 			/// the delay in ms between each frame
-			short delay;
+			Uint16 delay;
 			///an array of all the frames
 			SDL_Surface *frames[8];
 
 		} currentAnimation;
-		void makeAnimaion(Animation &name, short numFrames, short delay, SDL_Surface *frames[]);
+		Animation Sprite::makeAnimaion( short numFrames, Uint16 delay, SDL_Surface *frames[]);
 		
 		SDL_Rect rect;
 		SDL_Surface *image;
 	private:
 		short currentFrame;
 		GameManager *gm;
+		Uint32 lastAnimationTime;
 };
 /*! \class Sprite Sprite.hpp "include/Sprite.hpp"
  *  \brief The Sprite class
