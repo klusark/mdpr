@@ -20,6 +20,15 @@ GameManager::GameManager(SDL_Surface *screen) : SpriteManager(screen)
 
 GameManager::~GameManager()
 {
+
+	std::map<std::string, SDL_Surface *>::iterator iter;
+    for( iter = images.begin(); iter != images.end(); ++iter ) {
+		SDL_FreeSurface(iter->second);
+
+    }
+	images.clear();
+	delete player1;
+	delete player2;
 }
 
 void GameManager::tick()
@@ -113,10 +122,10 @@ void GameManager::clearRect(SDL_Rect rect)
 
 void GameManager::loadImages()
 {
-	std::string imageList[] = {"stand", "run0", "run1", "bubble0", "bubble1", "bubble2" };
+	std::string imageList[] = {"stand", "run0", "run1", "run2", "run3", "roll0", "roll1", "roll2", "roll3", "bubble0", "bubble1", "bubble2" };
 	SDL_RWops *rwop;
 	
-	for (short i = 0; i < 6; ++i){
+	for (short i = 0; i < 12; ++i){
 		std::string file;
 		file += "data/main/";
 		file += imageList[i];
@@ -125,6 +134,16 @@ void GameManager::loadImages()
 		images[imageList[i]] = IMG_LoadPNG_RW(rwop);
 		if (!images[imageList[i]])
 			printf("IMG_LoadPNG_RW: %s\n", IMG_GetError());
-
 	}
+	SDL_FreeRW(rwop);
+}
+
+SDL_Rect GameManager::makeRect(Uint16 h, Uint16 w, Uint16 x, Uint16 y)
+{
+	SDL_Rect rect;
+	rect.h = h;
+	rect.w = w;
+	rect.x = x;
+	rect.y = y;
+	return rect;
 }

@@ -10,7 +10,15 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	rect.y = 50;
 	rect.h = 24;
 	rect.w = 24;
-	image = gm->images["stand"];
+
+	SDL_Surface *runFrames[] = {gm->images["run0"], gm->images["run1"], gm->images["run2"], gm->images["run3"]};
+	runAnimation = makeAnimaion(4, 100, runFrames);
+
+	SDL_Surface *idleFrames[] = {gm->images["stand"]};
+	standAnimation = makeAnimaion(1, 100, idleFrames);
+
+	currentAnimation = standAnimation;
+
 }
 
 Player::~Player()

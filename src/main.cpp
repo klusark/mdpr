@@ -39,10 +39,13 @@ int main(int argc, char *argv[])
 			}
 			++frames;
 		}
-	} catch(int exception) {
-		delete gm;
-		return exception;
+	} catch(int) {
+		
+		//return exception;
 	}
+	delete gm;
+	SDL_FreeSurface(screen);
+	return 0;
 }
 /*! \mainpage Marshmallow Duel: Percy's Return
 */

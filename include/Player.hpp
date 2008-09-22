@@ -17,6 +17,8 @@ class Player : public Mass
 		short playerNum;
 
 		GameManager *gm;
+
+		Animation runAnimation, standAnimation;
 };
 
 /*! \class Player player.hpp "include/player.hpp"
