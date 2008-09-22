@@ -15,9 +15,11 @@ Sprite::~Sprite()
 
 void Sprite::update()
 {
-	gm->clearRect(rect);
+
+	gm->clearRect(lastRect);
 	animate();
 	gm->addToImageQueue(image, rect);
+	lastRect = rect;
 }
 
 void Sprite::animate()

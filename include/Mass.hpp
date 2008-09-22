@@ -12,10 +12,11 @@ class Mass : public Sprite
 		~Mass();
 		void update();
 		void applyGravity();
-		/// Checks for collision with a platform
 		void checkPlatformCollision();
 	private:
 		GameManager *gm;
+		/// the last time the y was moved
+		
 };
 /*! \class Mass Mass.hpp "include/Mass.hpp"
  *  \brief The Mass class
