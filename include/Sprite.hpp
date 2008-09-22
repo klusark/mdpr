@@ -14,7 +14,7 @@ class Sprite
 		~Sprite();
 		void animate();
 		void update();
-		void move(short, short);
+		void move(short x, short y);
 		enum collisionTypes
 		{
 			ground,
@@ -38,8 +38,12 @@ class Sprite
 		} currentAnimation;
 		Animation Sprite::makeAnimaion( short numFrames, Uint16 delay, SDL_Surface *frames[]);
 		
-		SDL_Rect rect;
+		SDL_Rect rect, lastRect;
 		SDL_Surface *image;
+		Uint32 lastTimeY;
+		Uint32 lastTimeX;
+
+
 	private:
 		short currentFrame;
 		GameManager *gm;

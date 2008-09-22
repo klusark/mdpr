@@ -9,8 +9,10 @@
 #include "Effect.hpp"
 #include "GameManager.hpp"
 
-GameManager::GameManager(SDL_Surface *screen) : SpriteManager(screen)
+GameManager::GameManager(SDL_Surface *screen, int height, int width) : SpriteManager(screen)
 {
+	this->height = height;
+	this->width = width;
 	bActive = false;
 	bStartGame = true;
 	this->screen = screen;
@@ -33,11 +35,13 @@ GameManager::~GameManager()
 
 void GameManager::tick()
 {
-	if (bStartGame)
+	if (bStartGame){
 		startGame();
 		bStartGame = false;
-	SpriteManager::tick();
+	}
 	updateLevel();
+	SpriteManager::tick();
+	
 	drawImageQueue();
 	SDL_Flip(screen);
 }
@@ -70,6 +74,7 @@ void GameManager::createLevel()
 	createPlatforms();
 	createRopes();
 	createMallow();
+	createEdges();
 }
 
 /**
@@ -77,6 +82,29 @@ void GameManager::createLevel()
 */
 void GameManager::createPlatforms()
 {
+	short yTemp = 0, xTemp = 0;
+	short i, h = 1, w = 14;
+	
+	for (i = 0; i <= 15; ++i){
+		if (i == 0){
+			//bottom left
+			yTemp = 168;
+			xTemp = 25;
+		}else if(i == 4){
+			//bottom right
+			xTemp = 233;
+		}else if(i == 8){
+			//top left
+			yTemp = 40;
+			xTemp = 49;
+		}else if(i == 12){
+			//top right
+			xTemp = 209;
+		}
+		platforms[i] = makeRect(h, w, xTemp, yTemp);
+		xTemp += 16;
+	}
+	
 }
 
 /**
@@ -93,11 +121,25 @@ void GameManager::createMallow()
 {
 }
 
+void GameManager::createEdges()
+{
+	Uint16 Uheight = static_cast<Uint16>(height);
+	Uint16 Uwidth = static_cast<Uint16>(width);
+	edgeLeft = makeRect(Uheight, 1 , 0, 0);
+	edgeRight = makeRect(Uwidth, 1, Uwidth - 1, 0);
+	edgeTop = makeRect(Uwidth + 1, 1, 0, 0);
+	edgeBottom = makeRect(1, Uwidth, 0, Uheight - 1);
+
+}
+
 /**
 * Updates the ropes, platforms, mallow and emitters
 */
 void GameManager::updateLevel()
 {
+	for (short i = 0; i < 16; ++i){
+		addToImageQueue(images["platform"], platforms[i]);
+	}
 }
 
 void GameManager::addToImageQueue(SDL_Surface *image, SDL_Rect rect)
@@ -117,15 +159,21 @@ void GameManager::drawImageQueue()
 
 void GameManager::clearRect(SDL_Rect rect)
 {
-	SDL_FillRect(screen, &rect, SDL_MapRGB(screen->format, 255, 0, 0));
+	SDL_FillRect(screen, &rect, SDL_MapRGB(screen->format, 0, 0, 0));
 }
 
 void GameManager::loadImages()
 {
-	std::string imageList[] = {"stand", "run0", "run1", "run2", "run3", "roll0", "roll1", "roll2", "roll3", "bubble0", "bubble1", "bubble2" };
+	std::string imageList[] = {
+		"stand",
+		"run0", "run1", "run2", "run3",
+		"roll0", "roll1", "roll2", "roll3",
+		"bubble0", "bubble1", "bubble2",
+		"platform"
+	};
 	SDL_RWops *rwop;
 	
-	for (short i = 0; i < 12; ++i){
+	for (short i = 0; i < 13; ++i){
 		std::string file;
 		file += "data/main/";
 		file += imageList[i];

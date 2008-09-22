@@ -23,4 +23,10 @@ Bubble::~Bubble()
 void Bubble::update()
 {
 	Sprite::update();
+
+	move(5, 5);
+	if (rect.x > gm->height)
+		rect.x = gm->height-16;
+	if (rect.y > gm->width)
+		rect.y = gm->width-16;
 }
