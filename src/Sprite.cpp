@@ -3,6 +3,9 @@
 #include "GameManager.hpp"
 #include "Sprite.hpp"
 
+/**
+ * consturcts the sprite
+ */
 Sprite::Sprite(GameManager *gm)
 {
 	this->gm = gm;
@@ -29,10 +32,11 @@ void Sprite::animate()
 {
 	if(currentAnimation.delay < (SDL_GetTicks() - lastAnimationTime)){
 		lastAnimationTime = SDL_GetTicks();
-		image = currentAnimation.frames[currentFrame];
 		++currentFrame;
-		if (currentFrame == currentAnimation.numFrames)
+		if (currentFrame >= currentAnimation.numFrames)
 			currentFrame = 0;
+		image = currentAnimation.frames[currentFrame];
+
 	}
 }
 

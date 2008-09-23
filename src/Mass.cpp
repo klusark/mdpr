@@ -1,6 +1,9 @@
 #include "GameManager.hpp"
 #include "Mass.hpp"
 
+/**
+ * consturcts the mass part of a sprite
+ */
 Mass::Mass(GameManager *gm) : Sprite(gm)
 {
 	this->gm = gm;
@@ -33,7 +36,7 @@ void Mass::checkPlatformCollision()
 		if (isOverRect(gm->platforms[i])){
 			move();
 			if (isUnderRect(gm->platforms[i])){
-				//move player to playform
+				//move player to platform
 				rect.y = gm->platforms[i].y-rect.h;
 			}
 		}
@@ -42,8 +45,8 @@ void Mass::checkPlatformCollision()
 
 bool Mass::isOverRect(SDL_Rect tempRect)
 {
-	if (tempRect.x > rect.x && tempRect.x < rect.x+rect.w){
-		if (tempRect.y > rect.y){
+	if (tempRect.x + tempRect.w > rect.x &&tempRect.x < rect.x + rect.w){
+		if (tempRect.y > rect.y + rect.h - 1){
 			return true;
 		}
 	}
@@ -52,8 +55,8 @@ bool Mass::isOverRect(SDL_Rect tempRect)
 
 bool Mass::isUnderRect(SDL_Rect tempRect)
 {
-	if (tempRect.x > rect.x && tempRect.x < rect.x+rect.w){
-		if (tempRect.y <= rect.y + rect.h){
+	if (tempRect.x + tempRect.w > rect.x &&tempRect.x < rect.x + rect.w){
+		if (tempRect.y < rect.y + rect.h){
 			return true;
 		}
 	}
