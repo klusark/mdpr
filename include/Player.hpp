@@ -13,13 +13,17 @@ class Player : public Mass
 		void update();
 		void input();
 	private:
+		void actOnInput();
 		///1 or 2 depending on what player it is.
 		short playerNum;
 
 		GameManager *gm;
 
-		Animation runAnimation, standAnimation;
+		Animation *runAnimation, *standAnimation;
 		Uint8 keyUp, keyDown, keyRight, keyLeft;
+		Uint8 *lastKeystate;
+		bool isRunning, isRolling;
+		static const int walkspeed = 32;
 };
 
 /*! \class Player player.hpp "include/player.hpp"

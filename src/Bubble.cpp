@@ -13,7 +13,7 @@ Bubble::Bubble(GameManager *gm) : Sprite(gm)
 	rect.y = 16;
 
 	SDL_Surface *frames[] = {gm->images["bubble0"], gm->images["bubble1"], gm->images["bubble2"]};
-	Animation bubbleAnimation = makeAnimaion(3, 100, frames);
+	Animation *bubbleAnimation = makeAnimaion(3, 100, frames);
 
 	currentAnimation = bubbleAnimation;
 	xVelocity = 32;

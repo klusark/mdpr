@@ -1,8 +1,8 @@
-#include "SDL.h"
+#include "SDL/SDL.h"
 #include <string>
 #include <map>
 #include <vector>
-#include "SDL_image.h"
+#include "SDL/SDL_image.h"
 
 #include "Player.hpp"
 #include "Bubble.hpp"
@@ -34,6 +34,9 @@ GameManager::~GameManager()
 	images.clear();
 	delete player1;
 	delete player2;
+	for (short i = 0; i<3; ++i){
+		delete bubbles[i];
+	}
 }
 
 void GameManager::tick()
@@ -162,9 +165,9 @@ void GameManager::loadImages()
 		"bubble0", "bubble1", "bubble2",
 		"platform"
 	};
-	SDL_RWops *rwop;
 	
 	for (short i = 0; i < 13; ++i){
+		SDL_RWops *rwop;
 		std::string file;
 		file += "data/main/";
 		file += imageList[i];
@@ -173,8 +176,9 @@ void GameManager::loadImages()
 		images[imageList[i]] = IMG_LoadPNG_RW(rwop);
 		if (!images[imageList[i]])
 			printf("IMG_LoadPNG_RW: %s\n", IMG_GetError());
+		SDL_FreeRW(rwop);
 	}
-	SDL_FreeRW(rwop);
+	
 }
 
 SDL_Rect GameManager::makeRect(Uint16 h, Uint16 w, Uint16 x, Uint16 y)

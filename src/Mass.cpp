@@ -38,6 +38,7 @@ void Mass::checkPlatformCollision()
 			if (isUnderRect(gm->platforms[i])){
 				//move player to platform
 				rect.y = gm->platforms[i].y-rect.h;
+				isOnGround = true;
 			}
 		}
 	}
