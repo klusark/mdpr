@@ -1,11 +1,9 @@
 #ifndef SPRITE_HPP
 #define SPRITE_HPP
 
-#include "SDL.h"
+#include "SDL/SDL.h"
 
 class GameManager;
-struct SDL_Rect;
-
 
 class Sprite
 {
@@ -34,9 +32,11 @@ class Sprite
 			Uint16 delay;
 			///an array of all the frames
 			SDL_Surface *frames[8];
+			/// the current frame
+			short currentFrame;
 
-		} currentAnimation;
-		Animation Sprite::makeAnimaion( short numFrames, Uint16 delay, SDL_Surface *frames[]);
+		}*currentAnimation;
+		Animation *makeAnimaion(short numFrames, Uint16 delay, SDL_Surface *frames[]);
 		
 		SDL_Rect rect, lastRect;
 		SDL_Surface *image;
@@ -47,7 +47,7 @@ class Sprite
 
 	private:
 		bool moved;
-		short currentFrame;
+
 		GameManager *gm;
 		Uint32 lastAnimationTime;
 };

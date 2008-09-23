@@ -1,7 +1,7 @@
 #ifndef SPRITEANAGER_HPP
 #define SPRITEANAGER_HPP
 
-#include "SDL.h"
+#include "SDL/SDL.h"
 #include <vector>
 
 

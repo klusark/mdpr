@@ -23,6 +23,9 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	keyDown = SDLK_s;
 	keyRight = SDLK_d;
 	keyLeft = SDLK_a;
+
+	lastKeystate = SDL_GetKeyState(0);
+	isRunning = false, isRolling = false, isOnGround = false;
 }
 
 /**
@@ -30,6 +33,8 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
  */
 Player::~Player()
 {
+	delete runAnimation;
+	delete standAnimation;
 }
 
 /**
@@ -39,23 +44,35 @@ void Player::update()
 {
 	//get the input
 	input();
+	actOnInput();
 	Mass::update();
 	
 }
 
 /**
- * Gets all the input for the player and acts on it
+ * Gets all the input for the player 
  */
 void Player::input()
 {
 	Uint8 *keystate = SDL_GetKeyState(0);
-	xVelocity = (keystate[keyRight] - keystate[keyLeft]) * 32;
+	isRunning = false;
+	if (isOnGround){
+		if (keystate[keyRight] || keystate[keyLeft]){
+			isRunning = true;
+		}
+	}
 
-	if (!xVelocity){
+	lastKeystate = keystate;
+}
+
+void Player::actOnInput()
+{
+	if (isRunning){
+		currentAnimation = runAnimation;
+	}else{
 		lastTimeX = SDL_GetTicks();
 		currentAnimation = standAnimation;
-	}else{
-		currentAnimation = runAnimation;
 	}
-	
+
+	xVelocity = (lastKeystate[keyRight] - lastKeystate[keyLeft]) * walkspeed;
 }
