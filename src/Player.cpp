@@ -27,15 +27,16 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 Player::~Player()
 {
 }
+
 /**
  * Update the player
  */
 void Player::update()
 {
-	Mass::update();
-
 	//get the input
 	input();
+	Mass::update();
+	
 }
 
 /**
@@ -43,4 +44,5 @@ void Player::update()
  */
 void Player::input()
 {
+	velocityX = (rightPress - leftPress) * walkspeed;
 }
