@@ -160,13 +160,17 @@ void GameManager::loadImages()
 {
 	std::string imageList[] = {
 		"stand",
-		"run0", "run1", "run2", "run3",
-		"roll0", "roll1", "roll2", "roll3",
-		"bubble0", "bubble1", "bubble2",
+		"crouch0",	"crouch1",
+		"run0",		"run1",		"run2",		"run3",
+		"roll0",	"roll1",	"roll2",	"roll3",
+		"jumpup0",	"jumpup1",	"jumpup2",	"jumpup3", "jumpup4", 
+
+		"bubble0",	"bubble1",	"bubble2",
+		
 		"platform"
 	};
 	
-	for (short i = 0; i < 13; ++i){
+	for (short i = 0; i < 20; ++i){
 		SDL_RWops *rwop;
 		std::string file;
 		file += "data/main/";
