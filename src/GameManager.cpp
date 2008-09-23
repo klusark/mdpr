@@ -9,6 +9,9 @@
 #include "Effect.hpp"
 #include "GameManager.hpp"
 
+/**
+ * consturcts the gamemanager
+ */
 GameManager::GameManager(SDL_Surface *screen, int width, int height) : SpriteManager(screen)
 {
 	this->height = height;
@@ -74,7 +77,6 @@ void GameManager::createLevel()
 	createPlatforms();
 	createRopes();
 	createMallow();
-	createEdges();
 }
 
 /**
@@ -83,7 +85,7 @@ void GameManager::createLevel()
 void GameManager::createPlatforms()
 {
 	short yTemp = 0, xTemp = 0;
-	short i, h = 1, w = 14;
+	short i, h = 8, w = 14;
 	
 	for (i = 0; i <= 15; ++i){
 		if (i == 0){
@@ -119,17 +121,6 @@ void GameManager::createRopes()
 */
 void GameManager::createMallow()
 {
-}
-
-void GameManager::createEdges()
-{
-	Uint16 Uheight = static_cast<Uint16>(height);
-	Uint16 Uwidth = static_cast<Uint16>(width);
-	edgeLeft = makeRect(Uheight, 1 , 0, 0);
-	edgeRight = makeRect(Uwidth, 1, Uwidth - 1, 0);
-	edgeTop = makeRect(Uwidth + 1, 1, 0, 0);
-	edgeBottom = makeRect(1, Uwidth, 0, Uheight - 1);
-
 }
 
 /**

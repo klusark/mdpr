@@ -19,6 +19,7 @@ class Player : public Mass
 		GameManager *gm;
 
 		Animation runAnimation, standAnimation;
+		Uint8 keyUp, keyDown, keyRight, keyLeft;
 };
 
 /*! \class Player player.hpp "include/player.hpp"

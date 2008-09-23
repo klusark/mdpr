@@ -1,6 +1,9 @@
 #include "GameManager.hpp"
 #include "Bubble.hpp"
 
+/**
+ * consturcts the bubble sprite
+ */
 Bubble::Bubble(GameManager *gm) : Sprite(gm)
 {
 	this->gm = gm;

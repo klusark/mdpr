@@ -3,6 +3,9 @@
 #include "Effect.hpp"
 #include "SpriteManager.hpp"
 
+/**
+ * consturcts the spritemanager
+ */
 SpriteManager::SpriteManager(SDL_Surface *screen)
 {
 	this->screen = screen;

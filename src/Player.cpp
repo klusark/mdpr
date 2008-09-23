@@ -19,6 +19,10 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 
 	currentAnimation = standAnimation;
 
+	keyUp = SDLK_w;
+	keyDown = SDLK_s;
+	keyRight = SDLK_d;
+	keyLeft = SDLK_a;
 }
 
 /**
@@ -44,5 +48,14 @@ void Player::update()
  */
 void Player::input()
 {
-	velocityX = (rightPress - leftPress) * walkspeed;
+	Uint8 *keystate = SDL_GetKeyState(0);
+	xVelocity = (keystate[keyRight] - keystate[keyLeft]) * 32;
+
+	if (!xVelocity){
+		lastTimeX = SDL_GetTicks();
+		currentAnimation = standAnimation;
+	}else{
+		currentAnimation = runAnimation;
+	}
+	
 }

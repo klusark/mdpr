@@ -1,5 +1,8 @@
 #include "Effect.hpp"
 
+/**
+ * consturcts the effect sprite
+ */
 Effect::Effect(GameManager *gm) : Sprite(gm)
 {
 	this->gm = gm;
