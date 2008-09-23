@@ -29,7 +29,7 @@ class Sprite
 			///the number of frames in the animation
 			short numFrames;
 			/// the delay in ms between each frame
-			Uint16 delay;
+			unsigned short delay;
 			///an array of all the frames
 			SDL_Surface *frames[8];
 			/// the current frame

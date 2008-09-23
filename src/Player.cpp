@@ -14,6 +14,15 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	SDL_Surface *runFrames[] = {gm->images["run0"], gm->images["run1"], gm->images["run2"], gm->images["run3"]};
 	runAnimation = makeAnimaion(4, 100, runFrames);
 
+	SDL_Surface *rollFrames[] = {gm->images["roll0"], gm->images["roll1"], gm->images["roll2"], gm->images["roll3"]};
+	rollAnimation = makeAnimaion(4, 100, rollFrames);
+
+	SDL_Surface *crouchFrames[] = {gm->images["crouch0"], gm->images["crouch1"]};
+	crouchAnimation = makeAnimaion(2, 100, crouchFrames);
+
+	SDL_Surface *jumpUpFrames[] = {gm->images["jumpup0"], gm->images["jumpup1"], gm->images["jumpup2"], gm->images["jumpup3"], gm->images["jumpup4"]};
+	jumpUpAnimation = makeAnimaion(5, 1000, jumpUpFrames);
+
 	SDL_Surface *idleFrames[] = {gm->images["stand"]};
 	standAnimation = makeAnimaion(1, 100, idleFrames);
 
@@ -25,7 +34,8 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	keyLeft = SDLK_a;
 
 	lastKeystate = SDL_GetKeyState(0);
-	isRunning = false, isRolling = false, isOnGround = false;
+	isOnGround = false;
+	isRunning = false, isRolling = false, isJumpingUp = false, isCrouching = false;
 }
 
 /**
@@ -35,6 +45,7 @@ Player::~Player()
 {
 	delete runAnimation;
 	delete standAnimation;
+	delete rollAnimation;
 }
 
 /**
@@ -55,10 +66,26 @@ void Player::update()
 void Player::input()
 {
 	Uint8 *keystate = SDL_GetKeyState(0);
-	isRunning = false;
+
+	isRunning = false, isRolling = false, isCrouching = false, isJumpingUp = false;
+
 	if (isOnGround){
-		if (keystate[keyRight] || keystate[keyLeft]){
-			isRunning = true;
+		if (keystate[keyDown]){
+			if (keystate[keyRight] || keystate[keyLeft]){
+				isRolling = true;
+			}else{
+				isCrouching = true;
+			}
+		}else if(keystate[keyUp]){
+			if (keystate[keyRight] || keystate[keyLeft]){
+				//isRolling = true;
+			}else{
+				isJumpingUp = true;
+			}
+		}else{
+			if (keystate[keyRight] || keystate[keyLeft]){
+				isRunning = true;
+			}
 		}
 	}
 
@@ -67,12 +94,23 @@ void Player::input()
 
 void Player::actOnInput()
 {
+	short test = isRunning + isRolling + isCrouching + isJumpingUp;
+	if (test > 1){
+		throw "Error more than 1 action set\n";
+	}
 	if (isRunning){
 		currentAnimation = runAnimation;
+	}else if (isRolling){
+		currentAnimation = rollAnimation;
+	}else if (isCrouching){
+		currentAnimation = crouchAnimation;
+	}else if (isJumpingUp){
+		currentAnimation = jumpUpAnimation;
 	}else{
-		lastTimeX = SDL_GetTicks();
 		currentAnimation = standAnimation;
 	}
 
 	xVelocity = (lastKeystate[keyRight] - lastKeystate[keyLeft]) * walkspeed;
+	if (!xVelocity)
+		lastTimeX = SDL_GetTicks();
 }

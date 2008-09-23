@@ -42,6 +42,8 @@ int main(int argc, char *argv[])
 	} catch(int) {
 		
 		//return exception;
+	} catch(char *message) {
+		printf("%s", message);
 	}
 	delete gm;
 	SDL_FreeSurface(screen);

@@ -19,10 +19,10 @@ class Player : public Mass
 
 		GameManager *gm;
 
-		Animation *runAnimation, *standAnimation;
+		Animation *runAnimation, *standAnimation, *rollAnimation, *crouchAnimation, *jumpUpAnimation;
 		Uint8 keyUp, keyDown, keyRight, keyLeft;
 		Uint8 *lastKeystate;
-		bool isRunning, isRolling;
+		bool isRunning, isRolling, isCrouching, isJumpingUp;
 		static const int walkspeed = 32;
 };
 
