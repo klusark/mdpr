@@ -14,7 +14,7 @@ class Sprite
 		~Sprite();
 		void animate();
 		void update();
-		void move(short x, short y);
+		void move();
 		enum collisionTypes
 		{
 			ground,
@@ -42,9 +42,11 @@ class Sprite
 		SDL_Surface *image;
 		Uint32 lastTimeY;
 		Uint32 lastTimeX;
+		double yMove, xMove, yVelocity, xVelocity;
 
 
 	private:
+		bool moved;
 		short currentFrame;
 		GameManager *gm;
 		Uint32 lastAnimationTime;

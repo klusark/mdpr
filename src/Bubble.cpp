@@ -13,7 +13,8 @@ Bubble::Bubble(GameManager *gm) : Sprite(gm)
 	Animation bubbleAnimation = makeAnimaion(3, 100, frames);
 
 	currentAnimation = bubbleAnimation;
-
+	xVelocity = 32;
+	yVelocity = 32;
 }
 
 Bubble::~Bubble()
@@ -23,10 +24,24 @@ Bubble::~Bubble()
 void Bubble::update()
 {
 	Sprite::update();
+	
+	
+	if (rect.x > gm->width-rect.w){
+		rect.x = static_cast<Sint16>(gm->width-rect.w);
+		xVelocity = -xVelocity;
+	}
+	if (rect.x < 0){
+		rect.x = static_cast<Sint16>(0);
+		xVelocity = -xVelocity;
+	}
 
-	move(5, 5);
-	if (rect.x > gm->height)
-		rect.x = gm->height-16;
-	if (rect.y > gm->width)
-		rect.y = gm->width-16;
+	if (rect.y > gm->height-rect.h){
+		rect.y = static_cast<Sint16>(gm->height-rect.h);
+		yVelocity = -yVelocity;
+	}
+	if (rect.y < 0){
+		rect.y = static_cast<Sint16>(0);
+		yVelocity = -yVelocity;
+	}
+
 }

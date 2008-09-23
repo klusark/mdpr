@@ -9,7 +9,7 @@
 #include "Effect.hpp"
 #include "GameManager.hpp"
 
-GameManager::GameManager(SDL_Surface *screen, int height, int width) : SpriteManager(screen)
+GameManager::GameManager(SDL_Surface *screen, int width, int height) : SpriteManager(screen)
 {
 	this->height = height;
 	this->width = width;

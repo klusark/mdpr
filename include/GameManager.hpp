@@ -12,7 +12,7 @@ struct SDL_Surface;
 class GameManager : public SpriteManager
 {
 	public:
-		GameManager(SDL_Surface *screen, int height, int width);
+		GameManager(SDL_Surface *screen, int width, int height);
 		~GameManager();
 		void tick();
 		bool isActive();
@@ -35,6 +35,7 @@ class GameManager : public SpriteManager
 		short queuedImages;
 		int width, height;
 		SDL_Rect edgeLeft, edgeRight, edgeTop, edgeBottom;
+		SDL_Rect platforms[16];
 	private:
 		void createLevel();
 		void createPlatforms();
@@ -47,7 +48,7 @@ class GameManager : public SpriteManager
 		///used to tell it gameStart should run its code
 		bool bStartGame;
 		
-		SDL_Rect platforms[16];
+		
 
 };
 /*! \class GameManager GameManager.hpp "include/GameManager.hpp"

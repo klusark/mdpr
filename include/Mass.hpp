@@ -14,6 +14,8 @@ class Mass : public Sprite
 		void applyGravity();
 		void checkPlatformCollision();
 	private:
+		bool Mass::isOverRect(SDL_Rect rect);
+		bool Mass::isUnderRect(SDL_Rect rect);
 		GameManager *gm;
 		/// the last time the y was moved
 		
