@@ -26,6 +26,7 @@ Bubble::~Bubble()
 
 void Bubble::update()
 {
+
 	Sprite::update();
 	
 	

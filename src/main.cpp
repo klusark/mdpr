@@ -9,8 +9,7 @@ int main(int argc, char *argv[])
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	int height = 200, width = 320;
-	SDL_Surface *screen = new SDL_Surface;
-	screen = SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE |SDL_HWACCEL | SDL_DOUBLEBUF);
+	SDL_Surface *screen = SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE |SDL_HWACCEL | SDL_DOUBLEBUF);
 	GameManager *gm = new GameManager(screen, width, height);
 	SDL_WM_SetCaption("Marshmallow Duel: Percy's Return", "Marshmallow Duel: Percy's Return");
 	Uint32 frames = 0, lastTime = 0;

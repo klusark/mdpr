@@ -30,11 +30,14 @@ void SpriteManager::tick()
 			bubbles[i]->update();
 		}
 	}
-	//update any current effects
-	//for (std::vector<Effect*>::iterator Iter = effects.begin(); Iter != effects.end(); ++Iter){
-		//(*Iter)->update();
-	//}
 
+	for (short i = 0; i<2; ++i){
+		if (effects[i] != 0){
+			if (effects[i]->isInUse()){
+				effects[i]->update();
+			}
+		}
+	}
 
 	checkCollions();
 }

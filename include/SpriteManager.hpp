@@ -1,13 +1,12 @@
 #ifndef SPRITEANAGER_HPP
 #define SPRITEANAGER_HPP
 
-#include "SDL/SDL.h"
-#include <vector>
 
 
 class Player;
 class Bubble;
 class Effect;
+struct SDL_Surface;
 
 class SpriteManager
 {
@@ -21,7 +20,7 @@ class SpriteManager
 		Player *player1;
 		Player *player2;
 		Bubble *bubbles[3];
-		std::vector<Effect*> effects;
+		Effect *effects[2];
 
 	private:
 		SDL_Surface *screen;
