@@ -21,6 +21,7 @@ GameManager::GameManager(SDL_Surface *screen, int width, int height) : SpriteMan
 	this->screen = screen;
 	loadImages();
 	queuedImages = 0;
+	
 }
 
 GameManager::~GameManager()

@@ -16,3 +16,6 @@ void Effect::update()
 {
 	Sprite::update();
 }
+void Effect::animationEnd()
+{
+}

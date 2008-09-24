@@ -48,3 +48,6 @@ void Bubble::update()
 	}
 
 }
+void Bubble::animationEnd()
+{
+}

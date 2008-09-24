@@ -12,6 +12,7 @@ Sprite::Sprite(GameManager *gm)
 	xMove = 0, yMove = 0, yVelocity = 0, xVelocity = 0, lastTimeX = 0, lastTimeY = 0;
 	moved = false;
 	lastAnimationTime = 0;
+	rect = gm->makeRect(0, 0, 0, 0);
 }
 
 Sprite::~Sprite()
@@ -32,11 +33,14 @@ void Sprite::update()
 void Sprite::animate()
 {
 	if(currentAnimation->delay < (SDL_GetTicks() - lastAnimationTime)){
+		image = currentAnimation->frames[currentAnimation->currentFrame];
 		lastAnimationTime = SDL_GetTicks();
 		++currentAnimation->currentFrame;
-		if (currentAnimation->currentFrame >= currentAnimation->numFrames)
+		if (currentAnimation->currentFrame >= currentAnimation->numFrames){
 			currentAnimation->currentFrame = 0;
-		image = currentAnimation->frames[currentAnimation->currentFrame];
+			animationEnd();
+		}
+		
 
 	}
 }
@@ -82,3 +86,4 @@ Sprite::Animation* Sprite::makeAnimaion(short numFrames, Uint16 delay, SDL_Surfa
 	animation->currentFrame = 0;
 	return animation;
 }
+void Sprite::animationEnd(){}

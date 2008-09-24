@@ -10,9 +10,10 @@ class Mass : public Sprite
 	public:
 		Mass(GameManager *);
 		~Mass();
-		void update();
+		virtual void update();
 		void applyGravity();
 		void checkPlatformCollision();
+		virtual void animationEnd();
 	protected:
 		bool isOnGround;
 	private:

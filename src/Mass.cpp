@@ -37,8 +37,9 @@ void Mass::checkPlatformCollision()
 			move();
 			if (isUnderRect(gm->platforms[i])){
 				//move player to platform
-				rect.y = gm->platforms[i].y-rect.h;
+				rect.y = gm->platforms[i].y - rect.h;
 				isOnGround = true;
+				return;
 			}
 		}
 	}
@@ -62,4 +63,7 @@ bool Mass::isUnderRect(SDL_Rect tempRect)
 		}
 	}
 	return false;
+}
+void Mass::animationEnd()
+{
 }

@@ -11,6 +11,7 @@ class Effect : public Sprite
 		Effect(GameManager *);
 		~Effect();
 		void update();
+		void animationEnd();
 	private:
 		GameManager *gm;
 };

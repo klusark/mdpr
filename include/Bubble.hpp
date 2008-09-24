@@ -11,6 +11,7 @@ class Bubble : public Sprite
 		Bubble(GameManager *);
 		~Bubble();
 		void update();
+		void animationEnd();
 	private:
 		GameManager *gm;
 };

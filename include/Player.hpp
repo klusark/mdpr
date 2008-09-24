@@ -11,18 +11,20 @@ class Player : public Mass
 		Player(GameManager *, short);
 		~Player();
 		void update();
-		void input();
+		void animationEnd();
+
 	private:
 		void actOnInput();
+		void input();
 		///1 or 2 depending on what player it is.
 		short playerNum;
 
 		GameManager *gm;
 
-		Animation *runAnimation, *standAnimation, *rollAnimation, *crouchAnimation, *jumpUpAnimation;
+		Animation *runAnimation, *standAnimation, *rollAnimation, *crouchDownAnimation, *jumpUpAnimation, *crouchedAnimation, *crouchUpAnimation;
 		Uint8 keyUp, keyDown, keyRight, keyLeft;
 		Uint8 *lastKeystate;
-		bool isRunning, isRolling, isCrouching, isJumpingUp;
+		bool isRunning, isRolling, isCrouchingDown, isJumpingUp, isCrouched, isCrouchingUp;
 		static const int walkspeed = 32;
 };
 
