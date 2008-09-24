@@ -7,7 +7,7 @@
 Mass::Mass(GameManager *gm) : Sprite(gm)
 {
 	this->gm = gm;
-	lastTimeY = 0;
+	isOnGround = false;
 }
 
 Mass::~Mass()
@@ -26,41 +26,60 @@ void Mass::update()
 
 void Mass::applyGravity()
 {
-	yVelocity = 30;
+	double test = (gravity * (SDL_GetTicks() - lastTimeY)/1000.0);
+	yVelocity += test;
+	if (yVelocity > terminalVelocity){
+		yVelocity = terminalVelocity;
+	}
 
 }
 
 void Mass::checkPlatformCollision()
 {
+	isOnGround = false;
+	move();
+	rect.y -= static_cast<Sint16>(yMove);
 	for (short i = 0; i < 16; ++i){
-		if (isOverRect(gm->platforms[i])){
-			move();
+		if (isOverRect(gm->platforms[i]) && isVerticalOfRect(gm->platforms[i])){
+			rect.y += static_cast<Sint16>(yMove);
 			if (isUnderRect(gm->platforms[i])){
 				//move player to platform
 				rect.y = gm->platforms[i].y - rect.h;
 				isOnGround = true;
+				yVelocity = 0;
+				yMove = 0;
+
 				return;
+			}else{
+				rect.y -= static_cast<Sint16>(yMove);
 			}
 		}
 	}
+	rect.y += static_cast<Sint16>(yMove);
 }
 
 bool Mass::isOverRect(SDL_Rect tempRect)
 {
-	if (tempRect.x + tempRect.w > rect.x &&tempRect.x < rect.x + rect.w){
-		if (tempRect.y > rect.y + rect.h - 1){
-			return true;
-		}
+	if (rect.y + rect.h <= tempRect.y){
+		return true;
 	}
 	return false;
 }
 
 bool Mass::isUnderRect(SDL_Rect tempRect)
 {
+
+	if (tempRect.y <= rect.y + rect.h){
+		return true;
+	}
+
+	return false;
+}
+
+bool Mass::isVerticalOfRect(SDL_Rect tempRect)
+{
 	if (tempRect.x + tempRect.w > rect.x &&tempRect.x < rect.x + rect.w){
-		if (tempRect.y < rect.y + rect.h){
-			return true;
-		}
+		return true;
 	}
 	return false;
 }

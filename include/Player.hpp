@@ -24,8 +24,10 @@ class Player : public Mass
 		Animation *runAnimation, *standAnimation, *rollAnimation, *crouchDownAnimation, *jumpUpAnimation, *crouchedAnimation, *crouchUpAnimation;
 		Uint8 keyUp, keyDown, keyRight, keyLeft;
 		Uint8 *lastKeystate;
-		bool isRunning, isRolling, isCrouchingDown, isJumpingUp, isCrouched, isCrouchingUp;
-		static const int walkspeed = 32;
+		bool isRunning, isRolling, isCrouchingDown, isJumpingUp, isCrouched, isCrouchingUp, isJumpingForward;
+		static const int walkSpeed		= 32;
+		static const int rollSpeed		= 40;
+		static const int jumpUpSpeed	= -40;
 };
 
 /*! \class Player player.hpp "include/player.hpp"
