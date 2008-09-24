@@ -9,9 +9,10 @@ class Sprite
 {
 	public:
 		Sprite(GameManager *);
-		~Sprite();
+		virtual ~Sprite();
 		void animate();
-		void update();
+		virtual void update();
+		virtual void animationEnd();
 		void move();
 		enum collisionTypes
 		{
