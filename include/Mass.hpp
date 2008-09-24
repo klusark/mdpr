@@ -19,6 +19,9 @@ class Mass : public Sprite
 	private:
 		bool isOverRect(SDL_Rect rect);
 		bool isUnderRect(SDL_Rect rect);
+		bool isVerticalOfRect(SDL_Rect rect);
+		static const int gravity = 32;
+		static const int terminalVelocity = 240;
 		GameManager *gm;
 		/// the last time the y was moved
 		

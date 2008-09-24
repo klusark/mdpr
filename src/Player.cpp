@@ -9,7 +9,7 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	this->gm = gm;
 	this->playerNum = playerNum;
 	setCollisionType(player);
-	rect = gm->makeRect(24, 24, 50, 50);
+	rect = gm->makeRect(24, 24, 50, 0);
 
 	SDL_Surface *runFrames[] = {gm->images["run0"], gm->images["run1"], gm->images["run2"], gm->images["run3"]};
 	runAnimation = makeAnimaion(4, 100, runFrames);
@@ -41,8 +41,7 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	keyLeft = SDLK_a;
 
 	lastKeystate = SDL_GetKeyState(0);
-	isOnGround = false;
-	isRunning = false, isRolling = false, isJumpingUp = false, isCrouchingDown = false, isCrouched = false, isCrouchingUp = false;
+	isRunning = false, isRolling = false, isJumpingUp = false, isCrouchingDown = false, isCrouched = false, isCrouchingUp = false, isJumpingForward = false;;
 }
 
 /**
@@ -85,7 +84,7 @@ void Player::input()
 				}
 			}else if(keystate[keyUp]){
 				if (keystate[keyRight] || keystate[keyLeft]){
-					//isRolling = true;
+					isJumpingForward = true;
 				}else{
 					isJumpingUp = true;
 				}
@@ -126,10 +125,20 @@ void Player::actOnInput()
 	}else{
 		currentAnimation = standAnimation;
 	}
-	
-	xVelocity = (lastKeystate[keyRight] - lastKeystate[keyLeft]) * walkspeed * (isRunning + isRolling);
-	if (!xVelocity)
-		lastTimeX = SDL_GetTicks();
+
+	if (isOnGround){
+		int xSpeed = walkSpeed * isRunning + rollSpeed * isRolling;
+		xVelocity = (lastKeystate[keyRight] - lastKeystate[keyLeft]) * xSpeed;
+		if (!xVelocity)
+			lastTimeX = SDL_GetTicks();
+	}
+
+	//int ySpeed = jumpUpSpeed * isJumpingUp;
+	//It will make more sense later
+	//TODO add more factors to the equation
+	//yVelocity = ySpeed;
+	//if (!yVelocity)
+	//	lastTimeY = SDL_GetTicks();
 }
 
 void Player::animationEnd()
