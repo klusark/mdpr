@@ -1,6 +1,6 @@
 #include "SDL/SDL.h"
 
-#include "GameManager.hpp"
+
 #include "Sprite.hpp"
 
 /**
@@ -40,8 +40,6 @@ void Sprite::animate()
 			currentAnimation->currentFrame = 0;
 			animationEnd();
 		}
-		
-
 	}
 }
 

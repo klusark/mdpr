@@ -2,6 +2,7 @@
 #define SPRITE_HPP
 
 #include "SDL/SDL.h"
+#include "GameManager.hpp"
 
 class GameManager;
 

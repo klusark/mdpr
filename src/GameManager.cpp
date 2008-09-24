@@ -1,7 +1,6 @@
 #include "SDL/SDL.h"
 #include <string>
 #include <map>
-#include <vector>
 #include "SDL/SDL_image.h"
 
 #include "Player.hpp"
@@ -46,9 +45,11 @@ void GameManager::tick()
 		startGame();
 		bStartGame = false;
 	}
-	updateLevel();
-	SpriteManager::tick();
 	
+	SpriteManager::tick();
+
+	updateLevel();
+
 	drawImageQueue();
 	SDL_Flip(screen);
 }
@@ -69,6 +70,9 @@ void GameManager::startGame()
 	player2 = new Player(this, 2);
 	for (short i = 0; i<3; ++i){
 		bubbles[i] = new Bubble(this);
+	}
+	for (short i = 0; i<2; ++i){
+		effects[i] = new Effect(this);
 	}
 	createLevel();
 }
@@ -118,6 +122,7 @@ void GameManager::createPlatforms()
 */
 void GameManager::createRopes()
 {
+	ropes = makeRect(150, 1, 80, 19);
 }
 
 /**
@@ -133,8 +138,10 @@ void GameManager::createMallow()
 void GameManager::updateLevel()
 {
 	for (short i = 0; i < 16; ++i){
-		addToImageQueue(images["platform"], platforms[i]);
+		SDL_BlitSurface(images["platform"], 0, screen, &platforms[i]);
 	}
+	SDL_FillRect(screen, &ropes, SDL_MapRGB(screen->format, 144, 96, 0));
+	
 }
 
 void GameManager::addToImageQueue(SDL_Surface *image, SDL_Rect rect)
@@ -166,12 +173,13 @@ void GameManager::loadImages()
 		"roll0",	"roll1",	"roll2",	"roll3",
 		"jumpup0",	"jumpup1",	"jumpup2",	"jumpup3", "jumpup4", 
 
+		"bubblestart0", "bubblestart1", "bubblestart2", 
 		"bubble0",	"bubble1",	"bubble2",
 		
 		"platform"
 	};
 	
-	for (short i = 0; i < 20; ++i){
+	for (short i = 0; i < 23; ++i){
 		SDL_RWops *rwop;
 		std::string file;
 		file += "data/main/";
@@ -194,4 +202,15 @@ SDL_Rect GameManager::makeRect(Uint16 h, Uint16 w, Uint16 x, Uint16 y)
 	rect.x = x;
 	rect.y = y;
 	return rect;
+}
+
+void GameManager::newEffect(std::string name)
+{
+	for (short i = 0; i < 2; ++i){
+		if (!effects[i]->isInUse()){
+			effects[i]->startEffect(name);
+			return;
+		}
+	}
+	throw "not enough effects alocated";
 }

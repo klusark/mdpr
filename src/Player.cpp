@@ -74,9 +74,9 @@ void Player::input()
 {
 	Uint8 *keystate = SDL_GetKeyState(0);
 
-	//isRunning = false, isJumpingUp = false;
+	isRunning = false, isJumpingUp = false;
 	if (isOnGround){
-		if (isCrouchingDown + isCrouched == 0){
+		if (isCrouchingDown + isCrouched + isRolling + isCrouchingUp == 0){
 			if (keystate[keyDown]){
 				if (keystate[keyRight] || keystate[keyLeft]){
 					isRolling = true;
@@ -106,7 +106,8 @@ void Player::input()
 
 void Player::actOnInput()
 {
-	short test = isRunning + isRolling + isCrouchingDown + isJumpingUp + isCrouched;
+	//no 2 can be set at the same time
+	short test = isRunning + isRolling + isCrouchingDown + isJumpingUp + isCrouched + isCrouchingUp;
 	if (test > 1){
 		throw "Error more than 1 action set\n";
 	}
@@ -126,7 +127,7 @@ void Player::actOnInput()
 		currentAnimation = standAnimation;
 	}
 	
-	xVelocity = (lastKeystate[keyRight] - lastKeystate[keyLeft]) * walkspeed * isRunning;
+	xVelocity = (lastKeystate[keyRight] - lastKeystate[keyLeft]) * walkspeed * (isRunning + isRolling);
 	if (!xVelocity)
 		lastTimeX = SDL_GetTicks();
 }
