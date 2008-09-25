@@ -1,6 +1,5 @@
 #include "SDL/SDL.h"
 
-
 #include "Sprite.hpp"
 
 /**
@@ -11,7 +10,7 @@ Sprite::Sprite(GameManager *gm)
 	this->gm = gm;
 	xMove = 0, yMove = 0, yVelocity = 0, xVelocity = 0, lastTimeX = 0, lastTimeY = 0;
 	moved = false;
-	lastAnimationTime = SDL_GetTicks();
+	lastAnimationTime = 0;
 	lastTimeX = SDL_GetTicks(), lastTimeY = SDL_GetTicks();
 	rect = gm->makeRect(0, 0, 0, 0);
 }
