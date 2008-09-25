@@ -38,22 +38,32 @@ void Mass::checkPlatformCollision()
 {
 	isOnGround = false;
 	move();
+	short smallestDistance = 320;
 	rect.y -= static_cast<Sint16>(yMove);
 	for (short i = 0; i < 16; ++i){
 		if (isOverRect(gm->platforms[i]) && isVerticalOfRect(gm->platforms[i])){
 			rect.y += static_cast<Sint16>(yMove);
 			if (isUnderRect(gm->platforms[i])){
+				if (gm->platforms[i].y < smallestDistance){
+					smallestDistance = gm->platforms[i].y;
+				}
 				//move player to platform
-				rect.y = gm->platforms[i].y - rect.h;
-				isOnGround = true;
-				yVelocity = 0;
-				yMove = 0;
+				//rect.y = gm->platforms[i].y - rect.h;
+				//isOnGround = true;
+				//yVelocity = 0;
+				//yMove = 0;
 
-				return;
-			}else{
-				rect.y -= static_cast<Sint16>(yMove);
+				//return;
 			}
+			rect.y -= static_cast<Sint16>(yMove);
 		}
+	}
+	if (smallestDistance != 320){
+		rect.y = smallestDistance - rect.h;
+		isOnGround = true;
+		yVelocity = 0;
+		yMove = 0;
+		return;
 	}
 	rect.y += static_cast<Sint16>(yMove);
 }
