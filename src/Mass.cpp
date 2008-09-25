@@ -3,6 +3,8 @@
 
 /**
  * consturcts the mass part of a sprite
+ *
+ * @param gm a copy of the game manager
  */
 Mass::Mass(GameManager *gm) : Sprite(gm)
 {
@@ -10,10 +12,16 @@ Mass::Mass(GameManager *gm) : Sprite(gm)
 	isOnGround = false;
 }
 
+/**
+ * deconsturctor for mass objects
+*/
 Mass::~Mass()
 {
 }
 
+/**
+ * update the mass with falling and platform collisions
+*/
 void Mass::update()
 {
 	applyGravity();
@@ -24,6 +32,9 @@ void Mass::update()
 	
 }
 
+/**
+ * makes the mass fall with grvvity
+*/
 void Mass::applyGravity()
 {
 	double test = (gravity * (SDL_GetTicks() - lastTimeY)/1000.0);
@@ -34,6 +45,9 @@ void Mass::applyGravity()
 
 }
 
+/**
+ *	check for collisions with platforms and acts on the collisions
+*/
 void Mass::checkPlatformCollision()
 {
 	isOnGround = false;
@@ -47,13 +61,6 @@ void Mass::checkPlatformCollision()
 				if (gm->platforms[i].y < smallestDistance){
 					smallestDistance = gm->platforms[i].y;
 				}
-				//move player to platform
-				//rect.y = gm->platforms[i].y - rect.h;
-				//isOnGround = true;
-				//yVelocity = 0;
-				//yMove = 0;
-
-				//return;
 			}
 			rect.y -= static_cast<Sint16>(yMove);
 		}
@@ -68,6 +75,13 @@ void Mass::checkPlatformCollision()
 	rect.y += static_cast<Sint16>(yMove);
 }
 
+/**
+ * checks if the current rect is over the given rect
+ *
+ * @param tempRect the rect to check against
+ *
+ * @return true if over rect false if under
+*/
 bool Mass::isOverRect(SDL_Rect tempRect)
 {
 	if (rect.y + rect.h <= tempRect.y){
@@ -76,6 +90,13 @@ bool Mass::isOverRect(SDL_Rect tempRect)
 	return false;
 }
 
+/**
+ * checks if the current rect is under the given rect
+ *
+ * @param tempRect the rect to check against
+ *
+ * @return true if under rect false if over
+*/
 bool Mass::isUnderRect(SDL_Rect tempRect)
 {
 
@@ -86,6 +107,13 @@ bool Mass::isUnderRect(SDL_Rect tempRect)
 	return false;
 }
 
+/**
+ * checks if the current rect is alligned verticaly with the given rect
+ *
+ * @param tempRect the rect to check against
+ *
+ * @return true if alligned rect false if not alligned
+*/
 bool Mass::isVerticalOfRect(SDL_Rect tempRect)
 {
 	if (tempRect.x + tempRect.w > rect.x &&tempRect.x < rect.x + rect.w){
@@ -93,6 +121,10 @@ bool Mass::isVerticalOfRect(SDL_Rect tempRect)
 	}
 	return false;
 }
+
+/**
+ * not used but is needed as it is a virtual
+*/
 void Mass::animationEnd()
 {
 }

@@ -22,7 +22,6 @@ class Sprite
 		};
 		void setCollisionType(collisionTypes);
 		
-		//void makeAnimaion(Animation &name, short numFrames, SDL_Surface *frames[]);
 	protected:
 		collisionTypes collisionType;
 
@@ -45,7 +44,6 @@ class Sprite
 		Uint32 lastTimeY;
 		Uint32 lastTimeX;
 		double yMove, xMove, yVelocity, xVelocity;
-
 
 	private:
 		bool moved;
