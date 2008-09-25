@@ -14,21 +14,26 @@ class Mass : public Sprite
 		void applyGravity();
 		void checkPlatformCollision();
 		virtual void animationEnd();
+
 	protected:
+		///true when the sprite is on the ground false when not
 		bool isOnGround;
-	private:
 		bool isOverRect(SDL_Rect rect);
 		bool isUnderRect(SDL_Rect rect);
 		bool isVerticalOfRect(SDL_Rect rect);
-		static const int gravity = 32;
+
+	private:
+		///pixels per second to move down
+		static const int gravity = 7;
+		///max pixels per second down
 		static const int terminalVelocity = 240;
+		///the game manager
 		GameManager *gm;
-		/// the last time the y was moved
 		
 };
-/*! \class Mass Mass.hpp "include/Mass.hpp"
+/** \class Mass Mass.hpp "include/Mass.hpp"
  *  \brief The Mass class
  *
- * The Mass class
+ * handles moving any sprites with mass down with gravity
  */
 #endif

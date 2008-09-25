@@ -9,7 +9,7 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	this->gm = gm;
 	this->playerNum = playerNum;
 	setCollisionType(player);
-	rect = gm->makeRect(24, 24, 50, 0);
+	rect = gm->makeRect(24, 24, 50, 50);
 
 	SDL_Surface *runFrames[] = {gm->images["run0"], gm->images["run1"], gm->images["run2"], gm->images["run3"]};
 	runAnimation = makeAnimaion(4, 100, runFrames);
@@ -41,7 +41,7 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	keyLeft = SDLK_a;
 
 	lastKeystate = SDL_GetKeyState(0);
-	isRunning = false, isRolling = false, isJumpingUp = false, isCrouchingDown = false, isCrouched = false, isCrouchingUp = false, isJumpingForward = false;;
+	isRunning = false, isRolling = false, isJumpingUp = false, isCrouchingDown = false, isCrouched = false, isCrouchingUp = false, isJumpingForward = false, isJumpingUpStart = false;
 }
 
 /**
@@ -73,7 +73,7 @@ void Player::input()
 {
 	Uint8 *keystate = SDL_GetKeyState(0);
 
-	isRunning = false, isJumpingUp = false;
+	isRunning = false;
 	if (isOnGround){
 		if (isCrouchingDown + isCrouched + isRolling + isCrouchingUp == 0){
 			if (keystate[keyDown]){
@@ -86,7 +86,11 @@ void Player::input()
 				if (keystate[keyRight] || keystate[keyLeft]){
 					isJumpingForward = true;
 				}else{
-					isJumpingUp = true;
+					if (isTouchingRope()){
+					}else{
+						isJumpingUp = true;
+						isJumpingUpStart = true;
+					}
 				}
 			}else{
 				if (keystate[keyRight] || keystate[keyLeft]){
@@ -103,6 +107,9 @@ void Player::input()
 	lastKeystate = keystate;
 }
 
+/**
+ * acts on all the input for the player
+*/
 void Player::actOnInput()
 {
 	//no 2 can be set at the same time
@@ -133,14 +140,21 @@ void Player::actOnInput()
 			lastTimeX = SDL_GetTicks();
 	}
 
-	//int ySpeed = jumpUpSpeed * isJumpingUp;
+	if (isJumpingUpStart){
+		yVelocity = jumpUpSpeed;
+		isJumpingUpStart = false;
+	}
 	//It will make more sense later
 	//TODO add more factors to the equation
-	//yVelocity = ySpeed;
+
 	//if (!yVelocity)
 	//	lastTimeY = SDL_GetTicks();
 }
 
+/**
+ * gets run when an animation ends
+ * handles and animation chaning and animation terminating
+*/
 void Player::animationEnd()
 {
 	if (isCrouchingDown){
@@ -156,5 +170,20 @@ void Player::animationEnd()
 	}else if (isRolling){
 		isCrouched = true;
 		isRolling = false;
+	}else if (isJumpingUp){
+		isJumpingUp = false;
 	}
+}
+
+/**
+ * checks if the player is touching the rope
+ *
+ * @return true if touching false if not touching
+*/
+bool Player::isTouchingRope()
+{
+	if (isVerticalOfRect(gm->ropes)){
+		return true;
+	}
+	return false;
 }
