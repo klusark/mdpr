@@ -9,6 +9,7 @@ Mass::Mass(GameManager *gm) : Sprite(gm)
 {
 	this->gm = gm;
 	isOnGround = false;
+	doNotCollideWithPlatform = false;
 }
 
 /**
@@ -49,31 +50,33 @@ void Mass::applyGravity()
 */
 void Mass::checkPlatformCollision()
 {
-	isOnGround = false;
-	move();
-	if (yMove > 0){
-		short smallestDistance = 320;
-		rect.y -= static_cast<Sint16>(yMove);
-		for (short i = 0; i < 16; ++i){
-			if (isOverRect(gm->platforms[i]) && isVerticalOfRect(gm->platforms[i])){
-				rect.y += static_cast<Sint16>(yMove);
-				if (isUnderRect(gm->platforms[i])){
-					if (gm->platforms[i].y < smallestDistance){
-						smallestDistance = gm->platforms[i].y;
+	if (!doNotCollideWithPlatform){
+		isOnGround = false;
+		move();
+		if (yMove > 0){
+			short smallestDistance = 320;
+			rect.y -= static_cast<Sint16>(yMove);
+			for (short i = 0; i < gm->numPlatforms; ++i){
+				if (isOverRect(gm->platforms[i]) && isVerticalOfRect(gm->platforms[i])){
+					rect.y += static_cast<Sint16>(yMove);
+					if (isUnderRect(gm->platforms[i])){
+						if (gm->platforms[i].y < smallestDistance){
+							smallestDistance = gm->platforms[i].y;
+						}
 					}
+					rect.y -= static_cast<Sint16>(yMove);
 				}
-				rect.y -= static_cast<Sint16>(yMove);
 			}
+			if (smallestDistance != 320){
+				rect.y = smallestDistance - rect.h;
+				isOnGround = true;
+				yVelocity = 0;
+				yMove = 0;
+				lastTimeY = SDL_GetTicks();
+				return;
+			}
+			rect.y += static_cast<Sint16>(yMove);
 		}
-		if (smallestDistance != 320){
-			rect.y = smallestDistance - rect.h;
-			isOnGround = true;
-			yVelocity = 0;
-			yMove = 0;
-			lastTimeY = SDL_GetTicks();
-			return;
-		}
-		rect.y += static_cast<Sint16>(yMove);
 	}
 }
 
@@ -119,6 +122,38 @@ bool Mass::isUnderRect(SDL_Rect tempRect)
 bool Mass::isVerticalOfRect(SDL_Rect tempRect)
 {
 	if (tempRect.x + tempRect.w > rect.x &&tempRect.x < rect.x + rect.w){
+		return true;
+	}
+	return false;
+}
+
+bool Mass::isOverBottomOfRect(SDL_Rect tempRect)
+{
+	if (tempRect.y + tempRect.h > rect.y + rect.h){
+		return true;
+	}
+	return false;
+}
+
+bool Mass::isUnderTopOfRect(SDL_Rect tempRect)
+{
+	if (tempRect.y < rect.y){
+		return true;
+	}
+	return false;
+}
+
+bool Mass::isUnderBottomOfRect(SDL_Rect tempRect)
+{
+	if (tempRect.y + tempRect.h <= rect.y + rect.h){
+		return true;
+	}
+	return false;
+}
+
+bool Mass::isOverTopOfRect(SDL_Rect tempRect)
+{
+	if (tempRect.y > rect.y){
 		return true;
 	}
 	return false;
