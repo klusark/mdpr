@@ -1,6 +1,7 @@
 #ifndef GAMEMANAGER_HPP
 #define GAMEMANAGER_HPP
 
+#include <stdio.h>
 #include "SDL/SDL.h"
 #include "SpriteManager.hpp"
 #include <map>
@@ -32,7 +33,9 @@ class GameManager : public SpriteManager
 		Queue imageQueue[32];
 		short queuedImages;
 		int width, height;
-		SDL_Rect platforms[16], ropes;
+		static const int numPlatforms = 70;
+		SDL_Rect platforms[numPlatforms], ropes;
+		
 	private:
 		void createLevel();
 		void createPlatforms();

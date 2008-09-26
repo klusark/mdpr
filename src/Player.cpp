@@ -150,7 +150,9 @@ void Player::actOnInput()
 		isJumpingUpStart = false;
 		
 	}
+
 	if (isClimbingRope){
+		doNotCollideWithPlatform = true;
 		if (lastKeystate[keyUp]){
 			yVelocity = -ropeSpeed;
 		}else if (lastKeystate[keyDown]){
@@ -158,6 +160,9 @@ void Player::actOnInput()
 		}else{
 			lastTimeY = SDL_GetTicks();
 		}
+		collideWithRopeEnds();
+	}else{
+		doNotCollideWithPlatform = false;
 	}
 	//It will make more sense later
 	//TODO add more factors to the equation
@@ -201,4 +206,25 @@ bool Player::isTouchingRope()
 		return true;
 	}
 	return false;
+}
+
+void Player::collideWithRopeEnds()
+{
+	move();
+	if (yMove > 1 || yMove < -1){
+		rect.y -= static_cast<Sint16>(yMove);
+
+		if (!isOverBottomOfRect(gm->ropes) || !isUnderTopOfRect(gm->ropes) && isVerticalOfRect(gm->ropes)){
+			rect.y += static_cast<Sint16>(yMove);
+			if (isUnderBottomOfRect(gm->ropes)){
+				rect.y = gm->ropes.y + gm->ropes.h - rect.h;
+				return;
+			}else if(isOverTopOfRect(gm->ropes)){
+				rect.y = gm->ropes.y;
+				return;
+			}
+			rect.y -= static_cast<Sint16>(yMove);
+		}
+		rect.y += static_cast<Sint16>(yMove);
+	}
 }

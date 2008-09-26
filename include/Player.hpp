@@ -16,6 +16,7 @@ class Player : public Mass
 	private:
 		void actOnInput();
 		void input();
+		void collideWithRopeEnds();
 		bool isTouchingRope();
 		///1 or 2 depending on what player it is.
 		short playerNum;

@@ -1,5 +1,9 @@
 #include "SDL/SDL.h"
 
+#include <stdio.h>
+
+#include <time.h>
+
 #include "GameManager.hpp"
 
 /**
@@ -13,6 +17,9 @@ int main(int argc, char *argv[])
 	GameManager *gm = new GameManager(screen, width, height);
 	SDL_WM_SetCaption("Marshmallow Duel: Percy's Return", "Marshmallow Duel: Percy's Return");
 	Uint32 frames = 0, lastTime = 0;
+
+	srand ( (unsigned) time(NULL) );
+
 
 	//main loop
 	gm->activate();

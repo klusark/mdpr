@@ -21,6 +21,11 @@ class Mass : public Sprite
 		bool isOverRect(SDL_Rect rect);
 		bool isUnderRect(SDL_Rect rect);
 		bool isVerticalOfRect(SDL_Rect rect);
+		bool isOverBottomOfRect(SDL_Rect rect);
+		bool isUnderTopOfRect(SDL_Rect rect);
+		bool isUnderBottomOfRect(SDL_Rect rect);
+		bool isOverTopOfRect(SDL_Rect rect);
+		bool doNotCollideWithPlatform;
 
 	private:
 		///pixels per second to move down

@@ -96,21 +96,30 @@ void GameManager::createPlatforms()
 	short yTemp = 0, xTemp = 0;
 	short i, h = 8, w = 14;
 	
-	for (i = 0; i <= 15; ++i){
+	for (i = 0; i <= numPlatforms; ++i){
 		if (i == 0){
 			//bottom left
 			yTemp = 168;
 			xTemp = 25;
-		}else if(i == 4){
+		}else if (i == 4){
 			//bottom right
 			xTemp = 233;
-		}else if(i == 8){
+		}else if (i == 8){
 			//top left
 			yTemp = 40;
 			xTemp = 49;
-		}else if(i == 12){
+		}else if (i == 12){
 			//top right
 			xTemp = 209;
+		}else if (i == 16){
+			xTemp = 17;
+			yTemp = 72;
+		}else if (i == 34){
+			xTemp = 17;
+			yTemp = 104;
+		}else if (i == 52){
+			xTemp = 17;
+			yTemp = 136;
 		}
 		platforms[i] = makeRect(h, w, xTemp, yTemp);
 		xTemp += 16;
@@ -123,7 +132,7 @@ void GameManager::createPlatforms()
 */
 void GameManager::createRopes()
 {
-	ropes = makeRect(150, 1, 80, 19);
+	ropes = makeRect(152, 1, 80, 16);
 }
 
 /**
@@ -138,7 +147,7 @@ void GameManager::createMallow()
 */
 void GameManager::updateLevel()
 {
-	for (short i = 0; i < 16; ++i){
+	for (short i = 0; i < numPlatforms; ++i){
 		SDL_BlitSurface(images["platform"], 0, screen, &platforms[i]);
 	}
 	SDL_FillRect(screen, &ropes, SDL_MapRGB(screen->format, 144, 96, 0));
