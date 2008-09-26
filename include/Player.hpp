@@ -23,8 +23,8 @@ class Player : public Mass
 		GameManager *gm;
 		///the run animation
 		Animation *runAnimation,
-			/// the standing animation
-			*standAnimation,
+			/// the idleing animation
+			*idleAnimation,
 			/// the rolling animation
 			*rollAnimation,
 			/// the animation that starts when the player presses the crouch key
@@ -34,7 +34,10 @@ class Player : public Mass
 			/// the animation when the crouch key is held
 			*crouchedAnimation,
 			/// the animation when the crouch key is let go of
-			*crouchUpAnimation;
+			*crouchUpAnimation,
+			///	the animation when the player is on the rope;
+			*climbAnimation;
+
 		/// the up key
 		Uint8 keyUp,
 			/// the down key
@@ -45,21 +48,35 @@ class Player : public Mass
 			keyLeft;
 		/// the last state of the keys
 		Uint8 *lastKeystate;
-
+		
+		/// is the player currently running
 		bool isRunning,
+			/// is the player currently rolling
 			isRolling,
+			/// is the player currently starting to crouch
 			isCrouchingDown,
+			/// is the player currently jumping up
 			isJumpingUp,
+			/// is the player currently fully crouched
 			isCrouched,
+			/// is the player currently ending crouching
 			isCrouchingUp,
+			/// is the player currently jumping forward
 			isJumpingForward,
+			/// is the player currently climbing the rope
+			isClimbingRope,
+			/// is the player currently starting to jump up
 			isJumpingUpStart;
+
+
 		/// the speed in the x the palyer goes at when walking
 		static const int walkSpeed		= 32;
 		/// the speed in the x the palyer goes at when rolling
 		static const int rollSpeed		= 40;
 		/// the speed in the y the player goes when jumping up
 		static const int jumpUpSpeed	= -100;
+		/// the speed in the y the player goes when moving on the rope
+		static const int ropeSpeed		= 31;
 };
 
 /*! \class Player player.hpp "include/player.hpp"

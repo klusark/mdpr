@@ -40,10 +40,13 @@ class GameManager : public SpriteManager
 		void createMallow();
 		void updateLevel();
 		void loadImages();
+		void throttleFPS(short FPS);
 
 		bool bActive;
 		///used to tell it gameStart should run its code
 		bool bStartGame;
+
+		Uint32 currentTicks, lastTicks;
 		
 		
 

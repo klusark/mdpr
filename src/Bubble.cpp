@@ -1,4 +1,3 @@
-#include "GameManager.hpp"
 #include "Bubble.hpp"
 
 /**

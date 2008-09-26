@@ -52,6 +52,7 @@ void GameManager::tick()
 
 	drawImageQueue();
 	SDL_Flip(screen);
+	throttleFPS(60);
 }
 
 bool GameManager::isActive()
@@ -167,19 +168,20 @@ void GameManager::clearRect(SDL_Rect rect)
 void GameManager::loadImages()
 {
 	std::string imageList[] = {
-		"stand",
-		"crouch0",	"crouch1",
-		"run0",		"run1",		"run2",		"run3",
-		"roll0",	"roll1",	"roll2",	"roll3",
-		"jumpup0",	"jumpup1",	"jumpup2",	"jumpup3", "jumpup4", 
+		"idle",
+		"crouch0",		"crouch1",
+		"run0",			"run1",			"run2",			"run3",
+		"roll0",		"roll1",		"roll2",		"roll3",
+		"climbRope0",	"climbRope1",	"climbRope2",	"climbRope3", 
+		"jumpUp0",		"jumpUp1",		"jumpUp2",		"jumpUp3",		"jumpUp4", 
 
 		"bubblestart0", "bubblestart1", "bubblestart2", 
-		"bubble0",	"bubble1",	"bubble2",
+		"bubble0",		"bubble1",		"bubble2",
 		
 		"platform"
 	};
 	
-	for (short i = 0; i < 23; ++i){
+	for (short i = 0; i < 27; ++i){
 		SDL_RWops *rwop;
 		std::string file;
 		file += "data/main/";
@@ -213,4 +215,17 @@ void GameManager::newEffect(std::string name)
 		}
 	}
 	throw "not enough effects alocated";
+}
+
+void GameManager::throttleFPS(short FPS)
+{
+	Uint32 wait = (Uint32)(1000 / FPS);
+
+	currentTicks = SDL_GetTicks();
+	if ((currentTicks - lastTicks) < wait){
+		//framerate exceeded limit....so we wait the difference
+		SDL_Delay(wait - (currentTicks - lastTicks));
+	}
+	lastTicks = SDL_GetTicks();
+
 }
