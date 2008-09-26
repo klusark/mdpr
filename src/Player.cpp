@@ -1,4 +1,3 @@
-#include "GameManager.hpp"
 #include "Player.hpp"
 
 /**
@@ -23,17 +22,19 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	SDL_Surface *crouchUpFrames[] = {gm->images["crouch1"], gm->images["crouch0"]};
 	crouchUpAnimation = makeAnimaion(2, 100, crouchUpFrames);
 
-	SDL_Surface *jumpUpFrames[] = {gm->images["jumpup0"], gm->images["jumpup1"], gm->images["jumpup2"], gm->images["jumpup3"], gm->images["jumpup4"]};
+	SDL_Surface *jumpUpFrames[] = {gm->images["jumpUp0"], gm->images["jumpUp1"], gm->images["jumpUp2"], gm->images["jumpUp3"], gm->images["jumpUp4"]};
 	jumpUpAnimation = makeAnimaion(5, 100, jumpUpFrames);
 
 	SDL_Surface *crouchedFrames[] = {gm->images["crouch1"]};
 	crouchedAnimation = makeAnimaion(1, 100, crouchedFrames);
 
+	SDL_Surface *climbFrames[] = {gm->images["climbRope0"], gm->images["climbRope1"], gm->images["climbRope2"], gm->images["climbRope3"]};
+	climbAnimation = makeAnimaion(4, 100, climbFrames);
+	
+	SDL_Surface *idleFrames[] = {gm->images["idle"]};
+	idleAnimation = makeAnimaion(1, 100, idleFrames);
 
-	SDL_Surface *idleFrames[] = {gm->images["stand"]};
-	standAnimation = makeAnimaion(1, 100, idleFrames);
-
-	currentAnimation = standAnimation;
+	currentAnimation = idleAnimation;
 
 	keyUp = SDLK_w;
 	keyDown = SDLK_s;
@@ -41,7 +42,7 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	keyLeft = SDLK_a;
 
 	lastKeystate = SDL_GetKeyState(0);
-	isRunning = false, isRolling = false, isJumpingUp = false, isCrouchingDown = false, isCrouched = false, isCrouchingUp = false, isJumpingForward = false, isJumpingUpStart = false;
+	isRunning = false, isRolling = false, isJumpingUp = false, isCrouchingDown = false, isCrouched = false, isCrouchingUp = false, isJumpingForward = false, isJumpingUpStart = false, isClimbingRope = false;
 }
 
 /**
@@ -50,7 +51,7 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 Player::~Player()
 {
 	delete runAnimation;
-	delete standAnimation;
+	delete idleAnimation;
 	delete rollAnimation;
 }
 
@@ -63,7 +64,6 @@ void Player::update()
 	input();
 	actOnInput();
 	Mass::update();
-	
 }
 
 /**
@@ -75,7 +75,7 @@ void Player::input()
 
 	isRunning = false;
 	if (isOnGround){
-		if (isCrouchingDown + isCrouched + isRolling + isCrouchingUp == 0){
+		if (isCrouchingDown + isCrouched + isRolling + isCrouchingUp + isClimbingRope == 0){
 			if (keystate[keyDown]){
 				if (keystate[keyRight] || keystate[keyLeft]){
 					isRolling = true;
@@ -87,6 +87,7 @@ void Player::input()
 					isJumpingForward = true;
 				}else{
 					if (isTouchingRope()){
+						isClimbingRope = true;
 					}else{
 						isJumpingUp = true;
 						isJumpingUpStart = true;
@@ -129,8 +130,10 @@ void Player::actOnInput()
 		currentAnimation = crouchedAnimation;
 	}else if (isCrouchingUp){
 		currentAnimation = crouchUpAnimation;
+	}else if (isClimbingRope){
+		currentAnimation = climbAnimation;
 	}else{
-		currentAnimation = standAnimation;
+		currentAnimation = idleAnimation;
 	}
 
 	if (isOnGround){
@@ -138,11 +141,23 @@ void Player::actOnInput()
 		xVelocity = (lastKeystate[keyRight] - lastKeystate[keyLeft]) * xSpeed;
 		if (!xVelocity)
 			lastTimeX = SDL_GetTicks();
+	}else{
+		lastTimeX = SDL_GetTicks();
 	}
 
 	if (isJumpingUpStart){
 		yVelocity = jumpUpSpeed;
 		isJumpingUpStart = false;
+		
+	}
+	if (isClimbingRope){
+		if (lastKeystate[keyUp]){
+			yVelocity = -ropeSpeed;
+		}else if (lastKeystate[keyDown]){
+			yVelocity = ropeSpeed;
+		}else{
+			lastTimeY = SDL_GetTicks();
+		}
 	}
 	//It will make more sense later
 	//TODO add more factors to the equation

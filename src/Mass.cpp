@@ -1,4 +1,3 @@
-#include "GameManager.hpp"
 #include "Mass.hpp"
 
 /**
@@ -52,27 +51,30 @@ void Mass::checkPlatformCollision()
 {
 	isOnGround = false;
 	move();
-	short smallestDistance = 320;
-	rect.y -= static_cast<Sint16>(yMove);
-	for (short i = 0; i < 16; ++i){
-		if (isOverRect(gm->platforms[i]) && isVerticalOfRect(gm->platforms[i])){
-			rect.y += static_cast<Sint16>(yMove);
-			if (isUnderRect(gm->platforms[i])){
-				if (gm->platforms[i].y < smallestDistance){
-					smallestDistance = gm->platforms[i].y;
+	if (yMove > 0){
+		short smallestDistance = 320;
+		rect.y -= static_cast<Sint16>(yMove);
+		for (short i = 0; i < 16; ++i){
+			if (isOverRect(gm->platforms[i]) && isVerticalOfRect(gm->platforms[i])){
+				rect.y += static_cast<Sint16>(yMove);
+				if (isUnderRect(gm->platforms[i])){
+					if (gm->platforms[i].y < smallestDistance){
+						smallestDistance = gm->platforms[i].y;
+					}
 				}
+				rect.y -= static_cast<Sint16>(yMove);
 			}
-			rect.y -= static_cast<Sint16>(yMove);
 		}
+		if (smallestDistance != 320){
+			rect.y = smallestDistance - rect.h;
+			isOnGround = true;
+			yVelocity = 0;
+			yMove = 0;
+			lastTimeY = SDL_GetTicks();
+			return;
+		}
+		rect.y += static_cast<Sint16>(yMove);
 	}
-	if (smallestDistance != 320){
-		rect.y = smallestDistance - rect.h;
-		isOnGround = true;
-		yVelocity = 0;
-		yMove = 0;
-		return;
-	}
-	rect.y += static_cast<Sint16>(yMove);
 }
 
 /**
