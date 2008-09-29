@@ -75,12 +75,12 @@ class Player : public Mass
 		/// the speed in the x the palyer goes at when rolling
 		static const int rollSpeed		= 40;
 		/// the speed in the y the player goes when jumping up
-		static const int jumpUpSpeed	= -100;
+		static const int jumpUpSpeed	= -150;
 		/// the speed in the y the player goes when moving on the rope
-		static const int ropeSpeed		= 31;
+		static const int ropeSpeed		= 32;
 };
 
-/*! \class Player player.hpp "include/player.hpp"
+/** \class Player player.hpp "include/player.hpp"
  *  \brief The Player class
  *
  * The Player class

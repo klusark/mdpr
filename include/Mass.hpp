@@ -29,9 +29,12 @@ class Mass : public Sprite
 
 	private:
 		///pixels per second to move down
-		static const int gravity = 7;
+		static const int gravity = 420;
 		///max pixels per second down
 		static const int terminalVelocity = 240;
+
+		Uint32 lastTimeGrav;
+
 		///the game manager
 		GameManager *gm;
 		

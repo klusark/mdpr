@@ -10,6 +10,7 @@ Mass::Mass(GameManager *gm) : Sprite(gm)
 	this->gm = gm;
 	isOnGround = false;
 	doNotCollideWithPlatform = false;
+	lastTimeGrav = SDL_GetTicks();
 }
 
 /**
@@ -37,7 +38,8 @@ void Mass::update()
 */
 void Mass::applyGravity()
 {
-	double test = (gravity * (SDL_GetTicks() - lastTimeY)/1000.0);
+	double test = (gravity * (SDL_GetTicks() - lastTimeGrav)/1000.0);
+	lastTimeGrav = SDL_GetTicks();
 	yVelocity += test;
 	if (yVelocity > terminalVelocity){
 		yVelocity = terminalVelocity;
@@ -73,7 +75,13 @@ void Mass::checkPlatformCollision()
 				yVelocity = 0;
 				yMove = 0;
 				lastTimeY = SDL_GetTicks();
+				
 				return;
+			}
+			if (!isOnGround){
+				if (xVelocity == 0){
+					lastTimeX = SDL_GetTicks();
+				}
 			}
 			rect.y += static_cast<Sint16>(yMove);
 		}

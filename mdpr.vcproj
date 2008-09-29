@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="include;../sdl/include"
+				AdditionalIncludeDirectories="include;../sdl/include;C:/python25/include"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -59,7 +59,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="SDL.lib SDLmain.lib SDL_image.lib"
-				AdditionalLibraryDirectories="../sdl/lib"
+				AdditionalLibraryDirectories="../sdl/lib;C:/python25/libs"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -114,7 +114,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="include;../sdl/include"
+				AdditionalIncludeDirectories="include;../sdl/include;C:/python25/include"
 				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -133,7 +133,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="SDL.lib SDLmain.lib SDL_image.lib"
-				AdditionalLibraryDirectories="../sdl/lib"
+				AdditionalLibraryDirectories="../sdl/lib;C:/python25/libs"
 				GenerateDebugInformation="false"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -186,6 +186,10 @@
 					RelativePath=".\src\SpriteManager.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\src\WeaponManager.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Sprites"
@@ -208,6 +212,14 @@
 				</File>
 				<File
 					RelativePath=".\src\Sprite.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Weapons"
+				>
+				<File
+					RelativePath=".\src\Weapon.cpp"
 					>
 				</File>
 			</Filter>
@@ -250,6 +262,18 @@
 				</File>
 				<File
 					RelativePath=".\include\SpriteManager.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\WeaponManager.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Weapons"
+				>
+				<File
+					RelativePath=".\include\Weapon.hpp"
 					>
 				</File>
 			</Filter>

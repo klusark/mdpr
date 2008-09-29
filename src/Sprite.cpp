@@ -13,6 +13,7 @@ Sprite::Sprite(GameManager *gm)
 	lastAnimationTime = 0;
 	lastTimeX = SDL_GetTicks(), lastTimeY = SDL_GetTicks();
 	rect = gm->makeRect(0, 0, 0, 0);
+	layer = 1;
 }
 
 Sprite::~Sprite()
@@ -25,7 +26,7 @@ void Sprite::update()
 	gm->clearRect(lastRect);
 	move();
 	animate();
-	gm->addToImageQueue(image, rect);
+	gm->addToImageQueue(image, rect, layer);
 	lastRect = rect;
 	moved = false;
 }
