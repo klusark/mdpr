@@ -4,8 +4,10 @@
 #include <stdio.h>
 #include "SDL/SDL.h"
 #include "SpriteManager.hpp"
+#include "WeaponManager.hpp"
 #include <map>
 #include <string>
+#include <queue>
 
 
 class GameManager : public SpriteManager
@@ -17,7 +19,7 @@ class GameManager : public SpriteManager
 		bool isActive();
 		void activate();
 		void startGame();
-		void addToImageQueue(SDL_Surface *, SDL_Rect);
+		void addToImageQueue(SDL_Surface *, SDL_Rect, short layer);
 		void drawImageQueue();
 		void clearRect(SDL_Rect);
 		void newEffect(std::string name);
@@ -29,9 +31,8 @@ class GameManager : public SpriteManager
 			SDL_Surface *image;
 			SDL_Rect rect;
 		};
-		
-		Queue imageQueue[32];
-		short queuedImages;
+		std::queue<Queue> imageQueue[4];
+
 		int width, height;
 		static const int numPlatforms = 70;
 		SDL_Rect platforms[numPlatforms], ropes;

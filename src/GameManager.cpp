@@ -19,7 +19,6 @@ GameManager::GameManager(SDL_Surface *screen, int width, int height) : SpriteMan
 	bStartGame = true;
 	this->screen = screen;
 	loadImages();
-	queuedImages = 0;
 	
 }
 
@@ -75,6 +74,7 @@ void GameManager::startGame()
 	for (short i = 0; i<2; ++i){
 		effects[i] = new Effect(this);
 	}
+	WeaponManager *weapons = new WeaponManager;
 	createLevel();
 }
 
@@ -95,6 +95,7 @@ void GameManager::createPlatforms()
 {
 	short yTemp = 0, xTemp = 0;
 	short i, h = 8, w = 14;
+	int type = 0,length = 0;
 	
 	for (i = 0; i <= numPlatforms; ++i){
 		if (i == 0){
@@ -112,17 +113,50 @@ void GameManager::createPlatforms()
 			//top right
 			xTemp = 209;
 		}else if (i == 16){
+			type = rand() % 2;
+			length = 0;
 			xTemp = 17;
 			yTemp = 72;
 		}else if (i == 34){
+			type = rand() % 2;
+			length = 0;
 			xTemp = 17;
 			yTemp = 104;
 		}else if (i == 52){
+			type = rand() % 2;
+			length = 0;
 			xTemp = 17;
 			yTemp = 136;
 		}
-		platforms[i] = makeRect(h, w, xTemp, yTemp);
-		xTemp += 16;
+		if (i < 16){
+			platforms[i] = makeRect(h, w, xTemp, yTemp);
+			xTemp += 16;
+		}else{
+			if (length == 0){
+				
+				if (type == 1){
+					type = 0;
+				}else{
+					type = 1;
+				}
+				if (type == 1){
+					length = rand() % 7 + 1;
+				}else{
+					length = rand() % 3 + 1;
+				}
+			}
+			if (type == 1){
+				--length;
+				platforms[i] = makeRect(h, w, xTemp, yTemp);
+				xTemp += 16;
+
+			}else{
+				--length;
+				platforms[i] = makeRect(h, w, 0, 0);
+				xTemp += 16;
+			}
+
+		}
 	}
 	
 }
@@ -147,26 +181,35 @@ void GameManager::createMallow()
 */
 void GameManager::updateLevel()
 {
+	//platform
 	for (short i = 0; i < numPlatforms; ++i){
-		SDL_BlitSurface(images["platform"], 0, screen, &platforms[i]);
+		if (platforms[i].x != 0){
+			addToImageQueue(images["platform"], platforms[i], 0);
+		}
 	}
+	//rope
 	SDL_FillRect(screen, &ropes, SDL_MapRGB(screen->format, 144, 96, 0));
 	
 }
 
-void GameManager::addToImageQueue(SDL_Surface *image, SDL_Rect rect)
+void GameManager::addToImageQueue(SDL_Surface *image, SDL_Rect rect, short layer)
 {
-	imageQueue[queuedImages].image = image;
-	imageQueue[queuedImages].rect = rect;
-	++queuedImages;
+	Queue tempQueue;
+	tempQueue.image = image;
+	tempQueue.rect = rect;
+
+	imageQueue[layer].push(tempQueue);
 }
 
 void GameManager::drawImageQueue()
 {
-	for (short i = 0; i < queuedImages; ++i){
-		SDL_BlitSurface(imageQueue[i].image, 0, screen, &imageQueue[i].rect);
+	for (short i = 0; i < 4; ++i){
+		while (!imageQueue[i].empty())
+		{
+			SDL_BlitSurface(imageQueue[i].front().image, 0, screen, &imageQueue[i].front().rect);
+			imageQueue[i].pop();
+		}
 	}
-	queuedImages = 0;
 }
 
 void GameManager::clearRect(SDL_Rect rect)
@@ -178,6 +221,7 @@ void GameManager::loadImages()
 {
 	std::string imageList[] = {
 		"idle",
+		"fall",
 		"crouch0",		"crouch1",
 		"run0",			"run1",			"run2",			"run3",
 		"roll0",		"roll1",		"roll2",		"roll3",
@@ -186,11 +230,11 @@ void GameManager::loadImages()
 
 		"bubblestart0", "bubblestart1", "bubblestart2", 
 		"bubble0",		"bubble1",		"bubble2",
-		
+
 		"platform"
 	};
 	
-	for (short i = 0; i < 27; ++i){
+	for (short i = 0; i < 28; ++i){
 		SDL_RWops *rwop;
 		std::string file;
 		file += "data/main/";

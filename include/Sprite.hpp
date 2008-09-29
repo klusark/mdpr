@@ -45,6 +45,9 @@ class Sprite
 		Uint32 lastTimeX;
 		double yMove, xMove, yVelocity, xVelocity;
 
+		/// the layer the sprite should be drawn on
+		short layer;
+
 	private:
 		bool moved;
 
