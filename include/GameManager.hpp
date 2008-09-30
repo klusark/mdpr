@@ -25,6 +25,7 @@ class GameManager : public SpriteManager
 		void newEffect(std::string name);
 		SDL_Rect makeRect(Uint16 h, Uint16 w, Uint16 x, Uint16 y);
 		std::map<std::string, SDL_Surface *> images;
+		std::map<std::string, SDL_Surface *> flippedImages;
 		SDL_Surface *screen;
 		struct Queue
 		{
@@ -36,7 +37,10 @@ class GameManager : public SpriteManager
 		int width, height;
 		static const int numPlatforms = 70;
 		SDL_Rect platforms[numPlatforms], ropes;
-		
+
+		SDL_Surface *flipImage(SDL_Surface *image);
+		void putPixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
+		Uint32 getPixel(SDL_Surface *surface, int x, int y);
 	private:
 		void createLevel();
 		void createPlatforms();

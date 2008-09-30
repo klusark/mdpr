@@ -8,8 +8,7 @@ Effect::Effect(GameManager *gm) : Sprite(gm)
 	this->gm = gm;
 	bInUse = false;
 
-	SDL_Surface *bubblestartFrames[] = {gm->images["bubblestart0"], gm->images["bubblestart1"], gm->images["bubblestart2"]};
-	animations["bubblestart"] = makeAnimaion(3, 100, bubblestartFrames);
+	animations["bubblestart"] = makeAnimaion(3, 100, "bubblestart0", "bubblestart1", "bubblestart2");
 	rect = gm->makeRect(24,24,0,0);
 }
 

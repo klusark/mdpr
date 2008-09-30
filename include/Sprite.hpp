@@ -23,6 +23,7 @@ class Sprite
 		void setCollisionType(collisionTypes);
 		
 	protected:
+		bool reflip;
 		collisionTypes collisionType;
 
 		struct Animation
@@ -32,12 +33,12 @@ class Sprite
 			/// the delay in ms between each frame
 			unsigned short delay;
 			///an array of all the frames
-			SDL_Surface *frames[8];
+			char *frames[8];
 			/// the current frame
 			short currentFrame;
 
 		}*currentAnimation;
-		Animation *makeAnimaion(short numFrames, Uint16 delay, SDL_Surface *frames[]);
+		Sprite::Animation *makeAnimaion(short numFrames, Uint16 delay, char *args, ...);
 		
 		SDL_Rect rect, lastRect;
 		SDL_Surface *image;
@@ -48,6 +49,7 @@ class Sprite
 		/// the layer the sprite should be drawn on
 		short layer;
 
+		bool flip;
 	private:
 		bool moved;
 

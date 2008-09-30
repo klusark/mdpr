@@ -8,38 +8,47 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	this->gm = gm;
 	this->playerNum = playerNum;
 	setCollisionType(player);
-	rect = gm->makeRect(24, 24, 50, 50);
+	rect = gm->makeRect(24, 24, 28, 144);
 
-	SDL_Surface *runFrames[] = {gm->images["run0"], gm->images["run1"], gm->images["run2"], gm->images["run3"]};
-	runAnimation = makeAnimaion(4, 100, runFrames);
 
-	SDL_Surface *rollFrames[] = {gm->images["roll0"], gm->images["roll1"], gm->images["roll2"], gm->images["roll3"]};
-	rollAnimation = makeAnimaion(4, 100, rollFrames);
+	runAnimation = makeAnimaion(4, 100, "run0", "run1", "run2", "run3");
 
-	SDL_Surface *crouchDownFrames[] = {gm->images["crouch0"], gm->images["crouch1"]};
-	crouchDownAnimation = makeAnimaion(2, 100, crouchDownFrames);
+
+	rollAnimation = makeAnimaion(4, 100, "roll0", "roll1", "roll2", "roll3");
+
+
+	crouchDownAnimation = makeAnimaion(2, 100, "crouch0", "crouch1");
 	
-	SDL_Surface *crouchUpFrames[] = {gm->images["crouch1"], gm->images["crouch0"]};
-	crouchUpAnimation = makeAnimaion(2, 100, crouchUpFrames);
 
-	SDL_Surface *jumpUpFrames[] = {gm->images["jumpUp0"], gm->images["jumpUp1"], gm->images["jumpUp2"], gm->images["jumpUp3"], gm->images["jumpUp4"]};
-	jumpUpAnimation = makeAnimaion(5, 100, jumpUpFrames);
+	crouchUpAnimation = makeAnimaion(2, 100, "crouch1", "crouch0");
 
-	SDL_Surface *crouchedFrames[] = {gm->images["crouch1"]};
-	crouchedAnimation = makeAnimaion(1, 100, crouchedFrames);
 
-	SDL_Surface *climbFrames[] = {gm->images["climbRope0"], gm->images["climbRope1"], gm->images["climbRope2"], gm->images["climbRope3"]};
-	climbAnimation = makeAnimaion(4, 100, climbFrames);
+	jumpUpAnimation = makeAnimaion(5, 100, "jumpUp0", "jumpUp1", "jumpUp2", "jumpUp3", "jumpUp4");
+
+
+	crouchedAnimation = makeAnimaion(1, 100, "crouch1");
+
+
+	climbAnimation = makeAnimaion(4, 100, "climbRope0", "climbRope1", "climbRope2", "climbRope3");
 	
-	SDL_Surface *idleFrames[] = {gm->images["idle"]};
-	idleAnimation = makeAnimaion(1, 100, idleFrames);
+
+	idleAnimation = makeAnimaion(1, 100, "idle");
 
 	currentAnimation = idleAnimation;
-
-	keyUp = SDLK_w;
-	keyDown = SDLK_s;
-	keyRight = SDLK_d;
-	keyLeft = SDLK_a;
+	
+	if (playerNum == 1){
+		keyUp = SDLK_w;
+		keyDown = SDLK_s;
+		keyRight = SDLK_d;
+		keyLeft = SDLK_a;
+	}else{
+		flip = true;
+		keyUp = SDLK_UP;
+		keyDown = SDLK_DOWN;
+		keyRight = SDLK_RIGHT;
+		keyLeft = SDLK_LEFT;
+		rect.x = 270;
+	}
 
 	lastKeystate = SDL_GetKeyState(0);
 	isRunning = false, isRolling = false, isJumpingUp = false, isCrouchingDown = false, isCrouched = false, isCrouchingUp = false, isJumpingForward = false, isJumpingUpStart = false, isClimbingRope = false;
@@ -124,7 +133,7 @@ void Player::input()
 void Player::actOnInput()
 {
 	//no 2 can be set at the same time
-	short test = isRunning + isRolling + isCrouchingDown + isJumpingUp + isCrouched + isCrouchingUp;
+	short test = isRunning + isRolling + isCrouchingDown + isJumpingUp + isCrouched + isCrouchingUp + isClimbingRope;
 	if (test > 1){
 		throw "Error more than 1 action set\n";
 	}

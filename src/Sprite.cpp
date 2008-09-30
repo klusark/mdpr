@@ -1,4 +1,5 @@
 #include "SDL/SDL.h"
+#include <stdarg.h>
 
 #include "Sprite.hpp"
 
@@ -14,6 +15,7 @@ Sprite::Sprite(GameManager *gm)
 	lastTimeX = SDL_GetTicks(), lastTimeY = SDL_GetTicks();
 	rect = gm->makeRect(0, 0, 0, 0);
 	layer = 1;
+	flip = false;
 }
 
 Sprite::~Sprite()
@@ -26,6 +28,7 @@ void Sprite::update()
 	gm->clearRect(lastRect);
 	move();
 	animate();
+
 	gm->addToImageQueue(image, rect, layer);
 	lastRect = rect;
 	moved = false;
@@ -34,7 +37,11 @@ void Sprite::update()
 void Sprite::animate()
 {
 	if(currentAnimation->delay < (SDL_GetTicks() - lastAnimationTime)){
-		image = currentAnimation->frames[currentAnimation->currentFrame];
+		if (flip){
+			image = gm->flippedImages[currentAnimation->frames[currentAnimation->currentFrame]];
+		}else{
+			image = gm->images[currentAnimation->frames[currentAnimation->currentFrame]];
+		}
 		lastAnimationTime = SDL_GetTicks();
 		++currentAnimation->currentFrame;
 		if (currentAnimation->currentFrame >= currentAnimation->numFrames){
@@ -74,14 +81,29 @@ void Sprite::setCollisionType(collisionTypes collision)
 	collisionType = collision;
 }
 
-Sprite::Animation* Sprite::makeAnimaion(short numFrames, Uint16 delay, SDL_Surface *frames[])
+
+Sprite::Animation* Sprite::makeAnimaion(short numFrames, Uint16 delay, char *args, ...)
 {
 	Animation *animation = new Animation;
 	animation->delay = delay;
 	animation->numFrames = numFrames;
-	for (short i = 0; i<numFrames; ++i){
-		animation->frames[i] = frames[i];
-	}
+
+	va_list ap;
+	int i = 0;
+
+    va_start(ap, args);
+    while (args != 0 && i < numFrames)
+    {
+		animation->frames[i] = args;
+		args = va_arg(ap, char *);
+		++i;
+    }
+
+    va_end(ap);
+
+	//for (short i = 0; i<numFrames; ++i){
+	//	animation->frames[i] = frames[i];
+	//}
 	animation->currentFrame = 0;
 	return animation;
 }

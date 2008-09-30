@@ -51,7 +51,7 @@ void GameManager::tick()
 
 	drawImageQueue();
 	SDL_Flip(screen);
-	throttleFPS(60);
+	//throttleFPS(60);
 }
 
 bool GameManager::isActive()
@@ -74,7 +74,7 @@ void GameManager::startGame()
 	for (short i = 0; i<2; ++i){
 		effects[i] = new Effect(this);
 	}
-	WeaponManager *weapons = new WeaponManager;
+	//WeaponManager *weapons = new WeaponManager;
 	createLevel();
 }
 
@@ -245,6 +245,7 @@ void GameManager::loadImages()
 		if (!images[imageList[i]])
 			printf("IMG_LoadPNG_RW: %s\n", IMG_GetError());
 		SDL_FreeRW(rwop);
+		flippedImages[imageList[i]] = flipImage(images[imageList[i]]);
 	}
 	
 }
@@ -281,4 +282,33 @@ void GameManager::throttleFPS(short FPS)
 	}
 	lastTicks = SDL_GetTicks();
 
+}
+
+Uint32 GameManager::getPixel(SDL_Surface *surface, int x, int y)
+{
+    int bpp = surface->format->BytesPerPixel;
+    /* Here p is the address to the pixel we want to retrieve */
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+	return *(Uint32 *)p;
+}
+
+void GameManager::putPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
+{
+    int bpp = surface->format->BytesPerPixel;
+    /* Here p is the address to the pixel we want to set */
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+	*(Uint32 *)p = pixel;
+}
+
+SDL_Surface *GameManager::flipImage(SDL_Surface *image)
+{
+	SDL_Surface *flipped = SDL_CreateRGBSurface( SDL_SWSURFACE, image->w, image->h, image->format->BitsPerPixel, image->format->Rmask, image->format->Gmask, image->format->Bmask, image->format->Amask  );
+	for( int x = 0, rx = flipped->w - 1; x < flipped->w; x++, rx-- )
+	{
+		for( int y = 0, ry = flipped->h - 1; y < flipped->h; y++, ry-- )
+		{
+			putPixel(flipped, rx, y, getPixel(image, x, y));
+		}
+	}
+	return flipped;
 }
