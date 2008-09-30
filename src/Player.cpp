@@ -10,29 +10,23 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	setCollisionType(player);
 	rect = gm->makeRect(24, 24, 28, 144);
 
-
 	runAnimation = makeAnimaion(4, 100, "run0", "run1", "run2", "run3");
-
 
 	rollAnimation = makeAnimaion(4, 100, "roll0", "roll1", "roll2", "roll3");
 
-
 	crouchDownAnimation = makeAnimaion(2, 100, "crouch0", "crouch1");
 	
-
 	crouchUpAnimation = makeAnimaion(2, 100, "crouch1", "crouch0");
-
 
 	jumpUpAnimation = makeAnimaion(5, 100, "jumpUp0", "jumpUp1", "jumpUp2", "jumpUp3", "jumpUp4");
 
-
 	crouchedAnimation = makeAnimaion(1, 100, "crouch1");
-
 
 	climbAnimation = makeAnimaion(4, 100, "climbRope0", "climbRope1", "climbRope2", "climbRope3");
 	
-
 	idleAnimation = makeAnimaion(1, 100, "idle");
+
+	jumpForwardAnimation = makeAnimaion(3, 100, "jumpForward0",	"jumpForward1",	"jumpForward2");
 
 	currentAnimation = idleAnimation;
 	
@@ -51,7 +45,7 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	}
 
 	lastKeystate = SDL_GetKeyState(0);
-	isRunning = false, isRolling = false, isJumpingUp = false, isCrouchingDown = false, isCrouched = false, isCrouchingUp = false, isJumpingForward = false, isJumpingUpStart = false, isClimbingRope = false;
+	isRunning = false, isRolling = false, isJumpingUp = false, isCrouchingDown = false, isCrouched = false, isCrouchingUp = false, isJumppingForward = false, isJumpingUpStart = false, isClimbingRope = false;
 	//layer = 3;
 }
 
@@ -63,6 +57,12 @@ Player::~Player()
 	delete runAnimation;
 	delete idleAnimation;
 	delete rollAnimation;
+	delete crouchDownAnimation;
+	delete jumpUpAnimation;
+	delete crouchedAnimation;
+	delete crouchUpAnimation;
+	delete climbAnimation;
+	delete jumpForwardAnimation;
 }
 
 /**
@@ -85,7 +85,7 @@ void Player::input()
 
 	isRunning = false;
 	if (isOnGround){
-		if (isCrouchingDown + isCrouched + isRolling + isCrouchingUp + isClimbingRope == 0){
+		if (isCrouchingDown + isCrouched + isRolling + isCrouchingUp + isClimbingRope + isJumppingForward == 0){
 			if (keystate[keyDown]){
 				if (keystate[keyRight] || keystate[keyLeft]){
 					isRolling = true;
@@ -98,7 +98,7 @@ void Player::input()
 				}
 			}else if(keystate[keyUp]){
 				if (keystate[keyRight] || keystate[keyLeft]){
-					isJumpingForward = true;
+					isJumppingForward = true;
 				}else{
 					if (isTouchingRope()){
 						isClimbingRope = true;
@@ -133,7 +133,7 @@ void Player::input()
 void Player::actOnInput()
 {
 	//no 2 can be set at the same time
-	short test = isRunning + isRolling + isCrouchingDown + isJumpingUp + isCrouched + isCrouchingUp + isClimbingRope;
+	short test = isRunning + isRolling + isCrouchingDown + isJumppingForward + isJumpingUp + isCrouched + isCrouchingUp + isClimbingRope;
 	if (test > 1){
 		throw "Error more than 1 action set\n";
 	}
@@ -151,6 +151,8 @@ void Player::actOnInput()
 		currentAnimation = crouchUpAnimation;
 	}else if (isClimbingRope){
 		currentAnimation = climbAnimation;
+	}else if (isJumppingForward){
+		currentAnimation = jumpForwardAnimation;
 	}else{
 		currentAnimation = idleAnimation;
 	}
@@ -183,11 +185,11 @@ void Player::actOnInput()
 	}else{
 		doNotCollideWithPlatform = false;
 	}
-	//It will make more sense later
-	//TODO add more factors to the equation
-
-	//if (!yVelocity)
-	//	lastTimeY = SDL_GetTicks();
+	
+	if (xVelocity < -1)
+		flip = true;
+	else if (xVelocity > 1)
+		flip = false;
 }
 
 /**
@@ -211,6 +213,8 @@ void Player::animationEnd()
 		isRolling = false;
 	}else if (isJumpingUp){
 		isJumpingUp = false;
+	}else if (isJumppingForward){
+		isJumppingForward = false;
 	}
 }
 
@@ -221,8 +225,10 @@ void Player::animationEnd()
 */
 bool Player::isTouchingRope()
 {
-	if (isVerticalOfRect(gm->ropes)){
-		return true;
+	for (short i = 0; i < gm->numRopes; ++i){
+		if (isVerticalOfRect(gm->ropes[i])){
+			return true;
+		}
 	}
 	return false;
 }
@@ -232,17 +238,18 @@ void Player::collideWithRopeEnds()
 	move();
 	if (yMove > 1 || yMove < -1){
 		rect.y -= static_cast<Sint16>(yMove);
-
-		if (!isOverBottomOfRect(gm->ropes) || !isUnderTopOfRect(gm->ropes) && isVerticalOfRect(gm->ropes)){
-			rect.y += static_cast<Sint16>(yMove);
-			if (isUnderBottomOfRect(gm->ropes)){
-				rect.y = gm->ropes.y + gm->ropes.h - rect.h;
-				return;
-			}else if(isOverTopOfRect(gm->ropes)){
-				rect.y = gm->ropes.y;
-				return;
+		for (short i = 0; i < gm->numRopes; ++i){
+			if (!isOverBottomOfRect(gm->ropes[i]) || !isUnderTopOfRect(gm->ropes[i]) && isVerticalOfRect(gm->ropes[i])){
+				rect.y += static_cast<Sint16>(yMove);
+				if (isUnderBottomOfRect(gm->ropes[i])){
+					rect.y = gm->ropes[i].y + gm->ropes[i].h - rect.h;
+					return;
+				}else if(isOverTopOfRect(gm->ropes[i])){
+					rect.y = gm->ropes[i].y;
+					return;
+				}
+				rect.y -= static_cast<Sint16>(yMove);
 			}
-			rect.y -= static_cast<Sint16>(yMove);
 		}
 		rect.y += static_cast<Sint16>(yMove);
 	}

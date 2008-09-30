@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
 	srand ( (unsigned) time(NULL) );
 
-
+	printf("Loading Time: %li Ms\n", SDL_GetTicks());
 	//main loop
 	gm->activate();
 	try

@@ -19,6 +19,7 @@ GameManager::GameManager(SDL_Surface *screen, int width, int height) : SpriteMan
 	bStartGame = true;
 	this->screen = screen;
 	loadImages();
+	test = 0;
 	
 }
 
@@ -51,7 +52,7 @@ void GameManager::tick()
 
 	drawImageQueue();
 	SDL_Flip(screen);
-	//throttleFPS(60);
+	throttleFPS(60);
 }
 
 bool GameManager::isActive()
@@ -166,7 +167,8 @@ void GameManager::createPlatforms()
 */
 void GameManager::createRopes()
 {
-	ropes = makeRect(152, 1, 80, 16);
+	ropes[0] = makeRect(152, 1, 80, 16);
+	ropes[1] = makeRect(152, 1, 241, 16);
 }
 
 /**
@@ -181,14 +183,29 @@ void GameManager::createMallow()
 */
 void GameManager::updateLevel()
 {
+	
 	//platform
 	for (short i = 0; i < numPlatforms; ++i){
 		if (platforms[i].x != 0){
 			addToImageQueue(images["platform"], platforms[i], 0);
 		}
 	}
+
 	//rope
-	SDL_FillRect(screen, &ropes, SDL_MapRGB(screen->format, 144, 96, 0));
+	for (short i = 0; i < numRopes; i++){
+		SDL_FillRect(screen, &ropes[i], SDL_MapRGB(screen->format, 144, 96, 0));
+	}
+
+	//mallow
+	Sint16 x = -test;
+	++test;
+	if (test >= 64){
+		test = 0;
+	}
+
+	clearRect(makeRect(16, 320, 0, 184));
+	for (; x < width; x+=64)
+		addToImageQueue(images["mallow"], makeRect(16, 64, x, 184), 3);
 	
 }
 
@@ -227,14 +244,17 @@ void GameManager::loadImages()
 		"roll0",		"roll1",		"roll2",		"roll3",
 		"climbRope0",	"climbRope1",	"climbRope2",	"climbRope3", 
 		"jumpUp0",		"jumpUp1",		"jumpUp2",		"jumpUp3",		"jumpUp4", 
+		"jumpForward0",	"jumpForward1",	"jumpForward2",
 
 		"bubblestart0", "bubblestart1", "bubblestart2", 
 		"bubble0",		"bubble1",		"bubble2",
 
+		"mallow",
+
 		"platform"
 	};
 	
-	for (short i = 0; i < 28; ++i){
+	for (short i = 0; i < 32; ++i){
 		SDL_RWops *rwop;
 		std::string file;
 		file += "data/main/";
@@ -250,7 +270,7 @@ void GameManager::loadImages()
 	
 }
 
-SDL_Rect GameManager::makeRect(Uint16 h, Uint16 w, Uint16 x, Uint16 y)
+SDL_Rect GameManager::makeRect(Uint16 h, Uint16 w, Sint16 x, Sint16 y)
 {
 	SDL_Rect rect;
 	rect.h = h;

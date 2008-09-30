@@ -27,20 +27,21 @@ void Bubble::update()
 
 	Sprite::update();
 	
-	
 	if (rect.x > gm->width-rect.w){
 		rect.x = static_cast<Sint16>(gm->width-rect.w);
 		xVelocity = -xVelocity;
 	}
+
 	if (rect.x < 0){
 		rect.x = static_cast<Sint16>(0);
 		xVelocity = -xVelocity;
 	}
 
-	if (rect.y > gm->height-rect.h){
-		rect.y = static_cast<Sint16>(gm->height-rect.h);
+	if (rect.y > gm->height-rect.h-16){
+		rect.y = static_cast<Sint16>(gm->height-rect.h-16);
 		yVelocity = -yVelocity;
 	}
+
 	if (rect.y < 0){
 		rect.y = static_cast<Sint16>(0);
 		yVelocity = -yVelocity;

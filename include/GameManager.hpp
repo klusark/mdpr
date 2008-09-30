@@ -23,7 +23,7 @@ class GameManager : public SpriteManager
 		void drawImageQueue();
 		void clearRect(SDL_Rect);
 		void newEffect(std::string name);
-		SDL_Rect makeRect(Uint16 h, Uint16 w, Uint16 x, Uint16 y);
+		SDL_Rect makeRect(Uint16 h, Uint16 w, Sint16 x, Sint16 y);
 		std::map<std::string, SDL_Surface *> images;
 		std::map<std::string, SDL_Surface *> flippedImages;
 		SDL_Surface *screen;
@@ -36,7 +36,8 @@ class GameManager : public SpriteManager
 
 		int width, height;
 		static const int numPlatforms = 70;
-		SDL_Rect platforms[numPlatforms], ropes;
+		static const int numRopes = 2;
+		SDL_Rect platforms[numPlatforms], ropes[numRopes];
 
 		SDL_Surface *flipImage(SDL_Surface *image);
 		void putPixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
@@ -55,6 +56,7 @@ class GameManager : public SpriteManager
 		bool bStartGame;
 
 		Uint32 currentTicks, lastTicks;
+		Uint16 test;
 		
 		
 
