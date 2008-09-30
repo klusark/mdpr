@@ -40,7 +40,7 @@ class Player : public Mass
 			*climbAnimation;
 
 		/// the up key
-		Uint8 keyUp,
+		SDLKey keyUp,
 			/// the down key
 			keyDown,
 			/// the right key
