@@ -18,6 +18,7 @@ class Player : public Mass
 		void input();
 		void collideWithRopeEnds();
 		bool isTouchingRope();
+
 		///1 or 2 depending on what player it is.
 		short playerNum;
 		//copy of the game manager
@@ -37,7 +38,9 @@ class Player : public Mass
 			/// the animation when the crouch key is let go of
 			*crouchUpAnimation,
 			///	the animation when the player is on the rope;
-			*climbAnimation;
+			*climbAnimation,
+			/// the animation when the player jumps forward
+			*jumpForwardAnimation;
 
 		/// the up key
 		SDLKey keyUp,
@@ -62,12 +65,12 @@ class Player : public Mass
 			isCrouched,
 			/// is the player currently ending crouching
 			isCrouchingUp,
-			/// is the player currently jumping forward
-			isJumpingForward,
 			/// is the player currently climbing the rope
 			isClimbingRope,
 			/// is the player currently starting to jump up
-			isJumpingUpStart;
+			isJumpingUpStart,
+			/// is the player currently jumpping forward
+			isJumppingForward;
 
 
 		/// the speed in the x the palyer goes at when walking
