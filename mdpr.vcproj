@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="include;../sdl/include;C:/python25/include"
+				AdditionalIncludeDirectories="include;../sdl/include;../lua/src"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -58,8 +58,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="SDL.lib SDLmain.lib SDL_image.lib"
-				AdditionalLibraryDirectories="../sdl/lib;C:/python25/libs"
+				AdditionalDependencies="SDL.lib SDLmain.lib SDL_image.lib lua51.lib"
+				AdditionalLibraryDirectories="../sdl/lib;../lua/src"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -114,7 +114,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="include;../sdl/include;C:/python25/include"
+				AdditionalIncludeDirectories="include;../sdl/include;../lua/src"
 				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -132,8 +132,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="SDL.lib SDLmain.lib SDL_image.lib"
-				AdditionalLibraryDirectories="../sdl/lib;C:/python25/libs"
+				AdditionalDependencies="SDL.lib SDLmain.lib SDL_image.lib lua51.lib"
+				AdditionalLibraryDirectories="../sdl/lib;../lua/src"
 				GenerateDebugInformation="false"
 				SubSystem="1"
 				OptimizeReferences="2"
