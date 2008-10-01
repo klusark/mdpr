@@ -70,17 +70,20 @@ class Player : public Mass
 			/// is the player currently starting to jump up
 			isJumpingUpStart,
 			/// is the player currently jumpping forward
-			isJumppingForward;
+			isJumppingForward,
+			isJumppingForwardStart;
 
 
 		/// the speed in the x the palyer goes at when walking
-		static const int walkSpeed		= 32;
+		static const int walkSpeed			= 60;
 		/// the speed in the x the palyer goes at when rolling
-		static const int rollSpeed		= 40;
+		static const int rollSpeed			= 60;
 		/// the speed in the y the player goes when jumping up
-		static const int jumpUpSpeed	= -150;
+		static const int jumpUpSpeed		= -150;
 		/// the speed in the y the player goes when moving on the rope
-		static const int ropeSpeed		= 32;
+		static const int ropeSpeed			= 60;
+		static const int jumpForwardYSpeed	= -150;
+		static const int jumpForwardXSpeed	= 60;
 };
 
 /** \class Player player.hpp "include/player.hpp"

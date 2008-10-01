@@ -11,10 +11,11 @@
 /**
  * consturcts the gamemanager
  */
-GameManager::GameManager(SDL_Surface *screen, int width, int height) : SpriteManager(screen)
+GameManager::GameManager(SDL_Surface *screen, int width, int height, lua_State *luaState) : SpriteManager(screen)
 {
 	this->height = height;
 	this->width = width;
+	this->luaState = luaState;
 	bActive = false;
 	bStartGame = true;
 	this->screen = screen;

@@ -8,12 +8,16 @@
 #include <map>
 #include <string>
 #include <queue>
-
+extern "C" {
+#include "lua.h"
+#include "lualib.h"
+#include "lauxlib.h"
+}
 
 class GameManager : public SpriteManager
 {
 	public:
-		GameManager(SDL_Surface *screen, int width, int height);
+		GameManager(SDL_Surface *screen, int width, int height, lua_State *luaState);
 		~GameManager();
 		void tick();
 		bool isActive();
@@ -42,6 +46,8 @@ class GameManager : public SpriteManager
 		SDL_Surface *flipImage(SDL_Surface *image);
 		void putPixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
 		Uint32 getPixel(SDL_Surface *surface, int x, int y);
+
+		lua_State *luaState;
 	private:
 		void createLevel();
 		void createPlatforms();

@@ -45,7 +45,7 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	}
 
 	lastKeystate = SDL_GetKeyState(0);
-	isRunning = false, isRolling = false, isJumpingUp = false, isCrouchingDown = false, isCrouched = false, isCrouchingUp = false, isJumppingForward = false, isJumpingUpStart = false, isClimbingRope = false;
+	isRunning = false, isRolling = false, isJumpingUp = false, isCrouchingDown = false, isCrouched = false, isCrouchingUp = false, isJumppingForward = false, isJumpingUpStart = false, isClimbingRope = false ,isJumppingForwardStart = false;
 	//layer = 3;
 }
 
@@ -99,6 +99,7 @@ void Player::input()
 			}else if(keystate[keyUp]){
 				if (keystate[keyRight] || keystate[keyLeft]){
 					isJumppingForward = true;
+					isJumppingForwardStart = true;
 				}else{
 					if (isTouchingRope()){
 						isClimbingRope = true;
@@ -170,6 +171,11 @@ void Player::actOnInput()
 		yVelocity = jumpUpSpeed;
 		isJumpingUpStart = false;
 		
+	}
+	if (isJumppingForwardStart){
+		isJumppingForwardStart = false;
+		yVelocity = jumpForwardYSpeed;
+		xVelocity = jumpForwardXSpeed;
 	}
 
 	if (isClimbingRope){
