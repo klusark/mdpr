@@ -107,4 +107,7 @@ Sprite::Animation* Sprite::makeAnimaion(short numFrames, Uint16 delay, char *arg
 	animation->currentFrame = 0;
 	return animation;
 }
-void Sprite::animationEnd(){}
+
+void Sprite::animationEnd()
+{
+}

@@ -11,6 +11,8 @@ Mass::Mass(GameManager *gm) : Sprite(gm)
 	isOnGround = false;
 	doNotCollideWithPlatform = false;
 	lastTimeGrav = SDL_GetTicks();
+	
+	unstableRoll = false;
 }
 
 /**
@@ -75,6 +77,10 @@ void Mass::checkPlatformCollision()
 				yVelocity = 0;
 				yMove = 0;
 				lastTimeY = SDL_GetTicks();
+				if (isUnstable){
+					unstableRoll = true;
+					isUnstable = false;
+				}
 				
 				return;
 			}

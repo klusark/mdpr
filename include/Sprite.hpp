@@ -50,6 +50,7 @@ class Sprite
 		short layer;
 
 		bool flip;
+
 	private:
 		bool moved;
 

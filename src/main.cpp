@@ -13,6 +13,22 @@ extern "C" {
 
 #include <string>
 
+static int tests (lua_State *L)
+{
+	int *pi = (int *)lua_newuserdata(L, sizeof(int));
+	*pi = 314;
+	luaL_getmetatable(L, "test");
+	lua_setmetatable(L, -2);
+
+
+	return 0;
+}
+static const luaL_reg Test_methods[] = {
+  {"tests",           tests},
+  {0,0}
+};
+
+
 /**
  * Main function for the game
  */
@@ -22,11 +38,13 @@ int main(int argc, char *argv[])
 
 	lua_State *luaState = lua_open();
 	luaL_openlibs(luaState);
+	
 	if (luaL_loadfile(luaState, "config.lua") || lua_pcall(luaState, 0, 0, 0))
 	{
 		printf("error: %s\n", lua_tostring(luaState, -1));
 		return -1;
 	}
+	luaL_openlib(luaState, "test", Test_methods, 0);
 	lua_getglobal(luaState, "height");
     lua_getglobal(luaState, "width");
 	int height = (int)lua_tonumber(luaState, -2);
