@@ -28,6 +28,8 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 
 	jumpForwardAnimation = makeAnimaion(3, 100, "jumpForward0",	"jumpForward1",	"jumpForward2");
 
+	fallUnstableAnimation = Sprite::makeAnimaion(2, 100, "fallback0", "fallback1");
+
 	currentAnimation = idleAnimation;
 	
 	if (playerNum == 1){
@@ -45,7 +47,9 @@ Player::Player(GameManager *gm, short playerNum) : Mass(gm)
 	}
 
 	lastKeystate = SDL_GetKeyState(0);
-	isRunning = false, isRolling = false, isJumpingUp = false, isCrouchingDown = false, isCrouched = false, isCrouchingUp = false, isJumppingForward = false, isJumpingUpStart = false, isClimbingRope = false ,isJumppingForwardStart = false;
+	isRunning = false, isRolling = false, isJumpingUp = false, isCrouchingDown = false, isCrouched = false,
+		isCrouchingUp = false, isJumppingForward = false, isJumpingUpStart = false, isClimbingRope = false,
+		isJumppingForwardStart = false, isUnstable = false, isFallingUnstable = false, noFlip = false;
 	//layer = 3;
 }
 
@@ -85,7 +89,7 @@ void Player::input()
 
 	isRunning = false;
 	if (isOnGround){
-		if (isCrouchingDown + isCrouched + isRolling + isCrouchingUp + isClimbingRope + isJumppingForward == 0){
+		if (isCrouchingDown + isCrouched + isRolling + isCrouchingUp + isClimbingRope + isJumppingForward + unstableRoll == 0){
 			if (keystate[keyDown]){
 				if (keystate[keyRight] || keystate[keyLeft]){
 					isRolling = true;
@@ -134,7 +138,7 @@ void Player::input()
 void Player::actOnInput()
 {
 	//no 2 can be set at the same time
-	short test = isRunning + isRolling + isCrouchingDown + isJumppingForward + isJumpingUp + isCrouched + isCrouchingUp + isClimbingRope;
+	short test = isRunning + isRolling + isCrouchingDown + isJumppingForward + isJumpingUp + isCrouched + isCrouchingUp + isClimbingRope + isFallingUnstable + unstableRoll;
 	if (test > 1){
 		throw "Error more than 1 action set\n";
 	}
@@ -154,6 +158,10 @@ void Player::actOnInput()
 		currentAnimation = climbAnimation;
 	}else if (isJumppingForward){
 		currentAnimation = jumpForwardAnimation;
+	}else if (isFallingUnstable){
+		currentAnimation = fallUnstableAnimation;
+	}else if (unstableRoll){
+		currentAnimation = rollAnimation;
 	}else{
 		currentAnimation = idleAnimation;
 	}
@@ -175,7 +183,11 @@ void Player::actOnInput()
 	if (isJumppingForwardStart){
 		isJumppingForwardStart = false;
 		yVelocity = jumpForwardYSpeed;
-		xVelocity = jumpForwardXSpeed;
+		if (flip){
+			xVelocity = -jumpForwardXSpeed;
+		}else{
+			xVelocity = jumpForwardXSpeed;
+		}
 	}
 
 	if (isClimbingRope){
@@ -191,11 +203,29 @@ void Player::actOnInput()
 	}else{
 		doNotCollideWithPlatform = false;
 	}
-	
-	if (xVelocity < -1)
-		flip = true;
-	else if (xVelocity > 1)
-		flip = false;
+
+	if (!noFlip){
+		if (xVelocity < -1){
+			flip = true;
+		}else if (xVelocity > 1){
+			flip = false;
+		}
+	}
+
+	if (rect.x < 0){
+		rect.x = 0;
+		xVelocity = -xVelocity;
+		//flip ? flip = false : flip = true;
+		currentAnimation = fallUnstableAnimation;
+		isUnstable = true;
+		noFlip = true;
+	}else if (rect.x + rect.w > gm->width){
+		rect.x = static_cast<Sint16>(gm->width) - rect.w;
+		xVelocity = -xVelocity;
+		currentAnimation = fallUnstableAnimation;
+		//flip ? flip = false : flip = true;
+		isUnstable = true;
+	}
 }
 
 /**
@@ -221,6 +251,9 @@ void Player::animationEnd()
 		isJumpingUp = false;
 	}else if (isJumppingForward){
 		isJumppingForward = false;
+	}else if (unstableRoll){
+		unstableRoll = false;
+		noFlip = false;
 	}
 }
 

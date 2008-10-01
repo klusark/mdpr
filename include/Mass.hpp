@@ -27,6 +27,9 @@ class Mass : public Sprite
 		bool isOverTopOfRect(SDL_Rect rect);
 		bool doNotCollideWithPlatform;
 
+		/// is the player not in a controlled fall
+		bool isUnstable, unstableRoll;
+		
 	private:
 		///pixels per second to move down
 		static const int gravity = 420;

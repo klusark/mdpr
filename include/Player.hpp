@@ -40,7 +40,8 @@ class Player : public Mass
 			///	the animation when the player is on the rope;
 			*climbAnimation,
 			/// the animation when the player jumps forward
-			*jumpForwardAnimation;
+			*jumpForwardAnimation,
+			*fallUnstableAnimation;
 
 		/// the up key
 		SDLKey keyUp,
@@ -71,19 +72,21 @@ class Player : public Mass
 			isJumpingUpStart,
 			/// is the player currently jumpping forward
 			isJumppingForward,
-			isJumppingForwardStart;
+			isJumppingForwardStart,
+			isFallingUnstable,
+			noFlip;
 
 
 		/// the speed in the x the palyer goes at when walking
-		static const int walkSpeed			= 60;
+		static const int walkSpeed			=  120;
 		/// the speed in the x the palyer goes at when rolling
-		static const int rollSpeed			= 60;
+		static const int rollSpeed			=  120;
 		/// the speed in the y the player goes when jumping up
 		static const int jumpUpSpeed		= -150;
 		/// the speed in the y the player goes when moving on the rope
-		static const int ropeSpeed			= 60;
+		static const int ropeSpeed			=  120;
 		static const int jumpForwardYSpeed	= -150;
-		static const int jumpForwardXSpeed	= 60;
+		static const int jumpForwardXSpeed	=  120;
 };
 
 /** \class Player player.hpp "include/player.hpp"

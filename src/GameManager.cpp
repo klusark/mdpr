@@ -241,6 +241,7 @@ void GameManager::loadImages()
 		"idle",
 		"fall",
 		"crouch0",		"crouch1",
+		"fallback0",	"fallback1",
 		"run0",			"run1",			"run2",			"run3",
 		"roll0",		"roll1",		"roll2",		"roll3",
 		"climbRope0",	"climbRope1",	"climbRope2",	"climbRope3", 
@@ -255,7 +256,7 @@ void GameManager::loadImages()
 		"platform"
 	};
 	
-	for (short i = 0; i < 32; ++i){
+	for (short i = 0; i < 34; ++i){
 		SDL_RWops *rwop;
 		std::string file;
 		file += "data/main/";
