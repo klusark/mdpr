@@ -53,7 +53,7 @@ void GameManager::tick()
 
 	drawImageQueue();
 	SDL_Flip(screen);
-	throttleFPS(60);
+	//throttleFPS(60);
 }
 
 bool GameManager::isActive()
@@ -76,7 +76,7 @@ void GameManager::startGame()
 	for (short i = 0; i<2; ++i){
 		effects[i] = new Effect(this);
 	}
-	//WeaponManager *weapons = new WeaponManager;
+	WeaponManager *weapons = new WeaponManager(this);
 	createLevel();
 }
 
