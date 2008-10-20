@@ -1,43 +1,25 @@
 #include "engine.hpp"
-#include "SDL/SDL.h"
-#include "SDL/SDL_opengl.h"
+#include <windows.h>	// Header File For Windows
+#include <gl\gl.h>		// Header File For The OpenGL32 Library
+#include <gl\glu.h>		// Header File For The GLu32 Library
 
 namespace engine{
-	HGLRC			hRC=NULL;	// Permanent Rendering Context
-	HDC				hDC=NULL;	// Private GDI Device Context
-	HWND			hWnd=NULL;	// Holds Our Window Handle
-	HINSTANCE		hInstance;	// Holds The Instance Of The Application
+	namespace window{
+		HGLRC			hRC=NULL;			// Permanent Rendering Context
+		HDC				hDC=NULL;			// Private GDI Device Context
+		HWND			hWnd=NULL;			// Holds Our Window Handle
+		HINSTANCE		hInstance;			// Holds The Instance Of The Application
+		bool			active=TRUE;		// Window Active Flag Set To TRUE By Default
+		bool			fullscreen=TRUE;	// Fullscreen Flag Set To Fullscreen Mode By Default
 
-	EngineLib bool createWindow(int screenWidth, int screenHeight, int bitsPerPixel, const char * title)
-	{
-		//Initialize SDL
-		if( SDL_Init( SDL_INIT_EVERYTHING ) < 0 )
+
+		EngineLib bool createWindow(int screenWidth, int screenHeight, int bitsPerPixel, const char * title)
 		{
-			return false;    
+			return true;
 		}
+	}
 
-		//Create Window
-		if( SDL_SetVideoMode(screenWidth, screenHeight, bitsPerPixel, SDL_OPENGL ) == NULL ){
-			return false;
-		}
-
-		//Initialize OpenGL
-		//if(init_GL() == false){
-		//	return false;    
-		//}
-		glClearColor( 0, 0, 0, 0 ); 
-		glMatrixMode( GL_PROJECTION );
-		glLoadIdentity();
-		glOrtho( 0, screenWidth, screenHeight, 0, -1, 1 ); 
-		glMatrixMode( GL_MODELVIEW );
-		glLoadIdentity(); 
-		if( glGetError() != GL_NO_ERROR ){
-			return false;
-		}
-
-		//Set caption
-		SDL_WM_SetCaption(title, NULL);
-
-		return true;
+	namespace events{
+		bool keys[256]; // Array Used For The Keyboard Routine
 	}
 }

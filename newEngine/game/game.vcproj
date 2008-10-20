@@ -60,6 +60,7 @@
 				Name="VCLinkerTool"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
+				SubSystem="1"
 				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
