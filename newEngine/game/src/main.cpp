@@ -4,7 +4,7 @@ int main()
 {
 	engine::initEngine();
 
-	if (!engine::window::createWindow(300, 300, 32, "test", 0)){
+	if (!engine::window::createWindow(640, 480, 32, "test", 0)){
 		return 0;
 	}
 
