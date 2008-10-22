@@ -4,14 +4,14 @@ int main()
 {
 	engine::initEngine();
 
-	if (!engine::window::createWindow(640, 480, 32, "test", 0)){
+	if (!engine::window::createWindow(200, 200, 32, "test", 0)){
 		return 0;
 	}
 
 	try{
 		while (1){
-			engine::window::eventLoop();
-			engine::window::mainLoop();
+			engine::eventLoop();
+			engine::mainLoop();
 		}
 	}catch(int exception){
 	}
