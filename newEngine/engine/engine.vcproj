@@ -58,7 +58,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGL32.lib SDL.lib"
+				AdditionalDependencies="OpenGL32.lib GLu32.lib SDL.lib"
 				AdditionalLibraryDirectories="..\..\..\sdl\lib"
 				ModuleDefinitionFile="dll.def"
 			/>
