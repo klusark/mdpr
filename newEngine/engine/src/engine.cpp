@@ -8,7 +8,6 @@ namespace engine{
 			printf("Unable to initialize SDL: %s\n", SDL_GetError());
 			return false;
 		}
-		
 		return true;
 
 	}

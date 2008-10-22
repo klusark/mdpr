@@ -9,28 +9,54 @@ namespace engine{
 				printf("SDL not initializeed\n");
 				return false;
 			}
-			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1 ); // *new*
-			 
-			SDL_SetVideoMode( 640, 480, 32, SDL_OPENGL);
+
+			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1 );
+
+			if (fullScreenFlag)
+				SDL_SetVideoMode(screenWidth, screenHeight, bitsPerPixel, SDL_OPENGL | SDL_RESIZABLE | SDL_FULLSCREEN);
+			else
+				SDL_SetVideoMode(screenWidth, screenHeight, bitsPerPixel, SDL_OPENGL | SDL_RESIZABLE);
+
+			SDL_WM_SetCaption(title, title);
+			
 
 			glEnable( GL_TEXTURE_2D );
  
 			glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
 			 
-			glViewport( 0, 0, 640, 480 );
+			glViewport( 0, 0, screenWidth, screenHeight );
 			 
 			glClear( GL_COLOR_BUFFER_BIT );
 			 
 			glMatrixMode( GL_PROJECTION );
 			glLoadIdentity();
 			 
-			glOrtho(0.0f, 640, 480, 0.0f, -1.0f, 1.0f);
+			glOrtho(0.0f, screenWidth, screenHeight, 0.0f, -1.0f, 1.0f);
 			 
 			glMatrixMode( GL_MODELVIEW );
 			glLoadIdentity();
 
 			return true;
 		}
+		void window_resized(int w, int h)
+{
+	SDL_SetVideoMode(w, h, 16, SDL_OPENGL | SDL_RESIZABLE);
+			glEnable( GL_TEXTURE_2D );
+ 
+			glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
+			 
+			glViewport( 0, 0, w, h );
+			 
+			glClear( GL_COLOR_BUFFER_BIT );
+			 
+			glMatrixMode( GL_PROJECTION );
+			glLoadIdentity();
+			 
+			glOrtho(0.0f, w, h, 0.0f, -1.0f, 1.0f);
+			 
+			glMatrixMode( GL_MODELVIEW );
+			glLoadIdentity();
+}
 
 		EngineLib void eventLoop()
 		{
@@ -39,28 +65,32 @@ namespace engine{
 				if (events.type == SDL_QUIT){
 					//quit the game
 					throw 1; 
+				}else if (events.type == SDL_VIDEORESIZE){
+					window_resized(events.resize.w, events.resize.h);
 				}
 			}
 		}
 
 		EngineLib void mainLoop()
 		{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear Screen And Depth Buffer
-	glLoadIdentity();									// Reset The Current Modelview Matrix
-	glTranslatef(-1.5f,0.0f,-6.0f);						// Move Left 1.5 Units And Into The Screen 6.0
-	glBegin(GL_TRIANGLES);								// Drawing Using Triangles
-		glVertex3f( 0.0f, 1.0f, 0.0f);					// Top
-		glVertex3f(-1.0f,-1.0f, 0.0f);					// Bottom Left
-		glVertex3f( 1.0f,-1.0f, 0.0f);					// Bottom Right
-	glEnd();											// Finished Drawing The Triangle
-	glTranslatef(3.0f,0.0f,0.0f);						// Move Right 3 Units
-	glBegin(GL_QUADS);									// Draw A Quad
-		glVertex3f(-1.0f, 1.0f, 0.0f);					// Top Left
-		glVertex3f( 1.0f, 1.0f, 0.0f);					// Top Right
-		glVertex3f( 1.0f,-1.0f, 0.0f);					// Bottom Right
-		glVertex3f(-1.0f,-1.0f, 0.0f);					// Bottom Left
-	glEnd();											// Done Drawing The Quad
-	SDL_GL_SwapBuffers();
+			glBegin( GL_QUADS );
+				//Top-left vertex (corner)
+				glTexCoord2i( 0, 0 );
+				glVertex3f( 100, 100, 0.0f );
+			 
+				//Bottom-left vertex (corner)
+				glTexCoord2i( 1, 0 );
+				glVertex3f( 228, 100, 0 );
+			 
+				//Bottom-right vertex (corner)
+				glTexCoord2i( 1, 1 );
+				glVertex3f( 228, 228, 0 );
+			 
+				//Top-right vertex (corner)
+				glTexCoord2i( 0, 1 );
+				glVertex3f( 100, 228, 0 );
+			glEnd();// Done Drawing The Quad
+			SDL_GL_SwapBuffers();
 		}
 		
 
