@@ -10,7 +10,7 @@ int main()
 
 	try{
 		while (1){
-			engine::eventLoop();
+			//engine::eventLoop();
 			engine::mainLoop();
 		}
 	}catch(int exception){

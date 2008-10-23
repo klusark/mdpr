@@ -10,8 +10,8 @@ namespace engine{
 			return false;
 		}
 		return true;
-
 	}
+
 	EngineLib bool quit()
 	{
 		SDL_Quit();
@@ -28,7 +28,7 @@ namespace engine{
 						window::isActive = false;
 					else
 						window::isActive = true;
-					break;			    
+					break;
 				case SDL_VIDEORESIZE:
 					/* handle resize event */
 					window::windowResize(events.resize.w, events.resize.h);
@@ -45,7 +45,7 @@ namespace engine{
 
 	EngineLib void mainLoop()
 	{
-		//if (window::isActive)
+		eventLoop();
 		window::draw();
 
 	}
