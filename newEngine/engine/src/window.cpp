@@ -1,5 +1,6 @@
 #include "engineLib.hpp"
 #include "window.hpp"
+#include "graphics.hpp"
 
 namespace engine{
 	namespace window{
@@ -8,6 +9,7 @@ namespace engine{
 		int screenWidth;
 		int screenHeight;
 		int bitsPerPixel;
+
 		EngineLib bool createWindow(int screenWidth, int screenHeight, int bitsPerPixel, const char * title, bool fullScreenFlag)
 		{
 			window::screenWidth = screenWidth;
@@ -21,7 +23,7 @@ namespace engine{
 		    videoFlags  = SDL_OPENGL;          /* Enable OpenGL in SDL */
 			videoFlags |= SDL_GL_DOUBLEBUFFER; /* Enable double buffering */
 			videoFlags |= SDL_HWPALETTE;       /* Store the palette in hardware */
-			videoFlags |= SDL_RESIZABLE;       /* Enable window resizing */
+			//videoFlags |= SDL_RESIZABLE;       /* Enable window resizing */
 
 			const SDL_VideoInfo *videoInfo = SDL_GetVideoInfo( );
 			if (videoInfo->hw_available){
@@ -30,9 +32,8 @@ namespace engine{
 				videoFlags |= SDL_SWSURFACE;
 			}
 
-			if (videoInfo->blit_hw){
-				videoFlags |= SDL_HWACCEL;
-			}
+			videoFlags |= SDL_HWACCEL;
+
 
 			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1 );
 
@@ -44,19 +45,19 @@ namespace engine{
 			SDL_WM_SetCaption(title, title);
 
 			windowResize(screenWidth, screenHeight);
+			glEnable(GL_TEXTURE_2D);
 			return true;
 		}
 
 		void windowResize(int width, int height)
 		{
 			SDL_SetVideoMode(width, height, bitsPerPixel, videoFlags);
+			
 			glMatrixMode (GL_PROJECTION);
-			glLoadIdentity ();
-			glOrtho (0, 320, 200, 0, 0, 1);
+			glOrtho (0, screenWidth, screenHeight, 0, 0, 1);
 			glMatrixMode (GL_MODELVIEW);
 
-			glPushMatrix();
-			glLoadIdentity();
+			glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 			
 		}
 
@@ -66,21 +67,26 @@ namespace engine{
 			static GLint T0     = 0;
 			static GLint Frames = 0;
 
-		  
-			//glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
-		  
 			glLoadIdentity();
-		  
-			
-			glBegin(GL_TRIANGLES);
-				glColor3ub(255, 0, 0);
-				glVertex2d(0, 0);
-			  
-				glColor3ub(0, 255, 0);
-				glVertex2d(100,0);
-			  
-				glColor3ub(0, 0, 255);
-				glVertex2d(50, 50);
+			//unsigned int texture = 1;
+			glBindTexture( GL_TEXTURE_2D, graphics::textures["test"] );
+ 
+			glBegin( GL_QUADS );
+				//Top-left vertex (corner)
+				glTexCoord2i( 0, 0 );
+				glVertex2d( 0, 0);
+				
+				//Bottom-left vertex (corner)
+				glTexCoord2i( 1, 0 );
+				glVertex2d( 24, 0);
+				
+				//Bottom-right vertex (corner)
+				glTexCoord2i( 1, 1 );
+				glVertex2d( 24, 24);
+				
+				//Top-right vertex (corner)
+				glTexCoord2i( 0, 1 );
+				glVertex2d( 0, 24);
 			glEnd();
 
 			/* Draw it to the screen */
