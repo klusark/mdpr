@@ -41,7 +41,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\SDL\include;include\engine;game\include"
-				MinimalRebuild="true"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				WarningLevel="4"
@@ -190,14 +191,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\engine\engineAll.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\include\engine\engineLib.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\include\engine\graphics.hpp"
 				>
 			</File>
@@ -205,6 +198,18 @@
 				RelativePath=".\include\engine\window.hpp"
 				>
 			</File>
+			<Filter
+				Name="libFiles"
+				>
+				<File
+					RelativePath=".\include\engine\engineAll.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\engine\engineLib.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

@@ -4,10 +4,10 @@ int main()
 {
 	engine::initEngine();
 
-	if (!engine::window::createWindow(320, 200, 32, "test", 0)){
+	if (!engine::window::createWindow(320, 200, 32, "Marshmallow Duel: Percy's Return", 0)){
 		return 0;
 	}
-
+	engine::graphics::loadImage("test",0);
 	try{
 		for(;;){
 			//engine::eventLoop();
@@ -17,7 +17,7 @@ int main()
 		if (exception){
 		}
 	}
-	engine::graphics::loadImage("set","asdf","asdf");
+	
 	engine::quit();
 	return 1;
 }
