@@ -9,7 +9,7 @@ namespace engine{
 	namespace graphics{
 		unsigned int texture;
 		std::map<std::string, unsigned int> textures;
-		EngineLib bool loadImage(char *images, ...)
+		EngineLib bool loadImage(char *ext, char *path, char *images, ...)
 		{
 
 			va_list ap;
@@ -17,14 +17,17 @@ namespace engine{
 			va_start(ap, images);
 			while (images != 0)
 			{
-				char temp[80];
-				strcpy (temp, images);
+				char temp[64];
+				strcpy (temp, path);
 				SDL_RWops *rwop;
-				strcat(temp, ".png");
+				strcat(temp, images);
+				strcat(temp, ext);
 				rwop = SDL_RWFromFile(temp, "rb");
 				SDL_Surface *surface = IMG_LoadPNG_RW(rwop);
-				if (!surface)
+				if (!surface){
 					printf("IMG_LoadPNG_RW: %s\n", IMG_GetError());
+					return false;
+				}
 				SDL_FreeRW(rwop);
 		        
 				// Enable 2D Texture Support
@@ -34,7 +37,6 @@ namespace engine{
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 				glTexImage2D(GL_TEXTURE_2D, 0, 3, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
 
-				printf("%i",textures[images]);
 				images = va_arg(ap, char *);
 				++i;
 			}
