@@ -114,6 +114,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\..\..\SDL\include;include\engine;game\include"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
@@ -130,7 +131,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGL32.lib GLu32.lib SDL.lib"
+				AdditionalDependencies="OpenGL32.lib GLu32.lib SDL.lib SDL_image.lib"
 				ModuleDefinitionFile="dll.def"
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
