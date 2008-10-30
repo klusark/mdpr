@@ -69,7 +69,7 @@ namespace engine{
 
 			glLoadIdentity();
 			//unsigned int texture = 1;
-			glBindTexture( GL_TEXTURE_2D, graphics::textures["test"] );
+			glBindTexture( GL_TEXTURE_2D, graphics::textures["run0"] );
  
 			glBegin( GL_QUADS );
 				//Top-left vertex (corner)
