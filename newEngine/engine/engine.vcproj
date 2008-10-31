@@ -178,6 +178,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\sprite.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\window.cpp"
 				>
 			</File>
@@ -188,11 +192,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\include\engine\dataTypes.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\include\engine\engine.hpp"
 				>
 			</File>
 			<File
 				RelativePath=".\include\engine\graphics.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\engine\sprite.hpp"
 				>
 			</File>
 			<File

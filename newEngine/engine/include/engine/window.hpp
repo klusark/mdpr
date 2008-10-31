@@ -1,4 +1,5 @@
-
+#ifndef window_hpp
+#define window_hpp
 namespace engine{
 	namespace window{
 		extern bool isActive;
@@ -7,3 +8,4 @@ namespace engine{
 		extern void draw();
 	}
 }
+#endif
