@@ -47,6 +47,7 @@
 				RuntimeLibrary="3"
 				WarningLevel="4"
 				DebugInformationFormat="3"
+				ForcedIncludeFiles="engineLib.hpp"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -119,6 +120,7 @@
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
 				DebugInformationFormat="3"
+				ForcedIncludeFiles="engineLib.hpp"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -182,6 +184,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\spriteManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\window.cpp"
 				>
 			</File>
@@ -205,6 +211,10 @@
 			</File>
 			<File
 				RelativePath=".\include\engine\sprite.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\engine\spriteManager.hpp"
 				>
 			</File>
 			<File

@@ -2,10 +2,12 @@
 #define sprite_hpp
 namespace engine
 {
-	class Sprite
+	class EngineLib Sprite
 	{
+	public:
 		Sprite();
 		virtual ~Sprite();
+		virtual void update();
 	};
 }
 #endif

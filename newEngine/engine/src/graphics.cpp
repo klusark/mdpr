@@ -1,6 +1,5 @@
 #include <map>
 #include <string>
-#include "engineLib.hpp"
 #include "graphics.hpp"
 #include "engine.hpp"
 #include "sdl/sdl_image.h"
