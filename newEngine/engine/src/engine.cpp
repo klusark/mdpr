@@ -1,6 +1,7 @@
 #include "engineLib.hpp"
 #include "engine.hpp"
 #include "window.hpp"
+#include "dataTypes.hpp"
 
 namespace engine{
 	EngineLib bool initEngine()
@@ -48,5 +49,15 @@ namespace engine{
 		eventLoop();
 		window::draw();
 
+	}
+
+	EngineLib Rect makeRect(int x, int y, unsigned int w, unsigned int h)
+	{
+		Rect rect;
+		rect.x = x;
+		rect.y = y;
+		rect.w = w;
+		rect.h = h;
+		return rect;
 	}
 }

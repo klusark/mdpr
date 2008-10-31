@@ -1,6 +1,8 @@
 #include "engineLib.hpp"
-#include "window.hpp"
 #include "graphics.hpp"
+#include "window.hpp"
+#include "engine.hpp"
+
 
 namespace engine{
 	namespace window{
@@ -68,31 +70,14 @@ namespace engine{
 			static GLint Frames = 0;
 
 			glLoadIdentity();
-			//unsigned int texture = 1;
-			glBindTexture( GL_TEXTURE_2D, graphics::textures["run0"] );
- 
-			glBegin( GL_QUADS );
-				//Top-left vertex (corner)
-				glTexCoord2i( 0, 0 );
-				glVertex2d( 0, 0);
-				
-				//Bottom-left vertex (corner)
-				glTexCoord2i( 1, 0 );
-				glVertex2d( 24, 0);
-				
-				//Bottom-right vertex (corner)
-				glTexCoord2i( 1, 1 );
-				glVertex2d( 24, 24);
-				
-				//Top-right vertex (corner)
-				glTexCoord2i( 0, 1 );
-				glVertex2d( 0, 24);
-			glEnd();
+			Rect rect = engine::makeRect(22, 55, 24, 24);
 
-			/* Draw it to the screen */
+			engine::graphics::drawTexturedQuad(rect, graphics::textures["run0"]);
+
+			// Draw it to the screen
 			SDL_GL_SwapBuffers( );
 
-			/* Gather our frames per second */
+			// Gather our frames per second
 			Frames++;
 			
 			GLint t = SDL_GetTicks();

@@ -2,6 +2,7 @@
 #include <string>
 #include "engineLib.hpp"
 #include "graphics.hpp"
+#include "engine.hpp"
 #include "sdl/sdl_image.h"
 #include <stdarg.h>
 
@@ -43,6 +44,31 @@ namespace engine{
 
 			va_end(ap);
 			return true;
+		}
+
+		EngineLib void drawTexturedQuad(Rect rect, unsigned int texture)
+		{
+			glBindTexture(GL_TEXTURE_2D, texture);
+			glBegin(GL_QUADS);
+				//Top-left vertex (corner)
+				glTexCoord2i(0, 0);
+				glVertex2d(rect.x, rect.y);
+				
+				//top-right vertex (corner)
+				glTexCoord2i(1, 0);
+				glVertex2d(rect.x + rect.w, rect.y);
+				
+				//Bottom-right vertex (corner)
+				glTexCoord2i(1, 1);
+				glVertex2d(rect.x+rect.w, rect.y+rect.h);
+				
+				//bottom-left vertex (corner)
+				glTexCoord2i(0, 1);
+				glVertex2d(rect.x , rect.y+ rect.h);
+
+			glEnd();
+
+
 		}
 	}
 }
