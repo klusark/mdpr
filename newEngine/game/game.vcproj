@@ -46,6 +46,7 @@
 				RuntimeLibrary="3"
 				WarningLevel="4"
 				DebugInformationFormat="3"
+				ForcedIncludeFiles="$(NOINHERIT)"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -170,12 +171,20 @@
 				RelativePath=".\src\main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\src\player.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\include\game\player.hpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

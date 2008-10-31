@@ -8,4 +8,7 @@ namespace engine
 	Sprite::~Sprite()
 	{
 	}
+	void Sprite::update()
+	{
+	}
 }
