@@ -8,6 +8,7 @@ namespace engine
 		Sprite();
 		virtual ~Sprite();
 		virtual void update();
+		const char *name;
 	};
 }
 #endif

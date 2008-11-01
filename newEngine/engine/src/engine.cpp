@@ -1,6 +1,9 @@
 #include "engine.hpp"
 #include "window.hpp"
 #include "dataTypes.hpp"
+#include "sprite.hpp"
+#include "spriteManager.hpp"
+#include <map>
 
 namespace engine{
 	EngineLib bool initEngine()
@@ -45,9 +48,29 @@ namespace engine{
 
 	EngineLib void mainLoop()
 	{
+		// These are to calculate our fps 
+		static GLint T0     = 0;
+		static GLint Frames = 0;
 		eventLoop();
-		window::draw();
 
+		std::map<std::string, Sprite *>::iterator iter;
+		for( iter = spriteManager::Sprites.begin(); iter != spriteManager::Sprites.end(); ++iter ) {
+			iter->second->update();
+
+		}
+
+		window::draw();
+		// Gather our frames per second
+		Frames++;
+		GLint t = SDL_GetTicks();
+		if (t - T0 >= 5000) {
+			GLfloat seconds = (t - T0) / 1000.0f;
+			GLfloat fps = Frames / seconds;
+			printf("%d frames in %g seconds = %g FPS\n", Frames, seconds, fps);
+			T0 = t;
+			Frames = 0;
+		
+		}
 	}
 
 	EngineLib Rect makeRect(int x, int y, unsigned int w, unsigned int h)

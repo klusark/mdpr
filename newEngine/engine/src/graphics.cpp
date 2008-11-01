@@ -23,12 +23,11 @@ namespace engine{
 				strcat(temp, images);
 				strcat(temp, ext);
 				rwop = SDL_RWFromFile(temp, "rb");
-				SDL_Surface *surface = IMG_LoadPNG_RW(rwop);
+				SDL_Surface *surface = IMG_Load_RW(rwop, 1);
 				if (!surface){
 					printf("IMG_LoadPNG_RW: %s\n", IMG_GetError());
 					return false;
 				}
-				SDL_FreeRW(rwop);
 		        
 				// Enable 2D Texture Support
 				glGenTextures(1, &textures[images]);

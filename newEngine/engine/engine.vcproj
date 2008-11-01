@@ -180,10 +180,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\sprite.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\spriteManager.cpp"
 				>
 			</File>
@@ -191,6 +187,22 @@
 				RelativePath=".\src\window.cpp"
 				>
 			</File>
+			<Filter
+				Name="Sprite"
+				>
+				<File
+					RelativePath=".\src\animaiton.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\movement.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -210,10 +222,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\engine\sprite.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\include\engine\spriteManager.hpp"
 				>
 			</File>
@@ -230,6 +238,22 @@
 				</File>
 				<File
 					RelativePath=".\include\engine\engineLib.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Sprite"
+				>
+				<File
+					RelativePath=".\include\engine\animation.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\engine\movement.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\engine\sprite.hpp"
 					>
 				</File>
 			</Filter>
