@@ -2,7 +2,6 @@
 #include "window.hpp"
 #include "engine.hpp"
 
-
 namespace engine{
 	namespace window{
 		bool isActive = true;
@@ -64,10 +63,6 @@ namespace engine{
 
 		void draw()
 		{
-			/* These are to calculate our fps */
-			static GLint T0     = 0;
-			static GLint Frames = 0;
-
 			glLoadIdentity();
 			Rect rect = engine::makeRect(22, 55, 24, 24);
 
@@ -75,19 +70,6 @@ namespace engine{
 
 			// Draw it to the screen
 			SDL_GL_SwapBuffers( );
-
-			// Gather our frames per second
-			Frames++;
-			
-			GLint t = SDL_GetTicks();
-			if (t - T0 >= 5000) {
-				GLfloat seconds = (t - T0) / 1000.0f;
-				GLfloat fps = Frames / seconds;
-				printf("%d frames in %g seconds = %g FPS\n", Frames, seconds, fps);
-				T0 = t;
-				Frames = 0;
-			
-			}
 		}
 	}
 }

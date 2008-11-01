@@ -3,9 +3,11 @@ namespace engine
 {
 	namespace spriteManager
 	{
-		EngineLib void registerSprite(Sprite sprite)
+		std::map<std::string, Sprite *> Sprites;
+
+		EngineLib void registerSprite(Sprite *sprite)
 		{
-			sprite.update();
+			Sprites[sprite->name] = sprite;
 			return;
 		}
 	}
