@@ -191,7 +191,7 @@
 				Name="Sprite"
 				>
 				<File
-					RelativePath=".\src\animaiton.cpp"
+					RelativePath=".\src\animation.cpp"
 					>
 				</File>
 				<File
