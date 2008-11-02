@@ -2,12 +2,12 @@
 #define sprite_hpp
 namespace engine
 {
-	class EngineLib Sprite
+	class Sprite
 	{
 	public:
-		Sprite();
-		virtual ~Sprite();
-		virtual void update();
+		EngineLib Sprite();
+		virtual EngineLib ~Sprite();
+		virtual EngineLib void update();
 		const char *name;
 	};
 }
