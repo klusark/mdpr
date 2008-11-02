@@ -9,6 +9,7 @@ namespace engine{
 	namespace graphics{
 		unsigned int texture;
 		std::map<std::string, unsigned int> textures;
+
 		EngineLib bool loadImage(char *ext, char *path, char *images, ...)
 		{
 
@@ -65,8 +66,6 @@ namespace engine{
 				glVertex2d(rect.x , rect.y+ rect.h);
 
 			glEnd();
-
-
 		}
 	}
 }

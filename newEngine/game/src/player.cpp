@@ -2,7 +2,8 @@
 Player::Player(const char *name)
 {
 	Sprite::name = name;
-	makeAnimation("test", 1, 100, "idle");
+	makeAnimation("run", 4, 100, "run0", "run1", "run2", "run3");
+	changeAnimation("run");
 }
 
 Player::~Player()

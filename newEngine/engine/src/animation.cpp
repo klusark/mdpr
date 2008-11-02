@@ -6,7 +6,7 @@ namespace engine
 {
 	Animation::Animation()
 	{
-
+		lastAnimationTime = SDL_GetTicks();
 	}
 
 	Animation::~Animation()
@@ -16,9 +16,19 @@ namespace engine
 	void Animation::update()
 	{
 		Rect rect = engine::makeRect(55, 22, 24, 24);
-
-		engine::graphics::drawTexturedQuad(rect, Animations["test"]->frames[0]);
+		//animationInfo *currentAnimation = Animations["test"];
+		if(currentAnimation->delay < (SDL_GetTicks() - lastAnimationTime)){
+			engine::graphics::drawTexturedQuad(rect, currentAnimation->frames[currentAnimation->currentFrame]);
+			lastAnimationTime = SDL_GetTicks();
+			++currentAnimation->currentFrame;
+			if (currentAnimation->currentFrame >= currentAnimation->numFrames){
+				currentAnimation->currentFrame = 0;
+				//animationEnd();
+			}
+		}
+		//engine::graphics::drawTexturedQuad(rect, Animations["test"]->frames[0]);
 	}
+
 	void Animation::makeAnimation(const char *name, unsigned short numFrames, unsigned short delay, const char *textures, ...)
 	{
 		animationInfo *animation = new animationInfo;
@@ -38,5 +48,12 @@ namespace engine
 
 		va_end(ap);
 		Animations[name] = animation;
+	}
+
+	void Animation::changeAnimation(const char *name)
+	{
+		currentAnimation = Animations[name];
+		currentAnimation->currentFrame = 0;
+
 	}
 }
