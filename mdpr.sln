@@ -1,7 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mdpr", "mdpr.vcproj", "{05290F23-E445-49F5-8AE4-25A013C1DFF3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game", "game\game.vcproj", "{0ADE0951-03C9-452C-B523-719C61F5357D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{134153CE-FA00-47CA-BABA-7BD706FC17EC} = {134153CE-FA00-47CA-BABA-7BD706FC17EC}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "engine", "engine\engine.vcproj", "{134153CE-FA00-47CA-BABA-7BD706FC17EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +14,14 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{05290F23-E445-49F5-8AE4-25A013C1DFF3}.Debug|Win32.ActiveCfg = Debug|Win32
-		{05290F23-E445-49F5-8AE4-25A013C1DFF3}.Debug|Win32.Build.0 = Debug|Win32
-		{05290F23-E445-49F5-8AE4-25A013C1DFF3}.Release|Win32.ActiveCfg = Release|Win32
-		{05290F23-E445-49F5-8AE4-25A013C1DFF3}.Release|Win32.Build.0 = Release|Win32
+		{0ADE0951-03C9-452C-B523-719C61F5357D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0ADE0951-03C9-452C-B523-719C61F5357D}.Debug|Win32.Build.0 = Debug|Win32
+		{0ADE0951-03C9-452C-B523-719C61F5357D}.Release|Win32.ActiveCfg = Release|Win32
+		{0ADE0951-03C9-452C-B523-719C61F5357D}.Release|Win32.Build.0 = Release|Win32
+		{134153CE-FA00-47CA-BABA-7BD706FC17EC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{134153CE-FA00-47CA-BABA-7BD706FC17EC}.Debug|Win32.Build.0 = Debug|Win32
+		{134153CE-FA00-47CA-BABA-7BD706FC17EC}.Release|Win32.ActiveCfg = Release|Win32
+		{134153CE-FA00-47CA-BABA-7BD706FC17EC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
