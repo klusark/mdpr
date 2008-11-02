@@ -3,12 +3,12 @@
 #include "sprite.hpp"
 namespace engine
 {
-	class EngineLib Movement
+	class  Movement
 	{
 	public:
-		Movement();
-		virtual ~Movement();
-		virtual void update();
+		EngineLib Movement();
+		virtual EngineLib ~Movement();
+		virtual void EngineLib update();
 	};
 }
 #endif

@@ -195,6 +195,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\collision.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\movement.cpp"
 					>
 				</File>
@@ -246,6 +250,10 @@
 				>
 				<File
 					RelativePath=".\include\engine\animation.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\engine\collision.hpp"
 					>
 				</File>
 				<File
