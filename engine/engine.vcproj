@@ -199,6 +199,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\input.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\mass.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\movement.cpp"
 					>
 				</File>
@@ -254,6 +262,14 @@
 				</File>
 				<File
 					RelativePath=".\include\engine\collision.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\engine\input.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\engine\mass.hpp"
 					>
 				</File>
 				<File
