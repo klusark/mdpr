@@ -9,4 +9,7 @@
 #include "spriteManager.hpp"
 #include "animation.hpp"
 #include "movement.hpp"
+#include "mass.hpp"
+#include "collision.hpp"
+#include "input.hpp"
 #endif

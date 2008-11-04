@@ -1,3 +1,4 @@
+#include "engine/engineAll.hpp"
 #include "player.hpp"
 Player::Player(const char *name)
 {
@@ -9,12 +10,17 @@ Player::Player(const char *name)
 Player::~Player()
 {
 }
-
+/**
+ * test
+ */
 void Player::update()
 {
 	Sprite::update();
 	Animation::update();
 	Movement::update();
+	Mass::update();
+	Collision::update();
+	Input::update();
 	//test();
 }
 void Player::test()
