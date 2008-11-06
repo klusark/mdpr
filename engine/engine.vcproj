@@ -214,6 +214,10 @@
 					RelativePath=".\src\sprite.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\src\spriteInterface.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -278,6 +282,10 @@
 				</File>
 				<File
 					RelativePath=".\include\engine\sprite.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\engine\spriteInterface.hpp"
 					>
 				</File>
 			</Filter>

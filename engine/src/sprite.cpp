@@ -5,8 +5,11 @@ namespace engine
 	/**
 	 * Initialize The Sprite
 	 */
-	Sprite::Sprite()
+	Sprite::Sprite(const char *name)
 	{
+		Sprite::name = name;
+		//makeAnimation("run", 4, 100, "run0", "run1", "run2", "run3");
+		//changeAnimation("run");
 	}
 
 	/**
@@ -22,5 +25,10 @@ namespace engine
 	void Sprite::update()
 	{
 	}
+
+	/**
+	 * 
+	 */
+	//void Sprite::implement
 
 }
