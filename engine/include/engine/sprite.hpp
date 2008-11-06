@@ -5,7 +5,7 @@ namespace engine
 	class Sprite
 	{
 	public:
-		EngineLib Sprite();
+		EngineLib Sprite(const char *name);
 		virtual EngineLib ~Sprite();
 		virtual EngineLib void update();
 		const char *name;

@@ -1,20 +1,24 @@
 #include "engine/engineAll.hpp"
-#include "stdio.h"
-#include "player.hpp"
+//#include <iostream>
+//#include "player.hpp"
 int main()
 {
-	engine::initEngine();
-
-	if (!engine::window::createWindow(320, 200, 32, "Marshmallow Duel: Percy's Return", 0)){
-		return 0;
-	}
-	engine::graphics::loadImage(".png", "data/main/", "idle", "run0", "run1", "run2", "run3", 0);
-	Player *player;
-	player = new Player("player");
-	//engine::Sprite *sprite = ;
-	engine::spriteManager::registerSprite(dynamic_cast<engine::Sprite*>(player));
-	
 	try{
+		engine::initEngine();
+
+		if (!engine::window::createWindow(320, 200, 32, "Marshmallow Duel: Percy's Return", 0)){
+			return 0;
+		}
+		engine::graphics::loadImage(".png", "data/main/", "idle", "run0", "run1", "run2", "run3", 0);
+		//Player *player;
+		//player = new Player("player");
+		//engine::Sprite *sprite = ;
+
+		engine::Sprite *player = new engine::Sprite("player1");
+		engine::spriteManager::registerSprite(player);
+		//player
+	
+	
 		for(;;){
 			//engine::eventLoop();
 			engine::mainLoop();

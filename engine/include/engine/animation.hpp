@@ -1,11 +1,12 @@
 #ifndef animaiton_hpp
 #define animation_hpp
 #include "sprite.hpp"
+#include "spriteInterface.hpp"
 #include <map>
 #include <string>
 namespace engine
 {
-	class  Animation
+	class  Animation : public spriteInterface
 	{
 	private:
 		struct animationInfo
