@@ -1,4 +1,7 @@
+#include <list>
+#include "spriteInterface.hpp"
 #include "sprite.hpp"
+
 
 namespace engine
 {
@@ -24,11 +27,19 @@ namespace engine
 	 */
 	void Sprite::update()
 	{
+		for (std::list<engine::spriteInterface *>::iterator it = Interfaces.begin(); it != Interfaces.end(); it++){
+			(*it)->update();
+		}
+
 	}
 
 	/**
 	 * 
 	 */
-	//void Sprite::implement
+	void Sprite::addInterface(engine::spriteInterface *interfaces)
+	{
+		Interfaces.push_back(interfaces);
+
+	}
 
 }

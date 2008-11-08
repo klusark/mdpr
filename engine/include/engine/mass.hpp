@@ -1,9 +1,10 @@
 #ifndef mass_hpp
 #define mass_hpp
+#include "spriteInterface.hpp"
 #include "sprite.hpp"
 namespace engine
 {
-	class  Mass
+	class  Mass : public spriteInterface
 	{
 	public:
 		EngineLib Mass();
