@@ -3,7 +3,7 @@ namespace engine
 {
 
 	/**
-	 * Initialize The Collision System for the sprite
+	 * Initialize The Mass System for the sprite
 	 */
 	Mass::Mass()
 	{
@@ -11,7 +11,7 @@ namespace engine
 	}
 
 	/**
-	 * Destroys The Collision System for the sprite
+	 * Destroys The Mass System for the sprite
 	 */
 	Mass::~Mass()
 	{
@@ -19,7 +19,7 @@ namespace engine
 	}
 
 	/**
-	 * Updates The Collision System for the sprite
+	 * Updates The Mass System for the sprite
 	 * Takes care of making the sprite fall with gravity
 	 */
 	void Mass::update()

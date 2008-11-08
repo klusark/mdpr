@@ -3,7 +3,7 @@ namespace engine
 {
 
 	/**
-	 * Initialize The Collision System for the sprite
+	 * Initialize The Movement System for the sprite
 	 */
 	Movement::Movement()
 	{
@@ -11,7 +11,7 @@ namespace engine
 	}
 
 	/**
-	 * Destroys The Collision System for the sprite
+	 * Destroys The Movement System for the sprite
 	 */
 	Movement::~Movement()
 	{
@@ -19,7 +19,7 @@ namespace engine
 	}
 
 	/**
-	 * Updates The Collision System for the sprite
+	 * Updates The Movement System for the sprite
 	 * Takes care of moving the sprite
 	 */
 	void Movement::update()
