@@ -14,14 +14,8 @@ namespace engine{
 		EngineLib bool loadImage(char *ext, char *path, std::vector<std::string> images)
 		{
 
-			//va_list ap;
-			int i;
-			//va_start(ap, images);
-			for (i=0; i < images.size(); ++i)
-    //cout << " " << fifth[i];
-
-			//while (images = va_arg(ap, char *))
-			{
+			unsigned int i;
+			for (i=0; i < images.size(); ++i){
 				std::string temp;
 				temp = path;
 				SDL_RWops *rwop;
@@ -31,7 +25,7 @@ namespace engine{
 				SDL_Surface *surface = IMG_Load_RW(rwop, 1);
 				if (!surface){
 					std::cout<<"Loading Image:" << IMG_GetError() << std::endl;
-					continue;
+					throw 1;
 				}
 		        
 				// Enable 2D Texture Support
@@ -41,12 +35,8 @@ namespace engine{
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 				glTexImage2D(GL_TEXTURE_2D, 0, 3, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
 
-				//images = ;
-				//std::cout<<images<<std::endl;
-				//++i;
 			}
 
-			//va_end(ap);
 			return true;
 		}
 

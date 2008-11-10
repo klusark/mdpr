@@ -176,6 +176,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\event.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\graphics.cpp"
 				>
 			</File>
@@ -231,6 +235,10 @@
 			</File>
 			<File
 				RelativePath=".\include\engine\engine.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\engine\event.hpp"
 				>
 			</File>
 			<File

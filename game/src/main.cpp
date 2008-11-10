@@ -15,7 +15,6 @@ int main()
 		images.push_back("run0");images.push_back("run1");images.push_back("run2");images.push_back("run3");
 		engine::graphics::loadImage(".png", "data/main/", images);
 
-
 		//setup the player
 		engine::Sprite *player = new engine::Sprite("player1");
 		engine::spriteInterface *playerAnimation = new engine::Animation;
@@ -26,6 +25,9 @@ int main()
 		
 		dynamic_cast<engine::Animation*>(playerAnimation)->makeAnimation("run", 4, 100, "run0", "run1", "run2", "run3");
 		dynamic_cast<engine::Animation*>(playerAnimation)->changeAnimation("run");
+
+		dynamic_cast<engine::Input*>(playerInput)->addInput("up", 273);
+
 		player->addInterface(playerAnimation);
 		player->addInterface(playerMovement);
 		player->addInterface(playerMass);
