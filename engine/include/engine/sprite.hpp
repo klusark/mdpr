@@ -1,18 +1,20 @@
 #ifndef sprite_hpp
 #define sprite_hpp
 #include <list>
+#include <deque>
+
 namespace engine
 {
 	class spriteInterface;
 	class Sprite
 	{
 	public:
-		EngineLib Sprite(const char *name);
+		EngineLib Sprite(std::string name);
 		virtual EngineLib ~Sprite();
 		virtual EngineLib void update();
 		EngineLib void addInterface(engine::spriteInterface *interfaces);
-		const char *name;
-		std::list<engine::spriteInterface *> Interfaces;
+		std::string name;
+		std::deque<engine::spriteInterface *> Interfaces;
 	};
 }
 #endif

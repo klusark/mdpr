@@ -11,7 +11,7 @@ namespace engine{
 		unsigned int texture;
 		std::map<std::string, unsigned int> textures;
 
-		EngineLib bool loadImage(char *ext, char *path, std::vector<std::string> images)
+		EngineLib bool loadImage(std::string ext, std::string path, std::vector<std::string> images)
 		{
 
 			unsigned int i;
@@ -21,6 +21,7 @@ namespace engine{
 				SDL_RWops *rwop;
 				temp += images[i];
 				temp += ext;
+				
 				rwop = SDL_RWFromFile(temp.c_str(), "rb");
 				SDL_Surface *surface = IMG_Load_RW(rwop, 1);
 				if (!surface){

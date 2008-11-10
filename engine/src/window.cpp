@@ -10,7 +10,7 @@ namespace engine{
 		int screenHeight;
 		int bitsPerPixel;
 
-		EngineLib bool createWindow(int screenWidth, int screenHeight, int bitsPerPixel, const char * title, bool fullScreenFlag)
+		EngineLib bool createWindow(int screenWidth, int screenHeight, int bitsPerPixel, std::string title, bool fullScreenFlag)
 		{
 			window::screenWidth = screenWidth;
 			window::screenHeight = screenHeight;
@@ -20,10 +20,10 @@ namespace engine{
 				return false;
 			}
 
-		    videoFlags  = SDL_OPENGL;          /* Enable OpenGL in SDL */
-			videoFlags |= SDL_GL_DOUBLEBUFFER; /* Enable double buffering */
-			videoFlags |= SDL_HWPALETTE;       /* Store the palette in hardware */
-			videoFlags |= SDL_RESIZABLE;       /* Enable window resizing */
+		    videoFlags  = SDL_OPENGL;          // Enable OpenGL in SDL 
+			videoFlags |= SDL_GL_DOUBLEBUFFER; // Enable double buffering 
+			videoFlags |= SDL_HWPALETTE;       // Store the palette in hardware 
+			videoFlags |= SDL_RESIZABLE;       // Enable window resizing 
 
 			const SDL_VideoInfo *videoInfo = SDL_GetVideoInfo( );
 			if (videoInfo->hw_available){
@@ -42,7 +42,7 @@ namespace engine{
 
 			//SDL_SetVideoMode(screenWidth, screenHeight, bitsPerPixel, videoFlags);
 
-			SDL_WM_SetCaption(title, title);
+			SDL_WM_SetCaption(title.c_str(), title.c_str());
 
 			windowResize(screenWidth, screenHeight);
 			glEnable(GL_TEXTURE_2D);

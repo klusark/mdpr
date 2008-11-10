@@ -1,4 +1,4 @@
-#include <list>
+#include <deque>
 #include "spriteInterface.hpp"
 #include "sprite.hpp"
 
@@ -8,7 +8,7 @@ namespace engine
 	/**
 	 * Initialize The Sprite
 	 */
-	Sprite::Sprite(const char *name)
+	Sprite::Sprite(std::string name)
 	{
 		Sprite::name = name;
 		//makeAnimation("run", 4, 100, "run0", "run1", "run2", "run3");
@@ -27,7 +27,7 @@ namespace engine
 	 */
 	void Sprite::update()
 	{
-		for (std::list<engine::spriteInterface *>::iterator it = Interfaces.begin(); it != Interfaces.end(); it++){
+		for (std::deque<engine::spriteInterface *>::iterator it = Interfaces.begin(); it != Interfaces.end(); it++){
 			(*it)->update();
 		}
 
