@@ -10,6 +10,7 @@ namespace engine
 		EngineLib Collision();
 		virtual EngineLib ~Collision();
 		virtual void EngineLib update();
+		
 	};
 }
 #endif
