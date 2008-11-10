@@ -1,4 +1,5 @@
 #include "input.hpp"
+#include <string>
 namespace engine
 {
 
@@ -23,6 +24,11 @@ namespace engine
 	 * Takes care of getting user input 
 	 */
 	void Input::update()
+	{
+
+	}
+
+	void Input::addInput(std::string keyname, int key)
 	{
 
 	}
