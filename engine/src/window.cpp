@@ -1,6 +1,8 @@
+#include "engineLib.hpp"
 #include "graphics.hpp"
 #include "window.hpp"
 #include "engine.hpp"
+#include <iostream>
 
 namespace engine{
 	namespace window{
@@ -19,11 +21,10 @@ namespace engine{
 				printf("SDL not initializeed\n");
 				return false;
 			}
-
 		    videoFlags  = SDL_OPENGL;          // Enable OpenGL in SDL 
 			videoFlags |= SDL_GL_DOUBLEBUFFER; // Enable double buffering 
 			videoFlags |= SDL_HWPALETTE;       // Store the palette in hardware 
-			videoFlags |= SDL_RESIZABLE;       // Enable window resizing 
+			//videoFlags |= SDL_RESIZABLE;       // Enable window resizing 
 
 			const SDL_VideoInfo *videoInfo = SDL_GetVideoInfo( );
 			if (videoInfo->hw_available){
@@ -65,11 +66,18 @@ namespace engine{
 		{
 			glLoadIdentity();
 			Rect rect = engine::makeRect(22, 55, 24, 24);
+			std::map<std::string, unsigned int>::iterator iter = graphics::textures.begin();
 
+			iter = graphics::textures.find("runs");
+			if( iter != graphics::textures.end() ) 
+				std::cout << "Value is: " << iter->second << std::endl;
+			else
+				std::cout << "Key is not in myMap" << std::endl;
+			//std::cout<<graphics::textures.end<<std::endl;
 			engine::graphics::drawTexturedQuad(rect, graphics::textures["run0"]);
 
 			// Draw it to the screen
-			SDL_GL_SwapBuffers( );
+			SDL_GL_SwapBuffers();
 		}
 	}
 }

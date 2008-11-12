@@ -1,4 +1,5 @@
-#include "input.hpp"
+#include "engineLib.hpp"
+#include "spriteInput.hpp"
 #include <string>
 namespace engine
 {
@@ -30,6 +31,12 @@ namespace engine
 
 	void Input::addInput(std::string keyname, int key)
 	{
+		if (key){}
 
+	}
+
+	std::string Input::getName()
+	{
+		return "input";
 	}
 }

@@ -1,5 +1,5 @@
-#ifndef movement_hpp
-#define movement_hpp
+#ifndef spritemovement_hpp
+#define spritemovement_hpp
 #include "spriteInterface.hpp"
 #include "sprite.hpp"
 namespace engine
@@ -8,8 +8,9 @@ namespace engine
 	{
 	public:
 		EngineLib Movement();
-		virtual EngineLib ~Movement();
-		virtual void EngineLib update();
+		virtual ~Movement();
+		void update();
+		std::string getName();
 	};
 }
 #endif

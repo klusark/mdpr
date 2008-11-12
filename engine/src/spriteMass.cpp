@@ -1,4 +1,5 @@
-#include "mass.hpp"
+#include "engineLib.hpp"
+#include "spriteMass.hpp"
 namespace engine
 {
 
@@ -25,5 +26,10 @@ namespace engine
 	void Mass::update()
 	{
 
+	}
+
+	std::string Mass::getName()
+	{
+		return "mass";
 	}
 }

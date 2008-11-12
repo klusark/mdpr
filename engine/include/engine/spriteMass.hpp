@@ -1,5 +1,5 @@
-#ifndef mass_hpp
-#define mass_hpp
+#ifndef spritemass_hpp
+#define spritemass_hpp
 #include "spriteInterface.hpp"
 #include "sprite.hpp"
 namespace engine
@@ -8,8 +8,9 @@ namespace engine
 	{
 	public:
 		EngineLib Mass();
-		virtual EngineLib ~Mass();
-		virtual void EngineLib update();
+		virtual ~Mass();
+		void update();
+		std::string getName();
 	};
 }
 #endif

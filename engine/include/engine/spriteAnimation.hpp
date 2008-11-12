@@ -1,9 +1,7 @@
-#ifndef animaiton_hpp
-#define animation_hpp
+#ifndef spriteanimaiton_hpp
+#define spriteanimation_hpp
 #include "sprite.hpp"
 #include "spriteInterface.hpp"
-#include <map>
-#include <string>
 namespace engine
 {
 	class  Animation : public spriteInterface
@@ -24,8 +22,9 @@ namespace engine
 		std::map<std::string, animationInfo *> Animations;
 	public:
 		EngineLib Animation();
-		virtual EngineLib ~Animation();
-		virtual EngineLib void update();
+		virtual ~Animation();
+		void update();
+		std::string getName();
 		void EngineLib makeAnimation(const char *name, unsigned short numFrames, unsigned short delay, const char *textures, ...);
 		void EngineLib changeAnimation(const char *name);
 	};

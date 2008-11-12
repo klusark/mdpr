@@ -1,5 +1,5 @@
-#ifndef input_hpp
-#define input_hpp
+#ifndef spriteinput_hpp
+#define spriteinput_hpp
 #include "spriteInterface.hpp"
 #include "sprite.hpp"
 #include <string>
@@ -9,8 +9,9 @@ namespace engine
 	{
 	public:
 		EngineLib Input();
-		virtual EngineLib ~Input();
-		virtual void EngineLib update();
+		virtual ~Input();
+		void update();
+		std::string getName();
 		void EngineLib addInput(std::string keyname, int key);
 	};
 }

@@ -1,16 +1,17 @@
 #ifndef collision_hpp
 #define collision_hpp
-#include "spriteInterface.hpp"
-#include "sprite.hpp"
 namespace engine
 {
-	class  Collision : public spriteInterface
+	namespace collision
 	{
-	public:
-		EngineLib Collision();
-		virtual EngineLib ~Collision();
-		virtual void EngineLib update();
-		
-	};
+		enum collisonDirections
+		{
+			up = 1,
+			down,
+			left,
+			right,
+			all = up|down|left|right,
+		};
+	}
 }
 #endif

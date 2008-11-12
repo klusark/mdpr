@@ -1,3 +1,4 @@
+#include "engineLib.hpp"
 #include "spriteManager.hpp"
 namespace engine
 {
