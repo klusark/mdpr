@@ -1,5 +1,6 @@
 #include "engineLib.hpp"
 #include "spriteManager.hpp"
+#include <map>
 namespace engine
 {
 	namespace spriteManager
@@ -10,6 +11,15 @@ namespace engine
 		{
 			Sprites[sprite->name] = sprite;
 			return;
+		}
+
+		void update()
+		{
+			std::map<std::string, Sprite *>::iterator iter;
+			for( iter = spriteManager::Sprites.begin(); iter != spriteManager::Sprites.end(); ++iter ) {
+				iter->second->update();
+
+			}
 		}
 	}
 }

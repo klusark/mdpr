@@ -12,6 +12,7 @@ namespace engine
 			right,
 			all = up|down|left|right,
 		};
+		void update();
 	}
 }
 #endif
