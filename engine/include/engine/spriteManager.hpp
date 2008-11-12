@@ -8,7 +8,8 @@ namespace engine
 	namespace spriteManager
 	{
 		extern std::map<std::string, Sprite *> Sprites;
-		extern EngineLib void registerSprite(engine::Sprite *sprite);
+		EngineLib void registerSprite(engine::Sprite *sprite);
+		void update();
 	}
 }
 #endif

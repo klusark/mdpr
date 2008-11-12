@@ -4,6 +4,7 @@
 #include "dataTypes.hpp"
 #include "sprite.hpp"
 #include "spriteManager.hpp"
+#include "collision.hpp"
 #include <map>
 
 namespace engine{
@@ -54,13 +55,13 @@ namespace engine{
 		static GLint Frames = 0;
 		eventLoop();
 
-		std::map<std::string, Sprite *>::iterator iter;
-		for( iter = spriteManager::Sprites.begin(); iter != spriteManager::Sprites.end(); ++iter ) {
-			iter->second->update();
+		spriteManager::update();
 
-		}
 
 		window::draw();
+
+		collision::update();
+
 		// Gather our frames per second
 		Frames++;
 		GLint t = SDL_GetTicks();

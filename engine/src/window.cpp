@@ -66,13 +66,9 @@ namespace engine{
 		{
 			glLoadIdentity();
 			Rect rect = engine::makeRect(22, 55, 24, 24);
-			std::map<std::string, unsigned int>::iterator iter = graphics::textures.begin();
+			
 
-			iter = graphics::textures.find("runs");
-			if( iter != graphics::textures.end() ) 
-				std::cout << "Value is: " << iter->second << std::endl;
-			else
-				std::cout << "Key is not in myMap" << std::endl;
+
 			//std::cout<<graphics::textures.end<<std::endl;
 			engine::graphics::drawTexturedQuad(rect, graphics::textures["run0"]);
 
