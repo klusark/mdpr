@@ -1,6 +1,5 @@
 #include "engine/engineAll.hpp"
 #include <iostream>
-//#include "player.hpp"
 #include <vector>
 int main()
 {
@@ -27,6 +26,10 @@ int main()
 		dynamic_cast<engine::Animation*>(playerAnimation)->changeAnimation("run");
 
 		dynamic_cast<engine::Input*>(playerInput)->addInput("up", 273);
+
+		dynamic_cast<engine::Collision*>(playerCollision)->setCollisionType("player");
+		dynamic_cast<engine::Collision*>(playerCollision)->colidesWith("player", engine::collision::all);
+		dynamic_cast<engine::Collision*>(playerCollision)->colidesWith("platform", engine::collision::down);
 
 		player->addInterface(playerAnimation);
 		player->addInterface(playerMovement);

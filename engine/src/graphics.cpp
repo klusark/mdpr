@@ -1,8 +1,9 @@
+#include "engineLib.hpp"
 #include <map>
 #include <string>
 #include "graphics.hpp"
 #include "engine.hpp"
-#include "sdl/sdl_image.h"
+#include "SDL_image.h"
 #include <iostream>
 #include <vector>
 

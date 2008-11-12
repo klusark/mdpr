@@ -1,4 +1,5 @@
-#include <deque>
+#include "engineLib.hpp"
+#include <map>
 #include "spriteInterface.hpp"
 #include "sprite.hpp"
 
@@ -27,18 +28,19 @@ namespace engine
 	 */
 	void Sprite::update()
 	{
-		for (std::deque<engine::spriteInterface *>::iterator it = Interfaces.begin(); it != Interfaces.end(); it++){
-			(*it)->update();
+		for (std::map<std::string, engine::spriteInterface *>::iterator it = Interfaces.begin(); it != Interfaces.end(); it++){
+			it->second->update();
 		}
 
 	}
 
 	/**
-	 * 
+	 * adds a interface to the current spire
+	 * @param interfaces the interface
 	 */
 	void Sprite::addInterface(engine::spriteInterface *interfaces)
 	{
-		Interfaces.push_back(interfaces);
+		Interfaces[interfaces->getName()] = interfaces;
 
 	}
 

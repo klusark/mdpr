@@ -1,4 +1,7 @@
-#include "animation.hpp"
+#include <map>
+#include <string>
+#include "engineLib.hpp"
+#include "spriteAnimation.hpp"
 #include "dataTypes.hpp"
 #include "graphics.hpp"
 #include "engine.hpp"
@@ -77,5 +80,10 @@ namespace engine
 		currentAnimation = Animations[name];
 		currentAnimation->currentFrame = 0;
 
+	}
+
+	std::string Animation::getName()
+	{
+		return "animation";
 	}
 }

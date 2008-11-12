@@ -47,7 +47,7 @@
 				RuntimeLibrary="3"
 				WarningLevel="4"
 				DebugInformationFormat="3"
-				ForcedIncludeFiles="engineLib.hpp"
+				ForcedIncludeFiles=""
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -172,6 +172,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\src\collision.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\engine.cpp"
 				>
 			</File>
@@ -195,31 +199,31 @@
 				Name="Sprite"
 				>
 				<File
-					RelativePath=".\src\animation.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\collision.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\input.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\mass.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\movement.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\src\sprite.cpp"
 					>
 				</File>
 				<File
+					RelativePath=".\src\spriteAnimation.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\spriteCollision.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\spriteInput.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\spriteInterface.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\spriteMass.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\spriteMovement.cpp"
 					>
 				</File>
 			</Filter>
@@ -229,6 +233,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\include\engine\collision.hpp"
+				>
+			</File>
 			<File
 				RelativePath=".\include\engine\dataTypes.hpp"
 				>
@@ -269,31 +277,31 @@
 				Name="Sprite"
 				>
 				<File
-					RelativePath=".\include\engine\animation.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\include\engine\collision.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\include\engine\input.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\include\engine\mass.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\include\engine\movement.hpp"
-					>
-				</File>
-				<File
 					RelativePath=".\include\engine\sprite.hpp"
 					>
 				</File>
 				<File
+					RelativePath=".\include\engine\spriteAnimation.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\engine\spriteCollision.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\engine\spriteInput.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\include\engine\spriteInterface.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\engine\spriteMass.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\engine\spriteMovement.hpp"
 					>
 				</File>
 			</Filter>

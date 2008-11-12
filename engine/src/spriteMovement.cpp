@@ -1,4 +1,5 @@
-#include "movement.hpp"
+#include "engineLib.hpp"
+#include "spriteMovement.hpp"
 namespace engine
 {
 
@@ -25,5 +26,10 @@ namespace engine
 	void Movement::update()
 	{
 
+	}
+
+	std::string Movement::getName()
+	{
+		return "movement";
 	}
 }
