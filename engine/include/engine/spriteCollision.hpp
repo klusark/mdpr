@@ -2,6 +2,7 @@
 #define spritecollision_hpp
 #include "spriteInterface.hpp"
 #include "sprite.hpp"
+#include "dataTypes.hpp"
 #include <vector>
 namespace engine
 {
@@ -15,10 +16,12 @@ namespace engine
 			int direction;
 			std::string name;
 		};
+		Rect collisionRect;
 		std::vector<collisionInfo> collisions;
 		EngineLib Collision();
 		virtual ~Collision();
 		void update();
+		
 		std::string getName();
 		void EngineLib setCollisionType(std::string collisionType);
 		void EngineLib Collision::colidesWith(std::string name, unsigned int direction);

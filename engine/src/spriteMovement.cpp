@@ -8,6 +8,7 @@ namespace engine
 	 */
 	Movement::Movement()
 	{
+		
 
 	}
 
@@ -26,6 +27,8 @@ namespace engine
 	void Movement::update()
 	{
 
+		unsigned int xTime = SDL_GetTicks()-xLastTime;
+		x+=(xVelocity*xTime)+0.5*xAcceleration*xTime*xTime;
 	}
 
 	std::string Movement::getName()

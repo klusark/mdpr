@@ -11,6 +11,10 @@ namespace engine
 		virtual ~Movement();
 		void update();
 		std::string getName();
+		unsigned int xLastTime, yLastTime;
+		float xVelocity, yVelocity;
+		float xAcceleration, yAcceleration;
+		float x, y;
 	};
 }
 #endif
