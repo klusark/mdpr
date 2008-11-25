@@ -5,21 +5,34 @@
 #include "sprite.hpp"
 #include "spriteManager.hpp"
 #include "collision.hpp"
+#include "network.hpp"
 #include <map>
 
 namespace engine{
-	EngineLib bool initEngine()
+	EngineLib bool initEngine(int argc, char* argv[])
 	{
-		if ( SDL_Init(SDL_INIT_VIDEO) != 0 ) {
+		if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 			printf("Unable to initialize SDL: %s\n", SDL_GetError());
 			return false;
 		}
+
+		if (network::initNetwork() == false){
+			return false;
+		}
+
+		for (int i = 1; i < argc; ++i){
+			if (argv[i] == "--server" || "-s"){
+				network::startServer();
+			}
+		}
+		network::connect();
 		return true;
 	}
 
 	EngineLib bool quit()
 	{
 		SDL_Quit();
+		network::destoryNetwork();
 		return true;
 	}
 
@@ -29,18 +42,24 @@ namespace engine{
 		while (SDL_PollEvent(&events)){
 			switch(events.type){
 				case SDL_ACTIVEEVENT:
-					if (events.active.gain == 0 )
+					if (events.active.gain == 0){
 						window::isActive = false;
-					else
+					}else{
 						window::isActive = true;
+					}
 					break;
 				case SDL_VIDEORESIZE:
-					/* handle resize event */
+					// handle resize event
 					window::windowResize(events.resize.w, events.resize.h);
 					break;
 				case SDL_QUIT:
-					/* handle quit requests */
+					// handle quit requests
 					throw 1;
+					break;
+				case SDL_KEYDOWN:
+					//network::sendKey
+					break;
+				case SDL_KEYUP:
 					break;
 				default:
 					break;

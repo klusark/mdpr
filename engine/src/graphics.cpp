@@ -3,7 +3,7 @@
 #include <string>
 #include "graphics.hpp"
 #include "engine.hpp"
-#include "SDL_image.h"
+#include "sdl/SDL_image.h"
 #include <iostream>
 #include <vector>
 
