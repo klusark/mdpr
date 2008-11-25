@@ -1,10 +1,10 @@
 #include "engine/engineAll.hpp"
 #include <iostream>
 #include <vector>
-int main()
+int main(int argc, char* argv[])
 {
 	try{
-		engine::initEngine();
+		engine::initEngine(argc, argv);
 
 		if (!engine::window::createWindow(320, 200, 32, "Marshmallow Duel: Percy's Return", 0)){
 			return 0;

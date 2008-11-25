@@ -2,7 +2,7 @@
 #define engine_hpp
 #include "dataTypes.hpp"
 namespace engine{
-	extern EngineLib bool initEngine();
+	extern EngineLib bool initEngine(int argc, char* argv[]);
 	extern EngineLib bool quit();
 	extern EngineLib void eventLoop();
 	extern EngineLib void mainLoop();
