@@ -6,9 +6,11 @@
 #include "spriteManager.hpp"
 #include "collision.hpp"
 #include "network.hpp"
+#include <iostream>
 #include <map>
 
 namespace engine{
+		
 	EngineLib bool initEngine(int argc, char* argv[])
 	{
 		if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -19,11 +21,25 @@ namespace engine{
 		if (network::initNetwork() == false){
 			return false;
 		}
-
+		bool startServer = false;
 		for (int i = 1; i < argc; ++i){
-			if (argv[i] == "--server" || "-s"){
-				network::startServer();
+			if (strcmp(argv[i], "--port") == 0 || strcmp(argv[i], "-p") == 0){
+				unsigned short tempPort = static_cast<unsigned short>(atoi(argv[i+1]));
+				if (tempPort > 1024){
+					network::port = tempPort;
+				}else{
+					std::cout<<"Error in port";
+				}
+				//if port 
 			}
+			if (strcmp(argv[i], "--server") == 0 || strcmp(argv[i], "-s") == 0){
+				startServer = true;
+				
+			}
+		}
+		//makes sure that the options are all done before the server starts.
+		if (startServer){
+			SDL_CreateThread(network::startServer, 0);
 		}
 		network::connect();
 		return true;
