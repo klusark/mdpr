@@ -4,9 +4,11 @@ namespace engine
 {
 	namespace network
 	{
+		extern unsigned short defaultPort;
+		extern unsigned short port;
 		bool initNetwork();
 		void destoryNetwork();
-		void startServer();
+		int startServer(void *data);
 		void connect();
 	}
 }

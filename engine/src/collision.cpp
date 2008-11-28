@@ -18,9 +18,9 @@ namespace engine
 				iter2 = iter->second->Interfaces.find("collision");
 				
 				if( iter2 != iter->second->Interfaces.end() ){
-					std::cout << "Value is: " << iter2->second << std::endl;
+				//	std::cout << "Value is: " << iter2->second << std::endl;
 				}else{
-					std::cout << "Key is not in myMap" << std::endl;
+				//	std::cout << "Key is not in myMap" << std::endl;
 				}
 				//iter->second->update();
 
