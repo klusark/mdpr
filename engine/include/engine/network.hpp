@@ -10,6 +10,8 @@ namespace engine
 		void destoryNetwork();
 		int startServer(void *data);
 		void connect();
+		int sendThread(void *data);
+		int recvThread(void *data);
 	}
 }
 #endif

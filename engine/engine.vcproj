@@ -320,6 +320,10 @@
 					RelativePath=".\include\engine\network.hpp"
 					>
 				</File>
+				<File
+					RelativePath=".\include\engine\packets.hpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
