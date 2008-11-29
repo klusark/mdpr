@@ -1,7 +1,9 @@
 #include "engineLib.hpp"
 #include "network.hpp"
-#include "sdl/SDL_net.h"
+#include "SDL/SDL_net.h"
+#include "packets.hpp"
 #include <iostream>
+
 namespace engine
 {
 	namespace network
@@ -51,14 +53,46 @@ namespace engine
 				numready = SDLNet_CheckSockets(set, 1000);
 				if (numready){
 					if (SDLNet_SocketReady(serverSocket)) {
-						if (SDLNet_TCP_Accept(serverSocket) != 0){
-							std::cout<<"est";
+						TCPsocket newSocket = SDLNet_TCP_Accept(serverSocket);
+						if (newSocket != 0){
+
+							SDL_CreateThread(network::sendThread, newSocket);
+							SDL_CreateThread(network::recvThread, newSocket);
 						}
 					}
 				}
 			}
 			return 0;
 		}
+
+		int sendThread(void *data)
+		{
+			TCPsocket socket = static_cast<TCPsocket>(data);
+			return 0;
+		}
+
+		
+		int recvThread(void *data)
+		{
+			int MAXLEN = 1024;
+			int result;
+			char msg[1024];
+			TCPsocket socket = static_cast<TCPsocket>(data);
+			for(;;){
+				result = SDLNet_TCP_Recv(socket, msg, MAXLEN);
+				if(result<=0) {
+					// An error may have occured, but sometimes you can just ignore it
+					// It may be good to disconnect sock because it is likely invalid now.
+				}
+				connectPacket InPkgBuf;
+				memcpy(&InPkgBuf, msg, sizeof(connectPacket));
+				std::cout<<InPkgBuf.name;
+			}
+
+
+			return 0;
+		}
+
 
 		void connect()
 		{
@@ -75,6 +109,17 @@ namespace engine
 				printf("SDLNet_TCP_Open: %s\n", SDLNet_GetError());
 				return;
 			}
+			connectPacket *test = new connectPacket;
+			strcpy(test->name, "klusark");
+			//SDL_Delay(10000);
+			int len,result;
+			//len=strlen(msg)+1; // add one for the terminating NULL
+			result=SDLNet_TCP_Send(clientSocket, test,34);
+			if(result<34) {
+				printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
+				// It may be good to disconnect sock because it is likely invalid now.
+			}
+
 
 		}
 	}
