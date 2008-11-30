@@ -74,19 +74,21 @@ namespace engine
 		
 		int recvThread(void *data)
 		{
-			int MAXLEN = 1024;
+			const static int bufferSize = 128;
 			int result;
-			char msg[1024];
+			char msg[bufferSize];
 			TCPsocket socket = static_cast<TCPsocket>(data);
 			for(;;){
-				result = SDLNet_TCP_Recv(socket, msg, MAXLEN);
+				result = SDLNet_TCP_Recv(socket, msg, bufferSize);
 				if(result<=0) {
+					std::cout<<"error";
 					// An error may have occured, but sometimes you can just ignore it
 					// It may be good to disconnect sock because it is likely invalid now.
 				}
-				connectPacket InPkgBuf;
-				memcpy(&InPkgBuf, msg, sizeof(connectPacket));
-				std::cout<<InPkgBuf.name;
+				std::cout<<msg;
+				//connectPacket InPkgBuf;
+				//memcpy(&InPkgBuf, msg, sizeof(connectPacket));
+				//std::cout<<InPkgBuf.name;
 			}
 
 
@@ -111,11 +113,15 @@ namespace engine
 			}
 			connectPacket *test = new connectPacket;
 			strcpy(test->name, "klusark");
-			//SDL_Delay(10000);
+
 			int len,result;
-			//len=strlen(msg)+1; // add one for the terminating NULL
-			result=SDLNet_TCP_Send(clientSocket, test,34);
-			if(result<34) {
+
+			len = sizeof(connectPacket);
+			result=SDLNet_TCP_Send(clientSocket, test, len);
+			//SDL_Delay(500);
+			result=SDLNet_TCP_Send(clientSocket, test, len);
+			result=SDLNet_TCP_Send(clientSocket, test, len);
+			if(result < len) {
 				printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
 				// It may be good to disconnect sock because it is likely invalid now.
 			}
