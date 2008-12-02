@@ -2,6 +2,8 @@
 #include "network.hpp"
 #include "SDL/SDL_net.h"
 #include "packets.hpp"
+#include "packetHandlers.hpp"
+#include <queue>
 #include <iostream>
 
 namespace engine
@@ -16,6 +18,10 @@ namespace engine
 
 		unsigned short defaultPort = 9999;
 		unsigned short port = defaultPort;
+
+
+		std::queue<recvdPacket> recvdQueue;
+
 
 		bool initNetwork()
 		{
@@ -50,7 +56,7 @@ namespace engine
 			SDLNet_TCP_AddSocket(set, serverSocket);
 			int numready;
 			for(;;){
-				numready = SDLNet_CheckSockets(set, 1000);
+				numready = SDLNet_CheckSockets(set, 100000);
 				if (numready){
 					if (SDLNet_SocketReady(serverSocket)) {
 						TCPsocket newSocket = SDLNet_TCP_Accept(serverSocket);
@@ -62,7 +68,7 @@ namespace engine
 					}
 				}
 			}
-			return 0;
+//			return 0;
 		}
 
 		int sendThread(void *data)
@@ -74,25 +80,58 @@ namespace engine
 		
 		int recvThread(void *data)
 		{
-			const static int bufferSize = 128;
-			int result;
-			char msg[bufferSize];
+			const static int bufferSize = 1024;
+			int length;
+			char message[bufferSize];
 			TCPsocket socket = static_cast<TCPsocket>(data);
+			SDL_CreateThread(prosessRecvd, 0);
 			for(;;){
-				result = SDLNet_TCP_Recv(socket, msg, bufferSize);
-				if(result<=0) {
+				length = SDLNet_TCP_Recv(socket, message, bufferSize);
+				if(length <= 0) {
 					std::cout<<"error";
+					SDLNet_TCP_Close(socket);
+					return -1;
 					// An error may have occured, but sometimes you can just ignore it
 					// It may be good to disconnect sock because it is likely invalid now.
 				}
-				std::cout<<msg;
-				//connectPacket InPkgBuf;
-				//memcpy(&InPkgBuf, msg, sizeof(connectPacket));
-				//std::cout<<InPkgBuf.name;
+				recvdPacket packet;
+				packet.message = message;
+				packet.length = length;
+				recvdQueue.push(packet);
 			}
 
 
-			return 0;
+//			return 0;
+		}
+		void limitFPS(short FPS, unsigned int &bticks)
+		{
+			unsigned int wait = 1000 / FPS;
+			unsigned int cticks = SDL_GetTicks();
+			if ((cticks - bticks) < wait){
+				//framerate exceeded limit....so we wait the difference
+				SDL_Delay(wait - (cticks - bticks));
+			}
+			bticks = SDL_GetTicks();
+		}
+
+
+		int prosessRecvd(void *data)
+		{
+			unsigned int bticks = 0;
+			for(;;){
+				
+				while (!recvdQueue.empty()){
+					recvdPacket temp = recvdQueue.front();
+					handlers::recvHandler(temp.message, temp.length);
+					recvdQueue.pop();
+
+				}
+				limitFPS(60, bticks);
+
+
+
+			}
+//			return 0;
 		}
 
 
@@ -111,12 +150,13 @@ namespace engine
 				printf("SDLNet_TCP_Open: %s\n", SDLNet_GetError());
 				return;
 			}
-			connectPacket *test = new connectPacket;
+			packet::connectPacket *test = new packet::connectPacket;
+			test->type = packet::connect;
 			strcpy(test->name, "klusark");
 
 			int len,result;
 
-			len = sizeof(connectPacket);
+			len = sizeof(packet::connectPacket);
 			result=SDLNet_TCP_Send(clientSocket, test, len);
 			//SDL_Delay(500);
 			result=SDLNet_TCP_Send(clientSocket, test, len);
