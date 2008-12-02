@@ -1,6 +1,11 @@
 #ifndef engineAll_hpp
 #define engineAll_hpp
-#define EngineLib __declspec( dllimport )
+
+#define EngineLib
+#if defined(_WIN32) || defined(WIN32)
+#define EngineLib __declspec( dllexport )
+#endif
+
 #include "engine.hpp"
 #include "window.hpp"
 #include "graphics.hpp"

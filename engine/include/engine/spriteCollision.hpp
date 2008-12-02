@@ -3,6 +3,8 @@
 #include "spriteInterface.hpp"
 #include "sprite.hpp"
 #include "dataTypes.hpp"
+#include "engineLib.hpp"
+
 #include <vector>
 namespace engine
 {
@@ -24,7 +26,7 @@ namespace engine
 		
 		std::string getName();
 		void EngineLib setCollisionType(std::string collisionType);
-		void EngineLib Collision::colidesWith(std::string name, unsigned int direction);
+		void EngineLib colidesWith(std::string name, unsigned int direction);
 		
 	};
 }

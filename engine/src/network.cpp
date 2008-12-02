@@ -2,7 +2,7 @@
 #include "network.hpp"
 #include "SDL/SDL_net.h"
 #include "packets.hpp"
-#include "packetHandlers.hpp"
+//#include "packetHandlers.hpp"
 #include <queue>
 #include <iostream>
 
@@ -122,7 +122,7 @@ namespace engine
 				
 				while (!recvdQueue.empty()){
 					recvdPacket temp = recvdQueue.front();
-					handlers::recvHandler(temp.message, temp.length);
+					//handlers::recvHandler(temp.message, temp.length);
 					recvdQueue.pop();
 
 				}
