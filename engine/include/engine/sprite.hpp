@@ -1,7 +1,7 @@
 #ifndef sprite_hpp
 #define sprite_hpp
-
 #include <map>
+#include <iostream>
 
 namespace engine
 {
