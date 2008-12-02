@@ -1,20 +1,27 @@
 #ifndef packets_hpp
 #define packets_hpp
-
-enum packetTypes
+namespace engine
 {
-	connect,
-};
+	namespace network
+	{
+		namespace packet
+		{
+			enum packetTypes
+			{
+				connect,
+			};
 
-/**
- * Connect Packet
- * Size 34
- */
-struct connectPacket
-{
-	const static unsigned short type = connect;
-	char name[32];
+			/**
+			 * Connect Packet
+			 * Size 34
+			 */
+			struct connectPacket
+			{
+				packetTypes type;
+				char name[32];
 
-};
-
+			};
+		}
+	}
+}
 #endif

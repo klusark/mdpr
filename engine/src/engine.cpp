@@ -10,7 +10,11 @@
 #include <map>
 
 namespace engine{
-		
+	/**
+	 * Initializes the engine and checks the commandline args
+	 * @param argc the argc from main
+	 * @param argv the argv from main
+	 */
 	EngineLib bool initEngine(int argc, char* argv[])
 	{
 		if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -22,6 +26,7 @@ namespace engine{
 			return false;
 		}
 		bool startServer = false;
+		//check command line args
 		for (int i = 1; i < argc; ++i){
 			if (strcmp(argv[i], "--port") == 0 || strcmp(argv[i], "-p") == 0){
 				unsigned short tempPort = static_cast<unsigned short>(atoi(argv[i+1]));
@@ -30,7 +35,6 @@ namespace engine{
 				}else{
 					std::cout<<"Error in port";
 				}
-				//if port 
 			}
 			if (strcmp(argv[i], "--server") == 0 || strcmp(argv[i], "-s") == 0){
 				startServer = true;
@@ -45,6 +49,9 @@ namespace engine{
 		return true;
 	}
 
+	/**
+	 * Function to run when quitting the program
+	 */
 	EngineLib bool quit()
 	{
 		SDL_Quit();
@@ -52,24 +59,20 @@ namespace engine{
 		return true;
 	}
 
+	/**
+	 * 
+	 */
 	EngineLib void eventLoop()
 	{
 		SDL_Event events;
 		while (SDL_PollEvent(&events)){
 			switch(events.type){
-				case SDL_ACTIVEEVENT:
-					if (events.active.gain == 0){
-						window::isActive = false;
-					}else{
-						window::isActive = true;
-					}
-					break;
 				case SDL_VIDEORESIZE:
 					// handle resize event
 					window::windowResize(events.resize.w, events.resize.h);
 					break;
 				case SDL_QUIT:
-					// handle quit requests
+					// handle quit event
 					throw 1;
 					break;
 				case SDL_KEYDOWN:
@@ -83,11 +86,14 @@ namespace engine{
 		}
 	}
 
+	/**
+	 * The games main loop. MUST be run one per frame.
+	 */
 	EngineLib void mainLoop()
 	{
 		// These are to calculate our fps 
-		static GLint T0     = 0;
-		static GLint Frames = 0;
+		static int T0     = 0;
+		static int Frames = 0;
 		eventLoop();
 
 		spriteManager::update();
@@ -99,10 +105,10 @@ namespace engine{
 
 		// Gather our frames per second
 		Frames++;
-		GLint t = SDL_GetTicks();
+		int t = SDL_GetTicks();
 		if (t - T0 >= 5000) {
-			GLfloat seconds = (t - T0) / 1000.0f;
-			GLfloat fps = Frames / seconds;
+			float seconds = (t - T0) / 1000.0f;
+			float fps = Frames / seconds;
 			printf("%d frames in %g seconds = %g FPS\n", Frames, seconds, fps);
 			T0 = t;
 			Frames = 0;
@@ -110,6 +116,13 @@ namespace engine{
 		}
 	}
 
+	/**
+	 * Makes a rect
+	 * @param x the x position
+	 * @param y the y position
+	 * @param w the width
+	 * @param h the height
+	 */
 	EngineLib Rect makeRect(int x, int y, unsigned int w, unsigned int h)
 	{
 		Rect rect;
