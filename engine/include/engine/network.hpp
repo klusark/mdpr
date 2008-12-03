@@ -10,9 +10,10 @@ namespace engine
 		void destoryNetwork();
 		int startServer(void *data);
 		void connect();
-		int prosessRecvd(void *data);
-		int sendThread(void *data);
-		int recvThread(void *data);
+		int serverProsessRecvd(void *data);
+		int clientProsessRecvd(void *data);
+		int serverRecvThread(void *data);
+		int clientRecvThread(void *data);
 		struct recvdPacket
 		{
 			int length;

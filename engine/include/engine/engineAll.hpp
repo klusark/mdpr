@@ -1,9 +1,12 @@
 #ifndef engineAll_hpp
 #define engineAll_hpp
 
-#define EngineLib
 #if defined(_WIN32) || defined(WIN32)
-#define EngineLib __declspec( dllexport )
+	#define EngineLib __declspec( dllexport )
+#endif
+
+#ifndef EngineLib
+	#define EngineLib
 #endif
 
 #include "engine.hpp"

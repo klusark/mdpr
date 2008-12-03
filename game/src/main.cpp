@@ -1,5 +1,5 @@
 #include "engine/engineAll.hpp"
-#include "engine/engine.hpp"
+
 #include <iostream>
 #include <vector>
 int main(int argc, char* argv[])
@@ -41,7 +41,6 @@ int main(int argc, char* argv[])
 
 	
 		for(;;){
-			//engine::eventLoop();
 			engine::mainLoop();
 		}
 	}catch(int exception){
@@ -50,5 +49,5 @@ int main(int argc, char* argv[])
 	}
 	
 	engine::quit();
-	return 1;
+	return 0;
 }

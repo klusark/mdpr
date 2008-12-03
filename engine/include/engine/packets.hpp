@@ -9,6 +9,7 @@ namespace engine
 			enum packetTypes
 			{
 				connect,
+				sprite,
 			};
 
 			/**
@@ -21,6 +22,16 @@ namespace engine
 				char name[32];
 
 			};
+
+			struct spritePacket
+			{
+				packetTypes type;
+				unsigned short spriteID;
+				char name[32];
+				
+
+			};
+
 		}
 	}
 }

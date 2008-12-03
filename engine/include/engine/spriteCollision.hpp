@@ -3,7 +3,6 @@
 #include "spriteInterface.hpp"
 #include "sprite.hpp"
 #include "dataTypes.hpp"
-#include "engineLib.hpp"
 
 #include <vector>
 namespace engine
