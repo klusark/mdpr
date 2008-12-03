@@ -2,7 +2,7 @@
 #include "network.hpp"
 #include "SDL/SDL_net.h"
 #include "packets.hpp"
-//#include "packetHandlers.hpp"
+#include "packetHandlers.hpp"
 #include <queue>
 #include <iostream>
 
@@ -20,7 +20,8 @@ namespace engine
 		unsigned short port = defaultPort;
 
 
-		std::queue<recvdPacket> recvdQueue;
+		std::queue<recvdPacket> serverRecvdQueue;
+		std::queue<recvdPacket> clientRecvdQueue;
 
 
 		bool initNetwork()
@@ -62,47 +63,62 @@ namespace engine
 						TCPsocket newSocket = SDLNet_TCP_Accept(serverSocket);
 						if (newSocket != 0){
 
-							SDL_CreateThread(network::sendThread, newSocket);
-							SDL_CreateThread(network::recvThread, newSocket);
+							SDL_CreateThread(network::serverRecvThread, newSocket);
+							packet::spritePacket *temp = new(packet::spritePacket);
+							temp->type = packet::sprite;
+							temp->spriteID = 523;
+							memcpy(temp->name, "player", sizeof("player"));
+							SDLNet_TCP_Send(newSocket, temp, sizeof(packet::spritePacket));
 						}
 					}
 				}
 			}
-//			return 0;
 		}
 
-		int sendThread(void *data)
-		{
-			TCPsocket socket = static_cast<TCPsocket>(data);
-			return 0;
-		}
 
 		
-		int recvThread(void *data)
+		int serverRecvThread(void *data)
 		{
 			const static int bufferSize = 1024;
 			int length;
 			char message[bufferSize];
 			TCPsocket socket = static_cast<TCPsocket>(data);
-			SDL_CreateThread(prosessRecvd, 0);
+			SDL_CreateThread(serverProsessRecvd, 0);
 			for(;;){
 				length = SDLNet_TCP_Recv(socket, message, bufferSize);
 				if(length <= 0) {
 					std::cout<<"error";
 					SDLNet_TCP_Close(socket);
 					return -1;
-					// An error may have occured, but sometimes you can just ignore it
-					// It may be good to disconnect sock because it is likely invalid now.
 				}
 				recvdPacket packet;
 				packet.message = message;
 				packet.length = length;
-				recvdQueue.push(packet);
+				serverRecvdQueue.push(packet);
 			}
-
-
-//			return 0;
 		}
+
+		int clientRecvThread(void *data)
+		{
+			const static int bufferSize = 1024;
+			int length;
+			char message[bufferSize];
+			TCPsocket socket = static_cast<TCPsocket>(data);
+			SDL_CreateThread(clientProsessRecvd, 0);
+			for(;;){
+				length = SDLNet_TCP_Recv(socket, message, bufferSize);
+				if(length <= 0) {
+					std::cout<<"error";
+					SDLNet_TCP_Close(socket);
+					return -1;
+				}
+				recvdPacket packet;
+				packet.message = message;
+				packet.length = length;
+				clientRecvdQueue.push(packet);
+			}
+		}
+
 		void limitFPS(short FPS, unsigned int &bticks)
 		{
 			unsigned int wait = 1000 / FPS;
@@ -115,23 +131,30 @@ namespace engine
 		}
 
 
-		int prosessRecvd(void *data)
+		int serverProsessRecvd(void *data)
 		{
 			unsigned int bticks = 0;
 			for(;;){
-				
-				while (!recvdQueue.empty()){
-					recvdPacket temp = recvdQueue.front();
-					//handlers::recvHandler(temp.message, temp.length);
-					recvdQueue.pop();
-
+				while (!serverRecvdQueue.empty()){
+					recvdPacket temp = serverRecvdQueue.front();
+					handlers::serverRecvHandler(temp.message, temp.length);
+					serverRecvdQueue.pop();
 				}
 				limitFPS(60, bticks);
-
-
-
 			}
-//			return 0;
+		}
+
+		int clientProsessRecvd(void *data)
+		{
+			unsigned int bticks = 0;
+			for(;;){
+				while (!clientRecvdQueue.empty()){
+					recvdPacket temp = clientRecvdQueue.front();
+					handlers::clientRecvHandler(temp.message, temp.length);
+					clientRecvdQueue.pop();
+				}
+				limitFPS(60, bticks);
+			}
 		}
 
 
@@ -150,6 +173,8 @@ namespace engine
 				printf("SDLNet_TCP_Open: %s\n", SDLNet_GetError());
 				return;
 			}
+			SDL_CreateThread(network::clientRecvThread, clientSocket);
+
 			packet::connectPacket *test = new packet::connectPacket;
 			test->type = packet::connect;
 			strcpy(test->name, "klusark");
@@ -157,9 +182,6 @@ namespace engine
 			int len,result;
 
 			len = sizeof(packet::connectPacket);
-			result=SDLNet_TCP_Send(clientSocket, test, len);
-			//SDL_Delay(500);
-			result=SDLNet_TCP_Send(clientSocket, test, len);
 			result=SDLNet_TCP_Send(clientSocket, test, len);
 			if(result < len) {
 				printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
