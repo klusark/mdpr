@@ -3,6 +3,7 @@
 #include "SDL/SDL_net.h"
 #include "packets.hpp"
 #include "packetHandlers.hpp"
+#include "stdio.h"
 #include <queue>
 #include <iostream>
 
@@ -175,18 +176,21 @@ namespace engine
 			}
 			SDL_CreateThread(network::clientRecvThread, clientSocket);
 
-			packet::connectPacket *test = new packet::connectPacket;
+			packet::connectPacket *test = static_cast<packet::connectPacket *>(malloc(sizeof(packet::connectPacket)));
+			
 			test->type = packet::connect;
-			strcpy(test->name, "klusark");
+			memcpy(test->name, "klusark\0aaaaaaaaaaaaaaaaaaaaaaaa", 32);
 
 			int len,result;
 
-			len = sizeof(packet::connectPacket);
+			len = sizeof(test);
 			result=SDLNet_TCP_Send(clientSocket, test, len);
+			free(test);
 			if(result < len) {
 				printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
 				// It may be good to disconnect sock because it is likely invalid now.
 			}
+			
 
 
 		}

@@ -7,6 +7,7 @@
 #include "collision.hpp"
 #include "network.hpp"
 #include <iostream>
+#include <fstream>
 #include <map>
 
 namespace engine{
@@ -35,6 +36,7 @@ namespace engine{
 				startServer = true;
 			}else if (strcmp(argv[i], "--dedicated") == 0 || strcmp(argv[i], "-d") == 0){
 				dedicated = true;
+				std::cout<<"asdfsadsdafdsdfadf"
 			}else if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0){
 				std::cout<<"Later...";
 			}
@@ -53,6 +55,18 @@ namespace engine{
 		if (!dedicated){
 			network::connect();
 		}
+		
+	std::string line;
+	std::ifstream myfile ("player.sprite");
+	if (myfile.is_open()){
+		while (! myfile.eof() ){
+			std::getline (myfile,line);
+			std::cout << line << std::endl;
+		}
+		myfile.close();
+	}
+		
+		
 		return true;
 	}
 
