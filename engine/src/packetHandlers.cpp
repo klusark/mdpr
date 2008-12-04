@@ -1,6 +1,7 @@
 #include "packets.hpp"
 #include "network.hpp"
 #include "packetHandlers.hpp"
+#include "stdio.h"
 #include <iostream>
 
 namespace engine
@@ -54,15 +55,17 @@ namespace engine
 			void clientRecvSprite(char *message)
 			{
 				packet::spritePacket *recvdPacket = new(packet::spritePacket);
-				memcpy(recvdPacket, message, sizeof(packet::spritePacket));
-				std::cout<<recvdPacket->name;
+				//memcpy(recvdPacket, message, sizeof(packet::spritePacket));
+				//std::cout<<recvdPacket->name;
 
 			}
 
 			void serverRecvConnect(char *message)
 			{
-				packet::connectPacket *recvdPacket = new(packet::connectPacket);
-				memcpy(recvdPacket, message, sizeof(packet::connectPacket));
+				//std::cout<<message;
+				//packet::connectPacket *recvdPacket = new(packet::connectPacket);
+				//memcpy(recvdPacket, message, sizeof(packet::connectPacket));
+				//std::cout<<recvdPacket->name;
 				
 			}
 		}
