@@ -22,7 +22,7 @@ namespace engine
 					case packet::connect:
 						serverRecvConnect(message);
 						if (length > sizeof(packet::connectPacket)){
-							serverRecvHandler(message+sizeof(packet::connectPacket), length - sizeof(packet::connectPacket));
+							serverRecvHandler(message + sizeof(packet::connectPacket), length - sizeof(packet::connectPacket));
 						}
 						break;
 					default:
@@ -37,12 +37,26 @@ namespace engine
 					case packet::connect:
 						//clientRecvConnect(message);
 						if (length > sizeof(packet::connectPacket)){
-							clientRecvHandler(message+sizeof(packet::connectPacket), length - sizeof(packet::connectPacket));
+							clientRecvHandler(message + sizeof(packet::connectPacket), length - sizeof(packet::connectPacket));
+						}
+						break;
+					case packet::sprite:
+						clientRecvSprite(message);
+						if (length > sizeof(packet::spritePacket)){
+							clientRecvHandler(message + sizeof(packet::spritePacket), length - sizeof(packet::spritePacket));
 						}
 						break;
 					default:
 						std::cout<<"Error In Recvd Packet";
 				}
+			}
+
+			void clientRecvSprite(char *message)
+			{
+				packet::spritePacket *recvdPacket = new(packet::spritePacket);
+				memcpy(recvdPacket, message, sizeof(packet::spritePacket));
+				std::cout<<recvdPacket->name;
+
 			}
 
 			void serverRecvConnect(char *message)

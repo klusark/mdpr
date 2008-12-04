@@ -10,6 +10,7 @@
 #include <map>
 
 namespace engine{
+	bool dedicated = false;
 	/**
 	 * Initializes the engine and checks the commandline args
 	 * @param argc the argc from main
@@ -17,11 +18,6 @@ namespace engine{
 	 */
 	EngineLib bool initEngine(int argc, char* argv[])
 	{
-		if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-			printf("Unable to initialize SDL: %s\n", SDL_GetError());
-			return false;
-		}
-
 		if (network::initNetwork() == false){
 			return false;
 		}
@@ -35,17 +31,28 @@ namespace engine{
 				}else{
 					std::cout<<"Error in port";
 				}
-			}
-			if (strcmp(argv[i], "--server") == 0 || strcmp(argv[i], "-s") == 0){
+			}else if (strcmp(argv[i], "--server") == 0 || strcmp(argv[i], "-s") == 0){
 				startServer = true;
-				
+			}else if (strcmp(argv[i], "--dedicated") == 0 || strcmp(argv[i], "-d") == 0){
+				dedicated = true;
+			}else if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0){
+				std::cout<<"Later...";
+			}
+
+		}
+		if (!dedicated){
+			if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+				printf("Unable to initialize SDL: %s\n", SDL_GetError());
+				return false;
 			}
 		}
 		//makes sure that the options are all done before the server starts.
 		if (startServer){
 			SDL_CreateThread(network::startServer, 0);
 		}
-		network::connect();
+		if (!dedicated){
+			network::connect();
+		}
 		return true;
 	}
 
@@ -64,6 +71,9 @@ namespace engine{
 	 */
 	EngineLib void eventLoop()
 	{
+		if (dedicated){
+			return;
+		}
 		SDL_Event events;
 		while (SDL_PollEvent(&events)){
 			switch(events.type){
