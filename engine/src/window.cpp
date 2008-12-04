@@ -14,6 +14,9 @@ namespace engine{
 
 		EngineLib bool createWindow(int screenWidth, int screenHeight, int bitsPerPixel, std::string title, bool fullScreenFlag)
 		{
+			if (dedicated){
+				return true;
+			}
 			window::screenWidth = screenWidth;
 			window::screenHeight = screenHeight;
 			window::bitsPerPixel = bitsPerPixel;
@@ -64,6 +67,10 @@ namespace engine{
 
 		void draw()
 		{
+			if (dedicated){
+				return;
+			}
+			
 			glLoadIdentity();
 			Rect rect = engine::makeRect(22, 55, 24, 24);
 			

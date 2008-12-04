@@ -11,7 +11,11 @@ namespace engine
 			void serverRecvHandler(char *message, int length);
 			void clientRecvHandler(char *message, int length);
 
+			void clientRecvSprite(char *message);
+
 			void serverRecvConnect(char *message);
+
+
 			
 		}
 	}

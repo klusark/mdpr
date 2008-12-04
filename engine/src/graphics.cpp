@@ -14,6 +14,9 @@ namespace engine{
 
 		EngineLib bool loadImage(std::string ext, std::string path, std::vector<std::string> images)
 		{
+			if (dedicated){
+				return true;
+			}
 
 			unsigned int i;
 			for (i=0; i < images.size(); ++i){
@@ -44,6 +47,10 @@ namespace engine{
 
 		EngineLib void drawTexturedQuad(Rect rect, unsigned int texture)
 		{
+			if (dedicated){
+				return;
+			}
+
 			glBindTexture(GL_TEXTURE_2D, texture);
 			glBegin(GL_QUADS);
 				//Top-left vertex (corner)
