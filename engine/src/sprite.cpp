@@ -1,8 +1,10 @@
 #include "engineLib.hpp"
-#include <map>
 #include "spriteInterface.hpp"
 #include "sprite.hpp"
-
+#include "spriteAnimation.hpp"
+#include <map>
+#include <iostream>
+#include <fstream>
 
 namespace engine
 {
@@ -12,8 +14,45 @@ namespace engine
 	Sprite::Sprite(std::string name)
 	{
 		Sprite::name = name;
-		//makeAnimation("run", 4, 100, "run0", "run1", "run2", "run3");
-		//changeAnimation("run");
+	}
+
+	Sprite::Sprite(std::string name, std::ifstream &spriteFile)
+	{
+		Sprite::name = name;
+		std::string line;
+		while (!spriteFile.eof()){
+			spriteFile>>line;
+			if (line.compare("name") == 0){
+			}else if(line.compare("animaiton") == 0){
+				if (!isInterfaceAdded("animation")){
+					engine::spriteInterface *animation = new engine::Animation;
+					addInterface(animation);
+				}
+				
+
+				std::string name;
+				spriteFile>>name;
+
+				std::string numFrames;
+				spriteFile>>numFrames;
+				unsigned short numFramesI = static_cast<unsigned short>(atoi(numFrames.c_str()));
+
+				std::string delay;
+				spriteFile>>delay;
+				unsigned short delayI = static_cast<unsigned short>(atoi(delay.c_str()));
+
+				std::string frames;
+				spriteFile>>frames;
+
+				dynamic_cast<engine::Animation*>(Interfaces["animation"])->makeAnimation(name, numFramesI, delayI, frames);
+
+
+			}else{
+				std::cout<<"Syntax error in sprite"<<std::endl;
+				throw 1;
+				return;
+			}
+		}
 	}
 
 	/**
@@ -42,6 +81,16 @@ namespace engine
 	{
 		Interfaces[interfaces->getName()] = interfaces;
 
+	}
+
+	bool Sprite::isInterfaceAdded(std::string interfaceName)
+	{
+		std::map<std::string, engine::spriteInterface *>::iterator iterator;
+		iterator = Interfaces.find(interfaceName);
+		if (iterator == Interfaces.end()){
+			return false;
+		}
+		return true;
 	}
 
 }

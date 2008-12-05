@@ -36,7 +36,7 @@ namespace engine{
 				startServer = true;
 			}else if (strcmp(argv[i], "--dedicated") == 0 || strcmp(argv[i], "-d") == 0){
 				dedicated = true;
-				std::cout<<"asdfsadsdafdsdfadf"
+				std::cout<<"asdfsadsdafdsdfadf";
 			}else if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0){
 				std::cout<<"Later...";
 			}
@@ -56,15 +56,24 @@ namespace engine{
 			network::connect();
 		}
 		
-	std::string line;
-	std::ifstream myfile ("player.sprite");
-	if (myfile.is_open()){
-		while (! myfile.eof() ){
-			std::getline (myfile,line);
-			std::cout << line << std::endl;
+		std::string line;
+		std::ifstream spriteFile("player.sprite");
+		bool dontClose = false;
+		if (spriteFile.is_open()){
+			spriteFile>>line;
+			if (line.compare("name") == 0){
+				spriteFile>>line;
+				Sprite *sprite = new Sprite(line, spriteFile);
+				std::cout<<spriteFile;
+				dontClose = true;
+				
+			}else{
+				std::cout<<"Syntax error in sprite";
+			}
+			if (!dontClose){
+				spriteFile.close();
+			}
 		}
-		myfile.close();
-	}
 		
 		
 		return true;

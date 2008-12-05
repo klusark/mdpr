@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 		engine::spriteInterface *playerInput = new engine::Input;
 		engine::spriteInterface *playerCollision = new engine::Collision;
 		
-		dynamic_cast<engine::Animation*>(playerAnimation)->makeAnimation("run", 4, 100, "run0", "run1", "run2", "run3");
+		//dynamic_cast<engine::Animation*>(playerAnimation)->makeAnimation("run", 4, 100, "run0", "run1", "run2", "run3");
 		dynamic_cast<engine::Animation*>(playerAnimation)->changeAnimation("run");
 
 		dynamic_cast<engine::Input*>(playerInput)->addInput("up", 273);
