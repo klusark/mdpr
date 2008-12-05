@@ -9,12 +9,14 @@ namespace engine
 	private:
 		struct animationInfo
 		{
+			std::string name;
 			///the number of frames in the animation
 			unsigned short numFrames;
 			/// the delay in ms between each frame
 			unsigned short delay;
 			///an array of all the frames
 			unsigned int frames[8];
+			std::string frameNames[8];
 			/// the current frame
 			unsigned short currentFrame;
 		} *currentAnimation;
@@ -25,7 +27,8 @@ namespace engine
 		virtual ~Animation();
 		void update();
 		std::string getName();
-		void EngineLib makeAnimation(const char *name, unsigned short numFrames, unsigned short delay, const char *textures, ...);
+		void EngineLib makeAnimation(std::string name, unsigned short numFrames, unsigned short delay, std::string frames);
+		//void EngineLib makeAnimation(const char *name, unsigned short numFrames, unsigned short delay, std::string frames);
 		void EngineLib changeAnimation(const char *name);
 	};
 }
