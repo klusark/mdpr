@@ -11,10 +11,10 @@ namespace engine
 	{
 	public:
 		Sprite(std::string name, std::ifstream &spriteFile);
-		EngineLib Sprite(std::string name);
+		Sprite(std::string name);
 		virtual ~Sprite();
 		virtual void update();
-		EngineLib void addInterface(engine::spriteInterface *interfaces);
+		void addInterface(engine::spriteInterface *interfaces);
 		bool isInterfaceAdded(std::string interfaceName);
 		std::string name;
 		std::map<std::string, engine::spriteInterface *> Interfaces;

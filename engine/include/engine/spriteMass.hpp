@@ -7,7 +7,7 @@ namespace engine
 	class  Mass : public spriteInterface
 	{
 	public:
-		EngineLib Mass();
+		Mass();
 		virtual ~Mass();
 		void update();
 		std::string getName();

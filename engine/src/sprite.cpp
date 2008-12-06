@@ -23,7 +23,7 @@ namespace engine
 		while (!spriteFile.eof()){
 			spriteFile>>line;
 			if (line.compare("name") == 0){
-			}else if(line.compare("animaiton") == 0){
+			}else if(line.compare("animation") == 0){
 				if (!isInterfaceAdded("animation")){
 					engine::spriteInterface *animation = new engine::Animation;
 					addInterface(animation);
@@ -31,21 +31,18 @@ namespace engine
 				
 
 				std::string name;
-				spriteFile>>name;
-
 				std::string numFrames;
-				spriteFile>>numFrames;
+				std::string delay;
+				std::string frames;
+
+				spriteFile>>name>>numFrames>>delay>>frames;
+
 				unsigned short numFramesI = static_cast<unsigned short>(atoi(numFrames.c_str()));
 
-				std::string delay;
-				spriteFile>>delay;
 				unsigned short delayI = static_cast<unsigned short>(atoi(delay.c_str()));
 
-				std::string frames;
-				spriteFile>>frames;
-
 				dynamic_cast<engine::Animation*>(Interfaces["animation"])->makeAnimation(name, numFramesI, delayI, frames);
-
+				dynamic_cast<engine::Animation*>(Interfaces["animation"])->changeAnimation("run");
 
 			}else{
 				std::cout<<"Syntax error in sprite"<<std::endl;

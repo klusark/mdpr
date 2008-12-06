@@ -64,24 +64,14 @@ namespace engine
 		int i = 0;
 		tmp = strtok(str, ",");
 		while(i<numFrames){
+			graphics::loadImage(".png", "data/main/", tmp);
 			animation->frames[i] = graphics::textures[tmp];
-			//animation->frameNames[i] = tmp;
+			animation->frameNames[i] = tmp;
 
-			tmp = strtok(str, ",");
-			++i;
-		}
-		/*va_list ap;
-		int i = 0;
-
-		va_start(ap, textures);
-		while (textures != 0 && i < numFrames)
-		{
-			animation->frames[i] = graphics::textures[textures];
-			textures = va_arg(ap, const char *);
+			tmp = strtok(0, ",");
 			++i;
 		}
 
-		va_end(ap);*/
 		Animations[name] = animation;
 	}
 
@@ -89,7 +79,7 @@ namespace engine
 	 * Changes the animation to the given animation name
 	 * @param name The name of the animation to change to
 	 */
-	void Animation::changeAnimation(const char *name)
+	void Animation::changeAnimation(std::string name)
 	{
 		currentAnimation = Animations[name];
 		currentAnimation->currentFrame = 0;

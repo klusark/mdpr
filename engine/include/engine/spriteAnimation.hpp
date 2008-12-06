@@ -2,6 +2,7 @@
 #define spriteanimation_hpp
 #include "sprite.hpp"
 #include "spriteInterface.hpp"
+
 namespace engine
 {
 	class  Animation : public spriteInterface
@@ -23,13 +24,12 @@ namespace engine
 		unsigned int lastAnimationTime;
 		std::map<std::string, animationInfo *> Animations;
 	public:
-		EngineLib Animation();
+		Animation();
 		virtual ~Animation();
 		void update();
 		std::string getName();
-		void EngineLib makeAnimation(std::string name, unsigned short numFrames, unsigned short delay, std::string frames);
-		//void EngineLib makeAnimation(const char *name, unsigned short numFrames, unsigned short delay, std::string frames);
-		void EngineLib changeAnimation(const char *name);
+		void makeAnimation(std::string name, unsigned short numFrames, unsigned short delay, std::string frames);
+		void changeAnimation(std::string);
 	};
 }
 #endif

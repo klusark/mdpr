@@ -8,11 +8,11 @@ namespace engine
 	class Input : public spriteInterface
 	{
 	public:
-		EngineLib Input();
+		Input();
 		virtual ~Input();
 		void update();
 		std::string getName();
-		void EngineLib addInput(std::string keyname, int key);
+		void addInput(std::string keyname, int key);
 	};
 }
 #endif

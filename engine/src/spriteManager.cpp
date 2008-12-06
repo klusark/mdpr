@@ -7,7 +7,7 @@ namespace engine
 	{
 		std::map<std::string, Sprite *> Sprites;
 
-		EngineLib void registerSprite(Sprite *sprite)
+		void registerSprite(Sprite *sprite)
 		{
 			Sprites[sprite->name] = sprite;
 			return;

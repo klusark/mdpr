@@ -19,13 +19,13 @@ namespace engine
 		};
 		Rect collisionRect;
 		std::vector<collisionInfo> collisions;
-		EngineLib Collision();
+		Collision();
 		virtual ~Collision();
 		void update();
 		
 		std::string getName();
-		void EngineLib setCollisionType(std::string collisionType);
-		void EngineLib colidesWith(std::string name, unsigned int direction);
+		void setCollisionType(std::string collisionType);
+		void colidesWith(std::string name, unsigned int direction);
 		
 	};
 }
