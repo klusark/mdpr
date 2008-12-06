@@ -10,8 +10,9 @@ int main(int argc, char* argv[])
 		if (!engine::window::createWindow(320, 200, 32, "Marshmallow Duel: Percy's Return", 0)){
 			return 0;
 		}
+		engine::loadSprites();
 		//load the images
-		std::vector<std::string> images;
+		/*std::vector<std::string> images;
 		images.push_back("run0");images.push_back("run1");images.push_back("run2");images.push_back("run3");
 		engine::graphics::loadImage(".png", "data/main/", images);
 
@@ -23,7 +24,7 @@ int main(int argc, char* argv[])
 		engine::spriteInterface *playerInput = new engine::Input;
 		engine::spriteInterface *playerCollision = new engine::Collision;
 		
-		//dynamic_cast<engine::Animation*>(playerAnimation)->makeAnimation("run", 4, 100, "run0", "run1", "run2", "run3");
+		dynamic_cast<engine::Animation*>(playerAnimation)->makeAnimation("run", 4, 100, "run0", "run1", "run2", "run3");
 		dynamic_cast<engine::Animation*>(playerAnimation)->changeAnimation("run");
 
 		dynamic_cast<engine::Input*>(playerInput)->addInput("up", 273);
@@ -37,7 +38,7 @@ int main(int argc, char* argv[])
 		player->addInterface(playerMass);
 		player->addInterface(playerInput);
 		player->addInterface(playerCollision);
-		engine::spriteManager::registerSprite(player);
+		engine::spriteManager::registerSprite(player);*/
 
 	
 		for(;;){

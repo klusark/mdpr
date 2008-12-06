@@ -55,27 +55,7 @@ namespace engine{
 		if (!dedicated){
 			network::connect();
 		}
-		
-		std::string line;
-		std::ifstream spriteFile("player.sprite");
-		bool dontClose = false;
-		if (spriteFile.is_open()){
-			spriteFile>>line;
-			if (line.compare("name") == 0){
-				spriteFile>>line;
-				Sprite *sprite = new Sprite(line, spriteFile);
-				std::cout<<spriteFile;
-				dontClose = true;
 				
-			}else{
-				std::cout<<"Syntax error in sprite";
-			}
-			if (!dontClose){
-				spriteFile.close();
-			}
-		}
-		
-		
 		return true;
 	}
 
@@ -92,7 +72,7 @@ namespace engine{
 	/**
 	 * 
 	 */
-	EngineLib void eventLoop()
+	void eventLoop()
 	{
 		if (dedicated){
 			return;
@@ -149,6 +129,28 @@ namespace engine{
 		}
 	}
 
+	EngineLib void loadSprites()
+	{
+		std::string line;
+		std::ifstream spriteFile("player.sprite");
+		bool dontClose = false;
+		if (spriteFile.is_open()){
+			spriteFile>>line;
+			if (line.compare("name") == 0){
+				spriteFile>>line;
+				Sprite *sprite = new Sprite(line, spriteFile);
+				spriteManager::registerSprite(sprite);
+				dontClose = true;
+				
+			}else{
+				std::cout<<"Syntax error in sprite";
+			}
+			if (!dontClose){
+				spriteFile.close();
+			}
+		}
+	}
+
 	/**
 	 * Makes a rect
 	 * @param x the x position
@@ -156,7 +158,7 @@ namespace engine{
 	 * @param w the width
 	 * @param h the height
 	 */
-	EngineLib Rect makeRect(int x, int y, unsigned int w, unsigned int h)
+	Rect makeRect(int x, int y, unsigned int w, unsigned int h)
 	{
 		Rect rect;
 		rect.x = x;

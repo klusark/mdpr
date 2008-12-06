@@ -1,51 +1,61 @@
 #include "engineLib.hpp"
-#include <map>
-#include <string>
 #include "graphics.hpp"
 #include "engine.hpp"
 #include "SDL/SDL_image.h"
 #include <iostream>
 #include <vector>
+#include <map>
+#include <string>
 
 namespace engine{
 	namespace graphics{
 		unsigned int texture;
 		std::map<std::string, unsigned int> textures;
 
-		EngineLib bool loadImage(std::string ext, std::string path, std::vector<std::string> images)
+		bool loadImage(std::string ext, std::string path, std::string imageName)
 		{
 			if (dedicated){
 				return true;
 			}
 
-			unsigned int i;
-			for (i=0; i < images.size(); ++i){
-				std::string temp;
-				temp = path;
-				SDL_RWops *rwop;
-				temp += images[i];
-				temp += ext;
-				
-				rwop = SDL_RWFromFile(temp.c_str(), "rb");
-				SDL_Surface *surface = IMG_Load_RW(rwop, 1);
-				if (!surface){
-					std::cout<<"Loading Image:" << IMG_GetError() << std::endl;
-					throw 1;
-				}
-		        
-				// Enable 2D Texture Support
-				glGenTextures(1, &textures[images[i]]);
-				glBindTexture(GL_TEXTURE_2D, textures[images[i]]);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-				glTexImage2D(GL_TEXTURE_2D, 0, 3, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
-
+			std::map<std::string, unsigned int>::iterator iterator;
+			iterator = textures.find(imageName);
+			if (iterator != textures.end()){
+				return false;
 			}
 
+			std::string temp;	
+			temp = path;
+			SDL_RWops *rwop;
+			temp += imageName;
+			temp += ext;
+			
+			rwop = SDL_RWFromFile(temp.c_str(), "rb");
+			if (!rwop){
+				std::cout<<"Loading Image: "<< SDL_GetError() << std::endl;
+				throw 1;
+			}
+			SDL_Surface *surface = IMG_Load_RW(rwop, 1);
+			if (!surface){
+				std::cout<<"Loading Image: " << IMG_GetError() << std::endl;
+				throw 1;
+			}
+			//unsigned int *test = new unsigned int;
+
+			// Enable 2D Texture Support
+			glGenTextures(1, &textures[imageName]);
+			//std::cout<<textures[imageName]<<std::endl;
+			
+			glBindTexture(GL_TEXTURE_2D, textures[imageName]);
+			//std::cout<<textures[imageName]<<std::endl;
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexImage2D(GL_TEXTURE_2D, 0, 3, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
+			
 			return true;
 		}
 
-		EngineLib void drawTexturedQuad(Rect rect, unsigned int texture)
+		void drawTexturedQuad(Rect rect, unsigned int texture)
 		{
 			if (dedicated){
 				return;
