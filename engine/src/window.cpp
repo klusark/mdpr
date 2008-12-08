@@ -14,6 +14,8 @@ namespace engine{
 
 		EngineLib bool createWindow(int screenWidth, int screenHeight, int bitsPerPixel, std::string title, bool fullScreenFlag)
 		{
+		
+			
 			if (dedicated){
 				return true;
 			}
@@ -21,7 +23,7 @@ namespace engine{
 			window::screenHeight = screenHeight;
 			window::bitsPerPixel = bitsPerPixel;
 			if (!SDL_WasInit(SDL_INIT_VIDEO)){
-				printf("SDL not initializeed\n");
+				std::cout<<"SDL could not be initializeed"<<std::endl;
 				return false;
 			}
 		    videoFlags  = SDL_OPENGL;          // Enable OpenGL in SDL 
@@ -39,17 +41,45 @@ namespace engine{
 			videoFlags |= SDL_HWACCEL;
 
 
-			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1 );
+			//SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 			if (fullScreenFlag){
 			}
 
-			//SDL_SetVideoMode(screenWidth, screenHeight, bitsPerPixel, videoFlags);
+
 
 			SDL_WM_SetCaption(title.c_str(), title.c_str());
 
-			windowResize(screenWidth, screenHeight);
+			SDL_ShowCursor(SDL_DISABLE);
+
+			if (SDL_SetVideoMode(screenWidth, screenHeight, 0, SDL_OPENGL) == 0){
+				std::cout<<"error";
+				throw 1;
+			}		
+
+			SDL_EnableUNICODE(1);
+
+			SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+
+
+			
+			glMatrixMode (GL_PROJECTION);
+			glOrtho (0, screenWidth, screenHeight, 0, 0, 1);
+			glMatrixMode (GL_MODELVIEW);
+
+			//
+
+			//windowResize(screenWidth, screenHeight);
 			glEnable(GL_TEXTURE_2D);
+			glClearColor(0.0f,0.0f,0.0f,1.0f);
+			glViewport(0,0, screenWidth,screenHeight);
+
+			//gluPerspective(45.0, screenWidth/screenHeight, 0.1,100.0);
+
+			glClear(GL_COLOR_BUFFER_BIT);
+
+
+
 			return true;
 		}
 
@@ -71,16 +101,15 @@ namespace engine{
 				return;
 			}
 			
-			glLoadIdentity();
+			//glLoadIdentity();
+			
 			Rect rect = engine::makeRect(22, 55, 24, 24);
 			
 
-
-			//std::cout<<graphics::textures.end<<std::endl;
 			engine::graphics::drawTexturedQuad(rect, graphics::textures["run0"]);
 
 			// Draw it to the screen
-			SDL_GL_SwapBuffers();
+			
 		}
 	}
 }
