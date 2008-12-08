@@ -28,7 +28,7 @@ namespace engine
 		bool initNetwork()
 		{
 			if(SDLNet_Init() != 0) {
-				printf("Unable to initialize SDL NET: %s\n", SDLNet_GetError());
+				std::cout<<"Unable to initialize SDL NET: "<< SDLNet_GetError()<<std::endl;
 				return false;
 			}
 
@@ -44,13 +44,13 @@ namespace engine
 		int startServer(void *data)
 		{
 			if(SDLNet_ResolveHost(&serverIp, NULL, port) != 0) {
-				printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
+				std::cout<<"SDLNet_ResolveHost: "<< SDLNet_GetError()<<std::endl;
 				return -1;
 			}
 
 			serverSocket = SDLNet_TCP_Open(&serverIp);
 			if(!serverSocket) {
-				printf("SDLNet_TCP_Open: %s\n", SDLNet_GetError());
+				std::cout<<"SDLNet_TCP_Open: "<< SDLNet_GetError()<<std::endl;
 				return -1;
 			}
 
@@ -165,29 +165,29 @@ namespace engine
 			// connect to localhost at port 9999 using TCP (client)
 
 			if(SDLNet_ResolveHost(&clientIp, "localhost", port)==-1) {
-				printf("SDLNet_ResolveHost: %s\n", SDLNet_GetError());
+				std::cout<<"SDLNet_ResolveHost: "<< SDLNet_GetError()<<std::endl;
 				return;
 			}
 
 			clientSocket = SDLNet_TCP_Open(&clientIp);
 			if(!clientSocket) {
-				printf("SDLNet_TCP_Open: %s\n", SDLNet_GetError());
+				std::cout<<"SDLNet_TCP_Open: "<< SDLNet_GetError()<<std::endl;
 				return;
 			}
 			SDL_CreateThread(network::clientRecvThread, clientSocket);
 
-			packet::connectPacket *test = static_cast<packet::connectPacket *>(malloc(sizeof(packet::connectPacket)));
+			packet::connectPacket *test = new packet::connectPacket;
 			
 			test->type = packet::connect;
-			memcpy(test->name, "klusark\0aaaaaaaaaaaaaaaaaaaaaaaa", 32);
+			memcpy(test->name, "klusark", 32);
 
 			int len,result;
 
 			len = sizeof(test);
 			result=SDLNet_TCP_Send(clientSocket, test, len);
-			free(test);
+			delete test;
 			if(result < len) {
-				printf("SDLNet_TCP_Send: %s\n", SDLNet_GetError());
+				std::cout<<"SDLNet_TCP_Send: "<< SDLNet_GetError()<<std::endl;
 				// It may be good to disconnect sock because it is likely invalid now.
 			}
 			

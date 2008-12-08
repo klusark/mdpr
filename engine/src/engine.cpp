@@ -6,6 +6,7 @@
 #include "spriteManager.hpp"
 #include "collision.hpp"
 #include "network.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <map>
@@ -36,7 +37,6 @@ namespace engine{
 				startServer = true;
 			}else if (strcmp(argv[i], "--dedicated") == 0 || strcmp(argv[i], "-d") == 0){
 				dedicated = true;
-				std::cout<<"asdfsadsdafdsdfadf";
 			}else if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0){
 				std::cout<<"Later...";
 			}
@@ -44,7 +44,7 @@ namespace engine{
 		}
 		if (!dedicated){
 			if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-				printf("Unable to initialize SDL: %s\n", SDL_GetError());
+				std::cout<<"Unable to initialize SDL: "<< SDL_GetError() << std::endl;
 				return false;
 			}
 		}
@@ -109,6 +109,8 @@ namespace engine{
 		static int Frames = 0;
 		eventLoop();
 
+		//glClear( GL_COLOR_BUFFER_BIT );
+
 		spriteManager::update();
 
 
@@ -116,13 +118,15 @@ namespace engine{
 
 		collision::update();
 
+		SDL_GL_SwapBuffers();
+		
 		// Gather our frames per second
 		Frames++;
 		int t = SDL_GetTicks();
 		if (t - T0 >= 5000) {
 			float seconds = (t - T0) / 1000.0f;
 			float fps = Frames / seconds;
-			printf("%d frames in %g seconds = %g FPS\n", Frames, seconds, fps);
+			std::cout<<Frames<<" frames in "<<seconds<<" seconds = "<<fps<<" FPS"<<std::endl;
 			T0 = t;
 			Frames = 0;
 		
