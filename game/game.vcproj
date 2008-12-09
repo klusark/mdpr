@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="mdpr"
-	ProjectGUID="{0ADE0951-03C9-452C-B523-719C61F5357D}"
+	Name="game"
+	ProjectGUID="{134153CE-FA00-47CA-BABA-7BD706FC17EC}"
 	RootNamespace="game"
 	TargetFrameworkVersion="196613"
 	>
@@ -40,13 +40,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="include\game;..\engine\include\"
-				MinimalRebuild="true"
+				AdditionalIncludeDirectories="./include"
+				PreprocessorDefinitions="WIN32"
+				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				WarningLevel="4"
 				DebugInformationFormat="3"
-				ForcedIncludeFiles="$(NOINHERIT)"
+				ForcedIncludeFiles=""
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -59,11 +60,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				LinkIncremental="1"
 				GenerateDebugInformation="true"
-				SubSystem="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
+				SubSystem="2"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -91,7 +89,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -114,11 +112,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="include\game;..\engine\include\"
+				AdditionalIncludeDirectories="..\..\..\SDL\include;include\game;include"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
 				DebugInformationFormat="3"
+				ForcedIncludeFiles="gameLib.hpp"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -131,6 +131,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="OpenGL32.lib GLu32.lib SDL.lib SDL_image.lib SDL_net.lib"
+				ModuleDefinitionFile="dll.def"
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -168,21 +170,117 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\src\main.cpp"
+				RelativePath=".\src\engine.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\src\event.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\graphics.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MDPRApplication.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\MDPRGame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\player.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\spriteManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\window.cpp"
+				>
+			</File>
+			<Filter
+				Name="Net"
+				>
+				<File
+					RelativePath=".\src\network.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\packetHandlers.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\include\dataTypes.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\engine.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\event.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\graphics.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\MDPRApplication.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\MDPRGame.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\player.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\spriteManager.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\include\window.hpp"
+				>
+			</File>
+			<Filter
+				Name="Net"
+				>
+				<File
+					RelativePath=".\include\network.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\packetHandlers.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\packets.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\dll.def"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
