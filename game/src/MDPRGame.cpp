@@ -4,7 +4,18 @@
 #include <iostream>
 #include "MDPRGame.hpp"
 #include "player.hpp"
+#include "network.hpp"
 
+MDPRGame::MDPRGame()
+{
+	quit = false;
+
+}
+
+MDPRGame::~MDPRGame()
+{
+	
+}
 
 void MDPRGame::run()
 {
@@ -14,25 +25,31 @@ void MDPRGame::run()
 	static int T0     = 0;
 	static int Frames = 0;
 	float seconds, fps;
-	CL_CollisionOutline outline("data/mdpr/sprites/player/run.PNG", 1);
-	//generated.save("image.out");
+	//CL_PixelBuffer test = player->get_frame_surface(player->get_current_frame()).draw(100,100);
+	//CL_CollisionOutline outline(test);
+	//outline.save("image.out");
 
-	for(;;)
+
+	Network network;
+
+	while(!quit)
 	{
 		CL_Display::clear(CL_Color(0, 0, 0, 255));
-		if( outline.point_inside( CL_Pointf(CL_Mouse::get_x(), CL_Mouse::get_y()) ))
+/*		if( outline.point_inside( CL_Pointf(CL_Mouse::get_x(), CL_Mouse::get_y()) ))
 		{
 			std::cout<<"a";
-		}
+		}*/
+		//player->get_frame_surface(player->get_current_frame()).draw(100,100);
 
 
 
 		player->update();
 		player->draw(10, 10);
-		outline.draw(0,0,CL_Color(0,255,0));
+//		outline.draw(0,0,CL_Color(0,255,0));
 
 		CL_Display::flip();
 		CL_System::sleep(1);
+		network.update();
 		CL_System::keep_alive();
 
 		Frames++;
@@ -40,10 +57,15 @@ void MDPRGame::run()
 		if (t - T0 >= 5000) {
 			seconds = (t - T0) / 1000.0f;
 			fps = Frames / seconds;
-			std::cout<<Frames<<" frames in "<<seconds<<" seconds = "<<fps<<" FPS"<<std::endl;
+			std::cout << Frames << " frames in " << seconds << " seconds = " << fps << " FPS" << std::endl;
 			T0 = t;
 			Frames = 0;
 		
 		}
 	}
+}
+void MDPRGame::onWindowClose()
+{
+	quit = true;
+	
 }

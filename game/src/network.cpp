@@ -1,12 +1,25 @@
+#include <ClanLib/core.h>
+#include <ClanLib/network.h>
 #include "network.hpp"
-//#include "SDL/SDL_net.h"
-#include "packets.hpp"
-#include "packetHandlers.hpp"
-#include "stdio.h"
-#include <queue>
-#include <iostream>
+#include "networkServer.hpp"
+#include "networkClient.hpp"
 
-namespace engine
+Network::Network()
+{
+	Server *server = new Server;
+	server->runServer();
+	Client *client = new Client;
+	client->runClient();
+}
+
+
+void Network::update()
+{
+}
+
+
+
+/*namespace engine
 {
 	namespace network
 	{
@@ -26,10 +39,10 @@ namespace engine
 
 		bool initNetwork()
 		{
-			/*if(SDLNet_Init() != 0) {
+			if(SDLNet_Init() != 0) {
 				std::cout<<"Unable to initialize SDL NET: "<< SDLNet_GetError()<<std::endl;
 				return false;
-			}*/
+			}
 
 			return true;
 
@@ -42,7 +55,7 @@ namespace engine
 
 		int startServer(void *data)
 		{
-			/*if(SDLNet_ResolveHost(&serverIp, NULL, port) != 0) {
+			if(SDLNet_ResolveHost(&serverIp, NULL, port) != 0) {
 				std::cout<<"SDLNet_ResolveHost: "<< SDLNet_GetError()<<std::endl;
 				return -1;
 			}
@@ -72,7 +85,7 @@ namespace engine
 						}
 					}
 				}
-			}*/
+			}
 			return 0;
 		}
 
@@ -80,7 +93,7 @@ namespace engine
 		
 		int serverRecvThread(void *data)
 		{
-		/*	const static int bufferSize = 1024;
+			const static int bufferSize = 1024;
 			int length;
 			char message[bufferSize];
 			TCPsocket socket = static_cast<TCPsocket>(data);
@@ -96,13 +109,13 @@ namespace engine
 				packet.message = message;
 				packet.length = length;
 				serverRecvdQueue.push(packet);
-			}*/
+			}
 			return 0;
 		}
 
 		int clientRecvThread(void *data)
 		{
-			/*const static int bufferSize = 1024;
+			const static int bufferSize = 1024;
 			int length;
 			char message[bufferSize];
 			TCPsocket socket = static_cast<TCPsocket>(data);
@@ -118,25 +131,25 @@ namespace engine
 				packet.message = message;
 				packet.length = length;
 				clientRecvdQueue.push(packet);
-			}*/
+			}
 			return 0;
 		}
 
 		void limitFPS(short FPS, unsigned int &bticks)
 		{
-			/*unsigned int wait = 1000 / FPS;
+			unsigned int wait = 1000 / FPS;
 			unsigned int cticks = SDL_GetTicks();
 			if ((cticks - bticks) < wait){
 				//framerate exceeded limit....so we wait the difference
 				SDL_Delay(wait - (cticks - bticks));
 			}
-			bticks = SDL_GetTicks();*/
+			bticks = SDL_GetTicks();
 		}
 
 
 		int serverProsessRecvd(void *data)
 		{
-			/*unsigned int bticks = 0;
+			unsigned int bticks = 0;
 			for(;;){
 				while (!serverRecvdQueue.empty()){
 					recvdPacket temp = serverRecvdQueue.front();
@@ -144,13 +157,13 @@ namespace engine
 					serverRecvdQueue.pop();
 				}
 				limitFPS(60, bticks);
-			}*/
+			}
 			return 0;
 		}
 
 		int clientProsessRecvd(void *data)
 		{
-			/*unsigned int bticks = 0;
+			unsigned int bticks = 0;
 			for(;;){
 				while (!clientRecvdQueue.empty()){
 					recvdPacket temp = clientRecvdQueue.front();
@@ -158,7 +171,7 @@ namespace engine
 					clientRecvdQueue.pop();
 				}
 				limitFPS(60, bticks);
-			}*/
+			}
 			return 0;
 		}
 
@@ -166,7 +179,7 @@ namespace engine
 		void connect()
 		{
 			
-			/*// connect to localhost at port 9999 using TCP (client)
+			// connect to localhost at port 9999 using TCP (client)
 
 			if(SDLNet_ResolveHost(&clientIp, "localhost", port)==-1) {
 				std::cout<<"SDLNet_ResolveHost: "<< SDLNet_GetError()<<std::endl;
@@ -196,7 +209,8 @@ namespace engine
 			}
 			
 
-*/
+
 		}
 	}
 }
+*/

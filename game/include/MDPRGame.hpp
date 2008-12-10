@@ -4,9 +4,12 @@
 class MDPRGame {
 
 public:
+	MDPRGame();
+	~MDPRGame();
 	void run();
-	void update();
-	int calc_fps(int frame_time);
+	void onWindowClose();
+private:
+	bool quit;
 };
 
 #endif

@@ -1,4 +1,4 @@
-#include "engine.hpp"
+/*#include "engine.hpp"
 #include "window.hpp"
 #include "dataTypes.hpp"
 #include "spriteManager.hpp"
@@ -20,7 +20,7 @@ namespace engine{
 	 * Initializes the engine and checks the commandline args
 	 * @param argc the argc from main
 	 * @param argv the argv from main
-	 */
+	 *//*
 	bool initEngine(int argc, char* argv[])
 	{
 
@@ -61,13 +61,13 @@ namespace engine{
 		if (!dedicated){
 			network::connect();
 		}
-				*/
+				*//*
 		return true;
 	}
 
 	/**
 	 * Function to run when quitting the program
-	 */
+	 *//*
 	bool quit()
 	{
 		CL_SetupGL::deinit();
@@ -79,7 +79,7 @@ namespace engine{
 
 	/**
 	 * 
-	 */
+	 *//*
 	void eventLoop()
 	{
 		if (dedicated){
@@ -104,12 +104,12 @@ namespace engine{
 				default:
 					break;
 			}
-		}*/
+		}*//*
 	}
 
 	/**
 	 * The games main loop. MUST be run one per frame.
-	 */
+	 *//*
 	void mainLoop()
 	{
 		// These are to calculate our fps 
@@ -139,7 +139,7 @@ namespace engine{
 			T0 = t;
 			Frames = 0;
 		
-		}*/
+		}*//*
 	}
 
 	void loadSprites()
@@ -170,7 +170,7 @@ namespace engine{
 	 * @param y the y position
 	 * @param w the width
 	 * @param h the height
-	 */
+	 *//*
 	Rect makeRect(int x, int y, unsigned int w, unsigned int h)
 	{
 		Rect rect;
@@ -181,3 +181,4 @@ namespace engine{
 		return rect;
 	}
 }
+*/
