@@ -1,4 +1,4 @@
-#include "graphics.hpp"
+/*#include "graphics.hpp"
 #include "window.hpp"
 #include "engine.hpp"
 #include <iostream>
@@ -42,7 +42,7 @@ namespace engine{
 				videoFlags |= SDL_SWSURFACE;
 			}
 
-			videoFlags |= SDL_HWACCEL;*/
+			videoFlags |= SDL_HWACCEL;
 
 
 			//SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -83,7 +83,7 @@ namespace engine{
 			glClear(GL_COLOR_BUFFER_BIT);
 
 
-			*/
+			
 			return true;
 		}
 
@@ -95,7 +95,7 @@ namespace engine{
 			glOrtho (0, screenWidth, screenHeight, 0, 0, 1);
 			glMatrixMode (GL_MODELVIEW);
 
-			glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);*/
+			glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 			
 		}
 
@@ -117,3 +117,4 @@ namespace engine{
 		}
 	}
 }
+*/

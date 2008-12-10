@@ -209,6 +209,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\networkClient.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\networkServer.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\packetHandlers.cpp"
 					>
 				</File>
@@ -260,6 +268,14 @@
 				>
 				<File
 					RelativePath=".\include\network.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\networkClient.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\include\networkServer.hpp"
 					>
 				</File>
 				<File

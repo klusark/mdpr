@@ -2,6 +2,7 @@
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include <ClanLib/gl.h>
+#include <ClanLib/network.h>
 #include "MDPRApplication.hpp"
 #include "MDPRGame.hpp"
 
@@ -14,17 +15,17 @@ int MDPRApplication::main(int, char **)
 		// CL initialization functions
 		// These must be called or CL functions will not work
 		// Also, SetupCore must be init()'ed first and denit()'ed last
-		CL_SetupGL SetupGL;
-		CL_SetupCore SetupCore;
-		CL_SetupDisplay SetupDisplay;
+		CL_SetupGL setupGL;
+		CL_SetupCore setupCore;
+		CL_SetupDisplay setupDisplay;
+		CL_SetupNetwork setupNetwork;
 
-
-		
 
 		// Set display mode
 		CL_DisplayWindow window("Marshmallow Duel: Percy's Return", 500, 450);
-		//CL_Slot slot_quit = window.sig_window_close().connect(this, &MDPRApplication::on_window_close);
 		MDPRGame MDPR;
+		CL_Slot slot_quit = window.sig_window_close().connect(&MDPR, &MDPRGame::onWindowClose);
+		
 		MDPR.run();
 
 		

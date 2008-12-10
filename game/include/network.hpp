@@ -1,5 +1,22 @@
 #ifndef network_hpp
 #define network_hpp
+#if _MSC_VER > 1000
+#pragma once
+#endif
+
+class Network
+{
+public:
+	Network();
+	~Network(){}
+	void update();
+	class Server;
+	class Client;
+
+	
+};
+
+/*
 namespace engine
 {
 	namespace network
@@ -20,5 +37,5 @@ namespace engine
 			char *message;
 		};
 	}
-}
+}*/
 #endif
