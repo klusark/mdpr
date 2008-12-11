@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="./include"
+				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="WIN32"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
@@ -89,7 +89,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -112,13 +112,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\..\SDL\include;include\game;include"
-				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS"
-				RuntimeLibrary="2"
+				AdditionalIncludeDirectories=""
+				PreprocessorDefinitions="WIN32"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
 				DebugInformationFormat="3"
-				ForcedIncludeFiles="gameLib.hpp"
+				ForcedIncludeFiles=""
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -131,11 +131,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OpenGL32.lib GLu32.lib SDL.lib SDL_image.lib SDL_net.lib"
-				ModuleDefinitionFile="dll.def"
-				GenerateDebugInformation="true"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
+				ModuleDefinitionFile=""
+				SubSystem="2"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -174,14 +171,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\event.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\graphics.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\MDPRApplication.cpp"
 				>
 			</File>
@@ -189,35 +178,31 @@
 				RelativePath=".\src\MDPRGame.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\src\player.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\spriteManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\window.cpp"
-				>
-			</File>
 			<Filter
-				Name="Net"
+				Name="Network"
 				>
 				<File
-					RelativePath=".\src\network.cpp"
+					RelativePath=".\src\network\network.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\networkClient.cpp"
+					RelativePath=".\src\network\networkClient.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\networkServer.cpp"
+					RelativePath=".\src\network\networkServer.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Sprite"
+				>
+				<File
+					RelativePath=".\src\sprite\player.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\packetHandlers.cpp"
+					RelativePath=".\src\sprite\spriteManager.cpp"
 					>
 				</File>
 			</Filter>
@@ -228,62 +213,42 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\include\dataTypes.hpp"
+				RelativePath=".\src\engine.hpp"
 				>
 			</File>
 			<File
-				RelativePath=".\include\engine.hpp"
+				RelativePath=".\src\MDPRApplication.hpp"
 				>
 			</File>
 			<File
-				RelativePath=".\include\event.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\include\graphics.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\include\MDPRApplication.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\include\MDPRGame.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\include\player.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\include\spriteManager.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\include\window.hpp"
+				RelativePath=".\src\MDPRGame.hpp"
 				>
 			</File>
 			<Filter
-				Name="Net"
+				Name="Network"
 				>
 				<File
-					RelativePath=".\include\network.hpp"
+					RelativePath=".\src\network\network.hpp"
 					>
 				</File>
 				<File
-					RelativePath=".\include\networkClient.hpp"
+					RelativePath=".\src\network\networkClient.hpp"
 					>
 				</File>
 				<File
-					RelativePath=".\include\networkServer.hpp"
+					RelativePath=".\src\network\networkServer.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Sprite"
+				>
+				<File
+					RelativePath=".\src\sprite\player.hpp"
 					>
 				</File>
 				<File
-					RelativePath=".\include\packetHandlers.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\include\packets.hpp"
+					RelativePath=".\src\sprite\spriteManager.hpp"
 					>
 				</File>
 			</Filter>
@@ -293,10 +258,6 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
-			<File
-				RelativePath=".\dll.def"
-				>
-			</File>
 		</Filter>
 	</Files>
 	<Globals>

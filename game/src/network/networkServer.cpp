@@ -9,8 +9,9 @@ bool Network::Server::runServer()
 
 	try{
 		netsession = new CL_NetSession("MDPR");
+		slotReciveConnect =	netsession->sig_netpacket_receive("connect").connect(this, &Network::Server::onReciveConnect);
 		slotConnect =		netsession->sig_computer_connected()		.connect(this, &Network::Server::onConnect);
-		slotDisconnect =	netsession->sig_computer_disconnected()	.connect(this, &Network::Server::onDisconnect);
+		slotDisconnect =	netsession->sig_computer_disconnected()		.connect(this, &Network::Server::onDisconnect);
 
 		netsession->start_listen("4323");
 		std::cout << "Server Started" << std::endl;
@@ -20,6 +21,11 @@ bool Network::Server::runServer()
 
 
 	return true;
+}
+
+void Network::Server::onReciveConnect(CL_NetPacket &packet, CL_NetComputer &computer)
+{
+	std::cout << "asdf" << std::endl;
 }
 
 void Network::Server::onConnect(CL_NetComputer &computer)
