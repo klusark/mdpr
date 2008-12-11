@@ -3,8 +3,8 @@
 #include <ClanLib/display.h>
 #include <iostream>
 #include "MDPRGame.hpp"
-#include "player.hpp"
-#include "network.hpp"
+#include "sprite/player.hpp"
+#include "network/network.hpp"
 
 MDPRGame::MDPRGame()
 {
@@ -48,7 +48,7 @@ void MDPRGame::run()
 //		outline.draw(0,0,CL_Color(0,255,0));
 
 		CL_Display::flip();
-		CL_System::sleep(1);
+		//CL_System::sleep(1);
 		network.update();
 		CL_System::keep_alive();
 
