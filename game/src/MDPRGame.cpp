@@ -1,10 +1,16 @@
 #include <ClanLib/core.h>
 #include <ClanLib/gl.h>
 #include <ClanLib/display.h>
+#pragma warning(push, 3)
+#include <ClanLib/gui.h>
+#include <ClanLib/guistylesilver.h>
+#pragma warning(pop)
 #include <iostream>
+
 #include "MDPRGame.hpp"
 #include "sprite/player.hpp"
 #include "network/network.hpp"
+#include "menu/menuManager.hpp"
 
 MDPRGame::MDPRGame()
 {
@@ -29,12 +35,16 @@ void MDPRGame::run()
 	//CL_CollisionOutline outline(test);
 	//outline.save("image.out");
 
+	
+
 
 	Network network;
+	menuManager menu;
 
 	while(!quit)
 	{
-		CL_Display::clear(CL_Color(0, 0, 0, 255));
+		CL_Display::clear(CL_Color::black);
+		menu.update();
 /*		if( outline.point_inside( CL_Pointf(CL_Mouse::get_x(), CL_Mouse::get_y()) ))
 		{
 			std::cout<<"a";
@@ -48,7 +58,7 @@ void MDPRGame::run()
 //		outline.draw(0,0,CL_Color(0,255,0));
 
 		CL_Display::flip();
-		//CL_System::sleep(1);
+		CL_System::sleep(1);
 		network.update();
 		CL_System::keep_alive();
 

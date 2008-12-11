@@ -1,4 +1,4 @@
-#ifndef engine_hpp
+/*#ifndef engine_hpp
 #define engine_hpp
 #include "dataTypes.hpp"
 namespace engine{
@@ -11,3 +11,4 @@ namespace engine{
 	extern Rect makeRect(int x, int y, unsigned int w, unsigned int h);
 }
 #endif
+*/

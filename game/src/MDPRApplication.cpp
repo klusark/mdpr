@@ -3,6 +3,9 @@
 #include <ClanLib/display.h>
 #include <ClanLib/gl.h>
 #include <ClanLib/network.h>
+#pragma warning(push, 3)
+#include <ClanLib/gui.h>
+#pragma warning(pop)
 #include "MDPRApplication.hpp"
 #include "MDPRGame.hpp"
 
@@ -19,6 +22,7 @@ int MDPRApplication::main(int, char **)
 		CL_SetupCore setupCore;
 		CL_SetupDisplay setupDisplay;
 		CL_SetupNetwork setupNetwork;
+		CL_SetupGUI setupGui;
 
 
 		// Set display mode
