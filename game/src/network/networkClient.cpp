@@ -24,6 +24,18 @@ bool Network::Client::runClient()
 		server_ip.set_address("127.0.0.1", "4323");
 		netsession->connect(server_ip);
 		std::cout << "connected" << std::endl;
+		std::string ping_string = "Ping!...";
+		static int ping_num = 0;
+
+		//create a ping packet
+		CL_NetPacket ping_msg;		
+		ping_msg.output.write_string("Ping number ");
+		ping_msg.output.write_int32(ping_num++);
+
+		//do the actual sending, to all the computers connected
+		netsession->get_all().send("connect", ping_msg);
+
+		std::cout << "Sent ping" << std::endl;
 
 	}
 	catch(CL_Error err)
@@ -33,6 +45,8 @@ bool Network::Client::runClient()
 	}
 	return true;
 }
+
+//void Network::Client::sendConnect()
 
 void Network::Client::onDisconnect(CL_NetComputer &computer)
 {
