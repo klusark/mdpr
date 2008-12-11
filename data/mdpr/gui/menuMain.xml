@@ -4,7 +4,7 @@
 		name="btn_to_profile"
 		x="20"
 		y="20"
-		text="Profile"
+		text="profile"
 		tab_id="1"
 		type="text"
 		size="big" />
@@ -12,7 +12,7 @@
 		name="btn_to_game"
 		x="20"
 		y="45"
-		text="Game"
+		text="game"
 		tab_id="2"
 		type="text"
 		size="big" />
@@ -20,7 +20,7 @@
 		name="btn_to_demos"
 		x="20"
 		y="70"
-		text="Demos"
+		text="demos"
 		tab_id="3"
 		type="text"
 		size="big" />
@@ -28,7 +28,7 @@
 		name="btn_to_options"
 		x="20"
 		y="95"
-		text="Options"
+		text="options"
 		tab_id="4"
 		type="text"
 		size="big" />
@@ -36,7 +36,7 @@
 		name="btn_to_credits"
 		x="20"
 		y="120"
-		text="Credits"
+		text="credits"
 		tab_id="5"
 		type="text"
 		size="big" />
@@ -44,7 +44,7 @@
 		name="btn_quit"
 		x="20"
 		y="145"
-		text="Quit"
+		text="quit"
 		tab_id="6"
 		type="text"
 		size="big" />
