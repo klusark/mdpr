@@ -13,6 +13,14 @@
 		</sprite>
 	</section>
 
+	<section name="font">
+		<sprite name="fontMDPR">
+			<image file="fonts/fontMDPR.png">
+				<alpha />
+			</image>
+		</sprite>
+	</section>
+	
 	<section name="Window">
 		<font name="font">
 			<bitmap glyphs="FontGlyphs/font_black" spacelen="4" letters="!'#$%&amp;'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_'abcdefghijklmnopqrstuvwxyz{|}~" />
@@ -23,7 +31,7 @@
 	</section>
 	<section name="Button">
 		<font name="font">
-			<bitmap glyphs="FontGlyphs/font_black" spacelen="4" letters="!'#$%&amp;'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_'abcdefghijklmnopqrstuvwxyz{|}~" />
+			<bitmap glyphs="font/fontMDPR" letters="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()_+`-={}[]|\:;'<,>.?/" />
 		</font>
 		<font name="font_disabled">
 			<bitmap glyphs="FontGlyphs/font_gray" spacelen="4" letters="!'#$%&amp;'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_'abcdefghijklmnopqrstuvwxyz{|}~" />
