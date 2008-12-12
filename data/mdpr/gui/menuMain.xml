@@ -1,51 +1,19 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <components>
 	<button
-		name="btn_to_profile"
+		name="optionsButton"
 		x="20"
-		y="20"
-		text="profile"
+		y="95"
+		text="Options"
 		tab_id="1"
 		type="text"
 		size="big" />
 	<button
-		name="btn_to_game"
-		x="20"
-		y="45"
-		text="game"
-		tab_id="2"
-		type="text"
-		size="big" />
-	<button
-		name="btn_to_demos"
-		x="20"
-		y="70"
-		text="demos"
-		tab_id="3"
-		type="text"
-		size="big" />
-	<button
-		name="btn_to_options"
-		x="20"
-		y="95"
-		text="options"
-		tab_id="4"
-		type="text"
-		size="big" />
-	<button
-		name="btn_to_credits"
-		x="20"
-		y="120"
-		text="credits"
-		tab_id="5"
-		type="text"
-		size="big" />
-	<button
-		name="btn_quit"
+		name="quitButton"
 		x="20"
 		y="145"
-		text="quit"
-		tab_id="6"
+		text="Quit"
+		tab_id="2"
 		type="text"
 		size="big" />
 </components>
