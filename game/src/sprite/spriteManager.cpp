@@ -11,6 +11,9 @@ spriteManager::spriteManager()
 
 spriteManager::~spriteManager()
 {
+	for(spriteContainer::iterator it = Sprites.begin(); it != Sprites.end(); ++it){
+		delete it->second;
+	}
 }
 
 void spriteManager::registerSprite(genericSprite *sprite)
