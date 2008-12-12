@@ -21,7 +21,7 @@ MDPRGame::MDPRGame()
 
 MDPRGame::~MDPRGame()
 {
-	
+
 }
 
 void MDPRGame::run()
@@ -36,7 +36,7 @@ void MDPRGame::run()
 	//CL_CollisionOutline outline(test);
 	//outline.save("image.out");
 
-	
+
 
 
 	Network network;
@@ -49,23 +49,26 @@ void MDPRGame::run()
 	menu.setActive(false);
 
 	spriteManager sprite;
+	sprite.setActive(true);
 
 
 	while(!quit)
 	{
-		CL_Display::clear(CL_Color::white);
+		CL_Display::clear(CL_Color::black);
+
 		if (menu.isActive()){
 			menu.update();
 		}
 
-
-		//player->update();
-		//player->draw(10, 10);
+;
 //		outline.draw(0,0,CL_Color(0,255,0));
 
 		network.update();
-		sprite.update();
 
+        if (sprite.isActive()){
+			sprite.update();
+			sprite.draw();
+		}
 
 
 		Frames++;
@@ -80,17 +83,17 @@ void MDPRGame::run()
 		std::stringstream buf;
 		buf << std::fixed << static_cast<int>(fps);
 		std::string stringFPS = buf.str();
-		
+
 		font.draw(320-font.get_width(stringFPS), 0, stringFPS);
 
 		CL_Display::flip();
 		CL_System::sleep(2);
-		
+
 		CL_System::keep_alive();
 	}
 }
 void MDPRGame::onWindowClose()
 {
 	quit = true;
-	
+
 }

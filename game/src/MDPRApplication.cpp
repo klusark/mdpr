@@ -27,12 +27,12 @@ int MDPRApplication::main(int, char **)
 
 		// Set display mode
 		CL_DisplayWindow window("Marshmallow Duel: Percy's Return", 320, 200);
-		
+
 		CL_Slot slot_quit = window.sig_window_close().connect(this, &MDPRApplication::onWindowClose);
-		
+
 		MDPR.run();
 
-		
+
 
 	} catch (CL_Error err) {
 		std::cout << "Exception caught: " << err.message.c_str() << std::endl;

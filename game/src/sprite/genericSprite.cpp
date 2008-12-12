@@ -3,13 +3,13 @@
 
 #include "genericSprite.hpp"
 
-genericSprite::genericSprite(const std::string &resourceLocation) : CL_Sprite()
+genericSprite::genericSprite(const std::string &resourceLocation, const std::string &name) : CL_Sprite(), name(name)
 {
 	last_time = 0;
 	x = 0;
 	y = 0;
 	xVelocity = 1;
-	yVelocity = 1;
+	yVelocity = 0;
 	xAccel = 5;
 	yAccel = 0;
 	resources = new CL_ResourceManager(resourceLocation);
@@ -18,7 +18,7 @@ genericSprite::genericSprite(const std::string &resourceLocation) : CL_Sprite()
 genericSprite::~genericSprite()
 {
 	delete resources;
-	for(animationContainer::iterator it = Sprites.begin(); it != Sprites.end(); ++it){
+	for(animationContainer::iterator it = Animations.begin(); it != Animations.end(); ++it){
 		delete it->second;
 	}
 }
@@ -31,18 +31,30 @@ void genericSprite::update()
 	if(last_time == 0)
 		last_time = new_time;
 
-	float delta_time = (new_time - last_time);
+	float delta_time = (new_time - last_time)/1000.0f;
 	last_time = new_time;
 
-	x+=static_cast<float>((xVelocity/1000)*delta_time+(0.5)*(xAccel/1000)*pow(delta_time,2));
-	y+=static_cast<float>((yVelocity/1000)*delta_time+(0.5)*(yAccel/1000)*pow(delta_time,2));
-	xVelocity+=(xAccel/1000)*delta_time;
-	yVelocity+=(yAccel/1000)*delta_time;
+	x+=static_cast<float>(xVelocity*delta_time+(0.5)*xAccel*pow(delta_time,2));
+	y+=static_cast<float>(yVelocity*delta_time+(0.5)*yAccel*pow(delta_time,2));
+	xVelocity+=xAccel*delta_time;
+	yVelocity+=yAccel*delta_time;
 
 }
 
 void genericSprite::changeAnimation(std::string name)
 {
+	animationContainer iter;
+	if (Animations.find(name) != Animations.end()){
+		set_image_data(*Animations[name]);
+	}else{
+		std::cout<<"asdfsadfsf";
+	}
+}
+
+void genericSprite::loadAnimation(std::string name)
+{
+	Animations[name] = new CL_Sprite(name, resources);
+
 }
 
 float genericSprite::round(float number)
@@ -57,6 +69,8 @@ float genericSprite::round(float number)
 
 float genericSprite::getX()
 {
+	if (x>320)
+		x=0;
 
 	if (xVelocity == 0){
 		return round(x);

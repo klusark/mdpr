@@ -3,11 +3,12 @@
 #include "player.hpp"
 #include "genericSprite.hpp"
 
-Player::Player() : genericSprite("data/mdpr/sprites/player/player.xml")
+Player::Player(const std::string &name) : genericSprite("data/mdpr/sprites/player/player.xml", name)
 {
 	//CL_ResourceManager *resources = new CL_ResourceManager();
-	run = new CL_Sprite("run", resources);
-	this->set_image_data(*run);
+	//run = new CL_Sprite("run", resources);
+	loadAnimation("run");
+	changeAnimation("run");
 }
 
 Player::~Player()
