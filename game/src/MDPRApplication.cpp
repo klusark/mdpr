@@ -9,7 +9,7 @@
 #include "MDPRApplication.hpp"
 #include "MDPRGame.hpp"
 
-
+MDPRApplication Application;
 int MDPRApplication::main(int, char **)
 {
 	CL_ConsoleWindow console("Marshmallow Duel: Percy's Return Console");
@@ -26,9 +26,9 @@ int MDPRApplication::main(int, char **)
 
 
 		// Set display mode
-		CL_DisplayWindow window("Marshmallow Duel: Percy's Return", 500, 450);
-		MDPRGame MDPR;
-		CL_Slot slot_quit = window.sig_window_close().connect(&MDPR, &MDPRGame::onWindowClose);
+		CL_DisplayWindow window("Marshmallow Duel: Percy's Return", 320, 200);
+		
+		CL_Slot slot_quit = window.sig_window_close().connect(this, &MDPRApplication::onWindowClose);
 		
 		MDPR.run();
 
@@ -46,4 +46,10 @@ int MDPRApplication::main(int, char **)
 	CL_SetupCore::deinit();
 	//network::destoryNetwork();
 	return 0;
+}
+
+void MDPRApplication::onWindowClose()
+{
+	MDPR.onWindowClose();
+
 }

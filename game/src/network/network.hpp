@@ -1,8 +1,6 @@
 #ifndef network_hpp
 #define network_hpp
-#if _MSC_VER > 1000
-#pragma once
-#endif
+
 
 class Network
 {

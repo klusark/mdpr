@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<components>
+	<button
+		name="cancelButton"
+		x="160"
+		y="180"
+		text="Cancel"
+		type="text"
+		size="big"
+		/>
+	<button
+		name="applyButton"
+		x="110"
+		y="180"
+		text="Apply"
+		type="text"
+		size="big" 
+		/>
+	<label
+		name="nameInput"
+		text="asfsdf asdf"
+		x="100"
+		y="100"
+		/>
+	<inputbox
+		x="170"
+		y="170"
+		text="fa"
+		width="300"
+		height="14"
+		
+		/>
+		
+</components>

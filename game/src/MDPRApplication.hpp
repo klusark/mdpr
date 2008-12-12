@@ -1,13 +1,17 @@
 #ifndef MDPRApplication_hpp
 #define MDPRApplication_hpp
-#if _MSC_VER > 1000
-#pragma once
-#endif
+
+
+#include <ClanLib/application.h>
+#include "MDPRGame.hpp"
 
 class MDPRApplication : public CL_ClanApplication 
 {
 public:
 	virtual int main(int, char **);
-}Application;
+	void onWindowClose();
+private:
+	MDPRGame MDPR;
+}extern Application;
 
 #endif

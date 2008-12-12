@@ -1,15 +1,19 @@
-/*#ifndef spriteManager_hpp
+#ifndef spriteManager_hpp
 #define spriteManager_hpp
-#include <string>
+
 #include <map>
-namespace engine
+#include <string>
+#include "genericSprite.hpp"
+
+class spriteManager
 {
-	namespace spriteManager
-	{
-		extern std::map<std::string, Sprite *> Sprites;
-		void registerSprite(engine::Sprite *sprite);
-		void update();
-	}
-}
+public:
+	spriteManager();
+	~spriteManager();
+	typedef std::map<std::string, genericSprite *> spriteContainer;
+	spriteContainer Sprites;
+	void registerSprite(genericSprite *sprite);
+	void update();
+};
+
 #endif
-*/

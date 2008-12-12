@@ -1,17 +1,20 @@
 #ifndef menuGeneric_hpp
 #define menuGeneric_hpp
-#if _MSC_VER > 1000
-#pragma once
-#endif
 
+
+#include "menuManager.hpp"
+class menuManager;
 class menuGeneric : public CL_GUIManager
 {
 public:
-	menuGeneric(CL_StyleManager &style, std::string const &resourceLocation);
+	menuGeneric(menuManager *menu, CL_StyleManager &style, std::string const &resourceLocation);
 	~menuGeneric();
 	void show();
-private:
+protected:
 	CL_ComponentManager *componentManager;
+	CL_SlotContainer slots;
+	menuManager *menu;
+
 };
 
 #endif

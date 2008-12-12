@@ -1,25 +1,32 @@
-/*#include "spriteManager.hpp"
+#include "spriteManager.hpp"
+#include "genericSprite.hpp"
+#include "player.hpp"
 #include <map>
-namespace engine
+
+spriteManager::spriteManager()
 {
-	namespace spriteManager
-	{
-		std::map<std::string, Sprite *> Sprites;
+	Player *player1 = new Player;
+	registerSprite(player1);
+}
 
-		void registerSprite(Sprite *sprite)
-		{
-			Sprites[sprite->name] = sprite;
-			return;
-		}
+spriteManager::~spriteManager()
+{
+}
 
-		void update()
-		{
-			std::map<std::string, Sprite *>::iterator iter;
-			for( iter = spriteManager::Sprites.begin(); iter != spriteManager::Sprites.end(); ++iter ) {
-				iter->second->update();
+void spriteManager::registerSprite(genericSprite *sprite)
+{
+	Sprites["asfd"] = sprite;
+	return;
+}
 
-			}
-		}
+void spriteManager::update()
+{
+	spriteContainer::iterator iter;
+	for( iter = spriteManager::Sprites.begin(); iter != spriteManager::Sprites.end(); ++iter ) {
+		genericSprite *tempSprite = iter->second;
+		tempSprite->update();
+		tempSprite->draw(tempSprite->getX(), tempSprite->getY());
+
 	}
 }
-*/
+
