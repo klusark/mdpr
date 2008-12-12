@@ -14,6 +14,11 @@ public:
 	spriteContainer Sprites;
 	void registerSprite(genericSprite *sprite);
 	void update();
+	void draw();
+	bool isActive();
+	void setActive(bool toggle);
+private:
+    bool active;
 };
 
 #endif
