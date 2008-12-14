@@ -39,7 +39,7 @@ void MDPRGame::run()
 
 
 
-	Network network;
+	
 
 	CL_ResourceManager resources("data/mdpr/gui/gui.xml", false);
 	CL_Font font("fontMDPR", &resources);
@@ -48,8 +48,10 @@ void MDPRGame::run()
 	menuManager menu(resources);
 	menu.setActive(false);
 
-	spriteManager sprite;
-	sprite.setActive(true);
+	spriteManager *sprite = new spriteManager;
+	sprite->setActive(true);
+
+	Network network(sprite);
 
 
 	while(!quit)
@@ -65,9 +67,9 @@ void MDPRGame::run()
 
 		network.update();
 
-        if (sprite.isActive()){
-			sprite.update();
-			sprite.draw();
+        if (sprite->isActive()){
+			sprite->update();
+			sprite->draw();
 		}
 
 
@@ -91,6 +93,7 @@ void MDPRGame::run()
 
 		CL_System::keep_alive();
 	}
+	delete sprite;
 }
 void MDPRGame::onWindowClose()
 {

@@ -7,6 +7,7 @@
 #include "menuManager.hpp"
 #include "menuMain.hpp"
 #include "menuOptions.hpp"
+#include "menuProfile.hpp"
 
 menuManager::menuManager(CL_ResourceManager resources) : active(false)
 {
@@ -16,6 +17,7 @@ menuManager::menuManager(CL_ResourceManager resources) : active(false)
 	//CL_ComponentManager *comp_manager = new CL_ComponentManager("data/mdpr/gui/menuMain.xml", &test);
 	menus["menuMain"] =		new menuMain(this, style, "data/mdpr/gui/menuMain.xml");
 	menus["menuOptions"] =	new menuOptions(this, style, "data/mdpr/gui/menuOptions.xml");
+	menus["menuProfile"] =	new menuProfile(this, style, "data/mdpr/gui/menuProfile.xml");
 	currentMenu = menus["menuMain"];
 
 }

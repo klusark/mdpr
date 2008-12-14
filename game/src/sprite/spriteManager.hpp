@@ -11,8 +11,10 @@ public:
 	spriteManager();
 	~spriteManager();
 	typedef std::map<std::string, genericSprite *> spriteContainer;
+	
 	spriteContainer Sprites;
 	void registerSprite(genericSprite *sprite);
+	void registerSprite(std::string type, std::string name);
 	void update();
 	void draw();
 	bool isActive();

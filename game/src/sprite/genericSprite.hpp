@@ -10,13 +10,22 @@ class genericSprite : public CL_Sprite
 public:
 	genericSprite(const std::string &resourceLocation, const std::string &name);
 	~genericSprite();
+
 	float getX();
 	float getY();
+	void setX(float X);
+	void setY(float Y);
+
+	float getXAccel();
+	float getYAccel();
+	void setXAccel(float xAccel);
+	void setYAccel(float yAccel);
+
 	void update();
 	float round(float number);
 	void changeAnimation(std::string name);
 	void loadAnimation(std::string name);
-	const std::string name;
+	std::string name;
 protected:
 	CL_ResourceManager *resources;
 	float x,			y;
