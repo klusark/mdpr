@@ -87,3 +87,33 @@ float genericSprite::getY()
 		return y;
 	}
 }
+
+void genericSprite::setX(float X)
+{
+	this->x = X;
+}
+
+void genericSprite::setY(float Y)
+{
+	this->y = Y;
+}
+
+float genericSprite::getXAccel()
+{
+	return xAccel;
+}
+
+float genericSprite::getYAccel()
+{
+	return yAccel;
+}
+
+void genericSprite::setXAccel(float xAccel)
+{
+	this->xAccel = xAccel;
+}
+
+void genericSprite::setYAccel(float yAccel)
+{
+	this->yAccel = yAccel;
+}

@@ -5,8 +5,8 @@
 
 spriteManager::spriteManager() : active(false)
 {
-	Player *player1 = new Player("player1");
-	registerSprite(player1);
+	//Player *player1 = ;
+	registerSprite(new Player("player1"));
 }
 
 spriteManager::~spriteManager()
@@ -20,6 +20,15 @@ void spriteManager::registerSprite(genericSprite *sprite)
 {
 	Sprites[sprite->name] = sprite;
 	return;
+}
+
+void spriteManager::registerSprite(std::string type, std::string name)
+{
+	if (type.compare("player") == 0){
+		registerSprite(new Player(name));
+	}else{
+		std::cout << "Could not find sprite" << std::endl;
+	}
 }
 
 void spriteManager::update()

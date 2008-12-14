@@ -3,7 +3,7 @@
 	<button
 		name="optionsButton"
 		x="20"
-		y="95"
+		y="20"
 		text="Options"
 		tab_id="1"
 		type="text"
@@ -11,8 +11,16 @@
 	<button
 		name="quitButton"
 		x="20"
-		y="145"
+		y="40"
 		text="Quit"
+		tab_id="2"
+		type="text"
+		size="big" />
+	<button
+		name="profilesButton"
+		x="20"
+		y="60"
+		text="Profiles"
 		tab_id="2"
 		type="text"
 		size="big" />

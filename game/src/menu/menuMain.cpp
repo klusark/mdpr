@@ -19,6 +19,10 @@ menuMain::menuMain(menuManager *menu, CL_StyleManager &style, std::string const 
 	if (optionsButton)
 		slots.connect(optionsButton->sig_clicked(), this, &menuMain::onOptionsClicked);
 
+	CL_Button *profilesButton = dynamic_cast<CL_Button*>(componentManager->get_component(("profilesButton")));
+	if (profilesButton)
+		slots.connect(profilesButton->sig_clicked(), this, &menuMain::onProfilesClicked);
+
 }
 
 menuMain::~menuMain()
@@ -28,4 +32,9 @@ menuMain::~menuMain()
 void menuMain::onOptionsClicked()
 {
 	menu->changeCurrentMenu("menuOptions");
+}
+
+void menuMain::onProfilesClicked()
+{
+	menu->changeCurrentMenu("menuProfile");
 }
