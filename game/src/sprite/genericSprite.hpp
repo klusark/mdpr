@@ -21,6 +21,11 @@ public:
 	void setXAccel(float xAccel);
 	void setYAccel(float yAccel);
 
+	float getXVelocity();
+	float getYVelocity();
+	void setXVelocity(float xVelocity);
+	void setYVelocity(float yVelocity);
+
 	void update();
 	float round(float number);
 	void changeAnimation(std::string name);

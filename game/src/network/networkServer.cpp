@@ -45,12 +45,13 @@ void Network::Server::onSpriteUpdate()
 {
 	sprite->update();
 	for(spriteManager::spriteContainer::iterator it = sprite->Sprites.begin(); it != sprite->Sprites.end(); ++it){
+		genericSprite *currentSprite = it->second;
 		if (posUpdate == 4){
 			CL_NetPacket spriteUpdatePosPacket;
 
-			spriteUpdatePosPacket.output.write_string(it->second->name);
-			spriteUpdatePosPacket.output.write_float32(it->second->getX());//x
-			spriteUpdatePosPacket.output.write_float32(it->second->getY());//y
+			spriteUpdatePosPacket.output.write_string(currentSprite->name);
+			spriteUpdatePosPacket.output.write_float32(5);//x
+			spriteUpdatePosPacket.output.write_float32(100);//y
 
 			netsession->get_all().send("spriteUpdatePos", spriteUpdatePosPacket);
 			posUpdate = 0;
@@ -58,16 +59,16 @@ void Network::Server::onSpriteUpdate()
 
 		CL_NetPacket spriteUpdateAccelPacket;
 
-		spriteUpdateAccelPacket.output.write_string(it->second->name);
-		spriteUpdateAccelPacket.output.write_float32(10.0f);//x
-		spriteUpdateAccelPacket.output.write_float32(0);//y
+		spriteUpdateAccelPacket.output.write_string(currentSprite->name);
+		spriteUpdateAccelPacket.output.write_float32(currentSprite->getXAccel());//x
+		spriteUpdateAccelPacket.output.write_float32(currentSprite->getYAccel());//y
 
 		netsession->get_all().send("spriteUpdateAccel", spriteUpdateAccelPacket);
 
 
 		CL_NetPacket spriteUpdateVelocityPacket;
 
-		spriteUpdateVelocityPacket.output.write_string(it->second->name);
+		spriteUpdateVelocityPacket.output.write_string(currentSprite->name);
 		spriteUpdateVelocityPacket.output.write_float32(10.0f);//x
 		spriteUpdateVelocityPacket.output.write_float32(100.0f);//y
 
@@ -86,8 +87,6 @@ void Network::Server::onReciveConnect(CL_NetPacket &packet, CL_NetComputer &comp
 	CL_NetPacket spritePacket;
 	spritePacket.output.write_string(name);
 	spritePacket.output.write_string("player");
-	//currentPlayer.output.write_float32(5);
-	//currentPlayer.output.write_float32(225);
 	computer.send("sprite", spritePacket);
 }
 
