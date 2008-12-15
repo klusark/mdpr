@@ -82,6 +82,8 @@ void Network::Client::onReciveSpriteUpdateVelocity(CL_NetPacket &packet, CL_NetC
 	std::string name = packet.input.read_string();
 	float xVelocity = packet.input.read_float32();
 	float yVelocity = packet.input.read_float32();
+	//sprite->Sprites[name]->setXVelocity(xAccel);
+	//sprite->Sprites[name]->setYAccel(yAccel);
 }
 
 void Network::Client::onDisconnect(CL_NetComputer &computer)

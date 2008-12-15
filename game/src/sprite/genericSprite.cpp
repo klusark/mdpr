@@ -117,3 +117,23 @@ void genericSprite::setYAccel(float yAccel)
 {
 	this->yAccel = yAccel;
 }
+
+float genericSprite::getXVelocity()
+{
+	return xVelocity;
+}
+
+float genericSprite::getYVelocity()
+{
+	return yVelocity;
+}
+
+void genericSprite::setXVelocity(float xVelocity)
+{
+	this->xVelocity = xVelocity;
+}
+
+void genericSprite::setYVelocity(float yVelocity)
+{
+	this->yVelocity = yVelocity;
+}
