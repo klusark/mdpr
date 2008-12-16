@@ -1,10 +1,12 @@
 #ifndef networkServer_hpp
 #define networkServer_hpp
 
-#include "network.hpp"
+#include <boost/shared_ptr.hpp>
 #include <map>
 
-class Player;
+#include "network.hpp"
+
+class genericSprite;
 class spriteManager;
 
 class Network::Server
@@ -19,7 +21,7 @@ protected:
 	void onReciveConnect(CL_NetPacket &packet, CL_NetComputer &computer);
 	void onSpriteUpdate();
 
-	CL_NetSession *netsession;
+	boost::shared_ptr<CL_NetSession> netsession;
 	CL_Slot slotReciveConnect;
 	CL_Slot slotConnect;
 	CL_Slot slotDisconnect;
@@ -29,7 +31,7 @@ protected:
 
 	unsigned short posUpdate;
 
-	spriteManager *sprite;
+	boost::shared_ptr<spriteManager> sprite;
 
 	unsigned short maxPlayers;
 	unsigned short currentPlayers;
@@ -37,11 +39,11 @@ protected:
 	struct playerInfo
 	{
 		std::string name;
-		Player *sprite;
+		boost::shared_ptr<genericSprite> sprite;
 
 	};
 
-	typedef std::map<std::string, playerInfo *> playerContainer;
+	typedef std::map<std::string, boost::shared_ptr<playerInfo> > playerContainer;
 	playerContainer Players;
 
 

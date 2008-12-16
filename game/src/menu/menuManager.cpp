@@ -14,17 +14,17 @@ boost::shared_ptr<menuManager> menu;
 
 menuManager::menuManager(CL_ResourceManager resources) : active(false)
 {
-	
+
 	CL_StyleManager_Silver style(&resources);
 	//CL_GUIManager test(&style_manager);
 	//CL_ComponentManager *comp_manager = new CL_ComponentManager("data/mdpr/gui/menuMain.xml", &test);
-	boost::shared_ptr<menuGeneric> mainMenu(new menuMain(this, style, "data/mdpr/gui/menuMain.xml"));
+	boost::shared_ptr<menuGeneric> mainMenu(new menuMain(style, "data/mdpr/gui/menuMain.xml"));
 	menus["menuMain"] = mainMenu;
 
-	boost::shared_ptr<menuGeneric> optionsMenu(new menuOptions(this, style, "data/mdpr/gui/menuOptions.xml"));
+	boost::shared_ptr<menuGeneric> optionsMenu(new menuOptions(style, "data/mdpr/gui/menuOptions.xml"));
 	menus["menuOptions"] = optionsMenu;
 
-	boost::shared_ptr<menuGeneric> profileMenu(new menuProfile(this, style, "data/mdpr/gui/menuProfile.xml"));
+	boost::shared_ptr<menuGeneric> profileMenu(new menuProfile(style, "data/mdpr/gui/menuProfile.xml"));
 	menus["menuProfile"] = profileMenu;
 	currentMenu = menus["menuMain"];
 
@@ -49,13 +49,13 @@ void menuManager::changeCurrentMenu(std::string const &menuName)
 		currentMenu->enable_input();
 #ifdef _DEBUG
 		std::cout << "menuManager::changeCurrentMenu to \"" << menuName << "\" success\n";
-#endif 
+#endif
 	}
 #ifdef _DEBUG
 	else
 		std::cout << "menuManager::changeCurrentMenu to \"" << menuName << "\" failed\n";
 #endif
-	
+
 }
 
 bool menuManager::isActive()

@@ -7,10 +7,10 @@
 #include "menuManager.hpp"
 
 
-menuProfile::menuProfile(menuManager *menu, CL_StyleManager &style, std::string const &resourceLocation)
-	:	menuGeneric(menu, style, resourceLocation)
+menuProfile::menuProfile(CL_StyleManager &style, std::string const &resourceLocation)
+	:	menuGeneric(style, resourceLocation)
 {
-	CL_ListBox * levels = dynamic_cast<CL_ListBox*>(componentManager->get_component("profilesList"));
+	CL_ListBox *levels = dynamic_cast<CL_ListBox*>(componentManager->get_component("profilesList"));
 	levels->insert_item("asfd");
 	levels->insert_item("asfdasf");
 }

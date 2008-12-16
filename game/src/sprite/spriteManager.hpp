@@ -11,10 +11,10 @@ class spriteManager
 public:
 	spriteManager();
 	~spriteManager();
-	typedef std::map<std::string, CL_SharedPtr<genericSprite>> spriteContainer;
-	
+	typedef std::map<std::string, boost::shared_ptr<genericSprite> > spriteContainer;
+
 	spriteContainer Sprites;
-	void registerSprite(genericSprite *sprite);
+	void registerSprite(boost::shared_ptr<genericSprite> sprite);
 	void registerSprite(std::string type, std::string name);
 	void update();
 	void draw();

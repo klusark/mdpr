@@ -39,20 +39,22 @@ void MDPRGame::run()
 
 
 
-	
+
 
 	CL_ResourceManager resources("data/mdpr/gui/gui.xml", false);
 	CL_Font font("fontMDPR", &resources);
 	font.set_color(CL_Color::white);
 
-	boost::shared_ptr<menuManager> menu(new menuManager(resources));
-	//menuManager menu(resources)
+	boost::shared_ptr<menuManager> tmpMenu(new menuManager(resources));
+	menu = tmpMenu;
 	menu->setActive(true);
 
-	boost::shared_ptr<spriteManager> sprite(new spriteManager);
-	sprite->setActive(true);
+	boost::shared_ptr<spriteManager> tmpSprite(new spriteManager);
+	sprite = tmpSprite;
 
-	Network network;
+	sprite->setActive(true);
+	std::cout<<sprite;
+	boost::shared_ptr<Network> network(new Network);
 
 
 
@@ -67,7 +69,7 @@ void MDPRGame::run()
 ;
 //		outline.draw(0,0,CL_Color(0,255,0));
 
-		network.update();
+		network->update();
 
         if (sprite->isActive()){
 			sprite->update();
