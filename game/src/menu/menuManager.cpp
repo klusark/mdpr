@@ -3,11 +3,14 @@
 #include <ClanLib/gui.h>
 #include <ClanLib/guistylesilver.h>
 #pragma warning(pop)
+#include <boost/shared_ptr.hpp>
 
 #include "menuManager.hpp"
 #include "menuMain.hpp"
 #include "menuOptions.hpp"
 #include "menuProfile.hpp"
+
+boost::shared_ptr<menuManager> menu;
 
 menuManager::menuManager(CL_ResourceManager resources) : active(false)
 {
@@ -15,18 +18,20 @@ menuManager::menuManager(CL_ResourceManager resources) : active(false)
 	CL_StyleManager_Silver style(&resources);
 	//CL_GUIManager test(&style_manager);
 	//CL_ComponentManager *comp_manager = new CL_ComponentManager("data/mdpr/gui/menuMain.xml", &test);
-	menus["menuMain"] =		new menuMain(this, style, "data/mdpr/gui/menuMain.xml");
-	menus["menuOptions"] =	new menuOptions(this, style, "data/mdpr/gui/menuOptions.xml");
-	menus["menuProfile"] =	new menuProfile(this, style, "data/mdpr/gui/menuProfile.xml");
+	boost::shared_ptr<menuGeneric> mainMenu(new menuMain(this, style, "data/mdpr/gui/menuMain.xml"));
+	menus["menuMain"] = mainMenu;
+
+	boost::shared_ptr<menuGeneric> optionsMenu(new menuOptions(this, style, "data/mdpr/gui/menuOptions.xml"));
+	menus["menuOptions"] = optionsMenu;
+
+	boost::shared_ptr<menuGeneric> profileMenu(new menuProfile(this, style, "data/mdpr/gui/menuProfile.xml"));
+	menus["menuProfile"] = profileMenu;
 	currentMenu = menus["menuMain"];
 
 }
 
 menuManager::~menuManager()
 {
-	for(menuContainer::iterator it = menus.begin(); it != menus.end(); ++it){
-		delete it->second;
-	}
 }
 
 void menuManager::update()

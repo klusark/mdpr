@@ -6,7 +6,7 @@ class spriteManager;
 class Network
 {
 public:
-	Network(spriteManager *sprite);
+	Network();
 	~Network();
 	void update();
 	class Server;

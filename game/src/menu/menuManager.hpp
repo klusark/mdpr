@@ -1,9 +1,9 @@
 #ifndef menuManager_hpp
 #define menuManager_hpp
 
-
 #include <map>
 #include "menuGeneric.hpp"
+#include <boost/shared_ptr.hpp>
 
 class menuGeneric;
 
@@ -17,10 +17,10 @@ public:
 	bool isActive();
 	void setActive(bool toggle);
 private:
-	typedef std::map<std::string, menuGeneric *> menuContainer;
+	typedef std::map<std::string, boost::shared_ptr<menuGeneric>> menuContainer;
 	menuContainer menus;
-	menuGeneric *currentMenu;
+	boost::shared_ptr<menuGeneric> currentMenu;
 	bool active;
 };
-
+extern boost::shared_ptr<menuManager> menu;
 #endif
