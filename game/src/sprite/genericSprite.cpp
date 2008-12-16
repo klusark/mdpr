@@ -1,3 +1,4 @@
+#include <boost/shared_ptr.hpp>
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 
@@ -12,15 +13,12 @@ genericSprite::genericSprite(const std::string &resourceLocation, const std::str
 	yVelocity = 0;
 	xAccel = 5;
 	yAccel = 0;
-	resources = new CL_ResourceManager(resourceLocation);
+	boost::shared_ptr<CL_ResourceManager> tmpResources(new CL_ResourceManager(resourceLocation));
+	resources = tmpResources;
 }
 
 genericSprite::~genericSprite()
 {
-	delete resources;
-	for(animationContainer::iterator it = Animations.begin(); it != Animations.end(); ++it){
-		delete it->second;
-	}
 }
 
 void genericSprite::update()
@@ -53,7 +51,8 @@ void genericSprite::changeAnimation(std::string name)
 
 void genericSprite::loadAnimation(std::string name)
 {
-	Animations[name] = new CL_Sprite(name, resources);
+	boost::shared_ptr<CL_Sprite> tmpAnimation(new CL_Sprite(name, resources.get()));
+	Animations[name] = tmpAnimation;
 
 }
 

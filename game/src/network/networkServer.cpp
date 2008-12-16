@@ -9,21 +9,21 @@
 
 Network::Server::Server()
 {
-	sprite = new spriteManager;
+	boost::shared_ptr<spriteManager> tmpSprite(new spriteManager);
+	sprite = tmpSprite;
 	posUpdate = 0;
 }
 
 Network::Server::~Server()
 {
-	delete sprite;
-	delete netsession;
 }
 
 bool Network::Server::runServer()
 {
 
 	try{
-		netsession = new CL_NetSession("MDPR");
+		boost::shared_ptr<CL_NetSession> tmpNetsession(new CL_NetSession("MDPR"));
+		netsession = tmpNetsession;
 		slotReciveConnect =	netsession->sig_netpacket_receive("connect").connect(this, &Network::Server::onReciveConnect);
 		slotConnect =		netsession->sig_computer_connected()		.connect(this, &Network::Server::onConnect);
 		slotDisconnect =	netsession->sig_computer_disconnected()		.connect(this, &Network::Server::onDisconnect);
@@ -45,7 +45,7 @@ void Network::Server::onSpriteUpdate()
 {
 	sprite->update();
 	for(spriteManager::spriteContainer::iterator it = sprite->Sprites.begin(); it != sprite->Sprites.end(); ++it){
-		CL_SharedPtr<genericSprite> currentSprite = it->second;
+		boost::shared_ptr<genericSprite> currentSprite = it->second;
 		if (posUpdate == 4){
 			CL_NetPacket spriteUpdatePosPacket;
 
@@ -73,10 +73,10 @@ void Network::Server::onSpriteUpdate()
 		spriteUpdateVelocityPacket.output.write_float32(100.0f);//y
 
 		netsession->get_all().send("spriteUpdateVelocity", spriteUpdateVelocityPacket);
-				
+
 	}
 	++posUpdate;
-	
+
 }
 
 void Network::Server::onReciveConnect(CL_NetPacket &packet, CL_NetComputer &computer)

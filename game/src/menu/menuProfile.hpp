@@ -6,7 +6,7 @@
 class menuProfile : public menuGeneric
 {
 public:
-	menuProfile(menuManager *menu, CL_StyleManager &style, std::string const &resourceLocation);
+	menuProfile( CL_StyleManager &style, std::string const &resourceLocation);
 	~menuProfile();
 };
 

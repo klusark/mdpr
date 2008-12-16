@@ -5,11 +5,11 @@
 #include "menuGeneric.hpp"
 #include "menuManager.hpp"
 
-menuGeneric::menuGeneric(menuManager *menu, CL_StyleManager &style, std::string const &resourceLocation)
-	:	CL_GUIManager(&style),
-		menu(menu)
+menuGeneric::menuGeneric(CL_StyleManager &style, std::string const &resourceLocation)
+	:	CL_GUIManager(&style)
 {
-	componentManager = new CL_ComponentManager(resourceLocation, this);
+	boost::shared_ptr<CL_ComponentManager> tmpcomponentManager(new CL_ComponentManager(resourceLocation, this));
+	componentManager = tmpcomponentManager;
 }
 
 

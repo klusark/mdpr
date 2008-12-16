@@ -6,7 +6,7 @@
 class menuMain : public menuGeneric
 {
 public:
-	menuMain(menuManager *menu, CL_StyleManager &style, std::string const &resourceLocation);
+	menuMain(CL_StyleManager &style, std::string const &resourceLocation);
 	~menuMain();
 protected:
 	void onOptionsClicked();

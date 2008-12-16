@@ -17,7 +17,7 @@ public:
 	bool isActive();
 	void setActive(bool toggle);
 private:
-	typedef std::map<std::string, boost::shared_ptr<menuGeneric>> menuContainer;
+	typedef std::map<std::string, boost::shared_ptr<menuGeneric> > menuContainer;
 	menuContainer menus;
 	boost::shared_ptr<menuGeneric> currentMenu;
 	bool active;

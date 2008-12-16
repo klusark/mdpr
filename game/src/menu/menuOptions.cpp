@@ -5,8 +5,8 @@
 #include "menuOptions.hpp"
 #include "menuGeneric.hpp"
 #include "menuManager.hpp"
-menuOptions::menuOptions(menuManager *menu, CL_StyleManager &style, std::string const &resourceLocation)
-	:	menuGeneric(menu, style, resourceLocation)
+menuOptions::menuOptions(CL_StyleManager &style, std::string const &resourceLocation)
+	:	menuGeneric(style, resourceLocation)
 {
 }
 

@@ -1,6 +1,7 @@
 #ifndef genericSprite_hpp
 #define genericSprite_hpp
 
+#include <boost/shared_ptr.hpp>
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include <map>
@@ -32,12 +33,12 @@ public:
 	void loadAnimation(std::string name);
 	std::string name;
 protected:
-	CL_ResourceManager *resources;
+	boost::shared_ptr<CL_ResourceManager> resources;
 	float x,			y;
 	float xAccel,		yAccel;
 	float xVelocity,	yVelocity;
 	float last_time;
-	typedef std::map<std::string, CL_Sprite *> animationContainer;
+	typedef std::map<std::string, boost::shared_ptr<CL_Sprite> > animationContainer;
 	animationContainer Animations;
 
 };

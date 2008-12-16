@@ -8,8 +8,8 @@
 #include "menuManager.hpp"
 
 
-menuMain::menuMain(menuManager *menu, CL_StyleManager &style, std::string const &resourceLocation)
-	:	menuGeneric(menu, style, resourceLocation)
+menuMain::menuMain(CL_StyleManager &style, std::string const &resourceLocation)
+	:	menuGeneric(style, resourceLocation)
 {
 	CL_Button *quitButton = dynamic_cast<CL_Button*>(componentManager->get_component(("quitButton")));
 	if (quitButton)

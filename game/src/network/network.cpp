@@ -3,9 +3,10 @@
 #include "network.hpp"
 #include "networkServer.hpp"
 #include "networkClient.hpp"
+#include "../sprite/spriteManager.hpp"
 
 Network::Network()
-{
+{;
 	Server *server = new Server;
 	server->runServer();
 	Client *client = new Client();
