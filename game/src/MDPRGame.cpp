@@ -45,21 +45,23 @@ void MDPRGame::run()
 	CL_Font font("fontMDPR", &resources);
 	font.set_color(CL_Color::white);
 
-	menuManager menu(resources);
-	menu.setActive(false);
+	boost::shared_ptr<menuManager> menu(new menuManager(resources));
+	//menuManager menu(resources)
+	menu->setActive(true);
 
-	spriteManager *sprite = new spriteManager;
+	boost::shared_ptr<spriteManager> sprite(new spriteManager);
 	sprite->setActive(true);
 
-	Network network(sprite);
+	Network network;
+
 
 
 	while(!quit)
 	{
 		CL_Display::clear(CL_Color::black);
 
-		if (menu.isActive()){
-			menu.update();
+		if (menu->isActive()){
+			menu->update();
 		}
 
 ;
@@ -93,7 +95,6 @@ void MDPRGame::run()
 
 		CL_System::keep_alive();
 	}
-	delete sprite;
 }
 void MDPRGame::onWindowClose()
 {

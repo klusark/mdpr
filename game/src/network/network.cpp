@@ -3,13 +3,12 @@
 #include "network.hpp"
 #include "networkServer.hpp"
 #include "networkClient.hpp"
-#include "../sprite/spriteManager.hpp"
 
-Network::Network(spriteManager *sprite)
+Network::Network()
 {
 	Server *server = new Server;
 	server->runServer();
-	Client *client = new Client(sprite);
+	Client *client = new Client();
 	client->runClient();
 }
 

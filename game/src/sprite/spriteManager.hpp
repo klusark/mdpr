@@ -4,13 +4,14 @@
 #include <map>
 #include <string>
 #include "genericSprite.hpp"
+#include <boost/shared_ptr.hpp>
 
 class spriteManager
 {
 public:
 	spriteManager();
 	~spriteManager();
-	typedef std::map<std::string, genericSprite *> spriteContainer;
+	typedef std::map<std::string, CL_SharedPtr<genericSprite>> spriteContainer;
 	
 	spriteContainer Sprites;
 	void registerSprite(genericSprite *sprite);
@@ -22,5 +23,7 @@ public:
 private:
     bool active;
 };
+
+extern boost::shared_ptr<spriteManager> sprite;
 
 #endif

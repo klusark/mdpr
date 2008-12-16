@@ -45,13 +45,13 @@ void Network::Server::onSpriteUpdate()
 {
 	sprite->update();
 	for(spriteManager::spriteContainer::iterator it = sprite->Sprites.begin(); it != sprite->Sprites.end(); ++it){
-		genericSprite *currentSprite = it->second;
+		CL_SharedPtr<genericSprite> currentSprite = it->second;
 		if (posUpdate == 4){
 			CL_NetPacket spriteUpdatePosPacket;
 
 			spriteUpdatePosPacket.output.write_string(currentSprite->name);
-			spriteUpdatePosPacket.output.write_float32(5);//x
-			spriteUpdatePosPacket.output.write_float32(100);//y
+			spriteUpdatePosPacket.output.write_float32(currentSprite->getX());//x
+			spriteUpdatePosPacket.output.write_float32(currentSprite->getY());//y
 
 			netsession->get_all().send("spriteUpdatePos", spriteUpdatePosPacket);
 			posUpdate = 0;

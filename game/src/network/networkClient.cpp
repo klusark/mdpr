@@ -5,7 +5,7 @@
 #include "networkClient.hpp"
 #include "../sprite/spriteManager.hpp"
 
-Network::Client::Client(spriteManager *sprite) : sprite(sprite)
+Network::Client::Client()
 {
 }
 

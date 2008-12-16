@@ -8,7 +8,7 @@ class spriteManager;
 class Network::Client
 {
 public:
-	Client(spriteManager *sprite);
+	Client();
 	~Client();
 	bool runClient();
 protected:
@@ -21,7 +21,6 @@ protected:
 
 	CL_NetSession *netsession;
 	CL_Slot slotDisconnect, slotReciveSprite, slotReciveSpriteUpdatePos, slotReciveSpriteUpdateVelocity, slotReciveSpriteUpdateAccel;
-	spriteManager *sprite;
 
 };
 

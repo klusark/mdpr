@@ -2,6 +2,9 @@
 #include "genericSprite.hpp"
 #include "player.hpp"
 #include <map>
+#include <boost/shared_ptr.hpp>
+
+boost::shared_ptr<spriteManager> sprite;
 
 spriteManager::spriteManager() : active(false)
 {
@@ -11,9 +14,6 @@ spriteManager::spriteManager() : active(false)
 
 spriteManager::~spriteManager()
 {
-	for(spriteContainer::iterator it = Sprites.begin(); it != Sprites.end(); ++it){
-		delete it->second;
-	}
 }
 
 void spriteManager::registerSprite(genericSprite *sprite)
