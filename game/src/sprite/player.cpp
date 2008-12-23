@@ -7,8 +7,10 @@ Player::Player(const std::string &name) : genericSprite("data/mdpr/sprites/playe
 {
 	//CL_ResourceManager *resources = new CL_ResourceManager();
 	//run = new CL_Sprite("run", resources);
+
 	loadAnimation("run");
 	changeAnimation("run");
+
 }
 
 Player::~Player()

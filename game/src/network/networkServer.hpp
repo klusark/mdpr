@@ -2,7 +2,7 @@
 #define networkServer_hpp
 
 #include <boost/shared_ptr.hpp>
-#include <map>
+#include <vector>
 
 #include "network.hpp"
 
@@ -16,7 +16,14 @@ public:
 	~Server();
 	bool runServer();
 protected:
-	void onConnect(CL_NetComputer &computer);
+	boost::asio::io_service ioService;
+	boost::asio::ip::udp::socket serverSocket;
+	//std::vector<char> buffer;
+	char buffer[128];
+	boost::asio::ip::udp::endpoint endpoint;
+
+	void onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd);
+
 	void onDisconnect(CL_NetComputer &computer);
 	void onReciveConnect(CL_NetPacket &packet, CL_NetComputer &computer);
 	void onSpriteUpdate();
@@ -31,19 +38,22 @@ protected:
 
 	unsigned short posUpdate;
 
-	boost::shared_ptr<spriteManager> sprite;
+	boost::shared_ptr<spriteManager> ServerSpriteManager;
 
 	unsigned short maxPlayers;
 	unsigned short currentPlayers;
 
-	struct playerInfo
+	class playerInfo
 	{
+	public:
 		std::string name;
 		boost::shared_ptr<genericSprite> sprite;
+		boost::asio::ip::udp::endpoint endpoint;
+
 
 	};
 
-	typedef std::map<std::string, boost::shared_ptr<playerInfo> > playerContainer;
+	typedef std::vector<boost::shared_ptr<playerInfo> > playerContainer;
 	playerContainer Players;
 
 

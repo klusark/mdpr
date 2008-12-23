@@ -36,24 +36,19 @@ void MDPRGame::run()
 	//CL_CollisionOutline outline(test);
 	//outline.save("image.out");
 
-
-
-
-
-
 	CL_ResourceManager resources("data/mdpr/gui/gui.xml", false);
 	CL_Font font("fontMDPR", &resources);
 	font.set_color(CL_Color::white);
 
-	boost::shared_ptr<menuManager> tmpMenu(new menuManager(resources));
-	menu = tmpMenu;
-	menu->setActive(true);
+	//boost::shared_ptr<menuManager> tmpMenu(new menuManager(resources));
+	//menu = tmpMenu;
+	//menu->setActive(false);
 
 	boost::shared_ptr<spriteManager> tmpSprite(new spriteManager);
 	sprite = tmpSprite;
 
 	sprite->setActive(true);
-	std::cout<<sprite;
+	
 	boost::shared_ptr<Network> network(new Network);
 
 
@@ -62,18 +57,16 @@ void MDPRGame::run()
 	{
 		CL_Display::clear(CL_Color::black);
 
-		if (menu->isActive()){
-			menu->update();
-		}
-
-;
+		//if (menu->isActive()){
+		//	menu->update();
+		//}
 //		outline.draw(0,0,CL_Color(0,255,0));
 
 		network->update();
 
         if (sprite->isActive()){
 			sprite->update();
-			sprite->draw();
+			//sprite->draw();
 		}
 
 
