@@ -4,7 +4,7 @@
 
 #include "genericSprite.hpp"
 
-genericSprite::genericSprite(const std::string &resourceLocation, const std::string &name) : CL_Sprite(), name(name)
+genericSprite::genericSprite(const std::string &resourceLocation, const std::string &name, bool server) : CL_Sprite(), name(name), server(server)
 {
 	last_time = 0;
 	x = 0;
@@ -13,9 +13,10 @@ genericSprite::genericSprite(const std::string &resourceLocation, const std::str
 	yVelocity = 0;
 	xAccel = 5;
 	yAccel = 0;
-
-	boost::shared_ptr<CL_ResourceManager> tmpResources(new CL_ResourceManager(resourceLocation));
-	resources = tmpResources;
+	if (!server){
+		boost::shared_ptr<CL_ResourceManager> tmpResources(new CL_ResourceManager(resourceLocation));
+		resources = tmpResources;
+	}
 
 }
 
@@ -25,7 +26,9 @@ genericSprite::~genericSprite()
 
 void genericSprite::update()
 {
-	//CL_Sprite::update();
+	if (!server){
+		CL_Sprite::update();
+	}
 
 	float new_time = static_cast<float>(CL_System::get_time());
 	if(last_time == 0)

@@ -66,7 +66,7 @@ void MDPRGame::run()
 
         if (sprite->isActive()){
 			sprite->update();
-			//sprite->draw();
+			sprite->draw();
 		}
 
 

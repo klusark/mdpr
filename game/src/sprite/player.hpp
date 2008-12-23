@@ -6,7 +6,7 @@
 class Player : public genericSprite
 {
 public:
-	Player(const std::string &name);
+	Player(const std::string &name, bool server = false);
 	~Player();
 };
 

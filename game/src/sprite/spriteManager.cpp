@@ -6,10 +6,10 @@
 
 boost::shared_ptr<spriteManager> sprite;
 
-spriteManager::spriteManager() : active(false)
+spriteManager::spriteManager(bool server) : active(false), server(server)
 {
 	//Player *player1 = ;
-	boost::shared_ptr<genericSprite> player(new Player("player1"));
+	boost::shared_ptr<genericSprite> player(new Player("player1", server));
 	registerSprite(player);
 }
 
@@ -26,7 +26,7 @@ void spriteManager::registerSprite(boost::shared_ptr<genericSprite> sprite)
 void spriteManager::registerSprite(std::string type, std::string name)
 {
 	if (type.compare("player") == 0){
-		boost::shared_ptr<genericSprite> player(new Player(name));
+		boost::shared_ptr<genericSprite> player(new Player(name, server));
 		Sprites[name] = player;
 	}else{
 		std::cout << "Could not find sprite type" << std::endl;

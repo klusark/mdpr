@@ -33,7 +33,7 @@ private:
 
 Network::Server::Server() : serverSocket(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 5000))
 {
-	boost::shared_ptr<spriteManager> tmpSprite(new spriteManager);
+	boost::shared_ptr<spriteManager> tmpSprite(new spriteManager(true));
 	ServerSpriteManager = tmpSprite;
 	posUpdate = 0;
 	//buffer = char[128];
@@ -76,7 +76,6 @@ void Network::Server::onRecivePacket(const boost::system::error_code& error, siz
 			boost::shared_ptr<playerInfo> player(new playerInfo);
 			player->endpoint = endpoint;
 			player->name = packet->name;
-#define server
 			ServerSpriteManager->registerSprite("player", player->name);
 			player->sprite = ServerSpriteManager->Sprites[packet->name];
 			Players.push_back(player);
