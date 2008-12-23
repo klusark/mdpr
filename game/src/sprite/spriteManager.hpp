@@ -9,7 +9,7 @@
 class spriteManager
 {
 public:
-	spriteManager();
+	spriteManager(bool server = false);
 	~spriteManager();
 	typedef std::map<std::string, boost::shared_ptr<genericSprite> > spriteContainer;
 
@@ -22,6 +22,7 @@ public:
 	void setActive(bool toggle);
 private:
     bool active;
+	bool server;
 };
 
 extern boost::shared_ptr<spriteManager> sprite;

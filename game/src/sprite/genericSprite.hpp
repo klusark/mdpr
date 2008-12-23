@@ -9,7 +9,7 @@
 class genericSprite : public CL_Sprite
 {
 public:
-	genericSprite(const std::string &resourceLocation, const std::string &name);
+	genericSprite(const std::string &resourceLocation, const std::string &name, bool server = false);
 	~genericSprite();
 
 	float getX();
@@ -33,6 +33,7 @@ public:
 	void loadAnimation(std::string name);
 	std::string name;
 protected:
+	bool server;
 	boost::shared_ptr<CL_ResourceManager> resources;
 	float x,			y;
 	float xAccel,		yAccel;
