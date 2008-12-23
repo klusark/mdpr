@@ -41,11 +41,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../include"
-				PreprocessorDefinitions="WIN32"
+				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0501"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				WarningLevel="4"
+				WarningLevel="3"
 				DebugInformationFormat="3"
 				ForcedIncludeFiles=""
 			/>
@@ -114,7 +114,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories=""
-				PreprocessorDefinitions="WIN32"
+				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0501"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
@@ -266,6 +266,10 @@
 				</File>
 				<File
 					RelativePath=".\src\network\networkServer.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\network\packets.hpp"
 					>
 				</File>
 			</Filter>

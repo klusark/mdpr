@@ -1,17 +1,46 @@
+#include <boost/asio.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/bind.hpp>
+#include <boost/thread.hpp>
+
 #include <ClanLib/core.h>
 #include <ClanLib/network.h>
 #include <iostream>
 #include <map>
+#include <vector>
+
 #include "network.hpp"
 #include "networkServer.hpp"
+#include "packets.hpp"
 #include "../sprite/spriteManager.hpp"
 #include "../sprite/genericSprite.hpp"
 
-Network::Server::Server()
+struct thread
+{
+public:
+	thread(boost::asio::io_service &ioService) 
+		: ioService(ioService)
+	{}
+	void operator()(){
+		for (;;){
+			ioService.run();
+		}
+		return;
+	}
+private:
+	boost::asio::io_service& ioService;
+};
+
+Network::Server::Server() : serverSocket(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 5000))
 {
 	boost::shared_ptr<spriteManager> tmpSprite(new spriteManager);
-	sprite = tmpSprite;
+	ServerSpriteManager = tmpSprite;
 	posUpdate = 0;
+	//buffer = char[128];
+	serverSocket.async_receive_from(boost::asio::buffer(buffer), endpoint, boost::bind(&Network::Server::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	thread threads(ioService);
+	boost::thread test(threads);
+
 }
 
 Network::Server::~Server()
@@ -20,26 +49,51 @@ Network::Server::~Server()
 
 bool Network::Server::runServer()
 {
-
 	try{
-		boost::shared_ptr<CL_NetSession> tmpNetsession(new CL_NetSession("MDPR"));
-		netsession = tmpNetsession;
-		slotReciveConnect =	netsession->sig_netpacket_receive("connect").connect(this, &Network::Server::onReciveConnect);
-		slotConnect =		netsession->sig_computer_connected()		.connect(this, &Network::Server::onConnect);
-		slotDisconnect =	netsession->sig_computer_disconnected()		.connect(this, &Network::Server::onDisconnect);
 
-		netsession->start_listen("4323");
 		std::cout << "Server Started" << std::endl;
 	}catch (CL_Error err){
 		std::cout << "Fatal server error: " << err.message.c_str() << std::endl;
 	}
-	timerSpriteUpdate = CL_Timer(100);
-	slotSpriteUpdate = timerSpriteUpdate.sig_timer().connect(this, &Network::Server::onSpriteUpdate);
-	timerSpriteUpdate.enable();
+	//timerSpriteUpdate = CL_Timer(100);
+	//slotSpriteUpdate = timerSpriteUpdate.sig_timer().connect(this, &Network::Server::onSpriteUpdate);
+	//timerSpriteUpdate.enable();
 
 
 	return true;
 }
+
+void Network::Server::onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd)
+{
+	packetIDs packetID;
+	memcpy(&packetID, buffer, 4);
+	switch(packetID)
+	{
+	case connectPacketID:
+		
+		{
+			connectPacket *packet = (connectPacket *)buffer;
+			boost::shared_ptr<playerInfo> player(new playerInfo);
+			player->endpoint = endpoint;
+			player->name = packet->name;
+#define server
+			ServerSpriteManager->registerSprite("player", player->name);
+			player->sprite = ServerSpriteManager->Sprites[packet->name];
+			Players.push_back(player);
+			
+		}
+		std::cout << "  recved  " << bytesRecvd;
+		break;
+	default:
+		std::cout << "error";
+		break;
+
+	}
+
+	serverSocket.async_receive_from(boost::asio::buffer(buffer), endpoint, boost::bind(&Network::Server::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	
+}
+
 
 void Network::Server::onSpriteUpdate()
 {
@@ -90,10 +144,6 @@ void Network::Server::onReciveConnect(CL_NetPacket &packet, CL_NetComputer &comp
 	computer.send("sprite", spritePacket);
 }
 
-void Network::Server::onConnect(CL_NetComputer &computer)
-{
-	std::cout << "Client joined." << std::endl;
-}
 
 void Network::Server::onDisconnect(CL_NetComputer &computer)
 {

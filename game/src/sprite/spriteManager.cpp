@@ -27,9 +27,9 @@ void spriteManager::registerSprite(std::string type, std::string name)
 {
 	if (type.compare("player") == 0){
 		boost::shared_ptr<genericSprite> player(new Player(name));
-		registerSprite(player);
+		Sprites[name] = player;
 	}else{
-		std::cout << "Could not find sprite" << std::endl;
+		std::cout << "Could not find sprite type" << std::endl;
 	}
 }
 

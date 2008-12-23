@@ -1,9 +1,16 @@
+#include <iostream>
+
+#include <boost/asio.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+
 #include <ClanLib/core.h>
 #include <ClanLib/network.h>
-#include <iostream>
-#include <boost/shared_ptr.hpp>
+
 #include "network.hpp"
 #include "networkClient.hpp"
+#include "packets.hpp"
 #include "../sprite/spriteManager.hpp"
 
 Network::Client::Client()
@@ -18,38 +25,45 @@ bool Network::Client::runClient()
 {
 	try
 	{
+		//ioService.run();
+		boost::asio::io_service ioService;
 
-		//create a new netsession
-		boost::shared_ptr<CL_NetSession> tmpNetsession(CL_NetSession("MDPR"));
-		netsession = tmpNetsession;
-				//connect the disconnect and receive signals to some slots
-		slotDisconnect = netsession->sig_computer_disconnected().connect(this, &Client::onDisconnect);
+		//boost::asio::ip::udp::socket s(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 0));
+		using boost::asio::ip::udp;
 
-		slotReciveSprite =					netsession->sig_netpacket_receive("sprite")					.connect(this, &Network::Client::onReciveSprite);
-		slotReciveSpriteUpdatePos =			netsession->sig_netpacket_receive("spriteUpdatePos")		.connect(this, &Network::Client::onReciveSpriteUpdatePos);
-		slotReciveSpriteUpdateVelocity =	netsession->sig_netpacket_receive("spriteUpdateVelocity")	.connect(this, &Network::Client::onReciveSpriteUpdateVelocity);
-		slotReciveSpriteUpdateAccel =		netsession->sig_netpacket_receive("spriteUpdateAccel")		.connect(this, &Network::Client::onReciveSpriteUpdateAccel);
+		udp::resolver resolver(ioService);
+		udp::resolver::query query(udp::v4(), "127.0.0.1", "5000");
+		udp::resolver::iterator iterator = resolver.resolve(query);
 
+		udp::endpoint receiver_endpoint = *resolver.resolve(query);
+		
+		udp::socket socket(ioService);
+		socket.open(udp::v4());
 
-		//connect to the server (running on the local machine in this case)
-		CL_IPAddress server_ip;
-		server_ip.set_address("127.0.0.1", "4323");
-		netsession->connect(server_ip);
-		std::cout << "connected" << std::endl;
-
-
-		CL_NetPacket connect;
-		connect.output.write_string("klusark");
-
-		//do the actual sending, to all the computers connected
-		netsession->get_all().send("connect", connect);
-
-		std::cout << "Sent connect" << std::endl;
+		/*std::vector<char> send_buf;
+		send_buf.insert(send_buf.begin(), 'a');
+		send_buf.insert(send_buf.end(), 'a');
+		
+		send_buf.clear();
+		send_buf.insert(send_buf.end(), 'a');
+		socket.send_to(, receiver_endpoint);*/
+		connectPacket *tset = new connectPacket;
+		tset->packetID = connectPacketID;
+		tset->nameLength = 10;
+		strcpy(tset->name, "aqwsxcderf");
+		
+		//boost::asio::const_buffer test((const void *)tset, 4);
+		socket.send_to(boost::asio::buffer((const void *)tset, 16), receiver_endpoint);
 
 	}
 	catch(CL_Error err)
 	{
 		std::cout << "Could not create client: " << err.message.c_str() << std::endl;
+		return false;
+	}
+	catch (std::exception& e)
+	{
+		std::cout << "Exception: " << e.what() << "\n";
 		return false;
 	}
 	return true;
@@ -58,7 +72,7 @@ bool Network::Client::runClient()
 void Network::Client::onReciveSprite(CL_NetPacket &packet, CL_NetComputer &computer)
 {
 
-	sprite->registerSprite(packet.input.read_string(), packet.input.read_string());
+	//sprite->registerSprite(packet.input.read_string(), packet.input.read_string());
 
 }
 

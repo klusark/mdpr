@@ -17,7 +17,6 @@ int MDPRApplication::main(int, char **)
 	try {
 		// CL initialization functions
 		// These must be called or CL functions will not work
-		// Also, SetupCore must be init()'ed first and denit()'ed last
 		CL_SetupGL setupGL;
 		CL_SetupCore setupCore;
 		CL_SetupDisplay setupDisplay;
@@ -39,6 +38,11 @@ int MDPRApplication::main(int, char **)
 
 		// Display console close message and wait for a key
 		console.display_close_message();
+	}
+	catch (std::exception& e)
+	{
+		std::cout << "Exception: " << e.what() << "\n";
+		return false;
 	}
 	// CL deinitialization functions
 	CL_SetupGL::deinit();

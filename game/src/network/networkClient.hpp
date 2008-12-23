@@ -1,7 +1,9 @@
 #ifndef networkClient_hpp
 #define networkClient_hpp
 
-#include "network.hpp"
+#include <boost/asio.hpp>
+#include <ClanLib/core.h>
+#include <ClanLib/network.h>
 
 class spriteManager;
 
@@ -12,6 +14,7 @@ public:
 	~Client();
 	bool runClient();
 protected:
+	boost::asio::io_service ioService;
 	void onDisconnect(CL_NetComputer &computer);
 	void onReciveSprite(CL_NetPacket &packet, CL_NetComputer &computer);
 
