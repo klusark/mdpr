@@ -4,6 +4,8 @@
 enum packetIDs
 {
 	connectPacketID,
+	spritePacketID,
+	spritePosPacketID,
 };
 
 struct connectPacket
@@ -11,6 +13,20 @@ struct connectPacket
 	packetIDs packetID;
 	unsigned char nameLength;
 	char name[255];
+};
+
+struct spritePacket
+{
+	packetIDs packetID;
+	unsigned char nameLength;
+	char name[255];
+};
+
+struct spritePosPacket
+{
+	packetIDs packetID;
+	unsigned int spriteID;
+
 };
 
 #endif //packets_hpp

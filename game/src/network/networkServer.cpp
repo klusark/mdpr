@@ -1,10 +1,10 @@
-#include <boost/asio.hpp>
-#include <boost/shared_ptr.hpp>
+/*#include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/crc.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 
-#include <ClanLib/core.h>
-#include <ClanLib/network.h>
 #include <iostream>
 #include <map>
 #include <vector>
@@ -31,15 +31,19 @@ private:
 	boost::asio::io_service& ioService;
 };
 
-Network::Server::Server() : serverSocket(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 5000))
+Network::Server::Server() : serverSocket(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 5000)), timer(ioService, boost::posix_time::seconds(2))
 {
 	boost::shared_ptr<spriteManager> tmpSprite(new spriteManager(true));
 	ServerSpriteManager = tmpSprite;
 	posUpdate = 0;
 	//buffer = char[128];
 	serverSocket.async_receive_from(boost::asio::buffer(buffer), endpoint, boost::bind(&Network::Server::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	//timer = boost::asio::deadline_timer();
+	timer.async_wait(boost::bind(&Network::Server::onSpriteUpdate, this, boost::asio::placeholders::error));
 	thread threads(ioService);
 	boost::thread test(threads);
+
+
 
 }
 
@@ -72,16 +76,36 @@ void Network::Server::onRecivePacket(const boost::system::error_code& error, siz
 	case connectPacketID:
 		
 		{
-			connectPacket *packet = (connectPacket *)buffer;
+			connectPacket *packet =(connectPacket *)buffer;
 			boost::shared_ptr<playerInfo> player(new playerInfo);
 			player->endpoint = endpoint;
 			player->name = packet->name;
-			ServerSpriteManager->registerSprite("player", player->name);
-			player->sprite = ServerSpriteManager->Sprites[packet->name];
-			Players.push_back(player);
+
+			boost::crc_16_type  result;
+			result.process_bytes(packet->name, packet->nameLength);
+			std::stringstream buf;
+			buf << result.checksum();
 			
+			ServerSpriteManager->registerSprite("player", player->name);
+			player->sprite = ServerSpriteManager->Sprites[atoi(buf.str().c_str())];
+			Players.push_back(player);
+			std::cout << "Player " << player->name << " connected from " << player->endpoint.address().to_string() << std::endl;
+
+			spriteManager::spriteContainer::iterator iter;
+			for(iter = ServerSpriteManager->Sprites.begin(); iter != ServerSpriteManager->Sprites.end(); ++iter){
+				boost::shared_ptr<genericSprite> tempSprite = iter->second;
+
+				spritePacket *packet = new spritePacket;
+				packet->packetID = spritePacketID;
+				packet->nameLength = tempSprite->name.length();
+				strcpy(packet->name, tempSprite->name.c_str());
+
+				serverSocket.send_to(boost::asio::buffer((const void *)packet, 6 + packet->nameLength), player->endpoint);
+				
+			}
+
+		
 		}
-		std::cout << "  recved  " << bytesRecvd;
 		break;
 	default:
 		std::cout << "error";
@@ -94,9 +118,10 @@ void Network::Server::onRecivePacket(const boost::system::error_code& error, siz
 }
 
 
-void Network::Server::onSpriteUpdate()
+void Network::Server::onSpriteUpdate(const boost::system::error_code& error)
 {
-	sprite->update();
+	
+	/*sprite->update();
 	for(spriteManager::spriteContainer::iterator it = sprite->Sprites.begin(); it != sprite->Sprites.end(); ++it){
 		boost::shared_ptr<genericSprite> currentSprite = it->second;
 		if (posUpdate == 4){
@@ -129,10 +154,14 @@ void Network::Server::onSpriteUpdate()
 
 	}
 	++posUpdate;
+	*/
+	//std::cout<<"asdfasdfas "<<std::endl;
+	/*timer.expires_from_now(boost::posix_time::seconds(2));
+	timer.async_wait(boost::bind(&Network::Server::onSpriteUpdate, this, boost::asio::placeholders::error));
 
 }
 
-void Network::Server::onReciveConnect(CL_NetPacket &packet, CL_NetComputer &computer)
+/*void Network::Server::onReciveConnect(CL_NetPacket &packet, CL_NetComputer &computer)
 {
 	std::string name = packet.input.read_string();
 	std::cout << "asdf" << std::endl;
@@ -148,3 +177,4 @@ void Network::Server::onDisconnect(CL_NetComputer &computer)
 {
 	std::cout << "Client disconnected." << std::endl;
 }
+*/

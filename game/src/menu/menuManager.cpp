@@ -1,4 +1,4 @@
-#include <ClanLib/core.h>
+/*#include <ClanLib/core.h>
 #pragma warning(push, 3)
 #include <ClanLib/gui.h>
 #include <ClanLib/guistylesilver.h>
@@ -67,3 +67,4 @@ void menuManager::setActive(bool toggle)
 {
 	active = toggle;
 }
+*/

@@ -1,4 +1,4 @@
-#ifndef networkServer_hpp
+/*#ifndef networkServer_hpp
 #define networkServer_hpp
 
 #include <boost/shared_ptr.hpp>
@@ -19,14 +19,17 @@ protected:
 	boost::asio::io_service ioService;
 	boost::asio::ip::udp::socket serverSocket;
 	//std::vector<char> buffer;
-	char buffer[128];
+	char buffer[512];
 	boost::asio::ip::udp::endpoint endpoint;
+	boost::asio::deadline_timer timer;
 
 	void onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd);
 
-	void onDisconnect(CL_NetComputer &computer);
+	void onSpriteUpdate(const boost::system::error_code& error);
+
+	/*void onDisconnect(CL_NetComputer &computer);
 	void onReciveConnect(CL_NetPacket &packet, CL_NetComputer &computer);
-	void onSpriteUpdate();
+	
 
 	boost::shared_ptr<CL_NetSession> netsession;
 	CL_Slot slotReciveConnect;
@@ -34,7 +37,7 @@ protected:
 	CL_Slot slotDisconnect;
 	CL_Slot slotSpriteUpdate;
 
-	CL_Timer timerSpriteUpdate;
+	CL_Timer timerSpriteUpdate;*//*
 
 	unsigned short posUpdate;
 
@@ -60,3 +63,4 @@ protected:
 };
 
 #endif
+*/

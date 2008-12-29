@@ -1,4 +1,4 @@
-#ifndef menuGeneric_hpp
+/*#ifndef menuGeneric_hpp
 #define menuGeneric_hpp
 
 #include <boost/shared_ptr.hpp>
@@ -20,3 +20,4 @@ protected:
 };
 
 #endif
+*/

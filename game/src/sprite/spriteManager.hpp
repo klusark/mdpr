@@ -3,21 +3,23 @@
 
 #include <map>
 #include <string>
-#include "genericSprite.hpp"
+
 #include <boost/shared_ptr.hpp>
+
+#include "genericSprite.hpp"
 
 class spriteManager
 {
 public:
 	spriteManager(bool server = false);
 	~spriteManager();
-	typedef std::map<std::string, boost::shared_ptr<genericSprite> > spriteContainer;
+	typedef std::map<int, boost::shared_ptr<genericSprite> > spriteContainer;
 
 	spriteContainer Sprites;
 	void registerSprite(boost::shared_ptr<genericSprite> sprite);
 	void registerSprite(std::string type, std::string name);
 	void update();
-	void draw();
+	void draw(sf::RenderWindow &App);
 	bool isActive();
 	void setActive(bool toggle);
 private:
@@ -27,4 +29,4 @@ private:
 
 extern boost::shared_ptr<spriteManager> sprite;
 
-#endif
+#endif //spriteManager_hpp

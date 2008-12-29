@@ -1,4 +1,4 @@
-#ifndef menuProfile_hpp
+/*#ifndef menuProfile_hpp
 #define menuProfile_hpp
 
 #include "menuGeneric.hpp"
@@ -11,3 +11,4 @@ public:
 };
 
 #endif
+*/
