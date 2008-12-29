@@ -1,4 +1,4 @@
-#pragma warning(push, 3)
+/*#pragma warning(push, 3)
 #include <ClanLib/gui.h>
 #pragma warning(pop)
 
@@ -22,3 +22,4 @@ void menuGeneric::show()
 
 	CL_GUIManager::show();
 }
+*/

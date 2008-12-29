@@ -2,20 +2,15 @@
 #define genericSprite_hpp
 
 #include <boost/shared_ptr.hpp>
-#include <ClanLib/core.h>
-#include <ClanLib/display.h>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/System/Clock.hpp>
 #include <map>
 
-class genericSprite : public CL_Sprite
+class genericSprite : public sf::Sprite
 {
 public:
-	genericSprite(const std::string &resourceLocation, const std::string &name, bool server = false);
+	genericSprite(const std::string &name);
 	~genericSprite();
-
-	float getX();
-	float getY();
-	void setX(float X);
-	void setY(float Y);
 
 	float getXAccel();
 	float getYAccel();
@@ -34,13 +29,13 @@ public:
 	std::string name;
 protected:
 	bool server;
-	boost::shared_ptr<CL_ResourceManager> resources;
+	//boost::shared_ptr<CL_ResourceManager> resources;
 	float x,			y;
 	float xAccel,		yAccel;
 	float xVelocity,	yVelocity;
-	float last_time;
-	typedef std::map<std::string, boost::shared_ptr<CL_Sprite> > animationContainer;
-	animationContainer Animations;
+	sf::Clock Clock;
+	//typedef std::map<std::string, boost::shared_ptr<CL_Sprite> > animationContainer;
+	//animationContainer Animations;
 
 };
 

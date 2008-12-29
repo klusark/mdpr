@@ -1,8 +1,8 @@
-#ifndef MDPRApplication_hpp
+/*#ifndef MDPRApplication_hpp
 #define MDPRApplication_hpp
 
-
 #include <ClanLib/application.h>
+
 #include "MDPRGame.hpp"
 
 class MDPRApplication : public CL_ClanApplication 
@@ -14,4 +14,5 @@ private:
 	MDPRGame MDPR;
 }extern Application;
 
-#endif
+#endif //MDPRApplication_hpp
+*/

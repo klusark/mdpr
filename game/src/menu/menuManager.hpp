@@ -1,4 +1,4 @@
-#ifndef menuManager_hpp
+/*#ifndef menuManager_hpp
 #define menuManager_hpp
 
 #include <map>
@@ -24,3 +24,4 @@ private:
 };
 extern boost::shared_ptr<menuManager> menu;
 #endif
+*/

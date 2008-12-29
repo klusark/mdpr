@@ -1,22 +1,26 @@
 #include <boost/shared_ptr.hpp>
-#include <ClanLib/core.h>
-#include <ClanLib/display.h>
+
+#include <string>
+
+#include <SFML/Graphics/Sprite.hpp>
 
 #include "genericSprite.hpp"
 
-genericSprite::genericSprite(const std::string &resourceLocation, const std::string &name, bool server) : CL_Sprite(), name(name), server(server)
+genericSprite::genericSprite(const std::string &name) : sf::Sprite(), name(name)
 {
-	last_time = 0;
+	//last_time = 0;
 	x = 0;
 	y = 0;
 	xVelocity = 1;
 	yVelocity = 0;
 	xAccel = 5;
 	yAccel = 0;
-	if (!server){
-		boost::shared_ptr<CL_ResourceManager> tmpResources(new CL_ResourceManager(resourceLocation));
-		resources = tmpResources;
-	}
+	SetX(0);
+	SetY(0);
+
+	//boost::shared_ptr<CL_ResourceManager> tmpResources(new CL_ResourceManager(resourceLocation));
+	//resources = tmpResources;
+
 
 }
 
@@ -26,11 +30,11 @@ genericSprite::~genericSprite()
 
 void genericSprite::update()
 {
-	if (!server){
-		CL_Sprite::update();
-	}
+	//if (!server){
+	//	CL_Sprite::update();
+	//}
 
-	float new_time = static_cast<float>(CL_System::get_time());
+/*	float new_time = static_cast<float>(CL_System::get_time());
 	if(last_time == 0)
 		last_time = new_time;
 
@@ -41,66 +45,27 @@ void genericSprite::update()
 	y+=static_cast<float>(yVelocity*delta_time+(0.5)*yAccel*pow(delta_time,2));
 	xVelocity+=xAccel*delta_time;
 	yVelocity+=yAccel*delta_time;
-
+*/
 }
 
 void genericSprite::changeAnimation(std::string name)
 {
-	animationContainer iter;
+/*	animationContainer iter;
 	if (Animations.find(name) != Animations.end()){
-		set_image_data(*Animations[name]);
+		//set_image_data(*Animations[name]);
 	}else{
 		std::cout<<"asdfsadfsf";
 	}
+*/
 }
 
 void genericSprite::loadAnimation(std::string name)
 {
-	boost::shared_ptr<CL_Sprite> tmpAnimation(new CL_Sprite(name, resources.get()));
-	Animations[name] = tmpAnimation;
+	//boost::shared_ptr<CL_Sprite> tmpAnimation(new CL_Sprite(name, resources.get()));
+//	Animations[name] = tmpAnimation;
 
 }
 
-float genericSprite::round(float number)
-{
-	float temp = number-floor(number);
-	if (temp < 0.5){
-		return floor(number);
-	}else{
-		return ceil(number);
-	}
-}
-
-float genericSprite::getX()
-{
-	if (x>320)
-		x=0;
-
-	if (xVelocity == 0){
-		return round(x);
-	}else{
-		return x;
-	}
-}
-
-float genericSprite::getY()
-{
-	if (yVelocity == 0){
-		return round(y);
-	}else{
-		return y;
-	}
-}
-
-void genericSprite::setX(float X)
-{
-	this->x = X;
-}
-
-void genericSprite::setY(float Y)
-{
-	this->y = Y;
-}
 
 float genericSprite::getXAccel()
 {

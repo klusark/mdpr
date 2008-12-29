@@ -1,20 +1,56 @@
-#include <iostream>
-
-#include <boost/asio.hpp>
+/*#include <boost/asio.hpp>
+#include <boost/crc.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
+#include <boost/thread.hpp>
 
-#include <ClanLib/core.h>
-#include <ClanLib/network.h>
+//#include <ClanLib/core.h>
+//#include <ClanLib/network.h>
+
+#include <iostream>
 
 #include "network.hpp"
 #include "networkClient.hpp"
 #include "packets.hpp"
 #include "../sprite/spriteManager.hpp"
-
-Network::Client::Client()
+using boost::asio::ip::udp;
+struct thread
 {
+public:
+	thread(boost::asio::io_service &ioService) 
+		: ioService(ioService)
+	{}
+	void operator()(){
+		for (;;){
+			try
+			{
+				ioService.run();
+			}
+			catch (...)
+			{
+				
+			}
+			
+		}
+		return;
+	}
+private:
+	boost::asio::io_service& ioService;
+};
+
+Network::Client::Client() : socket(ioService)
+{
+	udp::resolver resolver(ioService);
+
+	udp::resolver::query query(udp::v4(), "127.0.0.1", "5000");
+	udp::resolver::iterator iterator = resolver.resolve(query);
+
+	receiver_endpoint = *resolver.resolve(query);
+	socket.open(udp::v4());
+
+	socket.async_receive_from(boost::asio::buffer(buffer), receiver_endpoint, boost::bind(&Network::Client::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+
+	thread threads(ioService);
+	boost::thread test(threads);
 }
 
 Network::Client::~Client()
@@ -25,41 +61,13 @@ bool Network::Client::runClient()
 {
 	try
 	{
-		//ioService.run();
-		boost::asio::io_service ioService;
-
-		//boost::asio::ip::udp::socket s(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 0));
-		using boost::asio::ip::udp;
-
-		udp::resolver resolver(ioService);
-		udp::resolver::query query(udp::v4(), "127.0.0.1", "5000");
-		udp::resolver::iterator iterator = resolver.resolve(query);
-
-		udp::endpoint receiver_endpoint = *resolver.resolve(query);
-		
-		udp::socket socket(ioService);
-		socket.open(udp::v4());
-
-		/*std::vector<char> send_buf;
-		send_buf.insert(send_buf.begin(), 'a');
-		send_buf.insert(send_buf.end(), 'a');
-		
-		send_buf.clear();
-		send_buf.insert(send_buf.end(), 'a');
-		socket.send_to(, receiver_endpoint);*/
-		connectPacket *tset = new connectPacket;
-		tset->packetID = connectPacketID;
-		tset->nameLength = 10;
-		strcpy(tset->name, "aqwsxcderf");
+		connectPacket *packet = new connectPacket;
+		packet->packetID = connectPacketID;
+		packet->nameLength = 7;
+		strcpy(packet->name, "klusark");
 		
 		//boost::asio::const_buffer test((const void *)tset, 4);
-		socket.send_to(boost::asio::buffer((const void *)tset, 16), receiver_endpoint);
-
-	}
-	catch(CL_Error err)
-	{
-		std::cout << "Could not create client: " << err.message.c_str() << std::endl;
-		return false;
+		socket.send_to(boost::asio::buffer((const void *)packet, 13), receiver_endpoint);
 	}
 	catch (std::exception& e)
 	{
@@ -69,7 +77,31 @@ bool Network::Client::runClient()
 	return true;
 }
 
-void Network::Client::onReciveSprite(CL_NetPacket &packet, CL_NetComputer &computer)
+void Network::Client::onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd)
+{
+	//if (bytesRecvd == 0){
+	//	return;
+	//}
+	packetIDs packetID;
+	memcpy(&packetID, buffer, 4);
+	switch(packetID)
+	{
+	case spritePacketID:
+		{
+			spritePacket *packet = (spritePacket *)buffer;
+			sprite->registerSprite("player", packet->name);
+		}
+		break;
+	default:
+		std::cout << "errorzor" << std::endl;
+		break;
+
+	}
+	socket.async_receive_from(boost::asio::buffer(buffer), receiver_endpoint, boost::bind(&Network::Client::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+}
+
+
+/*void Network::Client::onReciveSprite(CL_NetPacket &packet, CL_NetComputer &computer)
 {
 
 	//sprite->registerSprite(packet.input.read_string(), packet.input.read_string());
@@ -108,3 +140,4 @@ void Network::Client::onDisconnect(CL_NetComputer &computer)
 {
 	std::cout << "Lost connection to server." << std::endl;
 }
+*/

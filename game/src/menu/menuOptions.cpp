@@ -1,4 +1,4 @@
-#pragma warning(push, 3)
+/*#pragma warning(push, 3)
 #include <ClanLib/gui.h>
 #pragma warning(pop)
 
@@ -13,3 +13,4 @@ menuOptions::menuOptions(CL_StyleManager &style, std::string const &resourceLoca
 menuOptions::~menuOptions()
 {
 }
+*/

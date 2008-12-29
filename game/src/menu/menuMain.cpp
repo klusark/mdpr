@@ -1,4 +1,4 @@
-#pragma warning(push, 3)
+/*#pragma warning(push, 3)
 #include <ClanLib/gui.h>
 #pragma warning(pop)
 
@@ -11,9 +11,9 @@
 menuMain::menuMain(CL_StyleManager &style, std::string const &resourceLocation)
 	:	menuGeneric(style, resourceLocation)
 {
-	CL_Button *quitButton = dynamic_cast<CL_Button*>(componentManager->get_component(("quitButton")));
-	if (quitButton)
-		slots.connect(quitButton->sig_clicked(), &Application, &MDPRApplication::onWindowClose);
+	//CL_Button *quitButton = dynamic_cast<CL_Button*>(componentManager->get_component(("quitButton")));
+	//if (quitButton)
+//		slots.connect(quitButton->sig_clicked(), &Application, &MDPRApplication::onWindowClose);
 
 	CL_Button *optionsButton = dynamic_cast<CL_Button*>(componentManager->get_component(("optionsButton")));
 	if (optionsButton)
@@ -38,3 +38,4 @@ void menuMain::onProfilesClicked()
 {
 	menu->changeCurrentMenu("menuProfile");
 }
+*/

@@ -1,4 +1,4 @@
-#ifndef menuMain_hpp
+/*#ifndef menuMain_hpp
 #define menuMain_hpp
 
 #include "menuGeneric.hpp"
@@ -15,3 +15,4 @@ protected:
 };
 
 #endif
+*/
