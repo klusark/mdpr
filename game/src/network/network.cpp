@@ -1,4 +1,4 @@
-/*#include <boost/asio.hpp>
+#include <boost/asio.hpp>
 
 #include "network.hpp"
 #include "networkClient.hpp"
@@ -20,4 +20,3 @@ Network::~Network()
 void Network::update()
 {
 }
-*/

@@ -1,4 +1,4 @@
-/*#ifndef networkServer_hpp
+#ifndef networkServer_hpp
 #define networkServer_hpp
 
 #include <boost/shared_ptr.hpp>
@@ -37,7 +37,7 @@ protected:
 	CL_Slot slotDisconnect;
 	CL_Slot slotSpriteUpdate;
 
-	CL_Timer timerSpriteUpdate;*//*
+	CL_Timer timerSpriteUpdate;*/
 
 	unsigned short posUpdate;
 
@@ -63,4 +63,3 @@ protected:
 };
 
 #endif
-*/

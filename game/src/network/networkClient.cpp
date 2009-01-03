@@ -1,4 +1,4 @@
-/*#include <boost/asio.hpp>
+#include <boost/asio.hpp>
 #include <boost/crc.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
@@ -79,9 +79,10 @@ bool Network::Client::runClient()
 
 void Network::Client::onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd)
 {
-	//if (bytesRecvd == 0){
-	//	return;
-	//}
+	socket.async_receive_from(boost::asio::buffer(buffer), receiver_endpoint, boost::bind(&Network::Client::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	if (bytesRecvd == 0){
+		return;
+	}
 	packetIDs packetID;
 	memcpy(&packetID, buffer, 4);
 	switch(packetID)
@@ -97,7 +98,7 @@ void Network::Client::onRecivePacket(const boost::system::error_code& error, siz
 		break;
 
 	}
-	socket.async_receive_from(boost::asio::buffer(buffer), receiver_endpoint, boost::bind(&Network::Client::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	
 }
 
 

@@ -1,4 +1,4 @@
-/*#ifndef network_hpp
+#ifndef network_hpp
 #define network_hpp
 
 class spriteManager;
@@ -16,4 +16,3 @@ public:
 };
 
 #endif //network_hpp
-*/

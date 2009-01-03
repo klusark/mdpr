@@ -3,13 +3,14 @@
 
 #include <boost/shared_ptr.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Image.hpp>
 #include <SFML/System/Clock.hpp>
 #include <map>
 
 class genericSprite : public sf::Sprite
 {
 public:
-	genericSprite(const std::string &name);
+	genericSprite(const std::string &name, sf::Image &Image);
 	~genericSprite();
 
 	float getXAccel();
@@ -26,16 +27,36 @@ public:
 	float round(float number);
 	void changeAnimation(std::string name);
 	void loadAnimation(std::string name);
+
 	std::string name;
 protected:
 	bool server;
 	//boost::shared_ptr<CL_ResourceManager> resources;
-	float x,			y;
+	//float x,			y;
 	float xAccel,		yAccel;
 	float xVelocity,	yVelocity;
 	sf::Clock Clock;
-	//typedef std::map<std::string, boost::shared_ptr<CL_Sprite> > animationContainer;
-	//animationContainer Animations;
+	sf::Image &Image;
+	
+	class Animation
+	{
+	public:
+		Animation()
+		{
+			currentFrame = 0;
+			updateTime = 0;
+			playBackward = false;
+		}
+		sf::Clock Clock;
+		float updateTime;
+		int delay, frames, startx, starty, width, height, currentFrame;
+		bool playBackward;
+		sf::IntRect update();
+
+	};
+	typedef std::map<std::string, boost::shared_ptr<Animation> > animationContainer;
+	animationContainer Animations;
+	boost::shared_ptr<Animation> currentAnimation;
 
 };
 

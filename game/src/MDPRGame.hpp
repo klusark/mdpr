@@ -11,6 +11,7 @@ public:
 private:
 	sf::RenderWindow &App;
 	bool quit;
+	sf::Clock Clock;
 };
 
 #endif //MDPRGame_hpp
