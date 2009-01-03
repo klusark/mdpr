@@ -1,0 +1,4 @@
+animation = run
+animation = crouch
+animation = idle
+image = player.png

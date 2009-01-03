@@ -3,8 +3,11 @@
 #include "player.hpp"
 #include "genericSprite.hpp"
 
-Player::Player(const std::string &name) : genericSprite(name)
+sf::Image Player::Image;
+
+Player::Player(const std::string &name) : genericSprite(name, Image)
 {
+	//Image = sf::Image();
 	//CL_ResourceManager *resources = new CL_ResourceManager();
 	//run = new CL_Sprite("run", resources);
 	//if (!server){
@@ -21,3 +24,4 @@ Player::Player(const std::string &name) : genericSprite(name)
 Player::~Player()
 {
 }
+

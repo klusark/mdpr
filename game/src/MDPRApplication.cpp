@@ -1,14 +1,3 @@
-/*#include <ClanLib/application.h>
-#include <ClanLib/core.h>
-#include <ClanLib/display.h>
-#include <ClanLib/gl.h>
-#include <ClanLib/network.h>
-#pragma warning(push, 3)
-#include <ClanLib/gui.h>
-#pragma warning(pop)*/
-
-#include <boost/program_options.hpp>
-
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Window.hpp>
 
@@ -26,20 +15,7 @@ int main(int argc, char** argv)
 	/*CL_ConsoleWindow console("Marshmallow Duel: Percy's Return Console");
 	console.redirect_stdio();*/
 	try {
-		int animations;
-		boost::program_options::options_description config("Configuration");
-		config.add_options()("animations", boost::program_options::value<int>(&animations), "");
 
-		boost::program_options::variables_map vm;
-
-		boost::program_options::options_description configFileOptions;
-		configFileOptions.add(config);
-		
-
-		std::ifstream ifs("test.txt");
-
-		boost::program_options::store(parse_config_file(ifs, configFileOptions), vm);
-		notify(vm);
 		
 
 

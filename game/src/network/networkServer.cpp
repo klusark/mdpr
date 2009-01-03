@@ -1,4 +1,4 @@
-/*#include <boost/asio.hpp>
+#include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/crc.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -22,6 +22,7 @@ public:
 		: ioService(ioService)
 	{}
 	void operator()(){
+		
 		for (;;){
 			ioService.run();
 		}
@@ -42,8 +43,7 @@ Network::Server::Server() : serverSocket(ioService, boost::asio::ip::udp::endpoi
 	timer.async_wait(boost::bind(&Network::Server::onSpriteUpdate, this, boost::asio::placeholders::error));
 	thread threads(ioService);
 	boost::thread test(threads);
-
-
+	
 
 }
 
@@ -53,15 +53,8 @@ Network::Server::~Server()
 
 bool Network::Server::runServer()
 {
-	try{
 
-		std::cout << "Server Started" << std::endl;
-	}catch (CL_Error err){
-		std::cout << "Fatal server error: " << err.message.c_str() << std::endl;
-	}
-	//timerSpriteUpdate = CL_Timer(100);
-	//slotSpriteUpdate = timerSpriteUpdate.sig_timer().connect(this, &Network::Server::onSpriteUpdate);
-	//timerSpriteUpdate.enable();
+	std::cout << "Server Started" << std::endl;
 
 
 	return true;
@@ -156,7 +149,7 @@ void Network::Server::onSpriteUpdate(const boost::system::error_code& error)
 	++posUpdate;
 	*/
 	//std::cout<<"asdfasdfas "<<std::endl;
-	/*timer.expires_from_now(boost::posix_time::seconds(2));
+	timer.expires_from_now(boost::posix_time::seconds(2));
 	timer.async_wait(boost::bind(&Network::Server::onSpriteUpdate, this, boost::asio::placeholders::error));
 
 }

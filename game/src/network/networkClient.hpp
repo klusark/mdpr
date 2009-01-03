@@ -1,4 +1,4 @@
-/*#ifndef networkClient_hpp
+#ifndef networkClient_hpp
 #define networkClient_hpp
 
 #include <boost/asio.hpp>
@@ -30,9 +30,8 @@ protected:
 
 	boost::shared_ptr<CL_NetSession> netsession;
 	CL_Slot slotDisconnect, slotReciveSprite, slotReciveSpriteUpdatePos, slotReciveSpriteUpdateVelocity, slotReciveSpriteUpdateAccel;
-	*//*
+	*/
 
 };
 
 #endif //networkClient_hpp
-*/
