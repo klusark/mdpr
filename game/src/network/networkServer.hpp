@@ -1,6 +1,7 @@
 #ifndef networkServer_hpp
 #define networkServer_hpp
 
+#include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 #include <vector>
 
@@ -27,17 +28,6 @@ protected:
 
 	void onSpriteUpdate(const boost::system::error_code& error);
 
-	/*void onDisconnect(CL_NetComputer &computer);
-	void onReciveConnect(CL_NetPacket &packet, CL_NetComputer &computer);
-	
-
-	boost::shared_ptr<CL_NetSession> netsession;
-	CL_Slot slotReciveConnect;
-	CL_Slot slotConnect;
-	CL_Slot slotDisconnect;
-	CL_Slot slotSpriteUpdate;
-
-	CL_Timer timerSpriteUpdate;*/
 
 	unsigned short posUpdate;
 

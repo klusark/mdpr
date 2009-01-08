@@ -12,23 +12,19 @@
 
 #include "genericSprite.hpp"
 
-genericSprite::genericSprite(const std::string &name, sf::Image &tempImage) 
+genericSprite::genericSprite(const std::string &name, std::string spriteType, sf::Image &tempImage) 
 	:	sf::Sprite(),
 		name(name),
-		Image(tempImage)
+		Image(tempImage),
+		xVelocity(1),
+		yVelocity(0),
+		xAccel(5),
+		yAccel(0)
 {
-	//last_time = 0;
-	//Image = new sf::Image();
-	//getImage(*Image);
-	
 
-	xVelocity = 1;
-	yVelocity = 0;
-	xAccel = 5;
-	yAccel = 0;
 	SetX(0);
 	SetY(0);
-	
+#ifndef SERVER
 	std::vector<std::string> animations;
 	std::string image;
 	boost::program_options::options_description spriteConfig("Configuration");
@@ -41,8 +37,15 @@ genericSprite::genericSprite(const std::string &name, sf::Image &tempImage)
 	boost::program_options::options_description spriteConfigFileOptions;
 	spriteConfigFileOptions.add(spriteConfig);
 	
+	std::string file;
 
-	std::ifstream spriteFileStream("data/mdpr/sprites/player/player.sprite");
+	file = "data/mdpr/sprites/";
+	file += spriteType;
+	file += "/";
+	file += spriteType;
+	file += ".sprite";
+
+	std::ifstream spriteFileStream(file.c_str());
 
 	boost::program_options::store(parse_config_file(spriteFileStream, spriteConfigFileOptions), spriteVariableMap);
 	notify(spriteVariableMap);
@@ -51,16 +54,19 @@ genericSprite::genericSprite(const std::string &name, sf::Image &tempImage)
 	
 	//load image hackish way to check if in a thread
 	if (Image.GetHeight() == 0 && !boost::this_thread::interruption_enabled()){
-		Image.LoadFromFile("data/mdpr/sprites/player/player.png");
+		std::string imageFile;
+		imageFile = "data/mdpr/sprites/";
+		imageFile += spriteType;
+		imageFile += "/";
+		imageFile += image;
+		Image.LoadFromFile(imageFile);
 		Image.SetSmooth(false);
 	}
 	SetImage(Image);
 
 	std::vector< std::string >::iterator iter;
 	for (iter = animations.begin(); iter < animations.end(); ++iter){
-		//Animation test;
 
-		//int delay, frames, startx, starty, width, height;
 		boost::program_options::options_description animationConfig("Configuration");
 		boost::shared_ptr<Animation> newAnimation(new Animation);
 
@@ -78,10 +84,11 @@ genericSprite::genericSprite(const std::string &name, sf::Image &tempImage)
 		animationConfigFileOptions.add(animationConfig);
 		
 		std::string animationFileName;
-		animationFileName = "data/mdpr/sprites/player/";
+		animationFileName = "data/mdpr/sprites/";
+		animationFileName += spriteType;
+		animationFileName += "/";
 		animationFileName += *iter;
 		animationFileName += ".animation";
-		//std::cout << *iter;
 
 		std::ifstream animationFileStream(animationFileName.c_str());
 
@@ -90,14 +97,7 @@ genericSprite::genericSprite(const std::string &name, sf::Image &tempImage)
 		Animations[*iter] = newAnimation;
 			
 	}
-	currentAnimation = Animations["run"];
-
-
-
-	//boost::shared_ptr<CL_ResourceManager> tmpResources(new CL_ResourceManager(resourceLocation));
-	//resources = tmpResources;
-
-
+#endif
 }
 
 genericSprite::~genericSprite()
@@ -106,46 +106,33 @@ genericSprite::~genericSprite()
 
 void genericSprite::update()
 {
+#ifndef SERVER
 	SetSubRect(currentAnimation->update());
-	//SetSubRect(sf::IntRect(0, 0, 24, 24));
-	//if (!server){
-	//	CL_Sprite::update();
-	//}
-
-	//float new_time = static_cast<float>(CL_System::get_time());
-
-	
-	float delta_time = Clock.GetElapsedTime();
+#endif
+	float deltaTime = Clock.GetElapsedTime();
 	Clock.Reset();
 
-	Move(sf::Vector2<float>::Vector2(static_cast<float>(xVelocity*delta_time+(0.5)*xAccel*pow(delta_time,2)), static_cast<float>(yVelocity*delta_time+(0.5)*yAccel*pow(delta_time,2))));
-	xVelocity+=xAccel*delta_time;
-	yVelocity+=yAccel*delta_time;
+	Move(sf::Vector2<float>::Vector2(static_cast<float>(xVelocity*deltaTime+(0.5)*xAccel*pow(deltaTime,2)), static_cast<float>(yVelocity*deltaTime+(0.5)*yAccel*pow(deltaTime,2))));
+	xVelocity+=xAccel*deltaTime;
+	yVelocity+=yAccel*deltaTime;
 
 }
 
 void genericSprite::changeAnimation(std::string name)
 {
-/*	animationContainer iter;
-	if (Animations.find(name) != Animations.end()){
-		//set_image_data(*Animations[name]);
-	}else{
-		std::cout<<"asdfsadfsf";
-	}
-*/
-}
 
-void genericSprite::loadAnimation(std::string name)
-{
-	//boost::shared_ptr<CL_Sprite> tmpAnimation(new CL_Sprite(name, resources.get()));
-//	Animations[name] = tmpAnimation;
+	if (Animations.find(name) != Animations.end()){
+		currentAnimation = Animations[name];
+	}else{
+		std::cout<<"Error Cannot find Animation";
+	}
 
 }
 
 sf::IntRect genericSprite::Animation::update()
 {
 	
-	sf::IntRect test(currentFrame*width+startx, starty, width+currentFrame*width, starty+height);
+	sf::IntRect newRect(currentFrame*width+startx, starty, width+currentFrame*width, starty+height);
 
 	updateTime += Clock.GetElapsedTime()*1000;
 	Clock.Reset();
@@ -159,10 +146,7 @@ sf::IntRect genericSprite::Animation::update()
 		}
 	}
 
-
-
-
-	return test;
+	return newRect;
 	
 }
 

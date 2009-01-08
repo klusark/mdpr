@@ -27,6 +27,6 @@ private:
 	bool server;
 };
 
-extern boost::shared_ptr<spriteManager> sprite;
+extern spriteManager sprite;
 
 #endif //spriteManager_hpp

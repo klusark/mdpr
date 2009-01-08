@@ -26,6 +26,8 @@ struct spritePosPacket
 {
 	packetIDs packetID;
 	unsigned int spriteID;
+	float x;
+	float y;
 
 };
 

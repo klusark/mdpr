@@ -7,7 +7,6 @@ public:
 	MDPRGame(sf::RenderWindow &App);
 	~MDPRGame();
 	void run();
-	void onWindowClose();
 private:
 	sf::RenderWindow &App;
 	bool quit;
