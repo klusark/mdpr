@@ -12,14 +12,12 @@
 #include "player.hpp"
 #include "spriteManager.hpp"
 
-boost::shared_ptr<spriteManager> sprite;
+spriteManager sprite;
 
-spriteManager::spriteManager(bool server) : active(false), server(server)
+spriteManager::spriteManager(bool server)
+	:	active(false),
+		server(server)
 {
-	//Player *player1 = ;
-	//boost::shared_ptr<genericSprite> player(new Player("player1"));
-	 
-	//registerSprite(player);
 }
 
 spriteManager::~spriteManager()
@@ -64,8 +62,8 @@ void spriteManager::draw(sf::RenderWindow &App)
 {
     spriteContainer::iterator iter;
 	for( iter = spriteManager::Sprites.begin(); iter != spriteManager::Sprites.end(); ++iter ) {
-		//boost::shared_ptr<genericSprite> tempSprite = iter->second;
-		App.Draw(*iter->second.get());//tempSprite->draw(tempSprite->getX(), tempSprite->getY());
+		
+		App.Draw(*iter->second.get());
 		
 	}
 

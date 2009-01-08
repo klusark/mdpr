@@ -32,15 +32,30 @@ void MDPRGame::run()
 	//menu->setActive(false);
 	boost::shared_ptr<genericSprite> Sprite(new Player("Player"));
 
-	boost::shared_ptr<spriteManager> tmpSprite(new spriteManager);
-	sprite = tmpSprite;
+	//boost::shared_ptr<spriteManager> tmpSprite(new spriteManager);
+	//sprite = tmpSprite;
 
-	sprite->setActive(true);
+	sprite.setActive(true);
 	
 	boost::shared_ptr<Network> network(new Network);
 
 	while(!quit)
 	{
+		App.Clear();
+		sf::Event Event;
+		while (App.GetEvent(Event)){
+			// Window closed
+			if (Event.Type == sf::Event::Closed){
+				quit = true;
+			}
+
+			/*if (Event.Type == sf::Event::KeyPressed){
+				testsetset = Event.Key.Code;
+			}
+			if (Event.Type == sf::Event::KeyReleased){
+				testsetset = Event.Key.Code;
+			}*/
+		}
 
 		//if (menu->isActive()){
 		//	menu->update();
@@ -48,10 +63,10 @@ void MDPRGame::run()
 
 
 		//network->update();
-
-        if (sprite->isActive()){
-			sprite->update();
-			sprite->draw(App);
+		
+        if (sprite.isActive()){
+			sprite.update();
+			sprite.draw(App);
 
 
 		}
@@ -73,26 +88,10 @@ void MDPRGame::run()
 		buf << std::fixed << static_cast<int>(fps);
 		std::string stringFPS = buf.str();
 
-		font.draw(320-font.get_width(stringFPS), 0, stringFPS);
-
-		CL_Display::flip();
-		CL_System::sleep(2);
-
-		CL_System::keep_alive();
 		*/
-		sf::Event Event;
-		while (App.GetEvent(Event)){
-			// Window closed
-			if (Event.Type == sf::Event::Closed){
-				quit = true;
-			}
-		}
 
+
+		
 		App.Display();
 	}
-}
-void MDPRGame::onWindowClose()
-{
-	quit = true;
-
 }

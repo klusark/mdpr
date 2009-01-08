@@ -81,6 +81,7 @@ void Network::Client::onRecivePacket(const boost::system::error_code& error, siz
 {
 	socket.async_receive_from(boost::asio::buffer(buffer), receiver_endpoint, boost::bind(&Network::Client::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 	if (bytesRecvd == 0){
+		std::cout<<error.message();
 		return;
 	}
 	packetIDs packetID;
@@ -90,11 +91,19 @@ void Network::Client::onRecivePacket(const boost::system::error_code& error, siz
 	case spritePacketID:
 		{
 			spritePacket *packet = (spritePacket *)buffer;
-			sprite->registerSprite("player", packet->name);
+			sprite.registerSprite("player", packet->name);
+		}
+		break;
+	case spritePosPacketID:
+		{
+			spritePosPacket *packet = (spritePosPacket *)buffer;
+			sprite.Sprites[packet->spriteID]->SetX(packet->x);
+			sprite.Sprites[packet->spriteID]->SetY(packet->y);
+				//s(, packet->y);
 		}
 		break;
 	default:
-		std::cout << "errorzor" << std::endl;
+		std::cout << "Error in client receve packet" << std::endl;
 		break;
 
 	}

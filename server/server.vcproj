@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="game"
-	ProjectGUID="{134153CE-FA00-47CA-BABA-7BD706FC17EC}"
-	RootNamespace="game"
+	Name="server"
+	ProjectGUID="{760DC2F2-1A59-4302-9137-F41042637A53}"
+	RootNamespace="server"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -40,14 +40,13 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../include"
-				PreprocessorDefinitions="_WIN32_WINNT=0x0501;_CRT_SECURE_NO_WARNINGS;SFML_DYNAMIC"
-				MinimalRebuild="false"
+				AdditionalIncludeDirectories="..\game\src\"
+				PreprocessorDefinitions="_WIN32_WINNT=0x0501;SERVER"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				WarningLevel="3"
-				DebugInformationFormat="3"
-				ForcedIncludeFiles=""
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -61,9 +60,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="sfml-system-d.lib sfml-main-d.lib sfml-window-d.lib sfml-graphics-d.lib"
-				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -114,13 +113,12 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories=""
-				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0501"
+				AdditionalIncludeDirectories="..\game\src"
+				PreprocessorDefinitions="_WIN32_WINNT=0x0501"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
 				DebugInformationFormat="3"
-				ForcedIncludeFiles=""
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -133,9 +131,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sfml-system.lib sfml-main.lib sfml-window.lib sfml-graphics.lib"
-				ModuleDefinitionFile=""
-				SubSystem="2"
+				GenerateDebugInformation="true"
+				SubSystem="1"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -170,77 +169,25 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\src\engine.cpp"
+				RelativePath="..\game\src\sprite\genericSprite.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\MDPRApplication.cpp"
+				RelativePath=".\src\main.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\MDPRGame.cpp"
+				RelativePath="..\game\src\network\networkServer.cpp"
 				>
 			</File>
-			<Filter
-				Name="Network"
+			<File
+				RelativePath="..\game\src\sprite\player.cpp"
 				>
-				<File
-					RelativePath=".\src\network\network.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\network\networkClient.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\network\networkServer.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Sprite"
+			</File>
+			<File
+				RelativePath="..\game\src\sprite\spriteManager.cpp"
 				>
-				<File
-					RelativePath=".\src\sprite\genericSprite.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\imageManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\player.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\spriteManager.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Menu"
-				>
-				<File
-					RelativePath=".\src\menu\menuGeneric.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuMain.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuOptions.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuProfile.cpp"
-					>
-				</File>
-			</Filter>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -248,77 +195,21 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\src\engine.hpp"
+				RelativePath="..\game\src\sprite\genericSprite.hpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\MDPRGame.hpp"
+				RelativePath="..\game\src\network\networkServer.hpp"
 				>
 			</File>
-			<Filter
-				Name="Network"
+			<File
+				RelativePath="..\game\src\sprite\player.hpp"
 				>
-				<File
-					RelativePath=".\src\network\network.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\network\networkClient.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\network\networkServer.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\network\packets.hpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Sprite"
+			</File>
+			<File
+				RelativePath="..\game\src\sprite\spriteManager.hpp"
 				>
-				<File
-					RelativePath=".\src\sprite\genericSprite.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\imageManager.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\player.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\spriteManager.hpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Menu"
-				>
-				<File
-					RelativePath=".\src\menu\menuGeneric.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuMain.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuManager.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuOptions.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuProfile.hpp"
-					>
-				</File>
-			</Filter>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

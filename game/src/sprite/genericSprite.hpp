@@ -10,7 +10,7 @@
 class genericSprite : public sf::Sprite
 {
 public:
-	genericSprite(const std::string &name, sf::Image &Image);
+	genericSprite(const std::string &name, std::string spriteType, sf::Image &Image);
 	~genericSprite();
 
 	float getXAccel();
@@ -31,8 +31,6 @@ public:
 	std::string name;
 protected:
 	bool server;
-	//boost::shared_ptr<CL_ResourceManager> resources;
-	//float x,			y;
 	float xAccel,		yAccel;
 	float xVelocity,	yVelocity;
 	sf::Clock Clock;

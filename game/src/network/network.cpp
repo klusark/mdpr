@@ -7,8 +7,8 @@
 
 Network::Network()
 {
-	Server *server = new Server;
-	server->runServer();
+	//Server *server = new Server;
+	//server->runServer();
 	Client *client = new Client();
 	client->runClient();
 }
