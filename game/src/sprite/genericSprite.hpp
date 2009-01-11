@@ -30,7 +30,6 @@ public:
 
 	std::string name;
 protected:
-	bool server;
 	float xAccel,		yAccel;
 	float xVelocity,	yVelocity;
 	sf::Clock Clock;

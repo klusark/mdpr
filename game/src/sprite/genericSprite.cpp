@@ -16,9 +16,9 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 	:	sf::Sprite(),
 		name(name),
 		Image(tempImage),
-		xVelocity(1),
+		xVelocity(0),
 		yVelocity(0),
-		xAccel(5),
+		xAccel(0),
 		yAccel(0)
 {
 
@@ -120,13 +120,13 @@ void genericSprite::update()
 
 void genericSprite::changeAnimation(std::string name)
 {
-
+#ifndef SERVER
 	if (Animations.find(name) != Animations.end()){
 		currentAnimation = Animations[name];
 	}else{
-		std::cout<<"Error Cannot find Animation";
+		std::cout << "Error Cannot find Animation: " << name << std::endl;
 	}
-
+#endif
 }
 
 sf::IntRect genericSprite::Animation::update()

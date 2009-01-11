@@ -2,13 +2,13 @@
 #include <boost/crc.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
+#include <boost/thread/mutex.hpp>
 
 //#include <ClanLib/core.h>
 //#include <ClanLib/network.h>
 
 #include <iostream>
 
-#include "network.hpp"
 #include "networkClient.hpp"
 #include "packets.hpp"
 #include "../sprite/spriteManager.hpp"
@@ -20,18 +20,10 @@ public:
 		: ioService(ioService)
 	{}
 	void operator()(){
-		for (;;){
-			try
-			{
-				ioService.run();
-			}
-			catch (...)
-			{
-				
-			}
-			
+		try{
+			ioService.run();
+		}catch(...){
 		}
-		return;
 	}
 private:
 	boost::asio::io_service& ioService;
@@ -41,33 +33,39 @@ Network::Client::Client() : socket(ioService)
 {
 	udp::resolver resolver(ioService);
 
-	udp::resolver::query query(udp::v4(), "127.0.0.1", "5000");
+	udp::resolver::query query(udp::v4(), "24.85.77.75", "5000");
 	udp::resolver::iterator iterator = resolver.resolve(query);
 
-	receiver_endpoint = *resolver.resolve(query);
+	receiverEndpoint = *resolver.resolve(query);
 	socket.open(udp::v4());
 
-	socket.async_receive_from(boost::asio::buffer(buffer), receiver_endpoint, boost::bind(&Network::Client::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&Network::Client::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 
 	thread threads(ioService);
-	boost::thread test(threads);
+	ioThread = new boost::thread(threads);
+
+
 }
 
 Network::Client::~Client()
 {
+	ioService.stop();
+	ioThread->join();
+	delete ioThread;
+
 }
 
-bool Network::Client::runClient()
+bool Network::Client::run()
 {
 	try
 	{
-		connectPacket *packet = new connectPacket;
-		packet->packetID = connectPacketID;
-		packet->nameLength = 7;
-		strcpy(packet->name, "klusark");
+		connectPacket packet;
+		packet.packetID = connectPacketID;
+		packet.nameLength = 7;
+		strcpy(packet.name, "klusars");
 		
-		//boost::asio::const_buffer test((const void *)tset, 4);
-		socket.send_to(boost::asio::buffer((const void *)packet, 13), receiver_endpoint);
+		
+		socket.send_to(boost::asio::buffer((const void *)&packet, 13), receiverEndpoint);
 	}
 	catch (std::exception& e)
 	{
@@ -79,13 +77,15 @@ bool Network::Client::runClient()
 
 void Network::Client::onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd)
 {
-	socket.async_receive_from(boost::asio::buffer(buffer), receiver_endpoint, boost::bind(&Network::Client::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
-	if (bytesRecvd == 0){
-		std::cout<<error.message();
-		return;
-	}
+	if (error){
+		std::cout << error.message() << std::endl;
+		
+	}else{
 	packetIDs packetID;
 	memcpy(&packetID, buffer, 4);
+	if (packetID == spritePacketID){
+
+	}
 	switch(packetID)
 	{
 	case spritePacketID:
@@ -97,9 +97,26 @@ void Network::Client::onRecivePacket(const boost::system::error_code& error, siz
 	case spritePosPacketID:
 		{
 			spritePosPacket *packet = (spritePosPacket *)buffer;
+			boost::mutex::scoped_lock lock(sprite.spriteMutex);
+			if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
+				break;
+			}
 			sprite.Sprites[packet->spriteID]->SetX(packet->x);
 			sprite.Sprites[packet->spriteID]->SetY(packet->y);
-				//s(, packet->y);
+		}
+		break;
+	case errorPacketID:
+		{
+			errorPacket *packet = (errorPacket *)buffer;
+			switch(packet->errorID)
+			{
+			case nameInUse:
+				{
+					std::cout << "Error: Name already in use" << std::endl;
+				}
+				break;
+			}
+			
 		}
 		break;
 	default:
@@ -107,47 +124,16 @@ void Network::Client::onRecivePacket(const boost::system::error_code& error, siz
 		break;
 
 	}
-	
+	}
+	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&Network::Client::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }
 
-
-/*void Network::Client::onReciveSprite(CL_NetPacket &packet, CL_NetComputer &computer)
+void Network::Client::sendKeyPress(sf::Key::Code key, bool down)
 {
+	keyPacket packet;
+	packet.packetID = keyPacketID;
+	packet.down = down;
+	packet.key = keyRight;
 
-	//sprite->registerSprite(packet.input.read_string(), packet.input.read_string());
-
+	socket.send_to(boost::asio::buffer((const void *)&packet, 9), receiverEndpoint);
 }
-
-void Network::Client::onReciveSpriteUpdatePos(CL_NetPacket &packet, CL_NetComputer &computer)
-{
-	std::string name = packet.input.read_string();
-	float x = packet.input.read_float32();
-	float y = packet.input.read_float32();
-	sprite->Sprites[name]->setX(x);
-	sprite->Sprites[name]->setY(y);
-
-}
-
-void Network::Client::onReciveSpriteUpdateAccel(CL_NetPacket &packet, CL_NetComputer &computer)
-{
-	std::string name = packet.input.read_string();
-	float xAccel = packet.input.read_float32();
-	float yAccel = packet.input.read_float32();
-	sprite->Sprites[name]->setXAccel(xAccel);
-	sprite->Sprites[name]->setYAccel(yAccel);
-}
-
-void Network::Client::onReciveSpriteUpdateVelocity(CL_NetPacket &packet, CL_NetComputer &computer)
-{
-	std::string name = packet.input.read_string();
-	float xVelocity = packet.input.read_float32();
-	float yVelocity = packet.input.read_float32();
-	//sprite->Sprites[name]->setXVelocity(xAccel);
-	//sprite->Sprites[name]->setYAccel(yAccel);
-}
-
-void Network::Client::onDisconnect(CL_NetComputer &computer)
-{
-	std::cout << "Lost connection to server." << std::endl;
-}
-*/

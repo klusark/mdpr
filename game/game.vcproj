@@ -135,7 +135,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="sfml-system.lib sfml-main.lib sfml-window.lib sfml-graphics.lib"
 				ModuleDefinitionFile=""
-				SubSystem="2"
+				SubSystem="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -184,10 +184,6 @@
 			<Filter
 				Name="Network"
 				>
-				<File
-					RelativePath=".\src\network\network.cpp"
-					>
-				</File>
 				<File
 					RelativePath=".\src\network\networkClient.cpp"
 					>
@@ -258,10 +254,6 @@
 			<Filter
 				Name="Network"
 				>
-				<File
-					RelativePath=".\src\network\network.hpp"
-					>
-				</File>
 				<File
 					RelativePath=".\src\network\networkClient.hpp"
 					>

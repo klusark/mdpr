@@ -5,6 +5,7 @@
 #include <string>
 
 #include <boost/shared_ptr.hpp>
+#include <boost/thread/mutex.hpp>
 
 #include "genericSprite.hpp"
 
@@ -22,11 +23,16 @@ public:
 	void draw(sf::RenderWindow &App);
 	bool isActive();
 	void setActive(bool toggle);
+	boost::mutex spriteMutex;
 private:
     bool active;
 	bool server;
+	
+	
 };
 
+#ifndef SERVER
 extern spriteManager sprite;
+#endif
 
 #endif //spriteManager_hpp

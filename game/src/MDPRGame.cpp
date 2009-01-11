@@ -1,23 +1,41 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Image.hpp>
+//#include <SFML/Window/Window.hpp>
 
 #include <iostream>
 
 #include "MDPRGame.hpp"
 #include "sprite/player.hpp"
-#include "network/network.hpp"
+#include "network/networkClient.hpp"
 #include "menu/menuManager.hpp"
 #include "sprite/spriteManager.hpp"
 #include "sprite/player.hpp"
 
-MDPRGame::MDPRGame(sf::RenderWindow &App) : App(App), quit(false)
+sf::RenderWindow App;
+MDPRGame MDPR(App);
+
+int main(int argc, char** argv)
 {
-	
+	try {
+		// Set display mode
+		App.Create(sf::VideoMode(640, 400, 32), "Marshmallow Duel: Percy's Return");
+		App.EnableKeyRepeat(false);
+		MDPR.run();
+	}catch (std::exception& e){
+		std::cout << "Exception: " << e.what() << std::endl;
+	}
+	return 0;
+}
+
+
+MDPRGame::MDPRGame(sf::RenderWindow &App) 
+	:	App(App),
+		quit(false)
+{
 }
 
 MDPRGame::~MDPRGame()
 {
-
 }
 
 void MDPRGame::run()
@@ -37,7 +55,8 @@ void MDPRGame::run()
 
 	sprite.setActive(true);
 	
-	boost::shared_ptr<Network> network(new Network);
+	boost::shared_ptr<Network::Client> networkClient(new Network::Client);
+	networkClient->run();
 
 	while(!quit)
 	{
@@ -49,12 +68,12 @@ void MDPRGame::run()
 				quit = true;
 			}
 
-			/*if (Event.Type == sf::Event::KeyPressed){
-				testsetset = Event.Key.Code;
+			if (Event.Type == sf::Event::KeyPressed){
+				networkClient->sendKeyPress(Event.Key.Code, true);
 			}
 			if (Event.Type == sf::Event::KeyReleased){
-				testsetset = Event.Key.Code;
-			}*/
+				networkClient->sendKeyPress(Event.Key.Code, false);
+			}
 		}
 
 		//if (menu->isActive()){
@@ -90,8 +109,6 @@ void MDPRGame::run()
 
 		*/
 
-
-		
 		App.Display();
 	}
 }
