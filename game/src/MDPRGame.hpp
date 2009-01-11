@@ -13,4 +13,6 @@ private:
 	sf::Clock Clock;
 };
 
+extern MDPRGame MDPR;
+
 #endif //MDPRGame_hpp

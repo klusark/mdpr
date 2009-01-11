@@ -2,36 +2,31 @@
 #define networkClient_hpp
 
 #include <boost/asio.hpp>
-//#include <ClanLib/core.h>
-//#include <ClanLib/network.h>
+#include <boost/thread.hpp>
+
+#include <SFML/Window/Event.hpp>
 
 class spriteManager;
 using boost::asio::ip::udp;
-class Network::Client
-{
-public:
-	Client();
-	~Client();
-	bool runClient();
-protected:
-	boost::asio::io_service ioService;
-	udp::socket socket;
-	char buffer[512];
-	udp::endpoint receiver_endpoint;
+namespace Network{
+	class Client
+	{
+	public:
+		Client();
+		~Client();
+		bool run();
+		void sendKeyPress(sf::Key::Code key, bool down);
+	protected:
+		boost::asio::io_service ioService;
+		udp::socket socket;
+		char buffer[512];
+		udp::endpoint receiverEndpoint;
 
-	void onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd);
+		boost::thread *ioThread;
 
-	/*void onDisconnect(CL_NetComputer &computer);
-	void onReciveSprite(CL_NetPacket &packet, CL_NetComputer &computer);
+		void onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd);
 
-	void onReciveSpriteUpdatePos(CL_NetPacket &packet, CL_NetComputer &computer);
-	void onReciveSpriteUpdateAccel(CL_NetPacket &packet, CL_NetComputer &computer);
-	void onReciveSpriteUpdateVelocity(CL_NetPacket &packet, CL_NetComputer &computer);
-
-	boost::shared_ptr<CL_NetSession> netsession;
-	CL_Slot slotDisconnect, slotReciveSprite, slotReciveSpriteUpdatePos, slotReciveSpriteUpdateVelocity, slotReciveSpriteUpdateAccel;
-	*/
-
-};
+	};
+}
 
 #endif //networkClient_hpp

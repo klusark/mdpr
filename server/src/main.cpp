@@ -2,7 +2,9 @@
 
 int main()
 {
-	Network::Server test;
-
-
+	try {
+		Network::Server server;
+	}catch(std::exception& e){
+		std::cout << "Exception: " << e.what() << "\n";
+	}
 }

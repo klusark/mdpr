@@ -41,12 +41,12 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\game\src\"
-				PreprocessorDefinitions="_WIN32_WINNT=0x0501;SERVER"
+				PreprocessorDefinitions="_WIN32_WINNT=0x0501;SERVER;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				WarningLevel="3"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -59,7 +59,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sfml-system-d.lib sfml-main-d.lib sfml-window-d.lib sfml-graphics-d.lib"
+				AdditionalDependencies="sfml-graphics-d.lib sfml-system-d.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -114,7 +114,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\game\src"
-				PreprocessorDefinitions="_WIN32_WINNT=0x0501"
+				PreprocessorDefinitions="_WIN32_WINNT=0x0501;SERVER"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
@@ -131,6 +131,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="sfml-graphics.lib sfml-system.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -200,6 +201,10 @@
 			</File>
 			<File
 				RelativePath="..\game\src\network\networkServer.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\game\src\network\packets.hpp"
 				>
 			</File>
 			<File
