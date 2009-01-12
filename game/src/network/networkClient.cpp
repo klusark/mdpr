@@ -4,11 +4,11 @@
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
 
-//#include <ClanLib/core.h>
-//#include <ClanLib/network.h>
+
 
 #include <iostream>
 
+#include "../MDPRGame.hpp"
 #include "networkClient.hpp"
 #include "packets.hpp"
 #include "../sprite/spriteManager.hpp"
@@ -29,7 +29,9 @@ private:
 	boost::asio::io_service& ioService;
 };
 
-Network::Client::Client() : socket(ioService)
+Network::Client::Client()
+	:	socket(ioService),
+		inGame(true)
 {
 	udp::resolver resolver(ioService);
 
@@ -61,11 +63,11 @@ bool Network::Client::run()
 	{
 		connectPacket packet;
 		packet.packetID = connectPacketID;
-		packet.nameLength = 7;
-		strcpy(packet.name, "klusars");
+		packet.nameLength = MDPR.playerName.length();
+		strcpy(packet.name, MDPR.playerName.c_str());
 		
 		
-		socket.send_to(boost::asio::buffer((const void *)&packet, 13), receiverEndpoint);
+		socket.send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), receiverEndpoint);
 	}
 	catch (std::exception& e)
 	{
@@ -130,10 +132,19 @@ void Network::Client::onRecivePacket(const boost::system::error_code& error, siz
 
 void Network::Client::sendKeyPress(sf::Key::Code key, bool down)
 {
+	if (!inGame){
+		return;
+	}
 	keyPacket packet;
 	packet.packetID = keyPacketID;
 	packet.down = down;
-	packet.key = keyRight;
+	if (key == sf::Key::D){
+		packet.key = keyRight;
+	}else if (key == sf::Key::A){
+		packet.key = keyLeft;
+	}else{
+		return;
+	}
 
 	socket.send_to(boost::asio::buffer((const void *)&packet, 9), receiverEndpoint);
 }

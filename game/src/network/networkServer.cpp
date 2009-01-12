@@ -15,6 +15,7 @@
 #include "packets.hpp"
 #include "../sprite/spriteManager.hpp"
 #include "../sprite/genericSprite.hpp"
+#include "../sprite/player.hpp"
 
 struct thread
 {
@@ -126,18 +127,31 @@ void Network::Server::onRecivePacket(const boost::system::error_code& error, siz
 			
 			
 			std::cout << "Player " << player->name << " connected from " << player->endpoint.address().to_v4().to_string() << std::endl;
+			{
+				spriteManager::spriteContainer::iterator iter;
+				for(iter = ServerSpriteManager->Sprites.begin(); iter != ServerSpriteManager->Sprites.end(); ++iter){
 
-			spriteManager::spriteContainer::iterator iter;
-			for(iter = ServerSpriteManager->Sprites.begin(); iter != ServerSpriteManager->Sprites.end(); ++iter){
-				//boost::shared_ptr<genericSprite> tempSprite = iter->second;
+					spritePacket packet;
+					packet.packetID = spritePacketID;
+					packet.nameLength = iter->second->name.length();
+					strcpy(packet.name, iter->second->name.c_str());
 
-				spritePacket packet;
-				packet.packetID = spritePacketID;
-				packet.nameLength = iter->second->name.length();
-				strcpy(packet.name, iter->second->name.c_str());
+					serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), player->endpoint, boost::bind(&Network::Server::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+					
+				}
+			}
+			{
+				playerContainer::iterator iter;
+				for(iter = Players.begin(); iter != Players.end(); ++iter){
 
-				serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), player->endpoint, boost::bind(&Network::Server::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
-				
+					spritePacket packet;
+					packet.packetID = spritePacketID;
+					packet.nameLength = player->sprite->name.length();
+					strcpy(packet.name, player->sprite->name.c_str());
+
+					serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), iter->second->endpoint, boost::bind(&Network::Server::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+					
+				}
 			}
 			Players[endpoint.port()] = player;
 
@@ -147,10 +161,17 @@ void Network::Server::onRecivePacket(const boost::system::error_code& error, siz
 	case keyPacketID:
 		{
 			keyPacket *packet = (keyPacket *)buffer;
-			if (packet->down)
-				Players.find(endpoint.port())->second->sprite->SetX(50);
-			else
-				Players.find(endpoint.port())->second->sprite->SetX(100);
+			if (Players.find(endpoint.port()) == Players.end()){
+				return;
+			}
+			dynamic_cast<Player *>(Players[endpoint.port()]->sprite.get())->keyMap[packet->key] = packet->down;
+
+			/*if (packet->down){
+				float velocity = (-1*(packet->key == keyLeft)+(packet->key == keyRight))*60;
+				Players.find(endpoint.port())->second->sprite->setXVelocity(velocity);//->SetX(50);
+			}else{
+				Players.find(endpoint.port())->second->sprite->setXVelocity(0);//SetX(100);
+			}*/
 		}
 		break;
 	default:
@@ -197,7 +218,7 @@ void Network::Server::onSpriteUpdate(const boost::system::error_code& error)
 			}
 		}*/
 	}
-	timer.expires_from_now(boost::posix_time::milliseconds(100));
+	timer.expires_from_now(boost::posix_time::milliseconds(15));
 	timer.async_wait(boost::bind(&Network::Server::onSpriteUpdate, this, boost::asio::placeholders::error));
 
 }
