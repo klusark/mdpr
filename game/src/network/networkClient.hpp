@@ -17,6 +17,7 @@ namespace Network{
 		bool run();
 		void sendKeyPress(sf::Key::Code key, bool down);
 	protected:
+		bool inGame;
 		boost::asio::io_service ioService;
 		udp::socket socket;
 		char buffer[512];

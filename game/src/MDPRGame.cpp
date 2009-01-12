@@ -30,7 +30,8 @@ int main(int argc, char** argv)
 
 MDPRGame::MDPRGame(sf::RenderWindow &App) 
 	:	App(App),
-		quit(false)
+		quit(false),
+		playerName("klusark")
 {
 }
 

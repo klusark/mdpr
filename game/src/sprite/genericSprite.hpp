@@ -23,7 +23,7 @@ public:
 	void setXVelocity(float xVelocity);
 	void setYVelocity(float yVelocity);
 
-	void update();
+	virtual void update();
 	float round(float number);
 	void changeAnimation(std::string name);
 	void loadAnimation(std::string name);
