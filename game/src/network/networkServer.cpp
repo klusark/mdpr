@@ -38,7 +38,7 @@ private:
 	boost::asio::io_service& ioService;
 };
 
-Network::Server::Server() 
+networkServer::networkServer() 
 	:
 		serverSocket(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 5000)),
 		timer(ioService, boost::posix_time::seconds(2))
@@ -47,9 +47,9 @@ Network::Server::Server()
 	ServerSpriteManager = tmpSprite;
 	posUpdate = 0;
 
-	serverSocket.async_receive_from(boost::asio::buffer(buffer), endpoint, boost::bind(&Network::Server::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	serverSocket.async_receive_from(boost::asio::buffer(buffer), endpoint, boost::bind(&networkServer::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 
-	timer.async_wait(boost::bind(&Network::Server::onSpriteUpdate, this, boost::asio::placeholders::error));
+	timer.async_wait(boost::bind(&networkServer::onSpriteUpdate, this, boost::asio::placeholders::error));
 	//thread threads(ioService);
 	//boost::thread test(threads);
 #ifdef SERVER
@@ -58,11 +58,11 @@ Network::Server::Server()
 
 }
 
-Network::Server::~Server()
+networkServer::~networkServer()
 {
 }
 
-bool Network::Server::runServer()
+bool networkServer::runServer()
 {
 
 	std::cout << "Server Started" << std::endl;
@@ -71,7 +71,7 @@ bool Network::Server::runServer()
 	return true;
 }
 
-void Network::Server::onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd)
+void networkServer::onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd)
 {
 	if (error){
 		std::cout<<error.message()<<std::endl;
@@ -114,7 +114,7 @@ void Network::Server::onRecivePacket(const boost::system::error_code& error, siz
 				errorPacket packet;
 				packet.packetID = errorPacketID;
 				packet.errorID = nameInUse;
-				serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 8), endpoint, boost::bind(&Network::Server::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+				serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 8), endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 				return;
 			}
 
@@ -136,7 +136,7 @@ void Network::Server::onRecivePacket(const boost::system::error_code& error, siz
 					packet.nameLength = iter->second->name.length();
 					strcpy(packet.name, iter->second->name.c_str());
 
-					serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), player->endpoint, boost::bind(&Network::Server::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+					serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 					
 				}
 			}
@@ -149,7 +149,7 @@ void Network::Server::onRecivePacket(const boost::system::error_code& error, siz
 					packet.nameLength = player->sprite->name.length();
 					strcpy(packet.name, player->sprite->name.c_str());
 
-					serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), iter->second->endpoint, boost::bind(&Network::Server::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+					serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 					
 				}
 			}
@@ -180,18 +180,18 @@ void Network::Server::onRecivePacket(const boost::system::error_code& error, siz
 
 	}
 	}
-	serverSocket.async_receive_from(boost::asio::buffer(buffer), endpoint, boost::bind(&Network::Server::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	serverSocket.async_receive_from(boost::asio::buffer(buffer), endpoint, boost::bind(&networkServer::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 	
 }
 
-void Network::Server::handleSendTo(const boost::system::error_code& error, size_t bytes_sent)
+void networkServer::handleSendTo(const boost::system::error_code& error, size_t bytes_sent)
 {
 	if (error){
 		std::cout<<error.message()<<std::endl;
 	}
 }
 
-void Network::Server::onSpriteUpdate(const boost::system::error_code& error)
+void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 {
 	
 	ServerSpriteManager->update();
@@ -207,7 +207,7 @@ void Network::Server::onSpriteUpdate(const boost::system::error_code& error)
 
 		playerContainer::iterator iter;
 		for( iter = Players.begin(); iter != Players.end(); ++iter ) {
-			serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(packet)), iter->second->endpoint, boost::bind(&Network::Server::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+			serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(packet)), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 		}
 		/*for (unsigned short i = 0; i < Players.size(); ++i){
 			try {
@@ -219,7 +219,7 @@ void Network::Server::onSpriteUpdate(const boost::system::error_code& error)
 		}*/
 	}
 	timer.expires_from_now(boost::posix_time::milliseconds(15));
-	timer.async_wait(boost::bind(&Network::Server::onSpriteUpdate, this, boost::asio::placeholders::error));
+	timer.async_wait(boost::bind(&networkServer::onSpriteUpdate, this, boost::asio::placeholders::error));
 
 }
 
