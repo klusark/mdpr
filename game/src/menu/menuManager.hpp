@@ -4,8 +4,7 @@
 #include <map>
 #include "menuGeneric.hpp"
 #include <boost/shared_ptr.hpp>
-#include <CEGUI.h>
-#include <openglrenderer.h>
+
 
 class menuGeneric;
 
@@ -23,7 +22,6 @@ private:
 	menuContainer menus;
 	boost::shared_ptr<menuGeneric> currentMenu;
 	bool active;
-	CEGUI::OpenGLRenderer* myRenderer;
 };
 extern menuManager menu;
 #endif

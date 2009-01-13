@@ -12,11 +12,12 @@ public:
 	std::string playerName;
 	std::string serverIP;
 	std::string serverPort;
-private:
 	sf::RenderWindow &App;
+private:
+
 	bool quit;
 	sf::Clock Clock;
-	
+
 };
 
 extern MDPRGame MDPR;

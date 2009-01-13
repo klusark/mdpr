@@ -1,7 +1,5 @@
 #include <iostream>
 #include <boost/shared_ptr.hpp>
-#include <openglrenderer.h>
-#include <CEGUI.h>
 #include "menuManager.hpp"
 
 menuManager menu;
@@ -32,7 +30,7 @@ menuManager::~menuManager()
 void menuManager::update()
 {
 	//CEGUI::System::getSingleton().renderGUI();
-	
+
 }
 
 void menuManager::changeCurrentMenu(std::string menuName)
