@@ -41,4 +41,13 @@ add_definitions(
 
 add_executable( game ${SOURCES} )
 
-target_link_libraries( game sfml-graphics sfml-window sfml-system boost_system-gcc43-mt-1_35 boost_thread-gcc43-mt-1_35 boost_program_options-gcc43-mt-1_35 )
+set(LINKFILES
+	optimized sfml-graphics
+	debug sfml-graphics-d
+	optimized sfml-window
+	debug sfml-window-d
+	optimized sfml-system
+	debug sfml-system-d
+)
+
+target_link_libraries( game ${LINKFILES} )
