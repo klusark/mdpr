@@ -60,7 +60,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sfml-system-d.lib sfml-main-d.lib sfml-window-d.lib sfml-graphics-d.lib"
+				AdditionalDependencies="sfml-system-d.lib sfml-main-d.lib sfml-window-d.lib sfml-graphics-d.lib CEGUIBase_d.lib OpenGLGUIRenderer_d.lib glu32.lib"
 				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"

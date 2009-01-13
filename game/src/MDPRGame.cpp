@@ -31,7 +31,9 @@ int main(int argc, char** argv)
 MDPRGame::MDPRGame(sf::RenderWindow &App) 
 	:	App(App),
 		quit(false),
-		playerName("klusark")
+		playerName("klusark"),
+		serverIP("127.0.0.1"),
+		serverPort("9935")
 {
 }
 
@@ -46,9 +48,6 @@ void MDPRGame::run()
 	float seconds, fps = 0;
 
 
-	//boost::shared_ptr<menuManager> tmpMenu(new menuManager(resources));
-	//menu = tmpMenu;
-	//menu->setActive(false);
 	boost::shared_ptr<genericSprite> Sprite(new Player("Player"));
 
 	//boost::shared_ptr<spriteManager> tmpSprite(new spriteManager);
@@ -78,7 +77,7 @@ void MDPRGame::run()
 		}
 
 		//if (menu->isActive()){
-		//	menu->update();
+			menu.update();
 		//}
 
 

@@ -40,7 +40,7 @@ private:
 
 networkServer::networkServer() 
 	:
-		serverSocket(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 5000)),
+		serverSocket(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 9935)),
 		timer(ioService, boost::posix_time::seconds(2))
 {
 	boost::shared_ptr<spriteManager> tmpSprite(new spriteManager(true));
