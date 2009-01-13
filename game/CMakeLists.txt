@@ -29,6 +29,14 @@ set(SOURCES
   src/menu/menuManager.hpp
   src/menu/menuOptions.hpp
   src/menu/menuProfile.hpp
+  src/menu/GUI/window.cpp
+  src/menu/GUI/window.hpp
+  src/menu/GUI/clickable.cpp
+  src/menu/GUI/clickable.hpp
+  src/menu/GUI/button.cpp
+  src/menu/GUI/button.hpp
+  src/menu/GUI/widget.cpp
+  src/menu/GUI/widget.hpp
 )
 
 include_directories( 
@@ -41,6 +49,10 @@ add_definitions(
 
 add_executable( game ${SOURCES} )
 
+SET(Boost_USE_MULTITHREAD ON)
+
+FIND_PACKAGE( Boost 1.35 COMPONENTS system program_options thread)
+
 set(LINKFILES
 	optimized sfml-graphics
 	debug sfml-graphics-d
@@ -48,6 +60,7 @@ set(LINKFILES
 	debug sfml-window-d
 	optimized sfml-system
 	debug sfml-system-d
+	${Boost_LIBRARIES}
 )
 
 target_link_libraries( game ${LINKFILES} )

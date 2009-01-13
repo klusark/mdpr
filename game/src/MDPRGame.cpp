@@ -1,6 +1,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Image.hpp>
 //#include <SFML/Window/Window.hpp>
+#include "menu/GUI/window.hpp"
 
 #include <iostream>
 
@@ -28,7 +29,7 @@ int main(int argc, char** argv)
 }
 
 
-MDPRGame::MDPRGame(sf::RenderWindow &App) 
+MDPRGame::MDPRGame(sf::RenderWindow &App)
 	:	App(App),
 		quit(false),
 		playerName("klusark"),
@@ -54,9 +55,10 @@ void MDPRGame::run()
 	//sprite = tmpSprite;
 
 	sprite.setActive(true);
-	
+
 	boost::shared_ptr<Network::Client> networkClient(new Network::Client);
 	networkClient->run();
+	GUI::window test(540,300,50,50);
 
 	while(!quit)
 	{
@@ -77,12 +79,13 @@ void MDPRGame::run()
 		}
 
 		//if (menu->isActive()){
-			menu.update();
+			//menu.update();
 		//}
+		test.draw();
 
 
 		//network->update();
-		
+
         if (sprite.isActive()){
 			sprite.update();
 			sprite.draw(App);
@@ -90,7 +93,7 @@ void MDPRGame::run()
 
 		}
 
-		
+
 		Frames++;
 		seconds = Clock.GetElapsedTime();
 		if (seconds >= 5) {
