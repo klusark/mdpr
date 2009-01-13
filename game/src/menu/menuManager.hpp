@@ -1,19 +1,21 @@
-/*#ifndef menuManager_hpp
+#ifndef menuManager_hpp
 #define menuManager_hpp
 
 #include <map>
 #include "menuGeneric.hpp"
 #include <boost/shared_ptr.hpp>
+#include <CEGUI.h>
+#include <openglrenderer.h>
 
 class menuGeneric;
 
 class menuManager
 {
 public:
-	menuManager(CL_ResourceManager resources);
+	menuManager();
 	~menuManager();
 	void update();
-	void changeCurrentMenu(std::string const &menuName);
+	void changeCurrentMenu(std::string menuName);
 	bool isActive();
 	void setActive(bool toggle);
 private:
@@ -21,7 +23,7 @@ private:
 	menuContainer menus;
 	boost::shared_ptr<menuGeneric> currentMenu;
 	bool active;
+	CEGUI::OpenGLRenderer* myRenderer;
 };
-extern boost::shared_ptr<menuManager> menu;
+extern menuManager menu;
 #endif
-*/

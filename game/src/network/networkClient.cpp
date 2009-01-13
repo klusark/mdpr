@@ -13,6 +13,7 @@
 #include "networkClient.hpp"
 #include "packets.hpp"
 #include "../sprite/spriteManager.hpp"
+
 using boost::asio::ip::udp;
 struct thread
 {
@@ -36,7 +37,7 @@ Network::Client::Client()
 {
 	udp::resolver resolver(ioService);
 
-	udp::resolver::query query(udp::v4(), "24.85.77.75", "5000");
+	udp::resolver::query query(udp::v4(), MDPR.serverIP, MDPR.serverPort);
 	udp::resolver::iterator iterator = resolver.resolve(query);
 
 	receiverEndpoint = *resolver.resolve(query);
