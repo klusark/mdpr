@@ -2,9 +2,9 @@
 #include <SFML/Graphics/Image.hpp>
 //#include <SFML/Window/Window.hpp>
 #include "menu/GUI/window.hpp"
-
+#include <boost/program_options.hpp>
 #include <iostream>
-
+#include <fstream>
 #include "MDPRGame.hpp"
 #include "sprite/player.hpp"
 #include "network/networkClient.hpp"
@@ -32,10 +32,25 @@ int main(int argc, char** argv)
 MDPRGame::MDPRGame(sf::RenderWindow &App)
 	:	App(App),
 		quit(false),
-		playerName("klusark"),
-		serverIP("127.0.0.1"),
+		playerName("No Name"),
+		serverIP("24.85.77.75"),
 		serverPort("9935")
 {
+	//std::string playerName;
+	boost::program_options::options_description config("Configuration");
+	config.add_options()
+		//("animation",	boost::program_options::value<std::vector<std::string> >(&animations), "")
+		("playerName",		boost::program_options::value<std::string>(&playerName), "");
+
+	boost::program_options::variables_map configVariableMap;
+
+	boost::program_options::options_description configFileOptions;
+	configFileOptions.add(config);
+	
+	std::ifstream configFileStream("conf");
+
+	boost::program_options::store(parse_config_file(configFileStream, configFileOptions), configVariableMap);
+	notify(configVariableMap);
 }
 
 MDPRGame::~MDPRGame()
@@ -81,7 +96,7 @@ void MDPRGame::run()
 		//if (menu->isActive()){
 			//menu.update();
 		//}
-		test.draw();
+		//test.draw();
 
 
 		//network->update();

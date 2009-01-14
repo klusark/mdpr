@@ -15,7 +15,7 @@ public:
 	~networkServer();
 	bool runServer();
 protected:
-	boost::asio::io_service ioService;
+	static boost::asio::io_service ioService;
 	boost::asio::ip::udp::socket serverSocket;
 	char buffer[512];
 	boost::asio::ip::udp::endpoint endpoint;
@@ -38,9 +38,12 @@ protected:
 	class playerInfo
 	{
 	public:
+		playerInfo():timer(networkServer::ioService){}
+		void disconnect(const boost::system::error_code& e);
 		std::string name;
 		boost::shared_ptr<genericSprite> sprite;
 		boost::asio::ip::udp::endpoint endpoint;
+		boost::asio::deadline_timer timer;
 
 
 	};

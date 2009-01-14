@@ -17,6 +17,8 @@
 #include "../sprite/genericSprite.hpp"
 #include "../sprite/player.hpp"
 
+boost::asio::io_service networkServer::ioService;
+
 struct thread
 {
 public:
@@ -94,91 +96,100 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 		std::cout<<error.message()<<std::endl;
 	}else{
 
-	packetIDs packetID;
-	memcpy(&packetID, buffer, 4);
-	switch(packetID)
-	{
-	case connectPacketID:
-		
-		{
-			connectPacket *packet = (connectPacket *)buffer;
-
-			boost::crc_16_type  result;
-			result.process_bytes(packet->name, packet->nameLength);
-			std::stringstream buf;
-			buf << result.checksum();
-			int playerID = atoi(buf.str().c_str());
-
-			if (ServerSpriteManager->Sprites.find(playerID) != ServerSpriteManager->Sprites.end()){
-				//Player with the same name is already in the game
-				errorPacket packet;
-				packet.packetID = errorPacketID;
-				packet.errorID = nameInUse;
-				serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 8), endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
-				return;
-			}
-
-			boost::shared_ptr<playerInfo> player(new playerInfo);
-			player->endpoint = endpoint;
-			player->name = packet->name;
+		if (Players.find(endpoint.port()) != Players.end()){
+			Players[endpoint.port()]->timer.expires_from_now(boost::posix_time::seconds(20));
+			Players[endpoint.port()]->timer.async_wait(boost::bind(&networkServer::playerInfo::disconnect, Players[endpoint.port()], boost::asio::placeholders::error));
 			
-			ServerSpriteManager->registerSprite("player", player->name);
-			player->sprite = ServerSpriteManager->Sprites[playerID];
-			
-			
-			std::cout << "Player " << player->name << " connected from " << player->endpoint.address().to_v4().to_string() << std::endl;
-			{
-				spriteManager::spriteContainer::iterator iter;
-				for(iter = ServerSpriteManager->Sprites.begin(); iter != ServerSpriteManager->Sprites.end(); ++iter){
-
-					spritePacket packet;
-					packet.packetID = spritePacketID;
-					packet.nameLength = iter->second->name.length();
-					strcpy(packet.name, iter->second->name.c_str());
-
-					serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
-					
-				}
-			}
-			{
-				playerContainer::iterator iter;
-				for(iter = Players.begin(); iter != Players.end(); ++iter){
-
-					spritePacket packet;
-					packet.packetID = spritePacketID;
-					packet.nameLength = player->sprite->name.length();
-					strcpy(packet.name, player->sprite->name.c_str());
-
-					serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
-					
-				}
-			}
-			Players[endpoint.port()] = player;
-
-		
 		}
-		break;
-	case keyPacketID:
+
+		packetIDs packetID;
+		memcpy(&packetID, buffer, 4);
+		switch(packetID)
 		{
-			keyPacket *packet = (keyPacket *)buffer;
-			if (Players.find(endpoint.port()) == Players.end()){
-				return;
+		case connectPacketID:
+			
+			{
+				connectPacket *packet = (connectPacket *)buffer;
+
+				boost::crc_16_type  result;
+				result.process_bytes(packet->name, packet->nameLength);
+				std::stringstream buf;
+				buf << result.checksum();
+				int playerID = atoi(buf.str().c_str());
+
+				if (ServerSpriteManager->Sprites.find(playerID) != ServerSpriteManager->Sprites.end()){
+					//Player with the same name is already in the game
+					errorPacket packet;
+					packet.packetID = errorPacketID;
+					packet.errorID = nameInUse;
+					serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 8), endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+					return;
+				}
+
+				boost::shared_ptr<playerInfo> player(new playerInfo);
+				player->endpoint = endpoint;
+				player->name = packet->name;
+				
+				ServerSpriteManager->registerSprite("player", player->name);
+				player->sprite = ServerSpriteManager->Sprites[playerID];
+				//player->timer.expires_from_now(boost::posix_time::seconds(20));
+				player->timer.async_wait(boost::bind(&networkServer::playerInfo::disconnect, player, boost::asio::placeholders::error));
+				
+				
+				
+				std::cout << "Player " << player->name << " connected from " << player->endpoint.address().to_v4().to_string() << std::endl;
+				{
+					spriteManager::spriteContainer::iterator iter;
+					for(iter = ServerSpriteManager->Sprites.begin(); iter != ServerSpriteManager->Sprites.end(); ++iter){
+
+						spritePacket packet;
+						packet.packetID = spritePacketID;
+						packet.nameLength = iter->second->name.length();
+						strcpy(packet.name, iter->second->name.c_str());
+
+						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+						
+					}
+				}
+				{
+					playerContainer::iterator iter;
+					for(iter = Players.begin(); iter != Players.end(); ++iter){
+
+						spritePacket packet;
+						packet.packetID = spritePacketID;
+						packet.nameLength = player->sprite->name.length();
+						strcpy(packet.name, player->sprite->name.c_str());
+
+						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+						
+					}
+				}
+				Players[endpoint.port()] = player;
+
+			
 			}
-			dynamic_cast<Player *>(Players[endpoint.port()]->sprite.get())->keyMap[packet->key] = packet->down;
+			break;
+		case keyPacketID:
+			{
+				keyPacket *packet = (keyPacket *)buffer;
+				if (Players.find(endpoint.port()) == Players.end()){
+					return;
+				}
+				dynamic_cast<Player *>(Players[endpoint.port()]->sprite.get())->keyMap[packet->key] = packet->down;
 
-			/*if (packet->down){
-				float velocity = (-1*(packet->key == keyLeft)+(packet->key == keyRight))*60;
-				Players.find(endpoint.port())->second->sprite->setXVelocity(velocity);//->SetX(50);
-			}else{
-				Players.find(endpoint.port())->second->sprite->setXVelocity(0);//SetX(100);
-			}*/
+				/*if (packet->down){
+					float velocity = (-1*(packet->key == keyLeft)+(packet->key == keyRight))*60;
+					Players.find(endpoint.port())->second->sprite->setXVelocity(velocity);//->SetX(50);
+				}else{
+					Players.find(endpoint.port())->second->sprite->setXVelocity(0);//SetX(100);
+				}*/
+			}
+			break;
+		default:
+			std::cout << "Error in packed recved." << std::endl;
+			break;
+
 		}
-		break;
-	default:
-		std::cout << "Error in packed recved." << std::endl;
-		break;
-
-	}
 	}
 	serverSocket.async_receive_from(boost::asio::buffer(buffer), endpoint, boost::bind(&networkServer::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 	
@@ -192,8 +203,7 @@ void networkServer::handleSendTo(const boost::system::error_code& error, size_t 
 }
 
 void networkServer::onSpriteUpdate(const boost::system::error_code& error)
-{
-	
+{	
 	ServerSpriteManager->update();
 	for(spriteManager::spriteContainer::iterator it = ServerSpriteManager->Sprites.begin(); it != ServerSpriteManager->Sprites.end(); ++it){
 		boost::shared_ptr<genericSprite> currentSprite = it->second;
@@ -220,6 +230,15 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 	}
 	timer.expires_from_now(boost::posix_time::milliseconds(15));
 	timer.async_wait(boost::bind(&networkServer::onSpriteUpdate, this, boost::asio::placeholders::error));
+
+}
+
+void networkServer::playerInfo::disconnect(const boost::system::error_code& e)
+{
+	if (e == boost::asio::error::operation_aborted){
+		return;
+	}
+	std::cout<<"asdfasfasfasdfasdf";
 
 }
 
