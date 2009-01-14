@@ -236,6 +236,26 @@
 					RelativePath=".\src\menu\menuProfile.cpp"
 					>
 				</File>
+				<Filter
+					Name="GUI"
+					>
+					<File
+						RelativePath=".\src\menu\GUI\button.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\menu\GUI\clickable.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\menu\GUI\widget.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\menu\GUI\window.cpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -310,6 +330,26 @@
 					RelativePath=".\src\menu\menuProfile.hpp"
 					>
 				</File>
+				<Filter
+					Name="GUI"
+					>
+					<File
+						RelativePath=".\src\menu\GUI\button.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\menu\GUI\clickable.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\menu\GUI\widget.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\menu\GUI\window.hpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

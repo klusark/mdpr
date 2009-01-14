@@ -6,8 +6,11 @@
 
 namespace GUI
 {
-	class button : public clickable, widget
+	class button : public widget, clickable
 	{
+	public:
+		button();
+		~button();
 
 	};
 }
