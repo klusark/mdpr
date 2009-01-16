@@ -15,7 +15,7 @@ namespace GUI
 		~window();
 		void addWidget(boost::shared_ptr<widget> newWidget);
 		void draw();
-		void makeCurve(float x, float y, sf::Color color);
+		void makeCurve(float x, float y, sf::Color color, int startValue, int endValue, bool negitive);
 		typedef std::vector<boost::shared_ptr<widget> > widgetContainter;
 		widgetContainter widgets;
 		unsigned short width, height;

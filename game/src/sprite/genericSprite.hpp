@@ -57,4 +57,4 @@ protected:
 
 };
 
-#endif
+#endif // ifndef genericSprite_hpp

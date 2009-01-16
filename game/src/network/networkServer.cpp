@@ -16,6 +16,7 @@
 #include "../sprite/spriteManager.hpp"
 #include "../sprite/genericSprite.hpp"
 #include "../sprite/player.hpp"
+#include "../sprite/platform.hpp"
 
 boost::asio::io_service networkServer::ioService;
 
@@ -54,6 +55,8 @@ networkServer::networkServer()
 	timer.async_wait(boost::bind(&networkServer::onSpriteUpdate, this, boost::asio::placeholders::error));
 	//thread threads(ioService);
 	//boost::thread test(threads);
+	boost::shared_ptr<genericSprite> platform(new Platform("platform0"));
+	ServerSpriteManager->registerSprite(platform);
 #ifdef SERVER
 	ioService.run();
 #endif
@@ -203,7 +206,10 @@ void networkServer::handleSendTo(const boost::system::error_code& error, size_t 
 }
 
 void networkServer::onSpriteUpdate(const boost::system::error_code& error)
-{	
+{
+	if (error == boost::asio::error::operation_aborted){
+		std::cout<<"What?";
+	}
 	ServerSpriteManager->update();
 	for(spriteManager::spriteContainer::iterator it = ServerSpriteManager->Sprites.begin(); it != ServerSpriteManager->Sprites.end(); ++it){
 		boost::shared_ptr<genericSprite> currentSprite = it->second;
@@ -219,14 +225,6 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 		for( iter = Players.begin(); iter != Players.end(); ++iter ) {
 			serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(packet)), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 		}
-		/*for (unsigned short i = 0; i < Players.size(); ++i){
-			try {
-				//serverSocket.send_to(boost::asio::buffer((const void *)&packet, sizeof(packet)), Players[i]->endpoint);
-				
-			}catch (std::exception& e){
-				std::cout<<e.what();
-			}
-		}*/
 	}
 	timer.expires_from_now(boost::posix_time::milliseconds(15));
 	timer.async_wait(boost::bind(&networkServer::onSpriteUpdate, this, boost::asio::placeholders::error));

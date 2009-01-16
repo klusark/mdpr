@@ -11,6 +11,7 @@
 #include "menu/menuManager.hpp"
 #include "sprite/spriteManager.hpp"
 #include "sprite/player.hpp"
+#include "sprite/platform.hpp"
 
 sf::RenderWindow App;
 MDPRGame MDPR(App);
@@ -19,7 +20,9 @@ int main(int argc, char** argv)
 {
 	try {
 		// Set display mode
-		App.Create(sf::VideoMode(640, 400, 32), "Marshmallow Duel: Percy's Return");
+		sf::WindowSettings test(24,8,6);
+		//test.AntialiasingLevel 8;
+		App.Create(sf::VideoMode(640, 400, 32), "Marshmallow Duel: Percy's Return", sf::Style::Resize | sf::Style::Close, test);
 		App.EnableKeyRepeat(false);
 		MDPR.run();
 	}catch (std::exception& e){
@@ -51,6 +54,10 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 
 	boost::program_options::store(parse_config_file(configFileStream, configFileOptions), configVariableMap);
 	notify(configVariableMap);
+
+	//initialize sprites 
+	//HACK
+
 }
 
 MDPRGame::~MDPRGame()
@@ -64,8 +71,10 @@ void MDPRGame::run()
 	float seconds, fps = 0;
 
 
-	boost::shared_ptr<genericSprite> Sprite(new Player("Player"));
-
+	{
+		Player player("Player");
+		Platform platform("Platform");
+	}
 	//boost::shared_ptr<spriteManager> tmpSprite(new spriteManager);
 	//sprite = tmpSprite;
 
@@ -96,7 +105,7 @@ void MDPRGame::run()
 		//if (menu->isActive()){
 			//menu.update();
 		//}
-		//test.draw();
+		test.draw();
 
 
 		//network->update();
