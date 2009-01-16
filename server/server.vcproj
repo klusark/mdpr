@@ -182,7 +182,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\game\src\sprite\platform.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\game\src\sprite\player.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\game\src\sprite\spriteCollision.cpp"
 				>
 			</File>
 			<File
@@ -208,7 +216,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\game\src\sprite\platform.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\game\src\sprite\player.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\game\src\sprite\spriteCollision.hpp"
 				>
 			</File>
 			<File

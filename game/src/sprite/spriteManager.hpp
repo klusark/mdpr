@@ -6,6 +6,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
+#include "spriteCollision.hpp"
 
 #include "genericSprite.hpp"
 
@@ -24,6 +25,7 @@ public:
 	bool isActive();
 	void setActive(bool toggle);
 	boost::mutex spriteMutex;
+	spriteCollision collision;
 private:
     bool active;
 	bool server;

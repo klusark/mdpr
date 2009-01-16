@@ -11,6 +11,7 @@
 
 #include "genericSprite.hpp"
 #include "player.hpp"
+#include "spriteCollision.hpp"
 #include "spriteManager.hpp"
 
 #ifndef SERVER
@@ -19,7 +20,8 @@ spriteManager sprite;
 
 spriteManager::spriteManager(bool server)
 	:	active(false),
-		server(server)
+		server(server),
+		collision(Sprites)
 {
 }
 
@@ -56,9 +58,11 @@ void spriteManager::registerSprite(std::string type, std::string name)
 void spriteManager::update()
 {
 	boost::mutex::scoped_lock lock(spriteMutex);
+	collision.before();
 	spriteContainer::iterator iter;
-	for( iter = spriteManager::Sprites.begin(); iter != spriteManager::Sprites.end(); ++iter ) {
+	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
 		iter->second->update();
+		collision.update(iter->first);
 	}
 }
 
@@ -66,7 +70,7 @@ void spriteManager::draw(sf::RenderWindow &App)
 {
 	boost::mutex::scoped_lock lock(spriteMutex);
     spriteContainer::iterator iter;
-	for( iter = spriteManager::Sprites.begin(); iter != spriteManager::Sprites.end(); ++iter ) {
+	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
 		
 		App.Draw(*iter->second.get());
 		
