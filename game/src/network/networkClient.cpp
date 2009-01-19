@@ -13,6 +13,8 @@
 #include "networkClient.hpp"
 #include "packets.hpp"
 #include "../sprite/spriteManager.hpp"
+#include "../sprite/player.hpp"
+#include "../sprite/platform.hpp"
 
 using boost::asio::ip::udp;
 struct thread
@@ -87,15 +89,27 @@ void Network::Client::onRecivePacket(const boost::system::error_code& error, siz
 	}else{
 	packetIDs packetID;
 	memcpy(&packetID, buffer, 4);
-	if (packetID == spritePacketID){
 
-	}
 	switch(packetID)
 	{
-	case spritePacketID:
+	case spriteCreationPacketID:
 		{
-			spritePacket *packet = (spritePacket *)buffer;
-			sprite.registerSprite("player", packet->name);
+			spriteCreationPacket *packet = (spriteCreationPacket *)buffer;
+			switch(packet->spriteType)
+			{
+			case player:
+				{
+					boost::shared_ptr<genericSprite> newSprite(new Player(packet->name));
+					sprite.registerSprite(newSprite);
+				}
+				break;
+			case platform:
+				{
+					boost::shared_ptr<genericSprite> newSprite(new Platform(packet->name));
+					sprite.registerSprite(newSprite);
+				}
+				break;
+			}
 		}
 		break;
 	case spritePosPacketID:
@@ -103,6 +117,7 @@ void Network::Client::onRecivePacket(const boost::system::error_code& error, siz
 			spritePosPacket *packet = (spritePosPacket *)buffer;
 			boost::mutex::scoped_lock lock(sprite.spriteMutex);
 			if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
+				std::cout << "Could not find sprite" << std::endl;
 				break;
 			}
 			sprite.Sprites[packet->spriteID]->SetX(packet->x);

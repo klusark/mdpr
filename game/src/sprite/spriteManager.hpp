@@ -15,15 +15,15 @@ class spriteManager
 public:
 	spriteManager(bool server = false);
 	~spriteManager();
-	typedef std::map<int, boost::shared_ptr<genericSprite> > spriteContainer;
+	typedef std::map<unsigned short, boost::shared_ptr<genericSprite> > spriteContainer;
 
 	spriteContainer Sprites;
 	void registerSprite(boost::shared_ptr<genericSprite> sprite);
-	void registerSprite(std::string type, std::string name);
 	void update();
 	void draw(sf::RenderWindow &App);
 	bool isActive();
 	void setActive(bool toggle);
+	void removeSprite(unsigned int spriteID);
 	boost::mutex spriteMutex;
 	spriteCollision collision;
 private:

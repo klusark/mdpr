@@ -1,7 +1,7 @@
 #ifdef SERVER
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
-#include <boost/crc.hpp>
+#include "../crc.hpp"
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/shared_ptr.hpp>
 //#include <boost/thread.hpp>
@@ -55,8 +55,17 @@ networkServer::networkServer()
 	timer.async_wait(boost::bind(&networkServer::onSpriteUpdate, this, boost::asio::placeholders::error));
 	//thread threads(ioService);
 	//boost::thread test(threads);
-	boost::shared_ptr<genericSprite> platform(new Platform("platform0"));
-	ServerSpriteManager->registerSprite(platform);
+	{
+		boost::shared_ptr<genericSprite> newPlatform(new Platform("platform0"));
+		newPlatform->SetY(50);
+		ServerSpriteManager->registerSprite(newPlatform);
+	}
+	{
+		boost::shared_ptr<genericSprite> newPlatform(new Platform("platform1"));
+		newPlatform->SetY(50);
+		newPlatform->SetX(66);
+		ServerSpriteManager->registerSprite(newPlatform);
+	}
 #ifdef SERVER
 	ioService.run();
 #endif
@@ -81,22 +90,21 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 	if (error){
 		std::cout<<error.message()<<std::endl;
 
-		if (Players.find(endpoint.port()) == Players.end()){
-			return;
+		if (!(Players.find(endpoint.port()) == Players.end())){
+			CRC crc;
+
+			std::string name = Players.find(endpoint.port())->second->name;
+
+			int playerID = crc.stringToShort(name);
+			ServerSpriteManager->removeSprite(playerID);
+				//
+			//Players.find(endpoint.port())->second->name;
+			
+
+			Players.erase(Players.find(endpoint.port()));
+
+			std::cout<<error.message()<<std::endl;
 		}
-		boost::crc_16_type  result;
-		std::string name = Players.find(endpoint.port())->second->name;
-		result.process_bytes(name.c_str(), name.length());
-		std::stringstream buf;
-		buf << result.checksum();
-		int playerID = atoi(buf.str().c_str());
-		ServerSpriteManager->Sprites.erase(ServerSpriteManager->Sprites.find(playerID));
-		//Players.find(endpoint.port())->second->name;
-		
-
-		Players.erase(Players.find(endpoint.port()));
-
-		std::cout<<error.message()<<std::endl;
 	}else{
 
 		if (Players.find(endpoint.port()) != Players.end()){
@@ -113,12 +121,12 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 			
 			{
 				connectPacket *packet = (connectPacket *)buffer;
+				CRC crc;
 
-				boost::crc_16_type  result;
-				result.process_bytes(packet->name, packet->nameLength);
-				std::stringstream buf;
-				buf << result.checksum();
-				int playerID = atoi(buf.str().c_str());
+				//boost::crc_16_type  result;
+				std::string name = packet->name;//, packet->nameLength);
+
+				int playerID = crc.stringToShort(name);
 
 				if (ServerSpriteManager->Sprites.find(playerID) != ServerSpriteManager->Sprites.end()){
 					//Player with the same name is already in the game
@@ -132,10 +140,12 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 				boost::shared_ptr<playerInfo> player(new playerInfo);
 				player->endpoint = endpoint;
 				player->name = packet->name;
+
+				boost::shared_ptr<genericSprite> newPlayer(new Player(packet->name));
 				
-				ServerSpriteManager->registerSprite("player", player->name);
-				player->sprite = ServerSpriteManager->Sprites[playerID];
-				//player->timer.expires_from_now(boost::posix_time::seconds(20));
+				ServerSpriteManager->registerSprite(newPlayer);
+				player->sprite = newPlayer;
+
 				player->timer.async_wait(boost::bind(&networkServer::playerInfo::disconnect, player, boost::asio::placeholders::error));
 				
 				
@@ -145,12 +155,13 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 					spriteManager::spriteContainer::iterator iter;
 					for(iter = ServerSpriteManager->Sprites.begin(); iter != ServerSpriteManager->Sprites.end(); ++iter){
 
-						spritePacket packet;
-						packet.packetID = spritePacketID;
+						spriteCreationPacket packet;
+						packet.packetID = spriteCreationPacketID;
+						packet.spriteType = iter->second->spriteType;
 						packet.nameLength = iter->second->name.length();
 						strcpy(packet.name, iter->second->name.c_str());
 
-						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 10 + packet.nameLength), player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 						
 					}
 				}
@@ -158,12 +169,13 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 					playerContainer::iterator iter;
 					for(iter = Players.begin(); iter != Players.end(); ++iter){
 
-						spritePacket packet;
-						packet.packetID = spritePacketID;
+						spriteCreationPacket packet;
+						packet.packetID = spriteCreationPacketID;
+						packet.spriteType = player->sprite->spriteType;
 						packet.nameLength = player->sprite->name.length();
 						strcpy(packet.name, player->sprite->name.c_str());
 
-						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 10 + packet.nameLength), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 						
 					}
 				}
@@ -176,16 +188,9 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 			{
 				keyPacket *packet = (keyPacket *)buffer;
 				if (Players.find(endpoint.port()) == Players.end()){
-					return;
+					break;
 				}
 				dynamic_cast<Player *>(Players[endpoint.port()]->sprite.get())->keyMap[packet->key] = packet->down;
-
-				/*if (packet->down){
-					float velocity = (-1*(packet->key == keyLeft)+(packet->key == keyRight))*60;
-					Players.find(endpoint.port())->second->sprite->setXVelocity(velocity);//->SetX(50);
-				}else{
-					Players.find(endpoint.port())->second->sprite->setXVelocity(0);//SetX(100);
-				}*/
 			}
 			break;
 		default:
@@ -201,7 +206,7 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 void networkServer::handleSendTo(const boost::system::error_code& error, size_t bytes_sent)
 {
 	if (error){
-		std::cout<<error.message()<<std::endl;
+		std::cout << error.message() << std::endl;
 	}
 }
 
@@ -218,8 +223,8 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 		packet.packetID = spritePosPacketID;
 		packet.spriteID = it->first;
 		sf::Vector2f position = currentSprite->GetPosition();
-		packet.x = position.x+50;
-		packet.y = position.y+50;
+		packet.x = position.x;
+		packet.y = position.y;
 
 		playerContainer::iterator iter;
 		for( iter = Players.begin(); iter != Players.end(); ++iter ) {
@@ -240,4 +245,4 @@ void networkServer::playerInfo::disconnect(const boost::system::error_code& e)
 
 }
 
-#endif //ifdef SERVER
+#endif // ifdef SERVER
