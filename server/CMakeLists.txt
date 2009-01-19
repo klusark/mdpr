@@ -1,16 +1,22 @@
 project( server )
 
-set(SOURCES 
-	../game/src/sprite/genericSprite.cpp
+set(SOURCES
 	src/main.cpp
-	../game/src/network/networkServer.cpp
-	../game/src/sprite/player.cpp
-	../game/src/sprite/spriteManager.cpp
+	../game/src/sprite/genericSprite.cpp
 	../game/src/sprite/genericSprite.hpp
+	../game/src/network/networkServer.cpp
 	../game/src/network/networkServer.hpp
 	../game/src/network/packets.hpp
-	../game/src/sprite/player.hpp
+	../game/src/sprite/spriteManager.cpp
 	../game/src/sprite/spriteManager.hpp
+	../game/src/sprite/spriteCollision.cpp
+	../game/src/sprite/spriteCollision.hpp
+	../game/src/sprite/player.cpp
+	../game/src/sprite/player.hpp
+	../game/src/sprite/platform.cpp
+	../game/src/sprite/platform.hpp
+	../game/src/crc.cpp
+	../game/src/crc.hpp
 )
 
 include_directories( 
@@ -22,6 +28,7 @@ add_definitions(
 )
 
 add_executable( server ${SOURCES} )
+FIND_PACKAGE( Boost 1.35 COMPONENTS system program_options thread)
 set(LINKFILES
 	optimized sfml-graphics
 	debug sfml-graphics-d
@@ -29,14 +36,7 @@ set(LINKFILES
 	debug sfml-window-d
 	optimized sfml-system
 	debug sfml-system-d
+	${Boost_LIBRARIES}
 )
-
-if (!MSVC)
-	set(LINKFILES  ${LINKFILES}
-		boost_system-gcc43-mt-1_35
-		boost_thread-gcc43-mt-1_35 
-		boost_program_options-gcc43-mt-1_35
-	)
-endif()
 
 target_link_libraries(server ${LINKFILES})
