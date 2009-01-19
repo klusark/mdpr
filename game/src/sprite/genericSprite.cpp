@@ -9,6 +9,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
+#include "../crc.hpp"
 
 #include "genericSprite.hpp"
 
@@ -24,7 +25,6 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 
 	SetX(0);
 	SetY(0);
-#ifndef SERVER
 	std::vector<std::string> animations;
 	std::string image;
 	boost::program_options::options_description spriteConfig("Configuration");
@@ -51,7 +51,7 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 	notify(spriteVariableMap);
 	
 	
-	
+#ifndef SERVER
 	//load image hackish way to check if in a thread
 	if (Image.GetHeight() == 0 && !boost::this_thread::interruption_enabled()){
 		std::string imageFile;
@@ -63,7 +63,7 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 		Image.SetSmooth(false);
 	}
 	SetImage(Image);
-
+#endif // ifndef SERVER
 	std::vector< std::string >::iterator iter;
 	for (iter = animations.begin(); iter < animations.end(); ++iter){
 
@@ -71,12 +71,17 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 		boost::shared_ptr<Animation> newAnimation(new Animation);
 
 		animationConfig.add_options()
-			("delay",	boost::program_options::value< int >(&newAnimation->delay),	"")
-			("frames",	boost::program_options::value< int >(&newAnimation->frames),	"")
-			("startx",	boost::program_options::value< int >(&newAnimation->startx),	"")
-			("starty",	boost::program_options::value< int >(&newAnimation->starty),	"")
-			("width",	boost::program_options::value< int >(&newAnimation->width),	"")
-			("height",	boost::program_options::value< int >(&newAnimation->height),	"");
+			("delay",	boost::program_options::value<int>(&newAnimation->delay),	"")
+			("frames",	boost::program_options::value<int>(&newAnimation->frames),	"")
+			("startx",	boost::program_options::value<int>(&newAnimation->startx),	"")
+			("starty",	boost::program_options::value<int>(&newAnimation->starty),	"")
+			("width",	boost::program_options::value<int>(&newAnimation->width),	"")
+			("height",	boost::program_options::value<int>(&newAnimation->height),	"")
+
+			("collision.rect.top",		boost::program_options::value<int>(&newAnimation->collisionRect.Top),	"")
+			("collision.rect.bottom",	boost::program_options::value<int>(&newAnimation->collisionRect.Bottom),"")
+			("collision.rect.right",	boost::program_options::value<int>(&newAnimation->collisionRect.Right),	"")
+			("collision.rect.left",		boost::program_options::value<int>(&newAnimation->collisionRect.Left),	"");
 
 		boost::program_options::variables_map animationVariableMap;
 
@@ -94,10 +99,10 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 
 		boost::program_options::store(parse_config_file(animationFileStream, animationConfigFileOptions), animationVariableMap);
 		notify(animationVariableMap);
-		Animations[*iter] = newAnimation;
+		CRC crc;
+		Animations[crc.stringToShort(*iter)] = newAnimation;
 			
 	}
-#endif
 }
 
 genericSprite::~genericSprite()
@@ -118,15 +123,15 @@ void genericSprite::update()
 
 }
 
-void genericSprite::changeAnimation(std::string name)
+void genericSprite::changeAnimation(unsigned int name)
 {
-#ifndef SERVER
+
 	if (Animations.find(name) != Animations.end()){
 		currentAnimation = Animations[name];
 	}else{
 		std::cout << "Error Cannot find Animation: " << name << std::endl;
 	}
-#endif
+
 }
 
 sf::IntRect genericSprite::Animation::update()

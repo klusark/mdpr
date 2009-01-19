@@ -1,4 +1,3 @@
-#include <boost/crc.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
 
@@ -8,7 +7,7 @@
 #include <sstream>
 #include <string>
 #include <iostream>
-
+#include "../crc.hpp"
 #include "genericSprite.hpp"
 #include "player.hpp"
 #include "spriteCollision.hpp"
@@ -31,28 +30,9 @@ spriteManager::~spriteManager()
 
 void spriteManager::registerSprite(boost::shared_ptr<genericSprite> sprite)
 {
-	boost::crc_16_type  result;
-	result.process_bytes(sprite->name.c_str(), sprite->name.length());
-	std::stringstream buf;
-	buf << result.checksum();
+	CRC crc;
 	boost::mutex::scoped_lock lock(spriteMutex);
-	Sprites[atoi(buf.str().c_str())] = sprite;
-}
-
-void spriteManager::registerSprite(std::string type, std::string name)
-{
-	if (type.compare("player") == 0){
-		boost::shared_ptr<genericSprite> player(new Player(name));
-
-		boost::crc_16_type  result;
-		result.process_bytes(name.c_str(), name.length());
-		std::stringstream buf;
-		buf << result.checksum();
-		boost::mutex::scoped_lock lock(spriteMutex);
-		Sprites[atoi(buf.str().c_str())] = player;
-	}else{
-		std::cout << "Could not find sprite type" << std::endl;
-	}
+	Sprites[crc.stringToShort(sprite->name)] = sprite;
 }
 
 void spriteManager::update()
@@ -74,6 +54,14 @@ void spriteManager::draw(sf::RenderWindow &App)
 		
 		App.Draw(*iter->second.get());
 		
+	}
+}
+
+void spriteManager::removeSprite(unsigned int spriteID)
+{
+	spriteContainer::iterator spriteToErase = Sprites.find(spriteID);
+	if (spriteToErase != Sprites.end()){
+		Sprites.erase(spriteToErase);
 	}
 }
 

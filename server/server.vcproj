@@ -170,6 +170,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\game\src\crc.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\game\src\sprite\genericSprite.cpp"
 				>
 			</File>

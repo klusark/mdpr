@@ -4,3 +4,7 @@ startx = 0
 starty = 0
 width = 24
 height = 24
+collision.rect.top = 1
+collision.rect.bottom = 24
+collision.rect.right = 16
+collision.rect.left = 6

@@ -4,10 +4,12 @@
 enum packetIDs
 {
 	connectPacketID,
-	spritePacketID,
+	spriteCreationPacketID,
+	spriteDeletionPacketID,
 	spritePosPacketID,
 	errorPacketID,
 	keyPacketID,
+	animationChangePacketID,
 };
 
 /*
@@ -20,23 +22,39 @@ struct connectPacket
 	char name[255];
 };
 
+enum spriteTypes
+{
+	player,
+	platform
+};
+
 /*
-Size: 6+nameLength
+Size: 10+nameLength
 */
-struct spritePacket
+struct spriteCreationPacket
 {
 	packetIDs packetID;
+	spriteTypes spriteType;
 	unsigned char nameLength;
 	char name[255];
 };
 
 /*
-Size: 24
+Size: 6
+*/
+struct spriteDeletionPacket
+{
+	packetIDs packetID;
+	unsigned short spriteID;
+};
+
+/*
+Size: 22
 */
 struct spritePosPacket
 {
 	packetIDs packetID;
-	unsigned int spriteID;
+	unsigned short spriteID;
 	float x;
 	float y;
 
@@ -76,4 +94,15 @@ struct keyPacket
 	bool down;
 };
 
-#endif //packets_hpp
+/*
+Size: 8
+*/
+struct animationChangePacket
+{
+	packetIDs packetID;
+
+	unsigned short spriteID;
+	unsigned short animationID;
+};
+
+#endif // ifndef packets_hpp

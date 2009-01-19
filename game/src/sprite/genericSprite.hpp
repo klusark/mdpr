@@ -6,6 +6,7 @@
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/System/Clock.hpp>
 #include <map>
+#include "../network/packets.hpp"
 
 class genericSprite : public sf::Sprite
 {
@@ -25,16 +26,12 @@ public:
 
 	virtual void update();
 	float round(float number);
-	void changeAnimation(std::string name);
-	void loadAnimation(std::string name);
+	void changeAnimation(unsigned int name);
 
 	std::string name;
-protected:
-	float xAccel,		yAccel;
-	float xVelocity,	yVelocity;
-	sf::Clock Clock;
-	sf::Image &Image;
-	
+
+	spriteTypes spriteType;
+
 	class Animation
 	{
 	public:
@@ -49,11 +46,22 @@ protected:
 		int delay, frames, startx, starty, width, height, currentFrame;
 		bool playBackward;
 		sf::IntRect update();
+		sf::IntRect collisionRect;
 
 	};
-	typedef std::map<std::string, boost::shared_ptr<Animation> > animationContainer;
-	animationContainer Animations;
+
 	boost::shared_ptr<Animation> currentAnimation;
+	bool onGround;
+protected:
+	float xAccel,		yAccel;
+	float xVelocity,	yVelocity;
+	sf::Clock Clock;
+	sf::Image &Image;
+	
+
+	typedef std::map<unsigned int, boost::shared_ptr<Animation> > animationContainer;
+	animationContainer Animations;
+	
 
 };
 
