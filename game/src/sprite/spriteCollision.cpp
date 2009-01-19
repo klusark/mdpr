@@ -2,7 +2,7 @@
 #include "spriteCollision.hpp"
 #include "../network/packets.hpp"
 #include <map>
-#include <sfml/System/Vector2.hpp>
+#include <SFML/System/Vector2.hpp>
 
 spriteCollision::spriteCollision(spriteContainer &Sprites)
 	:	Sprites(Sprites)
@@ -22,10 +22,10 @@ void spriteCollision::update(int spriteID)
 			int left = Sprites[spriteID]->currentAnimation->collisionRect.Left;
 			int width = Sprites[spriteID]->currentAnimation->collisionRect.GetWidth();
 			sf::Vector2f otherPosition = iter->second->GetPosition();
-			
+
 			if (infos[spriteID]->y + height <= otherPosition.y){
-				if (Sprites[spriteID]->GetPosition().x + width + left >= otherPosition.x && Sprites[spriteID]->GetPosition().x <= otherPosition.x + 10){ 
-					if (Sprites[spriteID]->GetPosition().y + height >= otherPosition.y){ 
+				if (Sprites[spriteID]->GetPosition().x + width + left >= otherPosition.x && Sprites[spriteID]->GetPosition().x <= otherPosition.x + 10){
+					if (Sprites[spriteID]->GetPosition().y + height >= otherPosition.y){
 						Sprites[spriteID]->SetY(otherPosition.y - height);
 					}
 				}
@@ -46,7 +46,7 @@ void spriteCollision::before()
 		info->x = position.x;
 		info->y = position.y;
 		infos[iter->first] = info;
-		
+
 	}
 }
 
