@@ -25,7 +25,8 @@ struct connectPacket
 enum spriteTypes
 {
 	player,
-	platform
+	platform,
+	bubble
 };
 
 /*
@@ -49,7 +50,7 @@ struct spriteDeletionPacket
 };
 
 /*
-Size: 22
+Size: 14
 */
 struct spritePosPacket
 {

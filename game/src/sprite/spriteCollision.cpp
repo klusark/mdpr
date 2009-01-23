@@ -17,7 +17,7 @@ void spriteCollision::update(int spriteID)
 {
 	spriteContainer::iterator iter;
 	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
-		if (iter->second->spriteType == platform){
+		if (iter->second->spriteType == platform && Sprites[spriteID]->spriteType == player){
 			int height = Sprites[spriteID]->currentAnimation->collisionRect.Bottom;
 			int left = Sprites[spriteID]->currentAnimation->collisionRect.Left;
 			int width = Sprites[spriteID]->currentAnimation->collisionRect.GetWidth();

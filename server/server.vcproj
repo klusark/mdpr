@@ -170,6 +170,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\game\src\sprite\bubble.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\game\src\crc.cpp"
 				>
 			</File>
@@ -194,6 +198,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\game\src\sprite\powerup.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\game\src\sprite\spriteCollision.cpp"
 				>
 			</File>
@@ -207,6 +215,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\game\src\sprite\bubble.hpp"
+				>
+			</File>
 			<File
 				RelativePath="..\game\src\sprite\genericSprite.hpp"
 				>
@@ -225,6 +237,10 @@
 			</File>
 			<File
 				RelativePath="..\game\src\sprite\player.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\game\src\sprite\powerup.hpp"
 				>
 			</File>
 			<File

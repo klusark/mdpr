@@ -17,8 +17,11 @@
 #include "../sprite/genericSprite.hpp"
 #include "../sprite/player.hpp"
 #include "../sprite/platform.hpp"
+#include "../sprite/bubble.hpp"
 
 boost::asio::io_service networkServer::ioService;
+
+networkServer server;
 
 struct thread
 {
@@ -66,10 +69,10 @@ networkServer::networkServer()
 		newPlatform->SetX(66);
 		ServerSpriteManager->registerSprite(newPlatform);
 	}
-#ifdef SERVER
-	ioService.run();
-#endif
-
+	{
+		boost::shared_ptr<genericSprite> newBubble(new Bubble("bubble0"));
+		ServerSpriteManager->registerSprite(newBubble);
+	}
 }
 
 networkServer::~networkServer()
@@ -78,9 +81,9 @@ networkServer::~networkServer()
 
 bool networkServer::runServer()
 {
-
+	
 	std::cout << "Server Started" << std::endl;
-
+	ioService.run();
 
 	return true;
 }
@@ -91,24 +94,15 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 		std::cout<<error.message()<<std::endl;
 
 		if (!(Players.find(endpoint.port()) == Players.end())){
-			CRC crc;
 
-			std::string name = Players.find(endpoint.port())->second->name;
-
-			int playerID = crc.stringToShort(name);
-			ServerSpriteManager->removeSprite(playerID);
-				//
-			//Players.find(endpoint.port())->second->name;
-			
-
-			Players.erase(Players.find(endpoint.port()));
+			disconnect(endpoint.port());
 
 			std::cout<<error.message()<<std::endl;
 		}
 	}else{
 
 		if (Players.find(endpoint.port()) != Players.end()){
-			Players[endpoint.port()]->timer.expires_from_now(boost::posix_time::seconds(20));
+			Players[endpoint.port()]->timer.expires_from_now(boost::posix_time::seconds(10));
 			Players[endpoint.port()]->timer.async_wait(boost::bind(&networkServer::playerInfo::disconnect, Players[endpoint.port()], boost::asio::placeholders::error));
 			
 		}
@@ -144,12 +138,11 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 				boost::shared_ptr<genericSprite> newPlayer(new Player(packet->name));
 				
 				ServerSpriteManager->registerSprite(newPlayer);
-				player->sprite = newPlayer;
+				player->playerSprite = newPlayer;
 
 				player->timer.async_wait(boost::bind(&networkServer::playerInfo::disconnect, player, boost::asio::placeholders::error));
 				
-				
-				
+							
 				std::cout << "Player " << player->name << " connected from " << player->endpoint.address().to_v4().to_string() << std::endl;
 				{
 					spriteManager::spriteContainer::iterator iter;
@@ -171,9 +164,9 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 
 						spriteCreationPacket packet;
 						packet.packetID = spriteCreationPacketID;
-						packet.spriteType = player->sprite->spriteType;
-						packet.nameLength = player->sprite->name.length();
-						strcpy(packet.name, player->sprite->name.c_str());
+						packet.spriteType = player->playerSprite->spriteType;
+						packet.nameLength = player->playerSprite->name.length();
+						strcpy(packet.name, player->playerSprite->name.c_str());
 
 						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 10 + packet.nameLength), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 						
@@ -190,7 +183,7 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 				if (Players.find(endpoint.port()) == Players.end()){
 					break;
 				}
-				dynamic_cast<Player *>(Players[endpoint.port()]->sprite.get())->keyMap[packet->key] = packet->down;
+				dynamic_cast<Player *>(Players[endpoint.port()]->playerSprite.get())->keyMap[packet->key] = packet->down;
 			}
 			break;
 		default:
@@ -236,12 +229,32 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 
 }
 
+void networkServer::disconnect(unsigned short playerID)
+{
+	spriteDeletionPacket packet;
+	packet.packetID = spriteDeletionPacketID;
+	CRC crc;
+	if (Players.find(playerID) == Players.end()){
+		std::cout<<"ASFASDF"<<std::endl;
+		return;
+	}
+	packet.spriteID = crc.stringToShort(Players[playerID]->name);
+	playerContainer::iterator iter;
+	for (iter = Players.begin(); iter != Players.end(); ++iter){
+		serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(packet)), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	}
+	std::cout << "Player " << Players[playerID]->playerSprite->name << " has disconnected." << std::endl;
+	ServerSpriteManager->removeSprite(packet.spriteID);
+	Players.erase(playerID);
+	
+}
+
 void networkServer::playerInfo::disconnect(const boost::system::error_code& e)
 {
 	if (e == boost::asio::error::operation_aborted){
 		return;
 	}
-	std::cout<<"asdfasfasfasdfasdf";
+	server.disconnect(endpoint.port());
 
 }
 

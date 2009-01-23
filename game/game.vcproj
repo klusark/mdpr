@@ -193,6 +193,10 @@
 				Name="Sprite"
 				>
 				<File
+					RelativePath=".\src\sprite\bubble.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\sprite\genericSprite.cpp"
 					>
 				</File>
@@ -206,6 +210,10 @@
 				</File>
 				<File
 					RelativePath=".\src\sprite\player.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\powerup.cpp"
 					>
 				</File>
 				<File
@@ -295,6 +303,10 @@
 				Name="Sprite"
 				>
 				<File
+					RelativePath=".\src\sprite\bubble.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\sprite\genericSprite.hpp"
 					>
 				</File>
@@ -308,6 +320,10 @@
 				</File>
 				<File
 					RelativePath=".\src\sprite\player.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\powerup.hpp"
 					>
 				</File>
 				<File

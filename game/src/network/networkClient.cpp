@@ -15,6 +15,7 @@
 #include "../sprite/spriteManager.hpp"
 #include "../sprite/player.hpp"
 #include "../sprite/platform.hpp"
+#include "../sprite/bubble.hpp"
 
 using boost::asio::ip::udp;
 struct thread
@@ -87,62 +88,79 @@ void Network::Client::onRecivePacket(const boost::system::error_code& error, siz
 		std::cout << error.message() << std::endl;
 		
 	}else{
-	packetIDs packetID;
-	memcpy(&packetID, buffer, 4);
+		packetIDs packetID;
+		memcpy(&packetID, buffer, 4);
 
-	switch(packetID)
-	{
-	case spriteCreationPacketID:
+		switch(packetID)
 		{
-			spriteCreationPacket *packet = (spriteCreationPacket *)buffer;
-			switch(packet->spriteType)
+		case spriteCreationPacketID:
 			{
-			case player:
+				spriteCreationPacket *packet = (spriteCreationPacket *)buffer;
+				switch(packet->spriteType)
 				{
-					boost::shared_ptr<genericSprite> newSprite(new Player(packet->name));
-					sprite.registerSprite(newSprite);
+				case player:
+					{
+						boost::shared_ptr<genericSprite> newSprite(new Player(packet->name));
+						sprite.registerSprite(newSprite);
+					}
+					break;
+				case platform:
+					{
+						boost::shared_ptr<genericSprite> newSprite(new Platform(packet->name));
+						sprite.registerSprite(newSprite);
+					}
+					break;
+				case bubble:
+					{
+						boost::shared_ptr<genericSprite> newSprite(new Bubble(packet->name));
+						sprite.registerSprite(newSprite);
+					}
+					break;
 				}
-				break;
-			case platform:
-				{
-					boost::shared_ptr<genericSprite> newSprite(new Platform(packet->name));
-					sprite.registerSprite(newSprite);
-				}
-				break;
 			}
-		}
-		break;
-	case spritePosPacketID:
-		{
-			spritePosPacket *packet = (spritePosPacket *)buffer;
-			boost::mutex::scoped_lock lock(sprite.spriteMutex);
-			if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
-				std::cout << "Could not find sprite" << std::endl;
-				break;
-			}
-			sprite.Sprites[packet->spriteID]->SetX(packet->x);
-			sprite.Sprites[packet->spriteID]->SetY(packet->y);
-		}
-		break;
-	case errorPacketID:
-		{
-			errorPacket *packet = (errorPacket *)buffer;
-			switch(packet->errorID)
+			break;
+		case spritePosPacketID:
 			{
-			case nameInUse:
-				{
-					std::cout << "Error: Name already in use" << std::endl;
+				spritePosPacket *packet = (spritePosPacket *)buffer;
+				boost::mutex::scoped_lock lock(sprite.spriteMutex);
+				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
+					std::cout << "Could not find sprite" << std::endl;
+					break;
 				}
-				break;
+				sprite.Sprites[packet->spriteID]->SetX(packet->x);
+				sprite.Sprites[packet->spriteID]->SetY(packet->y);
 			}
-			
-		}
-		break;
-	default:
-		std::cout << "Error in client receve packet" << std::endl;
-		break;
+			break;
+		case spriteDeletionPacketID:
+			{
+				spriteDeletionPacket *packet = (spriteDeletionPacket *)buffer;
+				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
+					std::cout << "Can not find sprite" << std::endl;
+				}
+				sprite.Sprites.erase(sprite.Sprites.find(packet->spriteID));
 
-	}
+				
+			}
+			break;
+		case errorPacketID:
+			{
+				errorPacket *packet = (errorPacket *)buffer;
+				switch(packet->errorID)
+				{
+				case nameInUse:
+					{
+						std::cout << "Error: Name already in use" << std::endl;
+					}
+					break;
+				}
+				
+			}
+			break;
+		default:
+			std::cout << "Error in client receve packet" << std::endl;
+			break;
+
+		}
 	}
 	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&Network::Client::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }

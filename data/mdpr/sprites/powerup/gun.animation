@@ -1,6 +1,6 @@
-delay = 100
-frames = 3
-startx = 0
+delay = 1000
+frames = 1
+startx = 96
 starty = 0
 width = 16
 height = 16
