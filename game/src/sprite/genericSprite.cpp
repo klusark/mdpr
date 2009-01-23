@@ -137,9 +137,9 @@ void genericSprite::changeAnimation(unsigned int name)
 sf::IntRect genericSprite::Animation::update()
 {
 	
-	sf::IntRect newRect(currentFrame*width+startx, starty, width+currentFrame*width, starty+height);
+	sf::IntRect newRect(currentFrame * width + startx, starty, (width + currentFrame * width) -1, starty + height);
 
-	updateTime += Clock.GetElapsedTime()*1000;
+	updateTime += Clock.GetElapsedTime() * 1000;
 	Clock.Reset();
 	while(updateTime > delay){
 		updateTime -= delay;

@@ -14,6 +14,7 @@ public:
 	networkServer();
 	~networkServer();
 	bool runServer();
+	void disconnect(unsigned short playerID);
 protected:
 	static boost::asio::io_service ioService;
 	boost::asio::ip::udp::socket serverSocket;
@@ -27,6 +28,7 @@ protected:
 
 	void onSpriteUpdate(const boost::system::error_code& error);
 
+	
 
 	unsigned short posUpdate;
 
@@ -41,7 +43,7 @@ protected:
 		playerInfo():timer(networkServer::ioService){}
 		void disconnect(const boost::system::error_code& e);
 		std::string name;
-		boost::shared_ptr<genericSprite> sprite;
+		boost::shared_ptr<genericSprite> playerSprite;
 		boost::asio::ip::udp::endpoint endpoint;
 		boost::asio::deadline_timer timer;
 
@@ -53,5 +55,6 @@ protected:
 
 
 };
+extern networkServer server;
 
 #endif

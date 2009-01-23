@@ -12,6 +12,8 @@
 #include "sprite/spriteManager.hpp"
 #include "sprite/player.hpp"
 #include "sprite/platform.hpp"
+#include "sprite/bubble.hpp"
+#include "sprite/powerup.hpp"
 
 sf::RenderWindow App;
 MDPRGame MDPR(App);
@@ -72,6 +74,8 @@ void MDPRGame::run()
 	{
 		Player player("Player");
 		Platform platform("Platform");
+		Bubble bubble("Bubble");
+		PowerUp powerup("Powerup");
 	}
 	//boost::shared_ptr<spriteManager> tmpSprite(new spriteManager);
 	//sprite = tmpSprite;
