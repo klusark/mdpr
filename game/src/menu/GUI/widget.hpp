@@ -7,13 +7,23 @@ namespace GUI
 {
 	class widget
 	{
-		public:
+	public:
 		widget();
 		~widget();
 		void draw();
+		virtual void update();
 
-		private:
-		sf::Shape rect;
+	protected:
+		sf::Shape shape;
+		sf::IntRect rect;
+		enum curveLocation
+		{
+			topRight,
+			topLeft,
+			bottomLeft,
+			bottomRight,
+		};
+		void makeCurve(float x, float y, float radius, sf::Color color, curveLocation location);
 
 
 	};

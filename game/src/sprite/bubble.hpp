@@ -12,6 +12,7 @@ public:
 	~Bubble();
 	static sf::Image Image;
 	void update();
+	void draw(sf::RenderWindow &App);
 	PowerUp powerup;
 	
 };

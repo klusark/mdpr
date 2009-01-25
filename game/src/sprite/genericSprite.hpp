@@ -25,6 +25,8 @@ public:
 	void setYVelocity(float yVelocity);
 
 	virtual void update();
+	virtual void draw(sf::RenderWindow &App);
+
 	float round(float number);
 	void changeAnimation(unsigned int name);
 

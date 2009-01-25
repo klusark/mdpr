@@ -4,6 +4,7 @@
 #include <map>
 #include "menuGeneric.hpp"
 #include <boost/shared_ptr.hpp>
+#include <string>
 
 
 class menuGeneric;
@@ -24,4 +25,5 @@ private:
 	bool active;
 };
 extern menuManager menu;
+
 #endif

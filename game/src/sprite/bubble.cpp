@@ -1,4 +1,5 @@
 #include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics.hpp>
 
 #include "bubble.hpp"
 #include "genericSprite.hpp"
@@ -15,8 +16,8 @@ Bubble::Bubble(const std::string &name)
 	CRC crc;
 	changeAnimation(crc.stringToShort("bubble"));
 
-	setYVelocity(400.0f);
-	setXVelocity(400.0f);
+	setYVelocity(100.0f);
+	setXVelocity(100.0f);
 
 }
 
@@ -46,4 +47,10 @@ void Bubble::update()
 	}
 	powerup.update();
 	genericSprite::update();
+}
+
+void Bubble::draw(sf::RenderWindow &App)
+{
+	App.Draw(powerup);
+	genericSprite::draw(App);
 }

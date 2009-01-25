@@ -51,8 +51,8 @@ void spriteManager::draw(sf::RenderWindow &App)
 	boost::mutex::scoped_lock lock(spriteMutex);
     spriteContainer::iterator iter;
 	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
-
-		App.Draw(*iter->second.get());
+		iter->second->draw(App);
+		//App.Draw(*iter->second.get());
 		
 	}
 }

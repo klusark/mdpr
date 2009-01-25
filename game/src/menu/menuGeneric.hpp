@@ -1,23 +1,26 @@
-/*#ifndef menuGeneric_hpp
+#ifndef menuGeneric_hpp
 #define menuGeneric_hpp
 
 #include <boost/shared_ptr.hpp>
 
+#include <vector>
+
 #include "menuManager.hpp"
+#include "GUI/widget.hpp"
 
-class menuManager;
-
-class menuGeneric : public CL_GUIManager
+class menuGeneric
 {
 public:
-	menuGeneric(CL_StyleManager &style, std::string const &resourceLocation);
+	menuGeneric();
 	~menuGeneric();
-	void show();
-protected:
-	boost::shared_ptr<CL_ComponentManager> componentManager;
-	CL_SlotContainer slots;
+	virtual void update();
+
+	void addWidget(boost::shared_ptr<GUI::widget> newWidget);
+
+	typedef std::vector<boost::shared_ptr<GUI::widget> > widgetContainer;
+	widgetContainer widgets;
+
 
 };
 
-#endif
-*/
+#endif //ifndef menuGeneric_hpp

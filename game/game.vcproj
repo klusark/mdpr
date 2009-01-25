@@ -260,6 +260,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\menu\GUI\text.cpp"
+						>
+					</File>
+					<File
 						RelativePath=".\src\menu\GUI\widget.cpp"
 						>
 					</File>
@@ -367,6 +371,10 @@
 					</File>
 					<File
 						RelativePath=".\src\menu\GUI\clickable.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\menu\GUI\text.hpp"
 						>
 					</File>
 					<File

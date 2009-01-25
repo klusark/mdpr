@@ -1,4 +1,4 @@
-/*#ifndef menuMain_hpp
+#ifndef menuMain_hpp
 #define menuMain_hpp
 
 #include "menuGeneric.hpp"
@@ -6,13 +6,10 @@
 class menuMain : public menuGeneric
 {
 public:
-	menuMain(CL_StyleManager &style, std::string const &resourceLocation);
+	menuMain();
 	~menuMain();
-protected:
-	void onOptionsClicked();
-	void onProfilesClicked();
+
 
 };
 
-#endif
-*/
+#endif // ifndef menuMain_hpp
