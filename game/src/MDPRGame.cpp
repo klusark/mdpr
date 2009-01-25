@@ -14,6 +14,7 @@
 #include "sprite/platform.hpp"
 #include "sprite/bubble.hpp"
 #include "sprite/powerup.hpp"
+#include "menu/gui/clickable.hpp"
 
 sf::RenderWindow App;
 MDPRGame MDPR(App);
@@ -33,10 +34,10 @@ int main(int argc, char** argv)
 	return 0;
 }
 
+bool MDPRGame::quit = false;
 
 MDPRGame::MDPRGame(sf::RenderWindow &App)
 	:	App(App),
-		quit(false),
 		playerName("No Name"),
 		serverIP("24.85.77.75"),
 		serverPort("9935")
@@ -77,8 +78,6 @@ void MDPRGame::run()
 		Bubble bubble("Bubble");
 		PowerUp powerup("Powerup");
 	}
-	//boost::shared_ptr<spriteManager> tmpSprite(new spriteManager);
-	//sprite = tmpSprite;
 
 	sprite.setActive(true);
 
@@ -98,16 +97,20 @@ void MDPRGame::run()
 
 			if (Event.Type == sf::Event::KeyPressed){
 				networkClient->sendKeyPress(Event.Key.Code, true);
-			}
-			if (Event.Type == sf::Event::KeyReleased){
+			}else if (Event.Type == sf::Event::KeyReleased){
 				networkClient->sendKeyPress(Event.Key.Code, false);
+			}else if(Event.Type == sf::Event::MouseButtonPressed){
+				GUI::clickable::mouseDown();
+			}else if(Event.Type == sf::Event::MouseButtonReleased){
+				GUI::clickable::mouseUp();
 			}
+
 		}
 
 		//if (menu->isActive()){
-			//menu.update();
+			menu.update();
 		//}
-		test.draw();
+		//test.draw();
 
 
 		//network->update();
@@ -140,4 +143,9 @@ void MDPRGame::run()
 
 		App.Display();
 	}
+}
+
+void MDPRGame::quitGame()
+{
+	quit = true;
 }

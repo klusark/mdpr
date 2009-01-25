@@ -1,25 +1,25 @@
-/*#pragma warning(push, 3)
-#include <ClanLib/gui.h>
-#pragma warning(pop)
-
 #include "menuGeneric.hpp"
 #include "menuManager.hpp"
 
-menuGeneric::menuGeneric(CL_StyleManager &style, std::string const &resourceLocation)
-	:	CL_GUIManager(&style)
+menuGeneric::menuGeneric()
 {
-	boost::shared_ptr<CL_ComponentManager> tmpcomponentManager(new CL_ComponentManager(resourceLocation, this));
-	componentManager = tmpcomponentManager;
 }
-
 
 menuGeneric::~menuGeneric()
 {
 }
 
-void menuGeneric::show()
+void menuGeneric::update()
 {
+	for(unsigned int i = 0; i < widgets.size(); ++i){
+		widgets[i]->update();
+		widgets[i]->draw();
+	}
 
-	CL_GUIManager::show();
 }
-*/
+
+void menuGeneric::addWidget(boost::shared_ptr<GUI::widget> newWidget)
+{
+	widgets.push_back(newWidget);
+
+}

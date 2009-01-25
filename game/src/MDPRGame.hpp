@@ -9,13 +9,14 @@ public:
 	MDPRGame(sf::RenderWindow &App);
 	~MDPRGame();
 	void run();
+	static void quitGame();
 	std::string playerName;
 	std::string serverIP;
 	std::string serverPort;
 	sf::RenderWindow &App;
 private:
 
-	bool quit;
+	static bool quit;
 	sf::Clock Clock;
 
 };

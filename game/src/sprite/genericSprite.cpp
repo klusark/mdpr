@@ -1,6 +1,7 @@
 #include <boost/program_options.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
+#include <SFML/Graphics.hpp>
 
 #include <string>
 #include <vector>
@@ -121,6 +122,11 @@ void genericSprite::update()
 	xVelocity+=xAccel*deltaTime;
 	yVelocity+=yAccel*deltaTime;
 
+}
+
+void genericSprite::draw(sf::RenderWindow &App)
+{
+	App.Draw(*this);
 }
 
 void genericSprite::changeAnimation(unsigned int name)

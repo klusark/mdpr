@@ -6,14 +6,15 @@
 
 namespace GUI
 {
-	class button : public widget, clickable
+	class button : public widget, public clickable
 	{
 	public:
 		button();
 		~button();
+	protected:
+		void update();
 
 	};
 }
-
 
 #endif //ifndef button_hpp
