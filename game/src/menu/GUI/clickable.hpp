@@ -15,9 +15,9 @@ namespace GUI
 		void update();
 		boost::signal<void ()> onClick;
 
-		static void clickable::mouseDown();
+		static void mouseDown();
 
-		static void clickable::mouseUp();
+		static void mouseUp();
 
 		static int xLocationAtClick, yLocationAtClick;
 		static bool rectClicked;

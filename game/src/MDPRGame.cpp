@@ -14,7 +14,7 @@
 #include "sprite/platform.hpp"
 #include "sprite/bubble.hpp"
 #include "sprite/powerup.hpp"
-#include "menu/gui/clickable.hpp"
+#include "menu/GUI/clickable.hpp"
 
 sf::RenderWindow App;
 MDPRGame MDPR(App);
@@ -115,7 +115,7 @@ void MDPRGame::run()
 
 		//network->update();
 
-        if (sprite.isActive()){
+        	if (sprite.isActive()){
 			sprite.update();
 			sprite.draw(App);
 

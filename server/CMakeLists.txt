@@ -13,6 +13,10 @@ set(SOURCES
 	../game/src/sprite/spriteCollision.hpp
 	../game/src/sprite/player.cpp
 	../game/src/sprite/player.hpp
+	../game/src/sprite/bubble.cpp
+	../game/src/sprite/bubble.hpp
+	../game/src/sprite/powerup.cpp
+	../game/src/sprite/powerup.hpp
 	../game/src/sprite/platform.cpp
 	../game/src/sprite/platform.hpp
 	../game/src/crc.cpp

@@ -22,9 +22,10 @@ namespace GUI
 
 	void clickable::update()
 	{
-		
+		std::cout<<"asfsdfsdfghhhhhh";
 		if (widgetRect.Contains(xLocationAtClick, yLocationAtClick)){
 			clicked = this;
+			std::cout<<"asdf";
 			rectClicked = true;
 		}
 
@@ -33,13 +34,16 @@ namespace GUI
 
 	void clickable::mouseDown()
 	{
+		std::cout<<"here?";
 		xLocationAtClick = input.GetMouseX();
-		yLocationAtClick = input.GetMouseY();
+ 		yLocationAtClick = input.GetMouseY();
+		std::cout<<"asdfASDFsdaf";
 
 	}
 
 	void clickable::mouseUp()
 	{
+		std::cout<<"over here over?";
 		if (rectClicked){
 			if (clicked->widgetRect.Contains(input.GetMouseX(), input.GetMouseY())){
 				//clicked->onClick();
