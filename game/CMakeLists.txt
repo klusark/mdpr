@@ -17,6 +17,10 @@ set(SOURCES
   src/sprite/imageManager.hpp
   src/sprite/player.cpp
   src/sprite/player.hpp
+  src/sprite/bubble.cpp
+  src/sprite/bubble.hpp
+  src/sprite/powerup.cpp
+  src/sprite/powerup.hpp
   src/sprite/platform.cpp
   src/sprite/platform.hpp
   src/sprite/spriteCollision.cpp
@@ -55,7 +59,7 @@ add_executable( game ${SOURCES} )
 
 SET(Boost_USE_MULTITHREAD ON)
 
-FIND_PACKAGE( Boost 1.35 COMPONENTS system program_options thread)
+FIND_PACKAGE( Boost 1.35 COMPONENTS system program_options thread signals)
 
 set(LINKFILES
 	optimized sfml-graphics

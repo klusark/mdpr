@@ -1,8 +1,8 @@
 #include "menuMain.hpp"
 #include "menuGeneric.hpp"
 #include "menuManager.hpp"
-#include "gui/window.hpp"
-#include "gui/button.hpp"
+#include "GUI/window.hpp"
+#include "GUI/button.hpp"
 #include "../MDPRGame.hpp"
 
 
