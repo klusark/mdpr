@@ -14,7 +14,8 @@ namespace GUI
 
 	void widget::draw()
 	{
-		MDPR.App.Draw(shape);
+		MDPR.App.Draw(*drawable.get());
+
 	}
 
 	void widget::update()
@@ -64,7 +65,7 @@ namespace GUI
 			}
 			sf::Vector2f Offset(num, y);
 
-			shape.AddPoint(Center + Offset * radius, color);
+			dynamic_cast<sf::Shape *>(drawable.get())->AddPoint(Center + Offset * radius, color);
 		}
 
 	}

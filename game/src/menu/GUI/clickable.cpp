@@ -7,13 +7,14 @@
 
 namespace GUI
 {
-	const sf::Input& clickable::input = MDPR.App.GetInput();
 	int clickable::xLocationAtClick, clickable::yLocationAtClick;
 	clickable *clickable::clicked;
 	bool clickable::rectClicked = false;
 	clickable::clickable(sf::IntRect &rect)
-		:	widgetRect(rect)
+		:	widgetRect(rect),
+			input(MDPR.App.GetInput())
 	{
+
 	}
 
 	clickable::~clickable()
@@ -22,37 +23,35 @@ namespace GUI
 
 	void clickable::update()
 	{
-		std::cout<<"asfsdfsdfghhhhhh";
 		if (widgetRect.Contains(xLocationAtClick, yLocationAtClick)){
 			clicked = this;
-			std::cout<<"asdf";
 			rectClicked = true;
 		}
 
-		
+
 	}
 
 	void clickable::mouseDown()
 	{
-		std::cout<<"here?";
-		xLocationAtClick = input.GetMouseX();
- 		yLocationAtClick = input.GetMouseY();
-		std::cout<<"asdfASDFsdaf";
+		xLocationAtClick = MDPR.App.GetInput().GetMouseX();
+ 		yLocationAtClick = MDPR.App.GetInput().GetMouseY();
 
 	}
 
 	void clickable::mouseUp()
 	{
-		std::cout<<"over here over?";
 		if (rectClicked){
-			if (clicked->widgetRect.Contains(input.GetMouseX(), input.GetMouseY())){
-				//clicked->onClick();
-				std::cout<<"Clicked"<<std::endl;
+			if (clicked->widgetRect.Contains(MDPR.App.GetInput().GetMouseX(), MDPR.App.GetInput().GetMouseY())){
+				clicked->onClick();
+				//std::cout<<"Clicked"<<std::endl;
+
 			}
 			clicked = 0;
 			rectClicked = false;
+			xLocationAtClick = -1;
+			xLocationAtClick = -1;
 		}
-		
+
 	}
 
 }

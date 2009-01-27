@@ -10,9 +10,11 @@ sf::Image PowerUp::Image;
 PowerUp::PowerUp(const std::string &name)
 	:	genericSprite(name, "powerup", Image)
 {
-	spriteType = bubble;
+	spriteType = player;
 	CRC crc;
 	changeAnimation(crc.stringToShort("gun"));
+	SetX(125);
+	SetY(125);
 
 }
 

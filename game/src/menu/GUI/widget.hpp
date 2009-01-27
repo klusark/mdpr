@@ -2,6 +2,7 @@
 #define widget_hpp
 
 #include <SFML/Graphics.hpp>
+#include <boost/shared_ptr.hpp>
 
 namespace GUI
 {
@@ -14,7 +15,7 @@ namespace GUI
 		virtual void update();
 
 	protected:
-		sf::Shape shape;
+		boost::shared_ptr<sf::Drawable> drawable;
 		sf::IntRect rect;
 		enum curveLocation
 		{

@@ -55,15 +55,16 @@ public:
 	boost::shared_ptr<Animation> currentAnimation;
 	bool onGround;
 protected:
+	sf::Image &Image;
 	float xAccel,		yAccel;
 	float xVelocity,	yVelocity;
 	sf::Clock Clock;
-	sf::Image &Image;
-	
+
+
 
 	typedef std::map<unsigned int, boost::shared_ptr<Animation> > animationContainer;
 	animationContainer Animations;
-	
+
 
 };
 
