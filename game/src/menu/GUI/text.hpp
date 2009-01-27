@@ -11,8 +11,7 @@ namespace GUI
 	public:
 		text();
 		~text();
-		void draw();
-		virtual void update();
+		void update();
 
 	};
 }

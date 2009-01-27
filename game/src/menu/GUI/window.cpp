@@ -13,13 +13,16 @@ namespace GUI
 			height(height)
 	{
 		//sf::Shape Rect = sf::Shape::Rectangle(x, y, x+width, x+height, sf::Color(0, 128, 128));
-		shape.SetX(x);
-		shape.SetY(y);
+		boost::shared_ptr<sf::Drawable> newDrawable(new sf::Shape);
+		drawable = newDrawable;
+		
+		drawable->SetX(x);
+		drawable->SetY(y);
 		rect.Bottom = (int)y + height;
 		rect.Top = (int)y;
 		rect.Right = (int)x + width;
 		rect.Left = (int)x;
-		sf::Color color(0,255,0, 255);
+		sf::Color color(0, 255, 0, 255);
 		float radius = 25.0f;
 
 		makeCurve(0,		height, radius, color, bottomLeft);
@@ -36,16 +39,16 @@ namespace GUI
 	{
 	}
 
-	void window::addWidget(boost::shared_ptr<widget> newWidget)
+	/*void window::addWidget(boost::shared_ptr<widget> newWidget)
 	{
 		widgets.push_back(newWidget);
-	}
+	}*/
 
-	void window::draw()
+	/*void window::draw()
 	{
-		MDPR.App.Draw(shape);
+		MDPR.App.Draw(drawable);
 		for (unsigned int i = 0; i < widgets.size(); ++i){
 			widgets[i]->draw();
 		}
-	}
+	}*/
 }

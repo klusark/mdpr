@@ -85,9 +85,11 @@ void MDPRGame::run()
 	networkClient->run();
 	GUI::window test(540,300,50,50);
 
+
 	while(!quit)
 	{
 		App.Clear();
+
 		sf::Event Event;
 		while (App.GetEvent(Event)){
 			// Window closed

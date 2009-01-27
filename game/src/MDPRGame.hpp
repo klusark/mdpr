@@ -10,10 +10,11 @@ public:
 	~MDPRGame();
 	void run();
 	static void quitGame();
+	sf::RenderWindow &App;
 	std::string playerName;
 	std::string serverIP;
 	std::string serverPort;
-	sf::RenderWindow &App;
+
 private:
 
 	static bool quit;

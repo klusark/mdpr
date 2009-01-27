@@ -7,12 +7,15 @@ namespace GUI
 			clickable(rect)
 			
 	{
+		boost::shared_ptr<sf::Drawable> newDrawable(new sf::Shape);
+		drawable = newDrawable;
+
 		float x = 100.0f;
 		float y = 100.0f;
 		int width = 100;
 		int height = 100;
-		shape.SetX(x);
-		shape.SetY(y);
+		drawable->SetX(x);
+		drawable->SetY(y);
 		rect.Bottom = (int)y + height;
 		rect.Top = (int)y;
 		rect.Right = (int)x + width;

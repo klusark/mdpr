@@ -14,6 +14,8 @@ namespace GUI
 		~clickable();
 		void update();
 		boost::signal<void ()> onClick;
+		sf::IntRect &widgetRect;
+		const sf::Input& input;
 
 		static void mouseDown();
 
@@ -22,9 +24,9 @@ namespace GUI
 		static int xLocationAtClick, yLocationAtClick;
 		static bool rectClicked;
 
-		static const sf::Input& input;
+
 		static clickable *clicked;
-		sf::IntRect &widgetRect;
+
 
 	};
 }
