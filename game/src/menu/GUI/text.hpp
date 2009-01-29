@@ -9,7 +9,7 @@ namespace GUI
 	class text : public widget
 	{
 	public:
-		text();
+		text(std::string sting);
 		~text();
 		void update();
 

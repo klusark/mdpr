@@ -1,13 +1,14 @@
+#include <string>
 #include "text.hpp"
-#include <iostream>
+
 namespace GUI
 {
-	text::text()
+	text::text(std::string sting)
 	{
 		boost::shared_ptr<sf::Drawable> newDrawable(new sf::String);
 		drawable = newDrawable;
 
-		dynamic_cast<sf::String *>(drawable.get())->SetText("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+		dynamic_cast<sf::String *>(drawable.get())->SetText(sting);
 	}
 
 	text::~text()

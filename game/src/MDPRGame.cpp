@@ -110,7 +110,7 @@ void MDPRGame::run()
 		}
 
 		//if (menu->isActive()){
-			menu.update();
+		//	menu.update();
 		//}
 		//test.draw();
 
