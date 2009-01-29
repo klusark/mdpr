@@ -17,7 +17,7 @@ menuMain::menuMain()
 	dynamic_cast<GUI::button *>(quit.get())->onClick.connect(&MDPRGame::quitGame);
 	addWidget(quit);
 
-	boost::shared_ptr<GUI::widget> text(new GUI::text);
+	boost::shared_ptr<GUI::widget> text(new GUI::text("This text"));
 	addWidget(text);
 }
 

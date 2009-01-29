@@ -47,10 +47,11 @@ void Bubble::update()
 	}
 	powerup.update();
 	genericSprite::update();
+	powerup.SetPosition(GetPosition());
 }
 
 void Bubble::draw(sf::RenderWindow &App)
-{
-	App.Draw(powerup);
+{	
 	genericSprite::draw(App);
+	App.Draw(powerup);
 }
