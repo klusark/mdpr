@@ -1,6 +1,8 @@
 #ifndef packets_hpp
 #define packets_hpp
 
+#include "../enumerations.hpp"
+
 enum packetIDs
 {
 	connectPacketID,
@@ -10,6 +12,7 @@ enum packetIDs
 	errorPacketID,
 	keyPacketID,
 	animationChangePacketID,
+	changePowerUpPacket,
 };
 
 /*
@@ -20,13 +23,6 @@ struct connectPacket
 	packetIDs packetID;
 	unsigned char nameLength;
 	char name[255];
-};
-
-enum spriteTypes
-{
-	player,
-	platform,
-	bubble
 };
 
 /*
@@ -76,14 +72,6 @@ struct errorPacket
 	errorIDs errorID;
 };
 
-enum keys
-{
-	keyDown,
-	keyUp,
-	keyLeft,
-	keyRight,
-};
-
 /*
 Size: 9
 */
@@ -104,6 +92,14 @@ struct animationChangePacket
 
 	unsigned short spriteID;
 	unsigned short animationID;
+};
+
+struct changePowerUpPacket
+{
+	packetIDs packetID;
+
+	unsigned short spriteID;
+	powerups powerupID;
 };
 
 #endif // ifndef packets_hpp

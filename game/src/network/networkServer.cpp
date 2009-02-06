@@ -206,16 +206,25 @@ void networkServer::handleSendTo(const boost::system::error_code& error, size_t 
 void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 {
 	if (error == boost::asio::error::operation_aborted){
-		std::cout<<"What?";
+		std::cout << "What?" << std::endl;
 	}
 	ServerSpriteManager->update();
 	for(spriteManager::spriteContainer::iterator it = ServerSpriteManager->Sprites.begin(); it != ServerSpriteManager->Sprites.end(); ++it){
 		boost::shared_ptr<genericSprite> currentSprite = it->second;
-
+		sf::Vector2f position = currentSprite->GetPosition();
+		if (currentSprite->timesSkiped <= 25){
+			if (currentSprite->lastX == position.x && currentSprite->lastY == position.y){
+				++currentSprite->timesSkiped;
+				continue;
+			}
+		}
+		currentSprite->lastX = position.x;
+		currentSprite->lastY = position.y;
+		currentSprite->timesSkiped = 0;
 		spritePosPacket packet;
 		packet.packetID = spritePosPacketID;
 		packet.spriteID = it->first;
-		sf::Vector2f position = currentSprite->GetPosition();
+		
 		packet.x = position.x;
 		packet.y = position.y;
 
