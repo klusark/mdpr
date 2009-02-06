@@ -3,6 +3,8 @@
 //#include <SFML/Window/Window.hpp>
 #include "menu/GUI/window.hpp"
 #include <boost/program_options.hpp>
+//#include <boost/python/exec.hpp>
+//#include <boost/python.hpp>
 #include <iostream>
 #include <fstream>
 #include "MDPRGame.hpp"
@@ -22,6 +24,30 @@ MDPRGame MDPR(App);
 int main(int argc, char** argv)
 {
 	try {
+		/*using namespace boost::python;
+		Py_Initialize();
+
+		// Retrieve the main module.
+		object mainModule = import("__main__");
+		
+
+		// Retrieve the main module's namespace
+		object global = mainModule.attr("__dict__");
+		global["genericPowerUp"] = class_<genericPowerUp>("genericPowerUp").def("getNum", &genericPowerUp::getNum);
+		
+		
+		//CppClass asfd;
+		//global["cpp"] = ptr(&asfd);
+		//Load the greet function from a file.
+		//
+		object result = exec_file("data/mdpr/sprites/player/gun.py", global, global);*/
+		
+
+
+
+
+
+
 		// Set display mode
 		sf::WindowSettings test(24,8,6);
 		//test.AntialiasingLevel 8;
@@ -30,7 +56,9 @@ int main(int argc, char** argv)
 		MDPR.run();
 	}catch (std::exception& e){
 		std::cout << "Exception: " << e.what() << std::endl;
-	}
+	}/*catch( boost::python::error_already_set ) {
+		PyErr_Print();
+	}*/
 	return 0;
 }
 

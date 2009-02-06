@@ -1,21 +1,20 @@
 #include <boost/asio.hpp>
+#include <boost/bind.hpp>
 #include <boost/crc.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
-#include <boost/bind.hpp>
-
-
 
 #include <iostream>
 
+#include "../enumerations.hpp"
 #include "../MDPRGame.hpp"
-#include "networkClient.hpp"
-#include "packets.hpp"
-#include "../sprite/spriteManager.hpp"
-#include "../sprite/player.hpp"
-#include "../sprite/platform.hpp"
 #include "../sprite/bubble.hpp"
+#include "../sprite/platform.hpp"
+#include "../sprite/player.hpp"
+#include "../sprite/spriteManager.hpp"
+#include "packets.hpp"
+#include "networkClient.hpp"
 
 using boost::asio::ip::udp;
 struct thread
@@ -137,6 +136,7 @@ void Network::Client::onRecivePacket(const boost::system::error_code& error, siz
 				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
 					std::cout << "Can not find sprite" << std::endl;
 				}
+				boost::mutex::scoped_lock lock(sprite.spriteMutex);
 				sprite.Sprites.erase(sprite.Sprites.find(packet->spriteID));
 
 				
@@ -177,6 +177,8 @@ void Network::Client::sendKeyPress(sf::Key::Code key, bool down)
 		packet.key = keyRight;
 	}else if (key == sf::Key::A){
 		packet.key = keyLeft;
+	}else if (key == sf::Key::Q){
+		packet.key = keyAction;
 	}else{
 		return;
 	}

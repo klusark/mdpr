@@ -6,7 +6,8 @@
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/System/Clock.hpp>
 #include <map>
-#include "../network/packets.hpp"
+#include "../powerup/genericPowerUp.hpp"
+#include "../enumerations.hpp"
 
 class genericSprite : public sf::Sprite
 {
@@ -32,32 +33,39 @@ public:
 
 	std::string name;
 
+	boost::shared_ptr<genericPowerUp> currentPowerup;
+	bool hasPowerUp;
+	bool onGround;
+	bool inputDisabled;
+
+
 	spriteTypes spriteType;
 
 	class Animation
 	{
 	public:
-		Animation()
+		Animation() : reverseonfinish(false), currentFrame(0), updateTime(0), playBackward(false)
 		{
-			currentFrame = 0;
-			updateTime = 0;
-			playBackward = false;
 		}
 		sf::Clock Clock;
 		float updateTime;
 		int delay, frames, startx, starty, width, height, currentFrame;
-		bool playBackward;
+		bool playBackward, reverseonfinish;
 		sf::IntRect update();
 		sf::IntRect collisionRect;
 
 	};
 
 	boost::shared_ptr<Animation> currentAnimation;
-	bool onGround;
+	
+	powerups currentPowerupID;
+	float lastX, lastY;
+	int timesSkiped;
 protected:
 	sf::Image &Image;
 	float xAccel,		yAccel;
 	float xVelocity,	yVelocity;
+	
 	sf::Clock Clock;
 
 

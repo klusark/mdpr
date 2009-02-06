@@ -21,7 +21,11 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 		xVelocity(0),
 		yVelocity(0),
 		xAccel(0),
-		yAccel(0)
+		yAccel(0),
+		lastX(0),
+		lastY(0),
+		timesSkiped(0),
+		hasPowerUp(false)
 {
 
 	SetX(0);
@@ -70,7 +74,7 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 
 		boost::program_options::options_description animationConfig("Configuration");
 		boost::shared_ptr<Animation> newAnimation(new Animation);
-
+		
 		animationConfig.add_options()
 			("delay",	boost::program_options::value<int>(&newAnimation->delay),	"")
 			("frames",	boost::program_options::value<int>(&newAnimation->frames),	"")
@@ -78,11 +82,12 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 			("starty",	boost::program_options::value<int>(&newAnimation->starty),	"")
 			("width",	boost::program_options::value<int>(&newAnimation->width),	"")
 			("height",	boost::program_options::value<int>(&newAnimation->height),	"")
+			("reverseonfinish",			boost::program_options::value<bool>(&newAnimation->reverseonfinish),		"")
 
-			("collision.rect.top",		boost::program_options::value<int>(&newAnimation->collisionRect.Top),	"")
-			("collision.rect.bottom",	boost::program_options::value<int>(&newAnimation->collisionRect.Bottom),"")
-			("collision.rect.right",	boost::program_options::value<int>(&newAnimation->collisionRect.Right),	"")
-			("collision.rect.left",		boost::program_options::value<int>(&newAnimation->collisionRect.Left),	"");
+			("collision.rect.top",		boost::program_options::value<int >(&newAnimation->collisionRect.Top),		"")
+			("collision.rect.bottom",	boost::program_options::value<int >(&newAnimation->collisionRect.Bottom),	"")
+			("collision.rect.right",	boost::program_options::value<int >(&newAnimation->collisionRect.Right),	"")
+			("collision.rect.left",		boost::program_options::value<int >(&newAnimation->collisionRect.Left),		"");
 
 		boost::program_options::variables_map animationVariableMap;
 
