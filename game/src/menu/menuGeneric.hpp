@@ -5,7 +5,6 @@
 
 #include <vector>
 
-#include "menuManager.hpp"
 #include "GUI/widget.hpp"
 
 class menuGeneric

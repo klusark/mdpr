@@ -12,7 +12,8 @@ enum packetIDs
 	errorPacketID,
 	keyPacketID,
 	animationChangePacketID,
-	changePowerUpPacket,
+	changePowerUpPacketID,
+	needSpritePacketID,
 };
 
 /*
@@ -46,7 +47,7 @@ struct spriteDeletionPacket
 };
 
 /*
-Size: 14
+Size: 15
 */
 struct spritePosPacket
 {
@@ -54,7 +55,7 @@ struct spritePosPacket
 	unsigned short spriteID;
 	float x;
 	float y;
-
+	bool flipped;
 };
 
 enum errorIDs
@@ -94,12 +95,21 @@ struct animationChangePacket
 	unsigned short animationID;
 };
 
+/*
+Size: 10
+*/
 struct changePowerUpPacket
 {
 	packetIDs packetID;
 
 	unsigned short spriteID;
 	powerups powerupID;
+};
+
+struct needSpritePacket
+{
+	packetIDs packetID;
+	unsigned short stuff;
 };
 
 #endif // ifndef packets_hpp

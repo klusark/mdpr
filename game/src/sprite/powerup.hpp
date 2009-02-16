@@ -12,4 +12,4 @@ public:
 	static sf::Image Image;
 };
 
-#endif
+#endif // ifndef powerup_hpp

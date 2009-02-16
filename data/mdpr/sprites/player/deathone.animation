@@ -1,0 +1,11 @@
+delay = 100
+frames = 2
+startx = 0
+starty = 240
+width = 24
+height = 24
+reverseonfinish = true
+collision.rect.top = 1
+collision.rect.bottom = 24
+collision.rect.right = 16
+collision.rect.left = 6

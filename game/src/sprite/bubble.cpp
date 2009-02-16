@@ -1,10 +1,11 @@
 #include <SFML/Graphics/Image.hpp>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 
-#include "bubble.hpp"
-#include "genericSprite.hpp"
-#include "../network/packets.hpp"
+#include "../enumerations.hpp"
 #include "../crc.hpp"
+#include "genericSprite.hpp"
+#include "powerup.hpp"
+#include "bubble.hpp"
 
 sf::Image Bubble::Image;
 

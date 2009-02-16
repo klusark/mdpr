@@ -5,7 +5,6 @@
 #include "../network/packets.hpp"
 #include "../crc.hpp"
 #include "../powerup/gun.hpp"
-#include <iostream>
 
 sf::Image Player::Image;
 
@@ -38,7 +37,13 @@ void Player::update()
 		currentPowerup->onActionKey();
 	}
 	float velocity = (float)(-1*keyMap[keyLeft]+keyMap[keyRight])*30;
+	if (velocity != 0){
+		if (velocity < 0){
+			flipped = true;
+		}else{
+			flipped = false;
+		}
+	}
 	setXVelocity(velocity);
-	currentPowerup->update();
 	genericSprite::update();
 }

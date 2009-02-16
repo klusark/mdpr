@@ -14,7 +14,7 @@ namespace GUI
 
 	void widget::draw()
 	{
-		MDPR.App.Draw(*drawable.get());
+		MDPR->App.Draw(*drawable.get());
 
 	}
 

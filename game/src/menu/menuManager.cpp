@@ -1,19 +1,15 @@
-#include <iostream>
 #include <boost/shared_ptr.hpp>
 #include "menuManager.hpp"
 #include "menuMain.hpp"
 
-menuManager menu;
+boost::shared_ptr<menuManager> menu;
 
 menuManager::menuManager() : active(false)
 {
-
-
 	boost::shared_ptr<menuGeneric> mainMenu(new menuMain);
 	menus["menuMain"] = mainMenu;
 
 	changeCurrentMenu("menuMain");
-
 }
 
 menuManager::~menuManager()

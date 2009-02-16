@@ -4,7 +4,6 @@
 #include "../crc.hpp"
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/shared_ptr.hpp>
-//#include <boost/thread.hpp>
 
 #include <iostream>
 #include <map>
@@ -19,38 +18,15 @@
 #include "../sprite/platform.hpp"
 #include "../sprite/bubble.hpp"
 
+boost::shared_ptr<networkServer> server;
+
 boost::asio::io_service networkServer::ioService;
-
-networkServer server;
-
-struct thread
-{
-public:
-	thread(boost::asio::io_service &ioService) 
-		: ioService(ioService)
-	{}
-	void operator()(){
-		
-		for (;;){
-			try {
-				ioService.run();
-			}catch(std::exception& e){
-				std::cout << "Exception: " << e.what() << "\n";
-			}
-		}
-		return;
-	}
-private:
-	boost::asio::io_service& ioService;
-};
 
 networkServer::networkServer() 
 	:
 		serverSocket(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 9935)),
 		timer(ioService, boost::posix_time::seconds(2))
 {
-	boost::shared_ptr<spriteManager> tmpSprite(new spriteManager(true));
-	ServerSpriteManager = tmpSprite;
 	posUpdate = 0;
 
 	serverSocket.async_receive_from(boost::asio::buffer(buffer), endpoint, boost::bind(&networkServer::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
@@ -61,17 +37,17 @@ networkServer::networkServer()
 	{
 		boost::shared_ptr<genericSprite> newPlatform(new Platform("platform0"));
 		newPlatform->SetY(50);
-		ServerSpriteManager->registerSprite(newPlatform);
+		sprite.registerSprite(newPlatform);
 	}
 	{
 		boost::shared_ptr<genericSprite> newPlatform(new Platform("platform1"));
 		newPlatform->SetY(50);
 		newPlatform->SetX(66);
-		ServerSpriteManager->registerSprite(newPlatform);
+		sprite.registerSprite(newPlatform);
 	}
 	{
 		boost::shared_ptr<genericSprite> newBubble(new Bubble("bubble0"));
-		ServerSpriteManager->registerSprite(newBubble);
+		sprite.registerSprite(newBubble);
 	}
 }
 
@@ -91,13 +67,12 @@ bool networkServer::runServer()
 void networkServer::onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd)
 {
 	if (error){
-		std::cout<<error.message()<<std::endl;
+		//std::cout << error.message() << std::endl;
 
 		if (!(Players.find(endpoint.port()) == Players.end())){
 
 			disconnect(endpoint.port());
 
-			std::cout<<error.message()<<std::endl;
 		}
 	}else{
 
@@ -122,7 +97,7 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 
 				int playerID = crc.stringToShort(name);
 
-				if (ServerSpriteManager->Sprites.find(playerID) != ServerSpriteManager->Sprites.end()){
+				if (sprite.Sprites.find(playerID) != sprite.Sprites.end()){
 					//Player with the same name is already in the game
 					errorPacket packet;
 					packet.packetID = errorPacketID;
@@ -137,7 +112,7 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 
 				boost::shared_ptr<genericSprite> newPlayer(new Player(packet->name));
 				
-				ServerSpriteManager->registerSprite(newPlayer);
+				sprite.registerSprite(newPlayer);
 				player->playerSprite = newPlayer;
 
 				player->timer.async_wait(boost::bind(&networkServer::playerInfo::disconnect, player, boost::asio::placeholders::error));
@@ -146,7 +121,7 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 				std::cout << "Player " << player->name << " connected from " << player->endpoint.address().to_v4().to_string() << std::endl;
 				{
 					spriteManager::spriteContainer::iterator iter;
-					for(iter = ServerSpriteManager->Sprites.begin(); iter != ServerSpriteManager->Sprites.end(); ++iter){
+					for(iter = sprite.Sprites.begin(); iter != sprite.Sprites.end(); ++iter){
 
 						spriteCreationPacket packet;
 						packet.packetID = spriteCreationPacketID;
@@ -199,7 +174,7 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 void networkServer::handleSendTo(const boost::system::error_code& error, size_t bytes_sent)
 {
 	if (error){
-		std::cout << error.message() << std::endl;
+		//std::cout << error.message() << std::endl;
 	}
 }
 
@@ -208,9 +183,12 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 	if (error == boost::asio::error::operation_aborted){
 		std::cout << "What?" << std::endl;
 	}
-	ServerSpriteManager->update();
-	for(spriteManager::spriteContainer::iterator it = ServerSpriteManager->Sprites.begin(); it != ServerSpriteManager->Sprites.end(); ++it){
+	sprite.update();
+	for(spriteManager::spriteContainer::iterator it = sprite.Sprites.begin(); it != sprite.Sprites.end(); ++it){
 		boost::shared_ptr<genericSprite> currentSprite = it->second;
+		if (currentSprite->nonNetworked){
+			continue;
+		}
 		sf::Vector2f position = currentSprite->GetPosition();
 		if (currentSprite->timesSkiped <= 25){
 			if (currentSprite->lastX == position.x && currentSprite->lastY == position.y){
@@ -227,9 +205,26 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 		
 		packet.x = position.x;
 		packet.y = position.y;
+		packet.flipped = currentSprite->flipped;
 
+		animationChangePacket animationPacket;
+		bool useAnimationPacked = false;
+		if (currentSprite->lastAnimationName != currentSprite->currentAnimation->name){
+			
+			animationPacket.packetID = animationChangePacketID;
+			animationPacket.spriteID = it->first;
+			animationPacket.animationID = CRC().stringToShort(currentSprite->currentAnimation->name);
+			currentSprite->lastAnimationName = currentSprite->currentAnimation->name;
+			useAnimationPacked = true;
+		}
+		//boost::asio::ConstBufferSequence handler;
 		playerContainer::iterator iter;
 		for( iter = Players.begin(); iter != Players.end(); ++iter ) {
+			
+			//a bit too hackish for my likings
+			if (useAnimationPacked){
+				serverSocket.async_send_to(boost::asio::buffer((const void *)&animationPacket, sizeof(animationPacket)), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+			}
 			serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(packet)), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 		}
 	}
@@ -244,7 +239,7 @@ void networkServer::disconnect(unsigned short playerID)
 	packet.packetID = spriteDeletionPacketID;
 	CRC crc;
 	if (Players.find(playerID) == Players.end()){
-		std::cout<<"ASFASDF"<<std::endl;
+		std::cout << "Could not find player" << std::endl;
 		return;
 	}
 	packet.spriteID = crc.stringToShort(Players[playerID]->name);
@@ -253,7 +248,8 @@ void networkServer::disconnect(unsigned short playerID)
 		serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(packet)), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 	}
 	std::cout << "Player " << Players[playerID]->playerSprite->name << " has disconnected." << std::endl;
-	ServerSpriteManager->removeSprite(packet.spriteID);
+	Players[playerID]->timer.cancel();
+	sprite.removeSprite(packet.spriteID);
 	Players.erase(playerID);
 	
 }
@@ -263,8 +259,7 @@ void networkServer::playerInfo::disconnect(const boost::system::error_code& e)
 	if (e == boost::asio::error::operation_aborted){
 		return;
 	}
-	server.disconnect(endpoint.port());
-
+	server->disconnect(endpoint.port());
 }
 
 #endif // ifdef SERVER

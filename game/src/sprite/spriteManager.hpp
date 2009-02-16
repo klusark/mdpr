@@ -13,7 +13,7 @@
 class spriteManager
 {
 public:
-	spriteManager(bool server = false);
+	spriteManager();
 	~spriteManager();
 	typedef std::map<unsigned short, boost::shared_ptr<genericSprite> > spriteContainer;
 
@@ -28,13 +28,11 @@ public:
 	spriteCollision collision;
 private:
     bool active;
-	bool server;
 	
 	
 };
 
-#ifndef SERVER
 extern spriteManager sprite;
-#endif
 
-#endif //spriteManager_hpp
+
+#endif // ifndef spriteManager_hpp

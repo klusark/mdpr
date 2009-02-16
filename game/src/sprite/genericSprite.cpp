@@ -12,6 +12,7 @@
 #include <SFML/System/Vector2.hpp>
 #include "../crc.hpp"
 
+#include "../powerup/genericPowerUp.hpp"
 #include "genericSprite.hpp"
 
 genericSprite::genericSprite(const std::string &name, std::string spriteType, sf::Image &tempImage) 
@@ -25,7 +26,9 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 		lastX(0),
 		lastY(0),
 		timesSkiped(0),
-		hasPowerUp(false)
+		hasPowerUp(false),
+		flipped(false),
+		nonNetworked(false)
 {
 
 	SetX(0);
@@ -57,23 +60,25 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 	
 	
 #ifndef SERVER
-	//load image hackish way to check if in a thread
-	if (Image.GetHeight() == 0 && !boost::this_thread::interruption_enabled()){
-		std::string imageFile;
-		imageFile = "data/mdpr/sprites/";
-		imageFile += spriteType;
-		imageFile += "/";
-		imageFile += image;
-		Image.LoadFromFile(imageFile);
-		Image.SetSmooth(false);
+	if (image.length() != 0){
+		//load image hackish way to check if in a thread
+		if (Image.GetHeight() == 0 && !boost::this_thread::interruption_enabled()){
+			std::string imageFile;
+			imageFile = "data/mdpr/sprites/";
+			imageFile += spriteType;
+			imageFile += "/";
+			imageFile += image;
+			Image.LoadFromFile(imageFile);
+			Image.SetSmooth(false);
+		}
+		SetImage(Image);
 	}
-	SetImage(Image);
 #endif // ifndef SERVER
 	std::vector< std::string >::iterator iter;
 	for (iter = animations.begin(); iter < animations.end(); ++iter){
 
 		boost::program_options::options_description animationConfig("Configuration");
-		boost::shared_ptr<Animation> newAnimation(new Animation);
+		boost::shared_ptr<Animation> newAnimation(new Animation(*iter));
 		
 		animationConfig.add_options()
 			("delay",	boost::program_options::value<int>(&newAnimation->delay),	"")
@@ -119,6 +124,7 @@ void genericSprite::update()
 {
 #ifndef SERVER
 	SetSubRect(currentAnimation->update());
+	FlipX(flipped);
 #endif
 	float deltaTime = Clock.GetElapsedTime();
 	Clock.Reset();
@@ -126,6 +132,9 @@ void genericSprite::update()
 	Move(sf::Vector2<float>::Vector2(static_cast<float>(xVelocity*deltaTime+(0.5)*xAccel*pow(deltaTime,2)), static_cast<float>(yVelocity*deltaTime+(0.5)*yAccel*pow(deltaTime,2))));
 	xVelocity+=xAccel*deltaTime;
 	yVelocity+=yAccel*deltaTime;
+	if (hasPowerUp){
+		currentPowerup->update();
+	}
 
 }
 
@@ -145,26 +154,13 @@ void genericSprite::changeAnimation(unsigned int name)
 
 }
 
-sf::IntRect genericSprite::Animation::update()
+void genericSprite::changeAnimation(std::string name)
 {
-	
-	sf::IntRect newRect(currentFrame * width + startx, starty, (width + currentFrame * width) -1, starty + height);
+	CRC crc;
+	changeAnimation(crc.stringToShort(name));
 
-	updateTime += Clock.GetElapsedTime() * 1000;
-	Clock.Reset();
-	while(updateTime > delay){
-		updateTime -= delay;
-		currentFrame = playBackward ? currentFrame -1 : currentFrame + 1;
-		
-		if(currentFrame >= frames || currentFrame < 0)
-		{
-			currentFrame = playBackward ? frames - 1 : 0;
-		}
-	}
-
-	return newRect;
-	
 }
+
 
 float genericSprite::getXAccel()
 {

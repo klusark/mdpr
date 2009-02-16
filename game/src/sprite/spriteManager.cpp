@@ -4,22 +4,16 @@
 #include <SFML/Graphics.hpp>
 
 #include <map>
-#include <sstream>
-#include <string>
-#include <iostream>
 #include "../crc.hpp"
 #include "genericSprite.hpp"
 #include "player.hpp"
 #include "spriteCollision.hpp"
 #include "spriteManager.hpp"
 
-#ifndef SERVER
 spriteManager sprite;
-#endif
 
-spriteManager::spriteManager(bool server)
+spriteManager::spriteManager()
 	:	active(false),
-		server(server),
 		collision(Sprites)
 {
 }
@@ -37,7 +31,6 @@ void spriteManager::registerSprite(boost::shared_ptr<genericSprite> sprite)
 
 void spriteManager::update()
 {
-	boost::mutex::scoped_lock lock(spriteMutex);
 	collision.before();
 	spriteContainer::iterator iter;
 	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
@@ -48,7 +41,6 @@ void spriteManager::update()
 
 void spriteManager::draw(sf::RenderWindow &App)
 {
-	boost::mutex::scoped_lock lock(spriteMutex);
     spriteContainer::iterator iter;
 	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
 		iter->second->draw(App);

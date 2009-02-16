@@ -2,6 +2,7 @@
 #define MDPRGame_hpp
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/System/Clock.hpp>
 
 class MDPRGame
 {
@@ -22,6 +23,6 @@ private:
 
 };
 
-extern MDPRGame MDPR;
+extern boost::shared_ptr<MDPRGame> MDPR;
 
-#endif //MDPRGame_hpp
+#endif // ifndef MDPRGame_hpp
