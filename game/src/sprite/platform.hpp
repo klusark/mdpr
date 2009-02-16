@@ -1,8 +1,8 @@
 #ifndef platform_hpp
 #define platform_hpp
 
-#include "genericSprite.hpp"
 #include <SFML/Graphics/Image.hpp>
+#include "genericSprite.hpp"
 
 class Platform : public genericSprite
 {

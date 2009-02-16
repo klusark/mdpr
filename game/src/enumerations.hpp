@@ -5,7 +5,8 @@ enum spriteTypes
 {
 	player,
 	platform,
-	bubble
+	bubble,
+	deathArea,
 };
 
 enum keys

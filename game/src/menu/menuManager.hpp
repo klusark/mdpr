@@ -24,6 +24,7 @@ private:
 	boost::shared_ptr<menuGeneric> currentMenu;
 	bool active;
 };
-extern menuManager menu;
+
+extern boost::shared_ptr<menuManager> menu;
 
 #endif

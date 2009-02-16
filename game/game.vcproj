@@ -136,6 +136,8 @@
 				AdditionalDependencies="sfml-system.lib sfml-main.lib sfml-window.lib sfml-graphics.lib"
 				ModuleDefinitionFile=""
 				SubSystem="1"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -189,10 +191,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\network\networkServer.hpp"
-					>
-				</File>
-				<File
 					RelativePath=".\src\network\packets.hpp"
 					>
 				</File>
@@ -201,7 +199,15 @@
 				Name="Sprite"
 				>
 				<File
+					RelativePath=".\src\sprite\animation.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\sprite\bubble.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\deathArea.hpp"
 					>
 				</File>
 				<File
@@ -320,16 +326,20 @@
 					RelativePath=".\src\network\networkClient.cpp"
 					>
 				</File>
-				<File
-					RelativePath=".\src\network\networkServer.cpp"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="Sprite"
 				>
 				<File
+					RelativePath=".\src\sprite\animation.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\sprite\bubble.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\deathArea.cpp"
 					>
 				</File>
 				<File

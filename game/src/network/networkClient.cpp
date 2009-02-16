@@ -1,6 +1,5 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
-#include <boost/crc.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
@@ -39,7 +38,7 @@ Network::Client::Client()
 {
 	udp::resolver resolver(ioService);
 
-	udp::resolver::query query(udp::v4(), MDPR.serverIP, MDPR.serverPort);
+	udp::resolver::query query(udp::v4(), MDPR->serverIP, MDPR->serverPort);
 	udp::resolver::iterator iterator = resolver.resolve(query);
 
 	receiverEndpoint = *resolver.resolve(query);
@@ -67,8 +66,8 @@ bool Network::Client::run()
 	{
 		connectPacket packet;
 		packet.packetID = connectPacketID;
-		packet.nameLength = MDPR.playerName.length();
-		strcpy(packet.name, MDPR.playerName.c_str());
+		packet.nameLength = MDPR->playerName.length();
+		strcpy(packet.name, MDPR->playerName.c_str());
 		
 		
 		socket.send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), receiverEndpoint);
@@ -128,6 +127,7 @@ void Network::Client::onRecivePacket(const boost::system::error_code& error, siz
 				}
 				sprite.Sprites[packet->spriteID]->SetX(packet->x);
 				sprite.Sprites[packet->spriteID]->SetY(packet->y);
+				sprite.Sprites[packet->spriteID]->flipped = packet->flipped;
 			}
 			break;
 		case spriteDeletionPacketID:

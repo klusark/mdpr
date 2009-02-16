@@ -32,8 +32,6 @@ protected:
 
 	unsigned short posUpdate;
 
-	boost::shared_ptr<spriteManager> ServerSpriteManager;
-
 	unsigned short maxPlayers;
 	unsigned short currentPlayers;
 
@@ -55,6 +53,6 @@ protected:
 
 
 };
-extern networkServer server;
+extern boost::shared_ptr<networkServer> server;
 
 #endif

@@ -1,6 +1,5 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <boost/signal.hpp>
-#include <iostream>
 
 #include "../../MDPRGame.hpp"
 #include "clickable.hpp"
@@ -12,7 +11,7 @@ namespace GUI
 	bool clickable::rectClicked = false;
 	clickable::clickable(sf::IntRect &rect)
 		:	widgetRect(rect),
-			input(MDPR.App.GetInput())
+			input(MDPR->App.GetInput())
 	{
 
 	}
@@ -33,15 +32,15 @@ namespace GUI
 
 	void clickable::mouseDown()
 	{
-		xLocationAtClick = MDPR.App.GetInput().GetMouseX();
- 		yLocationAtClick = MDPR.App.GetInput().GetMouseY();
+		xLocationAtClick = MDPR->App.GetInput().GetMouseX();
+ 		yLocationAtClick = MDPR->App.GetInput().GetMouseY();
 
 	}
 
 	void clickable::mouseUp()
 	{
 		if (rectClicked){
-			if (clicked->widgetRect.Contains(MDPR.App.GetInput().GetMouseX(), MDPR.App.GetInput().GetMouseY())){
+			if (clicked->widgetRect.Contains(MDPR->App.GetInput().GetMouseX(), MDPR->App.GetInput().GetMouseY())){
 				clicked->onClick();
 				//std::cout<<"Clicked"<<std::endl;
 

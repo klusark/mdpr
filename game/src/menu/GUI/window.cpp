@@ -4,7 +4,6 @@
 #include "window.hpp"
 #include "button.hpp"
 #include "../../MDPRGame.hpp"
-#include <iostream>
 
 namespace GUI
 {
@@ -38,17 +37,4 @@ namespace GUI
 	window::~window()
 	{
 	}
-
-	/*void window::addWidget(boost::shared_ptr<widget> newWidget)
-	{
-		widgets.push_back(newWidget);
-	}*/
-
-	/*void window::draw()
-	{
-		MDPR.App.Draw(drawable);
-		for (unsigned int i = 0; i < widgets.size(); ++i){
-			widgets[i]->draw();
-		}
-	}*/
 }

@@ -1,7 +1,10 @@
 #ifndef spriteCollision_hpp
 #define spriteCollision_hpp
+
 #include <map>
+
 class genericSprite;
+
 class spriteCollision
 {
 public:

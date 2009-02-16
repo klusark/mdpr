@@ -1,8 +1,9 @@
 #ifndef bubble_hpp
 #define bubble_hpp
 
-#include "genericSprite.hpp"
 #include <SFML/Graphics/Image.hpp>
+
+#include "genericSprite.hpp"
 #include "powerup.hpp"
 
 class Bubble : public genericSprite
@@ -17,4 +18,4 @@ public:
 	
 };
 
-#endif
+#endif // ifndef bubble_hpp

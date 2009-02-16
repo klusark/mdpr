@@ -1,6 +1,6 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Image.hpp>
-//#include <SFML/Window/Window.hpp>
+#include <SFML/System/Clock.hpp>
 #include "menu/GUI/window.hpp"
 #include <boost/program_options.hpp>
 //#include <boost/python/exec.hpp>
@@ -16,10 +16,11 @@
 #include "sprite/platform.hpp"
 #include "sprite/bubble.hpp"
 #include "sprite/powerup.hpp"
+#include "sprite/deathArea.hpp"
 #include "menu/GUI/clickable.hpp"
 
-sf::RenderWindow App;
-MDPRGame MDPR(App);
+//sf::RenderWindow App;
+boost::shared_ptr<MDPRGame> MDPR;
 
 int main(int argc, char** argv)
 {
@@ -51,9 +52,16 @@ int main(int argc, char** argv)
 		// Set display mode
 		sf::WindowSettings test(24,8,6);
 		//test.AntialiasingLevel 8;
+		sf::RenderWindow App;
 		App.Create(sf::VideoMode(640, 400, 32), "Marshmallow Duel: Percy's Return", sf::Style::Resize | sf::Style::Close, test);
 		App.EnableKeyRepeat(false);
-		MDPR.run();
+		boost::shared_ptr<MDPRGame> newMDPR(new MDPRGame(App));
+		MDPR = newMDPR;
+
+		boost::shared_ptr<menuManager> newMenu(new menuManager);
+		menu = newMenu;
+
+		MDPR->run();
 	}catch (std::exception& e){
 		std::cout << "Exception: " << e.what() << std::endl;
 	}/*catch( boost::python::error_already_set ) {
@@ -105,6 +113,7 @@ void MDPRGame::run()
 		Platform platform("Platform");
 		Bubble bubble("Bubble");
 		PowerUp powerup("Powerup");
+		DeathArea death("Death", sf::IntRect());
 	}
 
 	sprite.setActive(true);
@@ -145,7 +154,8 @@ void MDPRGame::run()
 
 		//network->update();
 
-        	if (sprite.isActive()){
+        if (sprite.isActive()){
+			boost::mutex::scoped_lock lock(sprite.spriteMutex);
 			sprite.update();
 			sprite.draw(App);
 

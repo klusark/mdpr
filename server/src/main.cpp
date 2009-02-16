@@ -2,5 +2,6 @@
 
 int main()
 {
-	server.runServer();
+	server = boost::shared_ptr<networkServer>(new networkServer());
+	server->runServer();
 }
