@@ -1,6 +1,8 @@
 #include <boost/program_options.hpp>
 #include <boost/shared_ptr.hpp>
+#ifndef SERVER
 #include <boost/thread.hpp>
+#endif
 #include <SFML/Graphics.hpp>
 
 #include <string>
@@ -145,20 +147,16 @@ void genericSprite::draw(sf::RenderWindow &App)
 
 void genericSprite::changeAnimation(unsigned int name)
 {
-
 	if (Animations.find(name) != Animations.end()){
 		currentAnimation = Animations[name];
 	}else{
 		std::cout << "Error Cannot find Animation: " << name << std::endl;
 	}
-
 }
 
 void genericSprite::changeAnimation(std::string name)
 {
-	CRC crc;
-	changeAnimation(crc.stringToShort(name));
-
+	changeAnimation(CRC().stringToShort(name));
 }
 
 

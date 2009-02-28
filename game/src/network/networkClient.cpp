@@ -156,6 +156,12 @@ void Network::Client::onRecivePacket(const boost::system::error_code& error, siz
 				
 			}
 			break;
+		case animationChangePacketID:
+			{
+				animationChangePacket *packet = (animationChangePacket *)buffer;
+				sprite.Sprites[packet->spriteID]->changeAnimation(packet->animationID);
+			}
+			break;
 		default:
 			std::cout << "Error in client receve packet" << std::endl;
 			break;
