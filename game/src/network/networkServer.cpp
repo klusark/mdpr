@@ -190,7 +190,7 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 			continue;
 		}
 		sf::Vector2f position = currentSprite->GetPosition();
-		if (currentSprite->timesSkiped <= 25){
+		if (currentSprite->timesSkiped <= 25 && currentSprite->spriteType != player){
 			if (currentSprite->lastX == position.x && currentSprite->lastY == position.y){
 				++currentSprite->timesSkiped;
 				continue;

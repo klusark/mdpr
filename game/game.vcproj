@@ -114,6 +114,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0501"
 				RuntimeLibrary="2"
