@@ -8,6 +8,7 @@ class menuMain : public menuGeneric
 public:
 	menuMain();
 	~menuMain();
+	static void toThis();
 
 
 };

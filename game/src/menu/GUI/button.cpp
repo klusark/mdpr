@@ -2,7 +2,7 @@
 
 namespace GUI
 {
-	button::button()
+	button::button(unsigned int width, unsigned int height, float x, float y)
 		:	widget(),
 			clickable(rect)
 			
@@ -10,18 +10,14 @@ namespace GUI
 		boost::shared_ptr<sf::Drawable> newDrawable(new sf::Shape);
 		drawable = newDrawable;
 
-		float x = 100.0f;
-		float y = 100.0f;
-		int width = 100;
-		int height = 100;
 		drawable->SetX(x);
 		drawable->SetY(y);
 		rect.Bottom = (int)y + height;
 		rect.Top = (int)y;
 		rect.Right = (int)x + width;
 		rect.Left = (int)x;
-		sf::Color color(0,255,255, 100);
-		float radius = 25.0f;
+		sf::Color color(255,128,0, 255);
+		float radius = 5.0f;
 
 		makeCurve(0,		height, radius, color, bottomLeft);
 

@@ -11,10 +11,10 @@ namespace GUI
 	public:
 		widget();
 		~widget();
-		void draw();
+		virtual void draw();
 		virtual void update();
 
-	protected:
+	//protected:
 		boost::shared_ptr<sf::Drawable> drawable;
 		sf::IntRect rect;
 		enum curveLocation

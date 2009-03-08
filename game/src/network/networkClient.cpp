@@ -185,6 +185,10 @@ void Network::Client::sendKeyPress(sf::Key::Code key, bool down)
 		packet.key = keyLeft;
 	}else if (key == sf::Key::Q){
 		packet.key = keyAction;
+	}else if (key == sf::Key::W){
+		packet.key = keyUp;
+	}else if (key == sf::Key::S){
+		packet.key = keyDown;
 	}else{
 		return;
 	}

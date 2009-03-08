@@ -14,6 +14,7 @@ namespace GUI
 		~clickable();
 		void update();
 		boost::signal<void ()> onClick;
+		boost::signal<void ()> onDown;
 		sf::IntRect &widgetRect;
 		const sf::Input& input;
 
