@@ -7,7 +7,7 @@
 
 namespace GUI
 {
-	window::window(unsigned short width, unsigned short height, float x, float y)
+	window::window(unsigned int width, unsigned int height, float x, float y, sf::Color color)
 		:	width(width),
 			height(height)
 	{
@@ -21,8 +21,7 @@ namespace GUI
 		rect.Top = (int)y;
 		rect.Right = (int)x + width;
 		rect.Left = (int)x;
-		sf::Color color(0, 255, 0, 255);
-		float radius = 25.0f;
+		float radius = 7.0f;
 
 		makeCurve(0,		height, radius, color, bottomLeft);
 

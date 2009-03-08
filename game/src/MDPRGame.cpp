@@ -108,18 +108,18 @@ void MDPRGame::run()
 	float seconds, fps = 0;
 
 
-	{
+	/*{
 		Player player("Player");
 		Platform platform("Platform");
 		Bubble bubble("Bubble");
 		PowerUp powerup("Powerup");
 		DeathArea death("Death", sf::IntRect());
-	}
+	}*/
 
 	sprite.setActive(true);
 
-	boost::shared_ptr<Network::Client> networkClient(new Network::Client);
-	networkClient->run();
+	//boost::shared_ptr<Network::Client> networkClient(new Network::Client);
+	//networkClient->run();
 	GUI::window test(540,300,50,50);
 
 
@@ -135,9 +135,9 @@ void MDPRGame::run()
 			}
 
 			if (Event.Type == sf::Event::KeyPressed){
-				networkClient->sendKeyPress(Event.Key.Code, true);
+				//networkClient->sendKeyPress(Event.Key.Code, true);
 			}else if (Event.Type == sf::Event::KeyReleased){
-				networkClient->sendKeyPress(Event.Key.Code, false);
+				//networkClient->sendKeyPress(Event.Key.Code, false);
 			}else if(Event.Type == sf::Event::MouseButtonPressed){
 				GUI::clickable::mouseDown();
 			}else if(Event.Type == sf::Event::MouseButtonReleased){
@@ -147,7 +147,7 @@ void MDPRGame::run()
 		}
 
 		//if (menu->isActive()){
-		//	menu.update();
+			menu->update();
 		//}
 		//test.draw();
 

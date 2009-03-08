@@ -25,6 +25,7 @@ namespace GUI
 		if (widgetRect.Contains(xLocationAtClick, yLocationAtClick)){
 			clicked = this;
 			rectClicked = true;
+			onDown();
 		}
 
 

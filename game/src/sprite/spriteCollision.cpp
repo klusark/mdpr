@@ -30,8 +30,11 @@ void spriteCollision::update(int spriteID)
 					if (Sprites[spriteID]->GetPosition().x + width + left >= otherPosition.x && Sprites[spriteID]->GetPosition().x <= otherPosition.x + 10){
 						if (Sprites[spriteID]->GetPosition().y + height >= otherPosition.y){
 							Sprites[spriteID]->SetY(otherPosition.y - height);
+							Sprites[spriteID]->onGround = true;
 						}
 					}
+				}else{
+					Sprites[spriteID]->onGround = false;
 				}
 			}
 		}else if (Sprites[spriteID]->spriteType == deathArea){

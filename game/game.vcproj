@@ -279,6 +279,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\menu\GUI\textBox.hpp"
+						>
+					</File>
+					<File
 						RelativePath=".\src\menu\GUI\widget.hpp"
 						>
 					</File>
@@ -408,6 +412,10 @@
 					</File>
 					<File
 						RelativePath=".\src\menu\GUI\text.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\menu\GUI\textBox.cpp"
 						>
 					</File>
 					<File

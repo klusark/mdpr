@@ -8,7 +8,7 @@
 
 sf::Image Player::Image;
 
-Player::Player(const std::string &name) : genericSprite(name, "player", Image)
+Player::Player(const std::string &name) : genericSprite(name, "player", Image),rolling(false)
 {
 	spriteType = player;
 
@@ -37,18 +37,37 @@ void Player::update()
 		currentPowerup->onActionKey();
 	}
 #ifdef SERVER
-	float velocity = (float)(-1*keyMap[keyLeft]+keyMap[keyRight])*30;
-	if (velocity != 0){
-		changeAnimation("run");
-		if (velocity < 0){
-			flipped = true;
+	running = false;
+	//rolling = false;
+	if (onGround){
+		float velocity = (float)(-1*keyMap[keyLeft]+keyMap[keyRight])*30;
+		if (velocity != 0){
+			if (keyMap[keyDown]){
+				rolling = true;
+			}else{
+				running = true;
+			}
+			//changeAnimation("run");
+			if (velocity < 0){
+				flipped = true;
+			}else{
+				flipped = false;
+			}
 		}else{
-			flipped = false;
+			
 		}
-	}else{
-		changeAnimation("idle");
+		if ((running + rolling) > 1){
+			printf("f");
+		}
+		if (running){
+			changeAnimation("run");
+		}else if (rolling){
+			changeAnimation("roll");
+		}else{
+			changeAnimation("idle");
+		}
+		setXVelocity(velocity);
 	}
-	setXVelocity(velocity);
 #endif
 	genericSprite::update();
 }
