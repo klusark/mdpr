@@ -50,7 +50,7 @@ int main(int argc, char** argv)
 
 
 		// Set display mode
-		sf::WindowSettings test(24,8,6);
+		sf::WindowSettings test(24,8,16);
 		//test.AntialiasingLevel 8;
 		sf::RenderWindow App;
 		App.Create(sf::VideoMode(640, 400, 32), "Marshmallow Duel: Percy's Return", sf::Style::Resize | sf::Style::Close, test);
@@ -120,8 +120,6 @@ void MDPRGame::run()
 
 	//boost::shared_ptr<Network::Client> networkClient(new Network::Client);
 	//networkClient->run();
-	GUI::window test(540,300,50,50);
-
 
 	while(!quit)
 	{

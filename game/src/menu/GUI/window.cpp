@@ -7,20 +7,18 @@
 
 namespace GUI
 {
-	window::window(unsigned int width, unsigned int height, float x, float y, sf::Color color)
-		:	width(width),
-			height(height)
+	window::window(sf::IntRect rect, sf::Color color)
 	{
 		//sf::Shape Rect = sf::Shape::Rectangle(x, y, x+width, x+height, sf::Color(0, 128, 128));
 		boost::shared_ptr<sf::Drawable> newDrawable(new sf::Shape);
 		drawable = newDrawable;
 		
-		drawable->SetX(x);
-		drawable->SetY(y);
-		rect.Bottom = (int)y + height;
-		rect.Top = (int)y;
-		rect.Right = (int)x + width;
-		rect.Left = (int)x;
+		drawable->SetX(rect.Top);
+		drawable->SetY(rect.Left);
+		//rect.Bottom = (int)y + height;
+		//rect.Top = (int)y;
+		//rect.Right = (int)x + width;
+		//rect.Left = (int)x;
 		float radius = 7.0f;
 
 		makeCurve(0,		height, radius, color, bottomLeft);

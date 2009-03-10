@@ -15,8 +15,10 @@ namespace GUI
 		void mouseDown();
 		void draw();
 		void update();
+		void clicked();
 		window textArea;
 		sf::String text;
+		sf::Shape position;
 	};
 }
 #endif //ifndef textBox_hpp
