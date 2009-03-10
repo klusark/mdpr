@@ -12,7 +12,7 @@
 menuOptions::menuOptions()
 	:	menuGeneric()
 {
-	boost::shared_ptr<GUI::widget> window(new GUI::window(540, 300, 50, 50));
+	boost::shared_ptr<GUI::widget> window(new GUI::window(sf::IntRect(540, 300, 50, 50)));
 	addWidget(window);
 
 	boost::shared_ptr<GUI::widget> backButton(new GUI::button(60, 20, 200, 300));

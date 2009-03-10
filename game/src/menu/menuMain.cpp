@@ -11,7 +11,7 @@
 menuMain::menuMain()
 	:	menuGeneric()
 {
-	boost::shared_ptr<GUI::widget> window(new GUI::window(540, 300, 50, 50));
+	boost::shared_ptr<GUI::widget> window(new GUI::window(sf::IntRect(50, 50, 300, 540)));
 	addWidget(window);
 
 	boost::shared_ptr<GUI::widget> quitButton(new GUI::button(60, 20, 100, 300));

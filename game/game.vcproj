@@ -283,6 +283,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\menu\GUI\toggleBox.hpp"
+						>
+					</File>
+					<File
 						RelativePath=".\src\menu\GUI\widget.hpp"
 						>
 					</File>
@@ -416,6 +420,10 @@
 					</File>
 					<File
 						RelativePath=".\src\menu\GUI\textBox.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\menu\GUI\toggleBox.cpp"
 						>
 					</File>
 					<File
