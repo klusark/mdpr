@@ -31,8 +31,8 @@ namespace GUI
 
 	void textBox::clicked()
 	{
-		std::size_t index;
-		int mouseX = MDPR->App.GetInput().GetMouseX() - text.GetPosition().x;
+		int index;
+		int mouseX = MDPR->App.GetInput().GetMouseX() - int(text.GetPosition().x);
 		int end = 4;
 		for(index = 0; index < end; ++index){
 			sf::Vector2f before = text.GetCharacterPos(index);

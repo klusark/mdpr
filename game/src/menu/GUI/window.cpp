@@ -13,13 +13,12 @@ namespace GUI
 		boost::shared_ptr<sf::Drawable> newDrawable(new sf::Shape);
 		drawable = newDrawable;
 		
-		drawable->SetX(rect.Top);
-		drawable->SetY(rect.Left);
-		//rect.Bottom = (int)y + height;
-		//rect.Top = (int)y;
-		//rect.Right = (int)x + width;
-		//rect.Left = (int)x;
+		drawable->SetX(float(rect.Top));
+		drawable->SetY(float(rect.Left));
+
 		float radius = 7.0f;
+		float height = float(rect.Top);
+		float width = float(rect.Left);
 
 		makeCurve(0,		height, radius, color, bottomLeft);
 

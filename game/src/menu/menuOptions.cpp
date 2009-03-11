@@ -19,11 +19,11 @@ menuOptions::menuOptions()
 	dynamic_cast<GUI::button *>(backButton.get())->onClick.connect(&menuMain::toThis);
 	addWidget(backButton);
 
-	boost::shared_ptr<GUI::widget> backText(new GUI::text(50, 15, 205, 300, "Back"));
-	addWidget(backText);
+	//boost::shared_ptr<GUI::widget> backText(new GUI::text(50, 15, 205, 300, "Back"));
+	//addWidget(backText);
 
-	boost::shared_ptr<GUI::widget> box(new GUI::textBox);
-	addWidget(box);
+	//boost::shared_ptr<GUI::widget> box(new GUI::textBox);
+	//addWidget(box);
 }
 
 menuOptions::~menuOptions()
