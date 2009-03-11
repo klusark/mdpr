@@ -11,7 +11,7 @@ namespace GUI
 		drawable->SetY(y);
 
 		sf::String * myString = dynamic_cast<sf::String *>(drawable.get());
-		myString->SetSize(height);
+		myString->SetSize(float(height));
 
 		myString->SetText(sting);
 	}

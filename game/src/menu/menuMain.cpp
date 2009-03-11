@@ -18,15 +18,15 @@ menuMain::menuMain()
 	dynamic_cast<GUI::button *>(quitButton.get())->onClick.connect(&MDPRGame::quitGame);
 	addWidget(quitButton);
 
-	boost::shared_ptr<GUI::widget> quitText(new GUI::text(50, 15, 105, 300, "Quit"));
-	addWidget(quitText);
+	//boost::shared_ptr<GUI::widget> quitText(new GUI::text(50, 15, 105, 300, "Quit"));
+	//addWidget(quitText);
 
 	boost::shared_ptr<GUI::widget> optionsButton(new GUI::button(60, 20, 100, 100));
 	dynamic_cast<GUI::button *>(optionsButton.get())->onClick.connect(&menuOptions::toThis);
 	addWidget(optionsButton);
 
-	boost::shared_ptr<GUI::widget> optionsText(new GUI::text(50, 15, 105, 100, "Options"));
-	addWidget(optionsText);
+	//boost::shared_ptr<GUI::widget> optionsText(new GUI::text(50, 15, 105, 100, "Options"));
+	//addWidget(optionsText);
 }
 
 menuMain::~menuMain()

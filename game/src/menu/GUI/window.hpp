@@ -16,7 +16,7 @@ namespace GUI
 
 		typedef std::vector<boost::shared_ptr<widget> > widgetContainter;
 		widgetContainter widgets;
-		unsigned short width, height;
+
 
 	};
 }
