@@ -18,12 +18,10 @@ public:
 	std::string serverPort;
 	static bool quit;
 	sf::Clock Clock;
-
 private:
 
-	
-	
-	boost::thread *eventThreadPtr;
+	boost::thread *drawThreadPtr;
+	boost::thread *updateThreadPtr;
 
 };
 
