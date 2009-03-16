@@ -4,6 +4,7 @@
 #include <map>
 #include "menuGeneric.hpp"
 #include <boost/shared_ptr.hpp>
+#include <boost/thread/mutex.hpp>
 #include <string>
 
 
@@ -18,6 +19,8 @@ public:
 	void changeCurrentMenu(std::string menuName);
 	bool isActive();
 	void setActive(bool toggle);
+	void draw();
+	boost::mutex menuMutex;
 private:
 	typedef std::map<std::string, boost::shared_ptr<menuGeneric> > menuContainer;
 	menuContainer menus;

@@ -30,6 +30,11 @@ void menuManager::update()
 	currentMenu->update();
 }
 
+void menuManager::draw()
+{
+	currentMenu->draw();
+}
+
 void menuManager::changeCurrentMenu(std::string menuName)
 {
 	menuContainer::iterator iterator = menus.find(menuName);

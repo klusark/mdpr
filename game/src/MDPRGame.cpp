@@ -27,28 +27,20 @@ public:
 		MDPR->App.SetActive(true);
 		static int Frames = 0;
 		float seconds, fps = 0;
-		for (;;){
-			if (MDPR->quit){
-				return;
-			}
+		while (!MDPR->quit){
+
 			MDPR->App.Clear();
-			//if (menu->isActive()){
-				menu->update();
-			//}
-
-
-
-			//network->update();
+			if (menu->isActive()){
+				boost::mutex::scoped_lock lock(menu->menuMutex);
+				menu->draw();
+			}
 
 			if (sprite.isActive()){
 				boost::mutex::scoped_lock lock(sprite.spriteMutex);
-				sprite.update();
 				sprite.draw(MDPR->App);
 
 
 			}
-
-
 			Frames++;
 			seconds = MDPR->Clock.GetElapsedTime();
 			if (seconds >= 5) {
@@ -62,8 +54,24 @@ public:
 			
 			MDPR->App.Display();
 		}
+	}
+};
 
+struct updateThread
+{
+public:
+	void operator()(){
+		while (!MDPR->quit){
+			if (menu->isActive()){
+				boost::mutex::scoped_lock lock(menu->menuMutex);
+				menu->update();
+			}
 
+			if (sprite.isActive()){
+				boost::mutex::scoped_lock lock(sprite.spriteMutex);
+				sprite.update();
+			}
+		}
 	}
 };
 
@@ -141,12 +149,14 @@ void MDPRGame::run()
 		DeathArea death("Death", sf::IntRect());
 	}
 
+	menu->setActive(true);
 	sprite.setActive(false);
 
 	boost::shared_ptr<Network::Client> networkClient(new Network::Client);
 	networkClient->run();
 	App.SetActive(false);
-	eventThreadPtr = new boost::thread(drawThread());
+	drawThreadPtr = new boost::thread(drawThread());
+	updateThreadPtr = new boost::thread(updateThread());
 	while(!quit)
 	{
 		
