@@ -248,6 +248,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\menu\menuInGame.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\menu\menuMain.hpp"
 					>
 				</File>
@@ -385,6 +389,10 @@
 				>
 				<File
 					RelativePath=".\src\menu\menuGeneric.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuInGame.cpp"
 					>
 				</File>
 				<File

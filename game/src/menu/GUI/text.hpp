@@ -11,6 +11,7 @@ namespace GUI
 	public:
 		text(unsigned int width, unsigned int height, float x, float y, std::string sting);
 		~text();
+		sf::Font font;
 		void update();
 
 	};

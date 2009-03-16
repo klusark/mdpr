@@ -12,18 +12,18 @@
 menuOptions::menuOptions()
 	:	menuGeneric()
 {
-	boost::shared_ptr<GUI::widget> window(new GUI::window(sf::IntRect(540, 300, 50, 50)));
+	boost::shared_ptr<GUI::widget> window(new GUI::window(sf::IntRect(50, 50, 300, 540)));
 	addWidget(window);
 
 	boost::shared_ptr<GUI::widget> backButton(new GUI::button(60, 20, 200, 300));
 	dynamic_cast<GUI::button *>(backButton.get())->onClick.connect(&menuMain::toThis);
 	addWidget(backButton);
 
-	//boost::shared_ptr<GUI::widget> backText(new GUI::text(50, 15, 205, 300, "Back"));
-	//addWidget(backText);
+	boost::shared_ptr<GUI::widget> backText(new GUI::text(50, 15, 205, 300, "Back"));
+	addWidget(backText);
 
-	//boost::shared_ptr<GUI::widget> box(new GUI::textBox);
-	//addWidget(box);
+	boost::shared_ptr<GUI::widget> box(new GUI::textBox(sf::IntRect(300, 100, 20, 60)));
+	addWidget(box);
 }
 
 menuOptions::~menuOptions()
