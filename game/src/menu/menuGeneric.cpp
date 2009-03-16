@@ -23,3 +23,7 @@ void menuGeneric::addWidget(boost::shared_ptr<GUI::widget> newWidget)
 	widgets.push_back(newWidget);
 
 }
+
+void menuGeneric::onChange()
+{
+}

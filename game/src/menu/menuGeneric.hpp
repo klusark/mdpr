@@ -13,6 +13,7 @@ public:
 	menuGeneric();
 	~menuGeneric();
 	virtual void update();
+	virtual void onChange();
 
 	void addWidget(boost::shared_ptr<GUI::widget> newWidget);
 

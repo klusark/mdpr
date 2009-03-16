@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
+#include <boost/thread.hpp>
 
 class MDPRGame
 {
@@ -15,11 +16,14 @@ public:
 	std::string playerName;
 	std::string serverIP;
 	std::string serverPort;
+	static bool quit;
+	sf::Clock Clock;
 
 private:
 
-	static bool quit;
-	sf::Clock Clock;
+	
+	
+	boost::thread *eventThreadPtr;
 
 };
 
