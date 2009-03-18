@@ -1,6 +1,6 @@
 #ifndef MDPRGame_hpp
 #define MDPRGame_hpp
-
+#include "network/networkClient.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 #include <boost/thread.hpp>
@@ -18,6 +18,7 @@ public:
 	std::string serverPort;
 	static bool quit;
 	sf::Clock Clock;
+	Network::Client *networkClient;
 private:
 
 	boost::thread *drawThreadPtr;

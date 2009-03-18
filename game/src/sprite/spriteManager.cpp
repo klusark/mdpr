@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <map>
-#include "../crc.hpp"
+#include "../helpers.hpp"
 #include "genericSprite.hpp"
 #include "player.hpp"
 #include "spriteCollision.hpp"
@@ -24,9 +24,9 @@ spriteManager::~spriteManager()
 
 void spriteManager::registerSprite(boost::shared_ptr<genericSprite> sprite)
 {
-	CRC crc;
+
 	boost::mutex::scoped_lock lock(spriteMutex);
-	Sprites[crc.stringToShort(sprite->name)] = sprite;
+	Sprites[stringToCRC(sprite->name)] = sprite;
 }
 
 void spriteManager::update()

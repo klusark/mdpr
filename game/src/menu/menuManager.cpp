@@ -3,6 +3,7 @@
 #include "menuMain.hpp"
 #include "menuOptions.hpp"
 #include "menuInGame.hpp"
+#include "menuServerBrowser.hpp"
 #include <iostream>
 
 boost::shared_ptr<menuManager> menu;
@@ -17,6 +18,9 @@ menuManager::menuManager() : active(false)
 
 	boost::shared_ptr<menuGeneric> inGameMenu(new menuInGame);
 	menus["menuInGame"] = inGameMenu;
+
+	boost::shared_ptr<menuGeneric> serverBrowserMenu(new menuServerBrowser);
+	menus["menuServerBrowser"] = serverBrowserMenu;
 
 	changeCurrentMenu("menuMain");
 }

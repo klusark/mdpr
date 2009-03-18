@@ -2,7 +2,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "../enumerations.hpp"
-#include "../crc.hpp"
+#include "../helpers.hpp"
 #include "genericSprite.hpp"
 #include "powerup.hpp"
 #include "bubble.hpp"
@@ -14,8 +14,8 @@ Bubble::Bubble(const std::string &name)
 		powerup("powerup")
 {
 	spriteType = bubble;
-	CRC crc;
-	changeAnimation(crc.stringToShort("bubble"));
+
+	changeAnimation(stringToCRC("bubble"));
 
 	setYVelocity(100.0f);
 	setXVelocity(100.0f);

@@ -9,7 +9,7 @@ namespace GUI
 	class button : public widget, public clickable
 	{
 	public:
-		button(unsigned int width, unsigned int height, float x, float y);
+		button(sf::IntRect rect);
 		~button();
 	protected:
 		void update();

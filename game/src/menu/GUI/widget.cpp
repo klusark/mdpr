@@ -70,4 +70,21 @@ namespace GUI
 
 	}
 
+	void widget::curvedBox(sf::IntRect rect, float radius, sf::Color color)
+	{
+		sf::FloatRect frect(rect.Left, rect.Top, rect.Right, rect.Bottom);
+		curvedBox(frect, radius, color);
+	}
+
+	void widget::curvedBox(sf::FloatRect rect, float radius, sf::Color color)
+	{
+		makeCurve(rect.Left,	rect.Bottom,radius, color, bottomLeft);
+
+		makeCurve(rect.Right,	rect.Bottom,radius, color, bottomRight);
+
+		makeCurve(rect.Right,	rect.Top,	radius, color, topRight);
+
+		makeCurve(rect.Left,	rect.Top,	radius, color, topLeft);
+	}
+
 }

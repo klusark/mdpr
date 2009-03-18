@@ -13,20 +13,12 @@ namespace GUI
 		boost::shared_ptr<sf::Drawable> newDrawable(new sf::Shape);
 		drawable = newDrawable;
 		
-		drawable->SetX(float(rect.Top));
-		drawable->SetY(float(rect.Left));
+
 
 		float radius = 7.0f;
-		float height = float(rect.Right);
-		float width = float(rect.Bottom);
 
-		makeCurve(0,		height, radius, color, bottomLeft);
+		curvedBox(rect, radius, color);
 
-		makeCurve(width,	height, radius, color, bottomRight);
-
-		makeCurve(width,	0,		radius, color, topRight);
-
-		makeCurve(0,		0,		radius, color, topLeft);
 
 	}
 

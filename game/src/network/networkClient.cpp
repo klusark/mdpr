@@ -33,16 +33,10 @@ private:
 };
 
 Network::Client::Client()
-	:	socket(ioService),
+	:	socket(ioService, udp::endpoint(udp::v4(), 45986)),
 		inGame(true)
 {
-	udp::resolver resolver(ioService);
 
-	udp::resolver::query query(udp::v4(), MDPR->serverIP, MDPR->serverPort);
-	udp::resolver::iterator iterator = resolver.resolve(query);
-
-	receiverEndpoint = *resolver.resolve(query);
-	socket.open(udp::v4());
 
 	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&Network::Client::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 
@@ -60,7 +54,7 @@ Network::Client::~Client()
 
 }
 
-bool Network::Client::run()
+bool Network::Client::connect()
 {
 	try
 	{
@@ -68,6 +62,11 @@ bool Network::Client::run()
 		packet.packetID = connectPacketID;
 		packet.nameLength = MDPR->playerName.length();
 		strcpy(packet.name, MDPR->playerName.c_str());
+
+		udp::resolver resolver(ioService);
+		udp::resolver::query query(udp::v4(), MDPR->serverIP, MDPR->serverPort);
+		udp::resolver::iterator iterator = resolver.resolve(query);
+		receiverEndpoint = *resolver.resolve(query);
 		
 		
 		socket.send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), receiverEndpoint);
