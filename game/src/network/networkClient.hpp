@@ -14,7 +14,7 @@ namespace Network{
 	public:
 		Client();
 		~Client();
-		bool run();
+		bool connect();
 		void sendKeyPress(sf::Key::Code key, bool down);
 	protected:
 		boost::asio::io_service ioService;

@@ -173,15 +173,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\src\crc.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\enumerations.hpp"
 				>
 			</File>
 			<File
+				RelativePath=".\src\helpers.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\MDPRGame.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\version.h"
 				>
 			</File>
 			<Filter
@@ -267,6 +271,10 @@
 					RelativePath=".\src\menu\menuProfile.hpp"
 					>
 				</File>
+				<File
+					RelativePath=".\src\menu\menuServerBrowser.hpp"
+					>
+				</File>
 				<Filter
 					Name="GUI"
 					>
@@ -276,6 +284,10 @@
 					</File>
 					<File
 						RelativePath=".\src\menu\GUI\clickable.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\menu\GUI\listBox.hpp"
 						>
 					</File>
 					<File
@@ -318,6 +330,10 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\version.rc"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Source Files"
@@ -325,7 +341,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\src\crc.cpp"
+				RelativePath=".\src\helpers.cpp"
 				>
 			</File>
 			<File
@@ -411,6 +427,10 @@
 					RelativePath=".\src\menu\menuProfile.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\src\menu\menuServerBrowser.cpp"
+					>
+				</File>
 				<Filter
 					Name="GUI"
 					>
@@ -420,6 +440,10 @@
 					</File>
 					<File
 						RelativePath=".\src\menu\GUI\clickable.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\menu\GUI\listBox.cpp"
 						>
 					</File>
 					<File

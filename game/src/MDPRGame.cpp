@@ -8,7 +8,7 @@
 //#include <boost/python.hpp>
 #include <iostream>
 #include <fstream>
-#include "MDPRGame.hpp"
+
 #include "sprite/player.hpp"
 #include "network/networkClient.hpp"
 #include "menu/menuManager.hpp"
@@ -19,6 +19,7 @@
 #include "sprite/powerup.hpp"
 #include "sprite/deathArea.hpp"
 #include "menu/GUI/clickable.hpp"
+#include "MDPRGame.hpp"
 
 struct drawThread
 {
@@ -133,6 +134,7 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 
 MDPRGame::~MDPRGame()
 {
+	delete networkClient;
 }
 
 void MDPRGame::run()
@@ -152,8 +154,9 @@ void MDPRGame::run()
 	menu->setActive(true);
 	sprite.setActive(false);
 
-	boost::shared_ptr<Network::Client> networkClient(new Network::Client);
-	networkClient->run();
+	
+	networkClient = new Network::Client;
+	
 	App.SetActive(false);
 	drawThreadPtr = new boost::thread(drawThread());
 	updateThreadPtr = new boost::thread(updateThread());

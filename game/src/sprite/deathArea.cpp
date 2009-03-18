@@ -3,7 +3,7 @@
 #include "../enumerations.hpp"
 #include "genericSprite.hpp"
 #include "deathArea.hpp"
-#include "../crc.hpp"
+#include "../helpers.hpp"
 #include "spriteManager.hpp"
 
 sf::Image DeathArea::Image;

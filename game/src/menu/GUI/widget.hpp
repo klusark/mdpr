@@ -25,6 +25,8 @@ namespace GUI
 			bottomRight,
 		};
 		void makeCurve(float x, float y, float radius, sf::Color color, curveLocation location);
+		void curvedBox(sf::IntRect rect, float radius, sf::Color color);
+		void curvedBox(sf::FloatRect rect, float radius, sf::Color color);
 
 
 	};

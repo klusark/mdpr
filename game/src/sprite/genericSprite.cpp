@@ -12,7 +12,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
-#include "../crc.hpp"
+#include "../helpers.hpp"
 
 #include "../powerup/genericPowerUp.hpp"
 #include "genericSprite.hpp"
@@ -112,8 +112,7 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 
 		boost::program_options::store(parse_config_file(animationFileStream, animationConfigFileOptions), animationVariableMap);
 		notify(animationVariableMap);
-		CRC crc;
-		Animations[crc.stringToShort(*iter)] = newAnimation;
+		Animations[stringToCRC(*iter)] = newAnimation;
 			
 	}
 }
@@ -156,7 +155,7 @@ void genericSprite::changeAnimation(unsigned int name)
 
 void genericSprite::changeAnimation(std::string name)
 {
-	changeAnimation(CRC().stringToShort(name));
+	changeAnimation(stringToCRC(name));
 }
 
 

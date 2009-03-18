@@ -9,7 +9,7 @@ namespace GUI
 		if (!font.LoadFromFile("data/mdpr/DejaVuSansMono.ttf", 120)){
 			
 		}
-		boost::shared_ptr<sf::Drawable> newDrawable(new sf::String(sting, font, height));
+		boost::shared_ptr<sf::Drawable> newDrawable(new sf::String(sting, font, float(height)));
 		drawable = newDrawable;
 		drawable->SetX(x);
 		drawable->SetY(y);

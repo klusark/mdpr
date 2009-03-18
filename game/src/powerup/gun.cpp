@@ -2,7 +2,7 @@
 #include "../sprite/genericSprite.hpp"
 #include "../sprite/spriteManager.hpp"
 #include "../sprite/deathArea.hpp"
-#include "../crc.hpp"
+#include "../helpers.hpp"
 #include "gun.hpp"
 
 Gun::Gun(genericSprite *owner)
@@ -42,7 +42,7 @@ void Gun::update()
 {
 	if (justShot){
 		if (dynamic_cast<DeathArea *>(myDeathArea.get())->collisionChecked){
-			sprite.removeSprite(CRC().stringToShort(myDeathArea->name));
+			sprite.removeSprite(stringToCRC(myDeathArea->name));
 			//myDeathArea = 0;
 		}
 		if (clock.GetElapsedTime() > 0.2f){
