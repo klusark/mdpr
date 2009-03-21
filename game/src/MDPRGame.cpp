@@ -19,6 +19,7 @@
 #include "sprite/powerup.hpp"
 #include "sprite/deathArea.hpp"
 #include "menu/GUI/clickable.hpp"
+#include "menu/GUI/input.hpp"
 #include "MDPRGame.hpp"
 
 struct drawThread
@@ -151,11 +152,12 @@ void MDPRGame::run()
 		DeathArea death("Death", sf::IntRect());
 	}
 
-	menu->setActive(true);
-	sprite.setActive(false);
+	menu->setActive(false);
+	sprite.setActive(true);
 
 	
 	networkClient = new Network::Client;
+	networkClient->connect();
 	
 	App.SetActive(false);
 	drawThreadPtr = new boost::thread(drawThread());
@@ -170,19 +172,27 @@ void MDPRGame::run()
 			if (Event.Type == sf::Event::Closed){
 				quit = true;
 			}
+			if (networkClient->connected){
+				if (Event.Type == sf::Event::KeyPressed){
+					networkClient->sendKeyPress(Event.Key.Code, true);
+				}else if (Event.Type == sf::Event::KeyReleased){
+					networkClient->sendKeyPress(Event.Key.Code, false);
+				}
+			}
 
-			if (Event.Type == sf::Event::KeyPressed){
-				networkClient->sendKeyPress(Event.Key.Code, true);
-			}else if (Event.Type == sf::Event::KeyReleased){
-				networkClient->sendKeyPress(Event.Key.Code, false);
-			}else if(Event.Type == sf::Event::MouseButtonPressed){
-				GUI::clickable::mouseDown();
-			}else if(Event.Type == sf::Event::MouseButtonReleased){
-				GUI::clickable::mouseUp();
+			if (menu->isActive()){
+				if(Event.Type == sf::Event::MouseButtonPressed){
+					GUI::clickable::mouseDown();
+				}else if(Event.Type == sf::Event::MouseButtonReleased){
+					GUI::clickable::mouseUp();
+				}
+				if (Event.Type == sf::Event::KeyPressed){
+					GUI::input::keyDown(Event.Key.Code);
+				}
 			}
 
 		}
-		Sleep(1);
+		sf::Sleep(0.01f);
 		
 
 

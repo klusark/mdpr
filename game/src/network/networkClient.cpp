@@ -34,7 +34,8 @@ private:
 
 Network::Client::Client()
 	:	socket(ioService, udp::endpoint(udp::v4(), 45986)),
-		inGame(true)
+		inGame(true),
+		connected(false)
 {
 
 
@@ -76,6 +77,7 @@ bool Network::Client::connect()
 		std::cout << "Exception: " << e.what() << "\n";
 		return false;
 	}
+	connected = true;
 	return true;
 }
 

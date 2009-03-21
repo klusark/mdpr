@@ -12,8 +12,6 @@ namespace GUI
 		//sf::Shape Rect = sf::Shape::Rectangle(x, y, x+width, x+height, sf::Color(0, 128, 128));
 		boost::shared_ptr<sf::Drawable> newDrawable(new sf::Shape);
 		drawable = newDrawable;
-		
-
 
 		float radius = 7.0f;
 

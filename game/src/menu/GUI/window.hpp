@@ -14,10 +14,6 @@ namespace GUI
 		window(sf::IntRect &rect, sf::Color color = sf::Color(118, 118, 118, 255));
 		~window();
 
-		typedef std::vector<boost::shared_ptr<widget> > widgetContainter;
-		widgetContainter widgets;
-
-
 	};
 }
 

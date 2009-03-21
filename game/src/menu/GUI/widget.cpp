@@ -4,6 +4,7 @@
 namespace GUI
 {
 	widget::widget()
+		:	rect(*(new sf::IntRect()))
 	{
 
 	}
