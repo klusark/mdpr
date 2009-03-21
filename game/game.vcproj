@@ -64,6 +64,7 @@
 				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -287,6 +288,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\menu\GUI\input.hpp"
+						>
+					</File>
+					<File
 						RelativePath=".\src\menu\GUI\listBox.hpp"
 						>
 					</File>
@@ -440,6 +445,10 @@
 					</File>
 					<File
 						RelativePath=".\src\menu\GUI\clickable.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\menu\GUI\input.cpp"
 						>
 					</File>
 					<File

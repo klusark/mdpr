@@ -16,7 +16,7 @@ namespace GUI
 
 	//protected:
 		boost::shared_ptr<sf::Drawable> drawable;
-		sf::IntRect rect;
+		sf::IntRect &rect;
 		enum curveLocation
 		{
 			topRight,

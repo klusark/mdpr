@@ -178,10 +178,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\crc.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\game\src\sprite\deathArea.cpp"
 				>
 			</File>
@@ -195,6 +191,10 @@
 			</File>
 			<File
 				RelativePath="..\game\src\powerup\gun.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\game\src\helpers.cpp"
 				>
 			</File>
 			<File
@@ -253,6 +253,10 @@
 			</File>
 			<File
 				RelativePath="..\game\src\powerup\gun.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\game\src\helpers.hpp"
 				>
 			</File>
 			<File

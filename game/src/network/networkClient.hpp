@@ -16,6 +16,7 @@ namespace Network{
 		~Client();
 		bool connect();
 		void sendKeyPress(sf::Key::Code key, bool down);
+		bool connected;
 	protected:
 		boost::asio::io_service ioService;
 		udp::socket socket;

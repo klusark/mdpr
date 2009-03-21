@@ -6,12 +6,12 @@
 
 namespace GUI
 {
-	textBox::textBox(sf::IntRect rect)
+	textBox::textBox(sf::IntRect newRect)
 		:	widget(),
-			rect(rect),
-			textArea(rect, sf::Color(0,0,0,255)),
+			textArea(newRect, sf::Color(0,0,0,255)),
 			clickable(rect)
 	{
+		rect = newRect;
 		if (!font.LoadFromFile("data/mdpr/DejaVuSansMono.ttf", 120)){
 			
 		}
@@ -19,12 +19,22 @@ namespace GUI
 		text = newText;
 		ptrToTextString = dynamic_cast<sf::String *>(text.get());
 
+
 		text->SetX(100);
 		text->SetY(300);
 
 		onDown.connect(boost::bind(&textBox::mouseDown, this));
 		onClick.connect(boost::bind(&textBox::clicked, this));
-		//position = //sf::Shape::Line(sf::Vector2f(100,305), sf::Vector2f(100,315), 1, sf::Color(255,255,255,255));
+
+		onKeyDown.connect(boost::bind(&textBox::keyDown, this, _1));
+
+		position.SetY(305);
+		position.SetX(100);
+		position.AddPoint(sf::Vector2f(0,0));
+		position.AddPoint(sf::Vector2f(0,10));
+		position.AddPoint(sf::Vector2f(1,10));
+		position.AddPoint(sf::Vector2f(1,0));
+		
 	}
 
 	textBox::~textBox()
@@ -46,7 +56,7 @@ namespace GUI
 			sf::Vector2f after =  ptrToTextString->GetCharacterPos(index + 1);
 			if (before.x < mouseX && after.x > mouseX){
 				std::cout<<index;
-				position.SetX(floor(after.x));
+				position.SetX(floor(after.x)+text->GetPosition().x);
 			}
 		}
 	}
@@ -61,6 +71,11 @@ namespace GUI
 	void textBox::update()
 	{
 		clickable::update();
+	}
+
+	void textBox::keyDown(sf::Key::Code key)
+	{
+		std::cout<<key;
 	}
 
 }

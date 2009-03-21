@@ -1,7 +1,7 @@
 #ifdef SERVER
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
-#include "../crc.hpp"
+#include "../helpers.hpp"
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/shared_ptr.hpp>
 
@@ -90,12 +90,12 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 			
 			{
 				connectPacket *packet = (connectPacket *)buffer;
-				CRC crc;
+
 
 				//boost::crc_16_type  result;
 				std::string name = packet->name;//, packet->nameLength);
 
-				int playerID = crc.stringToShort(name);
+				int playerID = stringToCRC(name);
 
 				if (sprite.Sprites.find(playerID) != sprite.Sprites.end()){
 					//Player with the same name is already in the game
@@ -213,7 +213,7 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 			
 			animationPacket.packetID = animationChangePacketID;
 			animationPacket.spriteID = it->first;
-			animationPacket.animationID = CRC().stringToShort(currentSprite->currentAnimation->name);
+			animationPacket.animationID = stringToCRC(currentSprite->currentAnimation->name);
 			currentSprite->lastAnimationName = currentSprite->currentAnimation->name;
 			useAnimationPacked = true;
 		}
@@ -237,12 +237,11 @@ void networkServer::disconnect(unsigned short playerID)
 {
 	spriteDeletionPacket packet;
 	packet.packetID = spriteDeletionPacketID;
-	CRC crc;
 	if (Players.find(playerID) == Players.end()){
 		std::cout << "Could not find player" << std::endl;
 		return;
 	}
-	packet.spriteID = crc.stringToShort(Players[playerID]->name);
+	packet.spriteID = stringToCRC(Players[playerID]->name);
 	playerContainer::iterator iter;
 	for (iter = Players.begin(); iter != Players.end(); ++iter){
 		serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(packet)), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
