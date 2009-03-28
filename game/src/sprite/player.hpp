@@ -14,7 +14,7 @@ public:
 	static sf::Image Image;
 	typedef std::map<keys, bool> keysContainter;
 	keysContainter keyMap;
-	bool rolling, running;
+	bool rolling, running, crouching;
 	
 };
 
