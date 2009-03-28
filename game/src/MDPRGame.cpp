@@ -88,7 +88,7 @@ int main(int argc, char** argv)
 
 
 		// Set display mode
-		sf::WindowSettings test(24,8,16);
+		sf::WindowSettings test(24,8,0);
 		//test.AntialiasingLevel 8;
 		sf::RenderWindow App;
 		App.Create(sf::VideoMode(640, 400, 32), "Marshmallow Duel: Percy's Return", sf::Style::Resize | sf::Style::Close, test);

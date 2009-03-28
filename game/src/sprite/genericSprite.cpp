@@ -89,6 +89,7 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 			("starty",	boost::program_options::value<int>(&newAnimation->starty),	"")
 			("width",	boost::program_options::value<int>(&newAnimation->width),	"")
 			("height",	boost::program_options::value<int>(&newAnimation->height),	"")
+			("padding",	boost::program_options::value<int>(&newAnimation->padding),	"")
 			("reverseonfinish",			boost::program_options::value<bool>(&newAnimation->reverseonfinish),		"")
 
 			("collision.rect.top",		boost::program_options::value<int >(&newAnimation->collisionRect.Top),		"")

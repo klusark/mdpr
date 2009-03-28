@@ -1,5 +1,4 @@
 animation = run
 animation = crouch
-animation = shoot
 animation = idle
-image = player.png
+image = newplayer.png

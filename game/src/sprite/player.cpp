@@ -8,7 +8,11 @@
 
 sf::Image Player::Image;
 
-Player::Player(const std::string &name) : genericSprite(name, "player", Image),rolling(false)
+Player::Player(const std::string &name)
+	:	 genericSprite(name, "player", Image),
+		rolling(false),
+		crouching(false),
+		running(false)
 {
 	spriteType = player;
 
@@ -54,15 +58,21 @@ void Player::update()
 				flipped = false;
 			}
 		}else{
-			
+			if (keyMap[keyDown]){
+				crouching = true;
+			}else{
+				crouching = false;
+			}
 		}
-		if ((running + rolling) > 1){
-			printf("f");
+		if ((running + rolling + crouching) > 1){
+			throw 0;
 		}
 		if (running){
 			changeAnimation("run");
 		}else if (rolling){
 			changeAnimation("roll");
+		}else if(crouching){
+			changeAnimation("crouch");
 		}else{
 			changeAnimation("idle");
 		}

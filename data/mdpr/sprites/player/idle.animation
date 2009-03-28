@@ -1,9 +1,10 @@
 delay = 1000
 frames = 1
-startx = 0
-starty = 96
+startx = 1
+starty = 26
 width = 24
 height = 24
+padding = 1
 collision.rect.top = 1
 collision.rect.bottom = 24
 collision.rect.right = 17

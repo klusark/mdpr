@@ -11,7 +11,7 @@ public:
 	std::string name;
 	sf::Clock Clock;
 	float updateTime;
-	int delay, frames, startx, starty, width, height, currentFrame;
+	int delay, frames, startx, starty, width, height, currentFrame, padding;
 	bool playBackward, reverseonfinish;
 	sf::IntRect update();
 	sf::IntRect collisionRect;
