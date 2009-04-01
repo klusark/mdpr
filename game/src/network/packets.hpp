@@ -14,6 +14,8 @@ enum packetIDs
 	animationChangePacketID,
 	changePowerUpPacketID,
 	needSpritePacketID,
+	serverInfoPacketID,
+	sendUpdateToMasterPacketID,
 };
 
 /*
@@ -110,6 +112,17 @@ struct needSpritePacket
 {
 	packetIDs packetID;
 	unsigned short stuff;
+};
+
+struct serverInfoPacket
+{
+	packetIDs packetID;
+	
+};
+
+struct sendUpdateToMasterPacket
+{
+	packetIDs packetID;
 };
 
 #endif // ifndef packets_hpp

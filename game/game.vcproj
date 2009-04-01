@@ -186,7 +186,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\version.h"
+				RelativePath=".\version.hpp"
 				>
 			</File>
 			<Filter

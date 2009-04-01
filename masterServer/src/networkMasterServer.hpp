@@ -4,6 +4,13 @@
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 #include <map>
+using boost::asio::ip::udp;
+
+struct
+{
+	std::string serverIP;
+	unsigned short port;
+};
 
 class networkMasterServer
 {
@@ -13,9 +20,9 @@ public:
 	bool runServer();
 protected:
 	static boost::asio::io_service ioService;
-	boost::asio::ip::udp::socket serverSocket;
+	udp::socket serverSocket;
 	char buffer[512];
-	boost::asio::ip::udp::endpoint endpoint;
+	udp::endpoint endpoint;
 
 	void onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd);
 
