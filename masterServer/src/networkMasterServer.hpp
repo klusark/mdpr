@@ -6,9 +6,9 @@
 #include <map>
 using boost::asio::ip::udp;
 
-struct
+struct serverEntry
 {
-	std::string serverIP;
+	unsigned char ip[4];
 	unsigned short port;
 };
 
@@ -27,6 +27,9 @@ protected:
 	void onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd);
 
 	void handleSendTo(const boost::system::error_code& error, size_t bytes_sent);
+
+	typedef std::vector<serverEntry> serverListContainer;
+	serverListContainer serverList;
 
 };
 extern boost::shared_ptr<networkMasterServer> masterServer;

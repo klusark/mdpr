@@ -48,7 +48,12 @@ void networkMasterServer::onRecivePacket(const boost::system::error_code& error,
 	{
 	case serverInfoPacketID:
 		{
-			serverInfoPacket *packet = (serverInfoPacket *)buffer;
+			//serverInfoPacket *packet = (serverInfoPacket *)buffer;
+			boost::asio::ip::address_v4::bytes_type tests = endpoint.address().to_v4().to_bytes();
+			unsigned char ip[4];
+			memcpy(ip,tests.elems,4);
+
+			break;
 		}
 		break;
 	default:

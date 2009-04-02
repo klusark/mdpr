@@ -2,6 +2,7 @@
 #include <iostream>
 #include <boost/program_options.hpp>
 #include <fstream>
+#include <vector>
 namespace po = boost::program_options;
 using boost::asio::ip::udp;
 
@@ -26,24 +27,37 @@ int main(int ac, char* av[])
 			return 1;
 		}
 		int length;
-		char * buffer;
+		
 
 		std::ifstream is;
-		is.open (vm["packet-file"].as<std::string>().c_str(), std::ios::binary );
+		is.open (vm["packet-file"].as<std::string>().c_str(), std::ios::binary|std::ios::in );
+		if (!is.is_open()){
+			std::cout<<"asfd";
+		}
 
 
-
+		
 		// get length of file:
-		is.seekg (0, std::ios::end);
+		is.seekg(0, std::ios::end);
+		
 		length = is.tellg();
-		is.seekg (0, std::ios::beg);
+		is.seekg(0, std::ios::beg);
+		std::vector<char> buffer(length);
 
 		// allocate memory:
-		buffer = new char [length];
+		//buffer = new char [length];
+		//is.read(buffer, length);
 
+		while (!is.eof()){
+			int position = is.tellg();
+			int newthing = is.get();
+			if (newthing != -1){
+				buffer[position] = newthing;
+			}
+		}
 		// read data as a block:
-		is.read (buffer,length);
 		is.close();
+
 
 
 		bool tcp,udp;
