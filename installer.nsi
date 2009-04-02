@@ -16,14 +16,13 @@ InstallDirRegKey HKCU "Software\Marshmallow Duel: Percy's Return" ""
 ;Request application privileges for Windows Vista
 RequestExecutionLevel user
 
-;--------------------------------
+
 ;Interface Settings
 
 !define MUI_ABORTWARNING
 
-;--------------------------------
-;Pages
 
+;Pages
 !insertmacro MUI_PAGE_LICENSE "artistic-2_0.txt"
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
@@ -32,26 +31,31 @@ RequestExecutionLevel user
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 
-;--------------------------------
 ;Languages
-
 !insertmacro MUI_LANGUAGE "English"
 
-;--------------------------------
+
 ;Installer Sections
-
 Section "Game" SecGame
+	SetOutPath "$INSTDIR"
+	WriteRegStr HKCU "Software\Marshmallow Duel: Percy's Return" "" $INSTDIR
+	File /r /x .svn /x *.db data
+	File Release\mdpr.exe
+	File dll\*.dll
 
-SetOutPath "$INSTDIR"
+	WriteUninstaller "$INSTDIR\Uninstall.exe"
+SectionEnd
 
-;ADD YOUR OWN FILES HERE...
+Section "Server" SecServer
+	SetOutPath "$INSTDIR"
+	
+	File dll\*.dll
+	File /r /x .svn /x *.db data
+	File Release\server.exe
 
-;Store installation folder
-WriteRegStr HKCU "Software\Marshmallow Duel: Percy's Return" "" $INSTDIR
-File /r /x .svn data
-File Release\game.exe
-;Create uninstaller
-WriteUninstaller "$INSTDIR\Uninstall.exe"
+	WriteRegStr HKCU "Software\Marshmallow Duel: Percy's Return" "" $INSTDIR
+
+	WriteUninstaller "$INSTDIR\Uninstall.exe"
 
 SectionEnd
 
@@ -59,24 +63,22 @@ SectionEnd
 ;Descriptions
 
 ;Language strings
-LangString DESC_SecGame ${LANG_ENGLISH} "A test section."
+LangString DESC_SecGame ${LANG_ENGLISH} "The game."
+LangString DESC_SecServer ${LANG_ENGLISH} "The server."
 
 ;Assign language strings to sections
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 !insertmacro MUI_DESCRIPTION_TEXT ${SecGame} $(DESC_SecGame)
+!insertmacro MUI_DESCRIPTION_TEXT ${SecServer} $(DESC_SecServer)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;--------------------------------
 ;Uninstaller Section
 
 Section "Uninstall"
+	Delete "$INSTDIR\*.*"
 
-;ADD YOUR OWN FILES HERE...
+	RMDir "$INSTDIR"
 
-Delete "$INSTDIR\Uninstall.exe"
-
-RMDir "$INSTDIR"
-
-DeleteRegKey /ifempty HKCU "Software\Marshmallow Duel: Percy's Return"
-
+	DeleteRegKey /ifempty HKCU "Software\Marshmallow Duel: Percy's Return"
 SectionEnd
