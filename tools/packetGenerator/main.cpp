@@ -9,13 +9,16 @@ using boost::asio::ip::udp;
 int main(int ac, char* av[])
 {
 	try {
+		std::string packetFile;
+		int numTimes;
 		po::options_description desc("Allowed options");
 		desc.add_options()
 			("help", "This help message.")
 			("ip", po::value<std::string>(), "IP of the target.")
 			("port", po::value<std::string>(), "The port to use.")
 			("connection-type", po::value<int>(), "The type of connection to use. TCP or UDP.")
-			("packet-file", po::value<std::string>(), "The file to load the packet from.");
+			("packet-file", po::value<std::string>(&packetFile), "The file to load the packet from.")
+			("times", po::value<int>(&numTimes), "The number of times to send the packet.");
 			
 
 		po::variables_map vm;        
@@ -30,12 +33,11 @@ int main(int ac, char* av[])
 		
 
 		std::ifstream is;
-		is.open (vm["packet-file"].as<std::string>().c_str(), std::ios::binary|std::ios::in );
+		is.open (packetFile.c_str(), std::ios::binary|std::ios::in );
 		if (!is.is_open()){
-			std::cout<<"asfd";
+			std::cout << "Could not find file" << std::endl;
+			return 0;
 		}
-
-
 		
 		// get length of file:
 		is.seekg(0, std::ios::end);
@@ -43,10 +45,6 @@ int main(int ac, char* av[])
 		length = is.tellg();
 		is.seekg(0, std::ios::beg);
 		std::vector<char> buffer(length);
-
-		// allocate memory:
-		//buffer = new char [length];
-		//is.read(buffer, length);
 
 		while (!is.eof()){
 			int position = is.tellg();
@@ -72,8 +70,11 @@ int main(int ac, char* av[])
 			udp::socket socket(io_service);
 			socket.open(udp::v4());
 
-			//char send_buf  = ;
-			socket.send_to(boost::asio::buffer(buffer), receiver_endpoint);
+			for (int i = 0; i < numTimes; ++i){
+				socket.send_to(boost::asio::buffer(buffer), receiver_endpoint);
+			}
+
+			//}
 		}
 		/*if (tcp)
 		boost::asio::io_service io_service;

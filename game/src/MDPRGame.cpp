@@ -135,7 +135,7 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 
 MDPRGame::~MDPRGame()
 {
-	delete networkClient;
+	delete myNetworkClient;
 }
 
 void MDPRGame::run()
@@ -152,12 +152,12 @@ void MDPRGame::run()
 		DeathArea death("Death", sf::IntRect());
 	}
 
-	menu->setActive(false);
-	sprite.setActive(true);
+	menu->setActive(true);
+	sprite.setActive(false);
 
 	
-	networkClient = new Network::Client;
-	networkClient->connect();
+	myNetworkClient = new networkClient;
+	//myNetworkClient->connect();
 	
 	App.SetActive(false);
 	drawThreadPtr = new boost::thread(drawThread());
@@ -172,11 +172,11 @@ void MDPRGame::run()
 			if (Event.Type == sf::Event::Closed){
 				quit = true;
 			}
-			if (networkClient->connected){
+			if (myNetworkClient->connected){
 				if (Event.Type == sf::Event::KeyPressed){
-					networkClient->sendKeyPress(Event.Key.Code, true);
+					myNetworkClient->sendKeyPress(Event.Key.Code, true);
 				}else if (Event.Type == sf::Event::KeyReleased){
-					networkClient->sendKeyPress(Event.Key.Code, false);
+					myNetworkClient->sendKeyPress(Event.Key.Code, false);
 				}
 			}
 

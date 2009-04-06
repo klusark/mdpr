@@ -4,7 +4,11 @@
 #include <boost/asio.hpp>
 #include <boost/shared_ptr.hpp>
 #include <map>
+#include <boost/thread.hpp>
 
+#include "packets.hpp"
+
+using boost::asio::ip::udp;
 
 class genericSprite;
 class spriteManager;
@@ -19,8 +23,9 @@ protected:
 	static boost::asio::io_service ioService;
 	boost::asio::ip::udp::socket serverSocket;
 	char buffer[512];
-	boost::asio::ip::udp::endpoint endpoint;
-	boost::asio::deadline_timer timer;
+	udp::endpoint endpoint;
+	boost::asio::deadline_timer spriteUpdateTimer;
+	boost::asio::deadline_timer masterServerUpdateTimer;
 
 	void onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd);
 
@@ -28,12 +33,18 @@ protected:
 
 	void onSpriteUpdate(const boost::system::error_code& error);
 
-	
+	void updateMasterServer(const boost::system::error_code& error);
+
+	boost::thread_group ioThreads;
+	boost::asio::strand strand;
 
 	unsigned short posUpdate;
 
 	unsigned short maxPlayers;
 	unsigned short currentPlayers;
+
+	serverInfoPacket packetServerInfo;
+	udp::endpoint masterServerEndpoint;
 
 	class playerInfo
 	{

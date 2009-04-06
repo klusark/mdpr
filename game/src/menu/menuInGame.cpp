@@ -22,7 +22,7 @@ menuInGame::~menuInGame()
 void menuInGame::toThis()
 {
 	menu->changeCurrentMenu("menuInGame");
-	MDPR->networkClient->connect();
+	MDPR->myNetworkClient->connect();
 }
 
 void menuInGame::onChange()
