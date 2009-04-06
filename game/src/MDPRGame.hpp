@@ -18,7 +18,7 @@ public:
 	std::string serverPort;
 	static bool quit;
 	sf::Clock Clock;
-	Network::Client *networkClient;
+	networkClient *myNetworkClient;
 private:
 
 	boost::thread *drawThreadPtr;

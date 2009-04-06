@@ -15,7 +15,8 @@ enum packetIDs
 	changePowerUpPacketID,
 	needSpritePacketID,
 	serverInfoPacketID,
-	sendUpdateToMasterPacketID,
+	getServersPacketID,
+	serversListPacketID,
 };
 
 /*
@@ -117,12 +118,33 @@ struct needSpritePacket
 struct serverInfoPacket
 {
 	packetIDs packetID;
-	
+	short port;	
 };
 
-struct sendUpdateToMasterPacket
+/*
+Send to master server to get list of servers
+*/
+struct getServersPacket
 {
 	packetIDs packetID;
+};
+
+struct serverEntry
+{
+	unsigned char ip[4];
+	unsigned short port;
+};
+
+/*
+Contains as many servers as possble.
+from master server to client.
+Size: 197
+*/
+struct serversListPacket
+{
+	packetIDs packetID;
+	unsigned char numServers;
+	serverEntry serverList[32];
 };
 
 #endif // ifndef packets_hpp

@@ -20,7 +20,7 @@ struct thread
 {
 public:
 	thread(boost::asio::io_service &ioService) 
-		: ioService(ioService)
+		:	ioService(ioService)
 	{}
 	void operator()(){
 		try{
@@ -32,22 +32,46 @@ private:
 	boost::asio::io_service& ioService;
 };
 
-Network::Client::Client()
+struct serverListUpdateThread
+{
+public:
+	serverListUpdateThread(networkClient::fullServerContainter &serversNeedingUpdate) 
+		:	serversToUpdate(serversNeedingUpdate)
+	{}
+	void operator()(){
+		while (1){
+			if (serversToUpdate.size() == 0){
+				Sleep(2);
+			}
+		}
+		
+	}
+private:
+	networkClient::fullServerContainter serversToUpdate;
+};
+
+networkClient::networkClient()
 	:	socket(ioService, udp::endpoint(udp::v4(), 45986)),
 		inGame(true),
 		connected(false)
 {
 
 
-	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&Network::Client::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&networkClient::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 
 	thread threads(ioService);
 	ioThread = new boost::thread(threads);
 
+		
+	for (short i = 0; i<numServerUpdateThreads; ++i){
+		serverListUpdateThread thread(serversToUpdate[i]);
+		serverListUpdateThreads.create_thread(thread);
+	}
+
 
 }
 
-Network::Client::~Client()
+networkClient::~networkClient()
 {
 	ioService.stop();
 	ioThread->join();
@@ -55,33 +79,44 @@ Network::Client::~Client()
 
 }
 
-bool Network::Client::connect()
+bool networkClient::connect()
 {
 	try
 	{
-		connectPacket packet;
-		packet.packetID = connectPacketID;
-		packet.nameLength = MDPR->playerName.length();
-		strcpy(packet.name, MDPR->playerName.c_str());
+		{
+			connectPacket packet;
+			packet.packetID = connectPacketID;
+			packet.nameLength = MDPR->playerName.length();
+			strcpy(packet.name, MDPR->playerName.c_str());
 
-		udp::resolver resolver(ioService);
-		udp::resolver::query query(udp::v4(), MDPR->serverIP, MDPR->serverPort);
-		udp::resolver::iterator iterator = resolver.resolve(query);
-		receiverEndpoint = *resolver.resolve(query);
-		
-		
-		socket.send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), receiverEndpoint);
+			udp::resolver resolver(ioService);
+			udp::resolver::query query(udp::v4(), MDPR->serverIP, MDPR->serverPort);
+			receiverEndpoint = *resolver.resolve(query);
+			
+			socket.send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), receiverEndpoint);
+		}
+
+		{
+			getServersPacket packet;
+			packet.packetID = getServersPacketID;
+
+			udp::resolver resolver(ioService);
+			udp::resolver::query query(udp::v4(), MDPR->serverIP, "9937");
+			masterServerEndpoint = *resolver.resolve(query);
+			
+			socket.send_to(boost::asio::buffer((const void *)&packet, 4), masterServerEndpoint);
+		}
 	}
 	catch (std::exception& e)
 	{
-		std::cout << "Exception: " << e.what() << "\n";
+		std::cout << "Exception: " << e.what() << std::endl;
 		return false;
 	}
 	connected = true;
 	return true;
 }
 
-void Network::Client::onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd)
+void networkClient::onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd)
 {
 	if (error){
 		std::cout << error.message() << std::endl;
@@ -163,16 +198,27 @@ void Network::Client::onRecivePacket(const boost::system::error_code& error, siz
 				sprite.Sprites[packet->spriteID]->changeAnimation(packet->animationID);
 			}
 			break;
+		case serversListPacketID:
+			{
+				serversListPacket *packet = (serversListPacket *)buffer;
+				for (unsigned short i = 0; i < packet->numServers; ++i){
+					fullServerEntry newEntry;
+					memcpy((void *)&newEntry.entry, (void *)&packet->serverList[i], sizeof(serverEntry));
+					serverList.push_back(newEntry);
+				}
+
+			}
+			break;
 		default:
 			std::cout << "Error in client receve packet" << std::endl;
 			break;
 
 		}
 	}
-	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&Network::Client::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&networkClient::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }
 
-void Network::Client::sendKeyPress(sf::Key::Code key, bool down)
+void networkClient::sendKeyPress(sf::Key::Code key, bool down)
 {
 	if (!inGame){
 		return;

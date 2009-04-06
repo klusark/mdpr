@@ -6,29 +6,46 @@
 
 #include <SFML/Window/Event.hpp>
 
+#include "packets.hpp"
+
 class spriteManager;
 using boost::asio::ip::udp;
-namespace Network{
-	class Client
-	{
-	public:
-		Client();
-		~Client();
-		bool connect();
-		void sendKeyPress(sf::Key::Code key, bool down);
-		bool connected;
-	protected:
-		boost::asio::io_service ioService;
-		udp::socket socket;
-		bool inGame;
-		char buffer[512];
-		udp::endpoint receiverEndpoint;
 
-		boost::thread *ioThread;
+struct fullServerEntry
+{
+	serverEntry entry;
+	unsigned char numPlayers;
+	unsigned char maxPlayers;
+	std::string serverName;
+};
 
-		void onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd);
+class networkClient
+{
+public:
+	networkClient();
+	~networkClient();
+	bool connect();
+	void sendKeyPress(sf::Key::Code key, bool down);
+	bool connected;
 
-	};
-}
+	typedef std::vector<fullServerEntry> fullServerContainter;
+	fullServerContainter serverList;
+
+	static const unsigned short numServerUpdateThreads = 3;
+	fullServerContainter serversToUpdate[numServerUpdateThreads];
+protected:
+	boost::asio::io_service ioService;
+	udp::socket socket;
+	bool inGame;
+	char buffer[512];
+	udp::endpoint receiverEndpoint;
+	udp::endpoint masterServerEndpoint;
+
+	boost::thread_group serverListUpdateThreads;
+	boost::thread *ioThread;
+
+	void onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd);
+
+};
 
 #endif //networkClient_hpp

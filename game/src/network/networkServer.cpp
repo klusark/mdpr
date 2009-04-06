@@ -1,14 +1,13 @@
-#ifdef SERVER
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include "../helpers.hpp"
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/thread.hpp>
 
 #include <iostream>
 #include <map>
 #include <vector>
-
 
 #include "networkServer.hpp"
 #include "packets.hpp"
@@ -18,22 +17,55 @@
 #include "../sprite/platform.hpp"
 #include "../sprite/bubble.hpp"
 
+using boost::asio::ip::udp;
+
 boost::shared_ptr<networkServer> server;
 
 boost::asio::io_service networkServer::ioService;
 
+
+struct ioServiceThread
+{
+public:
+	ioServiceThread(boost::asio::io_service &ioService) 
+		: ioService(ioService)
+	{}
+	void operator()(){
+		try{
+			ioService.run();
+		}catch(...){
+		}
+	}
+private:
+	boost::asio::io_service& ioService;
+};
+
+
 networkServer::networkServer() 
-	:
-		serverSocket(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 9935)),
-		timer(ioService, boost::posix_time::seconds(2))
+	:	serverSocket(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 9935)),
+		strand(ioService),
+		spriteUpdateTimer(ioService, boost::posix_time::seconds(2)),
+		masterServerUpdateTimer(ioService, boost::posix_time::seconds(15))
 {
 	posUpdate = 0;
 
 	serverSocket.async_receive_from(boost::asio::buffer(buffer), endpoint, boost::bind(&networkServer::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 
-	timer.async_wait(boost::bind(&networkServer::onSpriteUpdate, this, boost::asio::placeholders::error));
-	//thread threads(ioService);
-	//boost::thread test(threads);
+	packetServerInfo.packetID = serverInfoPacketID;
+	packetServerInfo.port = 9935;
+
+	udp::resolver resolver(ioService);
+	udp::resolver::query query(udp::v4(), "klusark.ath.cx", "9937");
+	udp::endpoint masterServerEndpoint = *resolver.resolve(query);
+
+	spriteUpdateTimer.async_wait(boost::bind(&networkServer::onSpriteUpdate, this, boost::asio::placeholders::error));
+	masterServerUpdateTimer.async_wait(boost::bind(&networkServer::updateMasterServer, this, boost::asio::placeholders::error));
+
+	ioServiceThread thread(ioService);
+	for (short i=0; i<5; ++i){
+		ioThreads.create_thread(thread);
+	}
+
 	{
 		boost::shared_ptr<genericSprite> newPlatform(new Platform("platform0"));
 		newPlatform->SetY(50);
@@ -59,7 +91,7 @@ bool networkServer::runServer()
 {
 	
 	std::cout << "Server Started" << std::endl;
-	ioService.run();
+	ioThreads.join_all();
 
 	return true;
 }
@@ -67,7 +99,7 @@ bool networkServer::runServer()
 void networkServer::onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd)
 {
 	if (error){
-		//std::cout << error.message() << std::endl;
+		std::cout << error.message() << std::endl;
 
 		if (!(Players.find(endpoint.port()) == Players.end())){
 
@@ -174,14 +206,16 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 void networkServer::handleSendTo(const boost::system::error_code& error, size_t bytes_sent)
 {
 	if (error){
-		//std::cout << error.message() << std::endl;
+		std::cout << error.message() << std::endl;
+		return;
 	}
 }
 
 void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 {
-	if (error == boost::asio::error::operation_aborted){
-		std::cout << "What?" << std::endl;
+	if (error){
+		std::cout << error.message() << std::endl;
+		return;
 	}
 	sprite.update();
 	for(spriteManager::spriteContainer::iterator it = sprite.Sprites.begin(); it != sprite.Sprites.end(); ++it){
@@ -228,9 +262,22 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 			serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(packet)), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 		}
 	}
-	timer.expires_from_now(boost::posix_time::milliseconds(15));
-	timer.async_wait(boost::bind(&networkServer::onSpriteUpdate, this, boost::asio::placeholders::error));
+	spriteUpdateTimer.expires_from_now(boost::posix_time::milliseconds(15));
+	spriteUpdateTimer.async_wait(boost::bind(&networkServer::onSpriteUpdate, this, boost::asio::placeholders::error));
 
+}
+
+void networkServer::updateMasterServer(const boost::system::error_code& error)
+{
+	if (error){
+		std::cout << error.message() << std::endl;
+		return;
+	}
+
+	serverSocket.send_to(boost::asio::buffer((const void *)&packetServerInfo, 6), masterServerEndpoint);
+
+	masterServerUpdateTimer.expires_from_now(boost::posix_time::seconds(15));
+	masterServerUpdateTimer.async_wait(boost::bind(&networkServer::updateMasterServer, this, boost::asio::placeholders::error));
 }
 
 void networkServer::disconnect(unsigned short playerID)
@@ -253,12 +300,11 @@ void networkServer::disconnect(unsigned short playerID)
 	
 }
 
-void networkServer::playerInfo::disconnect(const boost::system::error_code& e)
+void networkServer::playerInfo::disconnect(const boost::system::error_code& error)
 {
-	if (e == boost::asio::error::operation_aborted){
+	if (error){
+		std::cout << error.message() << std::endl;
 		return;
 	}
 	server->disconnect(endpoint.port());
 }
-
-#endif // ifdef SERVER
