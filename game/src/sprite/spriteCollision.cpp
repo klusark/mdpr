@@ -21,9 +21,9 @@ void spriteCollision::update(int spriteID)
 	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
 		if (Sprites[spriteID]->spriteType == player){
 			if (iter->second->spriteType == platform){
-				int height = Sprites[spriteID]->currentAnimation->collisionRect.Bottom;
-				int left = Sprites[spriteID]->currentAnimation->collisionRect.Left;
-				int width = Sprites[spriteID]->currentAnimation->collisionRect.GetWidth();
+				int height = Sprites[spriteID]->currentAnimation->AnimationInfo.collisionRect.Bottom;
+				int left = Sprites[spriteID]->currentAnimation->AnimationInfo.collisionRect.Left;
+				int width = Sprites[spriteID]->currentAnimation->AnimationInfo.collisionRect.GetWidth();
 				sf::Vector2f otherPosition = iter->second->GetPosition();
 
 				if (infos[spriteID]->y + height <= otherPosition.y){
@@ -39,7 +39,7 @@ void spriteCollision::update(int spriteID)
 			}
 		}else if (Sprites[spriteID]->spriteType == deathArea){
 			if (iter->second->spriteType == player){
-				sf::IntRect collisionRect = iter->second->currentAnimation->collisionRect;
+				sf::IntRect collisionRect = iter->second->currentAnimation->AnimationInfo.collisionRect;
 				collisionRect.Offset(int(iter->second->GetPosition().x), int(iter->second->GetPosition().y));
 				DeathArea *death = dynamic_cast<DeathArea *>(Sprites[spriteID].get());
 				if (death->collisionRect.Intersects(collisionRect)){

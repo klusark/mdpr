@@ -29,10 +29,11 @@ public:
 	bool connected;
 
 	typedef std::vector<fullServerEntry> fullServerContainter;
+	typedef std::vector<fullServerEntry *> fullServerContainter2;
 	fullServerContainter serverList;
 
-	static const unsigned short numServerUpdateThreads = 3;
-	fullServerContainter serversToUpdate[numServerUpdateThreads];
+	static const unsigned short numServerUpdateThreads = 1;
+	fullServerContainter2 serversToUpdate[numServerUpdateThreads];
 protected:
 	boost::asio::io_service ioService;
 	udp::socket socket;

@@ -11,10 +11,11 @@ public:
 	Player(const std::string &name);
 	~Player();
 	void update();
+	void crouchingFinish();
 	static sf::Image Image;
 	typedef std::map<keys, bool> keysContainter;
 	keysContainter keyMap;
-	bool rolling, running, crouching;
+	bool rolling, running, crouching, idle;
 	
 };
 

@@ -64,7 +64,7 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 #ifndef SERVER
 	if (image.length() != 0){
 		//load image hackish way to check if in a thread
-		if (Image.GetHeight() == 0 && !boost::this_thread::interruption_enabled()){
+		if (Image.GetHeight() == 0 /*&& !boost::this_thread::interruption_enabled()*/){
 			std::string imageFile;
 			imageFile = "data/mdpr/sprites/";
 			imageFile += spriteType;
@@ -83,19 +83,20 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 		boost::shared_ptr<Animation> newAnimation(new Animation(*iter));
 		
 		animationConfig.add_options()
-			("delay",	boost::program_options::value<int>(&newAnimation->delay),	"")
-			("frames",	boost::program_options::value<int>(&newAnimation->frames),	"")
-			("startx",	boost::program_options::value<int>(&newAnimation->startx),	"")
-			("starty",	boost::program_options::value<int>(&newAnimation->starty),	"")
-			("width",	boost::program_options::value<int>(&newAnimation->width),	"")
-			("height",	boost::program_options::value<int>(&newAnimation->height),	"")
-			("padding",	boost::program_options::value<int>(&newAnimation->padding),	"")
-			("reverseonfinish",			boost::program_options::value<bool>(&newAnimation->reverseonfinish),		"")
+			("delay",	boost::program_options::value<int>(&newAnimation->AnimationInfo.delay),		"")
+			("frames",	boost::program_options::value<int>(&newAnimation->AnimationInfo.frames),	"")
+			("startx",	boost::program_options::value<int>(&newAnimation->AnimationInfo.startx),	"")
+			("starty",	boost::program_options::value<int>(&newAnimation->AnimationInfo.starty),	"")
+			("width",	boost::program_options::value<int>(&newAnimation->AnimationInfo.width),		"")
+			("height",	boost::program_options::value<int>(&newAnimation->AnimationInfo.height),	"")
+			("padding",	boost::program_options::value<int>(&newAnimation->AnimationInfo.padding),	"")
+			("reverseOnFinish",			boost::program_options::value<bool>(&newAnimation->AnimationInfo.reverseOnFinish),		"")
+			("pauseOnFinish",			boost::program_options::value<bool>(&newAnimation->AnimationInfo.pauseOnFinish),		"")
 
-			("collision.rect.top",		boost::program_options::value<int >(&newAnimation->collisionRect.Top),		"")
-			("collision.rect.bottom",	boost::program_options::value<int >(&newAnimation->collisionRect.Bottom),	"")
-			("collision.rect.right",	boost::program_options::value<int >(&newAnimation->collisionRect.Right),	"")
-			("collision.rect.left",		boost::program_options::value<int >(&newAnimation->collisionRect.Left),		"");
+			("collision.rect.top",		boost::program_options::value<int >(&newAnimation->AnimationInfo.collisionRect.Top),	"")
+			("collision.rect.bottom",	boost::program_options::value<int >(&newAnimation->AnimationInfo.collisionRect.Bottom),	"")
+			("collision.rect.right",	boost::program_options::value<int >(&newAnimation->AnimationInfo.collisionRect.Right),	"")
+			("collision.rect.left",		boost::program_options::value<int >(&newAnimation->AnimationInfo.collisionRect.Left),	"");
 
 		boost::program_options::variables_map animationVariableMap;
 
@@ -127,6 +128,8 @@ void genericSprite::update()
 #ifndef SERVER
 	SetSubRect(currentAnimation->update());
 	FlipX(flipped);
+#else 
+	currentAnimation->update();
 #endif
 	float deltaTime = Clock.GetElapsedTime();
 	Clock.Reset();
@@ -149,6 +152,7 @@ void genericSprite::changeAnimation(unsigned int name)
 {
 	if (Animations.find(name) != Animations.end()){
 		currentAnimation = Animations[name];
+		currentAnimation->Clock.Reset();
 	}else{
 		std::cout << "Error Cannot find Animation: " << name << std::endl;
 	}

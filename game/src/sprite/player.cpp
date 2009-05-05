@@ -1,4 +1,5 @@
 #include <SFML/Graphics/Image.hpp>
+#include <boost/bind.hpp>
 
 #include "player.hpp"
 #include "genericSprite.hpp"
@@ -12,13 +13,15 @@ Player::Player(const std::string &name)
 	:	 genericSprite(name, "player", Image),
 		rolling(false),
 		crouching(false),
-		running(false)
+		running(false),
+		idle(false)
 {
 	spriteType = player;
 
 	
 	keyMap[keyLeft]		= false;
 	keyMap[keyRight]	= false;
+	keyMap[keyDown]		= false;
 	keyMap[keyAction]	= false;
 
 	SetX(50);
@@ -61,23 +64,40 @@ void Player::update()
 			if (keyMap[keyDown]){
 				crouching = true;
 			}else{
-				crouching = false;
+				if (crouching == true){
+					currentAnimation->resume();
+					currentAnimation->onFinish.connect(boost::bind(&Player::crouchingFinish, this));
+				}
+				//crouching = false;
 			}
 		}
 		if ((running + rolling + crouching) > 1){
 			throw 0;
 		}
-		if (running){
+		if ((running + rolling + crouching) == 0){
+			idle = true;
+		}else{
+			idle = false;
+		}
+		if (running && currentAnimation->name != "run"){
 			changeAnimation("run");
 		}else if (rolling){
 			changeAnimation("roll");
-		}else if(crouching){
+		}else if(crouching && currentAnimation->name != "crouch"){
 			changeAnimation("crouch");
-		}else{
+		}else if (idle){
 			changeAnimation("idle");
 		}
 		setXVelocity(velocity);
 	}
 #endif
 	genericSprite::update();
+}
+
+void Player::crouchingFinish()
+{
+	currentAnimation->onFinish.disconnect(boost::bind(&Player::crouchingFinish, this));
+	currentAnimation->reset();
+	crouching = false;
+
 }
