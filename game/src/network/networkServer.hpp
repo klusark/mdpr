@@ -20,12 +20,13 @@ public:
 	bool runServer();
 	void disconnect(unsigned short playerID);
 protected:
-	static boost::asio::io_service ioService;
+	boost::asio::io_service ioService;
 	boost::asio::ip::udp::socket serverSocket;
 	char buffer[512];
 	udp::endpoint endpoint;
 	boost::asio::deadline_timer spriteUpdateTimer;
 	boost::asio::deadline_timer masterServerUpdateTimer;
+	boost::asio::deadline_timer removeIdlePlayersTimer;
 
 	void onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd);
 
@@ -35,8 +36,11 @@ protected:
 
 	void updateMasterServer(const boost::system::error_code& error);
 
+	void removeIdlePlayers(const boost::system::error_code& error);
+
+	void ioServiceThread();
+
 	boost::thread_group ioThreads;
-	boost::asio::strand strand;
 
 	unsigned short posUpdate;
 
@@ -49,13 +53,12 @@ protected:
 	class playerInfo
 	{
 	public:
-		playerInfo():timer(networkServer::ioService){}
+		playerInfo(){}
 		void disconnect(const boost::system::error_code& e);
 		std::string name;
 		boost::shared_ptr<genericSprite> playerSprite;
 		boost::asio::ip::udp::endpoint endpoint;
-		boost::asio::deadline_timer timer;
-
+		bool stillAlive;
 
 	};
 

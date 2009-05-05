@@ -60,7 +60,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sfml-system-d.lib sfml-main-d.lib sfml-window-d.lib sfml-graphics-d.lib"
+				AdditionalDependencies="sfml-system-d.lib sfml-window-d.lib sfml-graphics-d.lib Awesomium_d.lib OpenGL32.lib"
 				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -135,7 +135,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sfml-system.lib sfml-main.lib sfml-window.lib sfml-graphics.lib"
+				AdditionalDependencies="sfml-system.lib sfml-main.lib sfml-window.lib sfml-graphics.lib Awesomium.lib OpenGL32.lib"
 				ModuleDefinitionFile=""
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -187,6 +187,10 @@
 			</File>
 			<File
 				RelativePath=".\version.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\WebViewListener.hpp"
 				>
 			</File>
 			<Filter
@@ -246,78 +250,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Menu"
-				>
-				<File
-					RelativePath=".\src\menu\menuGeneric.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuInGame.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuMain.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuManager.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuOptions.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuProfile.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuServerBrowser.hpp"
-					>
-				</File>
-				<Filter
-					Name="GUI"
-					>
-					<File
-						RelativePath=".\src\menu\GUI\button.hpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\clickable.hpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\input.hpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\listBox.hpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\text.hpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\textBox.hpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\toggleBox.hpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\widget.hpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\window.hpp"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
 				Name="PowerUp"
 				>
 				<File
@@ -351,6 +283,10 @@
 			</File>
 			<File
 				RelativePath=".\src\MDPRGame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\WebViewListener.cpp"
 				>
 			</File>
 			<Filter
@@ -404,78 +340,6 @@
 					RelativePath=".\src\sprite\spriteManager.cpp"
 					>
 				</File>
-			</Filter>
-			<Filter
-				Name="Menu"
-				>
-				<File
-					RelativePath=".\src\menu\menuGeneric.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuInGame.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuMain.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuOptions.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuProfile.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuServerBrowser.cpp"
-					>
-				</File>
-				<Filter
-					Name="GUI"
-					>
-					<File
-						RelativePath=".\src\menu\GUI\button.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\clickable.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\input.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\listBox.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\text.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\textBox.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\toggleBox.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\widget.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\menu\GUI\window.cpp"
-						>
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="PowerUp"

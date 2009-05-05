@@ -17,6 +17,7 @@ enum packetIDs
 	serverInfoPacketID,
 	getServersPacketID,
 	serversListPacketID,
+	getFullServerInfoPacketID,
 };
 
 /*
@@ -96,6 +97,7 @@ struct animationChangePacket
 
 	unsigned short spriteID;
 	unsigned short animationID;
+	bool paused, reset;
 };
 
 /*
@@ -145,6 +147,11 @@ struct serversListPacket
 	packetIDs packetID;
 	unsigned char numServers;
 	serverEntry serverList[32];
+};
+
+struct getFullServerInfoPacket
+{
+	packetIDs packetID;
 };
 
 #endif // ifndef packets_hpp

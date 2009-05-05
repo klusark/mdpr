@@ -35,23 +35,46 @@ private:
 struct serverListUpdateThread
 {
 public:
-	serverListUpdateThread(networkClient::fullServerContainter &serversNeedingUpdate) 
-		:	serversToUpdate(serversNeedingUpdate)
+	serverListUpdateThread(networkClient::fullServerContainter2 &serversNeedingUpdate, udp::socket &socket) 
+		:	serversToUpdate(serversNeedingUpdate),
+			socket(socket)
 	{}
 	void operator()(){
 		while (1){
 			if (serversToUpdate.size() == 0){
 				Sleep(2);
+			}else{
+				boost::asio::io_service ioService;
+				udp::resolver resolver(ioService);
+				std::string test;
+				char *buffers;
+				buffers = new char[6];
+				for (int i = 0; i < 4; ++i){
+					test += _itoa(serversToUpdate[0]->entry.ip[i], buffers, 10);
+					if (i != 3){
+						test += ".";
+					}
+				}
+				char *buffer;
+				buffer = new char[6];
+				_itoa(serversToUpdate[0]->entry.port, buffer, 10);
+				udp::resolver::query query(udp::v4(), test, buffer);
+				udp::endpoint receiverEndpoint = *resolver.resolve(query);
+				getFullServerInfoPacket packet;
+				packet.packetID = getFullServerInfoPacketID;
+				socket.send_to(boost::asio::buffer((const void *)&packet, 4), receiverEndpoint);
+				serversToUpdate.erase(serversToUpdate.begin());
 			}
 		}
 		
 	}
 private:
-	networkClient::fullServerContainter serversToUpdate;
+	networkClient::fullServerContainter2 &serversToUpdate;
+	udp::socket &socket;
 };
 
 networkClient::networkClient()
-	:	socket(ioService, udp::endpoint(udp::v4(), 45986)),
+	:	socket(ioService, udp::endpoint()),
 		inGame(true),
 		connected(false)
 {
@@ -64,7 +87,7 @@ networkClient::networkClient()
 
 		
 	for (short i = 0; i<numServerUpdateThreads; ++i){
-		serverListUpdateThread thread(serversToUpdate[i]);
+		serverListUpdateThread thread(serversToUpdate[i], socket);
 		serverListUpdateThreads.create_thread(thread);
 	}
 
@@ -196,6 +219,10 @@ void networkClient::onRecivePacket(const boost::system::error_code& error, size_
 			{
 				animationChangePacket *packet = (animationChangePacket *)buffer;
 				sprite.Sprites[packet->spriteID]->changeAnimation(packet->animationID);
+				sprite.Sprites[packet->spriteID]->currentAnimation->paused = packet->paused;
+				if (packet->reset){
+					sprite.Sprites[packet->spriteID]->currentAnimation->reset();
+				}
 			}
 			break;
 		case serversListPacketID:
@@ -205,6 +232,7 @@ void networkClient::onRecivePacket(const boost::system::error_code& error, size_
 					fullServerEntry newEntry;
 					memcpy((void *)&newEntry.entry, (void *)&packet->serverList[i], sizeof(serverEntry));
 					serverList.push_back(newEntry);
+					serversToUpdate[0].push_back(&newEntry);
 				}
 
 			}
