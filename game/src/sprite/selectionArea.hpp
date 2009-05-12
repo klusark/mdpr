@@ -6,11 +6,11 @@
 #include "genericSprite.hpp"
 
 
-class DeathArea : public genericSprite
+class selectionArea : public genericSprite
 {
 public:
-	DeathArea(const std::string &name, sf::IntRect rect);
-	~DeathArea();
+	selectionArea(const std::string &name, sf::IntRect rect);
+	~selectionArea();
 	static sf::Image Image;
 	sf::IntRect collisionRect;
 	bool collisionChecked;

@@ -42,6 +42,8 @@ public:
 	bool onGround;
 	bool inputDisabled;
 	bool nonNetworked;
+	bool keyLock;
+	bool animationLock;
 
 	std::string lastAnimationName;
 

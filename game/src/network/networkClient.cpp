@@ -219,10 +219,11 @@ void networkClient::onRecivePacket(const boost::system::error_code& error, size_
 			{
 				animationChangePacket *packet = (animationChangePacket *)buffer;
 				sprite.Sprites[packet->spriteID]->changeAnimation(packet->animationID);
-				sprite.Sprites[packet->spriteID]->currentAnimation->paused = packet->paused;
-				if (packet->reset){
-					sprite.Sprites[packet->spriteID]->currentAnimation->reset();
-				}
+				//sprite.Sprites[packet->spriteID]->currentAnimation->paused = packet->paused;
+				sprite.Sprites[packet->spriteID]->currentAnimation->currentFrame = packet->currentFrame;
+				//if (packet->reset){
+				//	sprite.Sprites[packet->spriteID]->currentAnimation->reset();
+				//}
 			}
 			break;
 		case serversListPacketID:

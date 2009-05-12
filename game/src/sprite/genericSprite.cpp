@@ -30,7 +30,9 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 		timesSkiped(0),
 		hasPowerUp(false),
 		flipped(false),
-		nonNetworked(false)
+		nonNetworked(false),
+		animationLock(false),
+		keyLock(false)
 {
 
 	SetX(0);
@@ -114,7 +116,8 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 
 		boost::program_options::store(parse_config_file(animationFileStream, animationConfigFileOptions), animationVariableMap);
 		notify(animationVariableMap);
-		Animations[stringToCRC(*iter)] = newAnimation;
+		unsigned int test = stringToCRC(*iter);
+		Animations[test] = newAnimation;
 			
 	}
 }
@@ -150,11 +153,13 @@ void genericSprite::draw(sf::RenderWindow &App)
 
 void genericSprite::changeAnimation(unsigned int name)
 {
-	if (Animations.find(name) != Animations.end()){
-		currentAnimation = Animations[name];
-		currentAnimation->Clock.Reset();
-	}else{
-		std::cout << "Error Cannot find Animation: " << name << std::endl;
+	if (!animationLock){
+		if (Animations.find(name) != Animations.end()){
+			currentAnimation = Animations[name];
+			currentAnimation->Clock.Reset();
+		}else{
+			std::cout << "Error Cannot find Animation: " << name << std::endl;
+		}
 	}
 }
 

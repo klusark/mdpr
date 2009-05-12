@@ -186,6 +186,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\powerup\powerUpManager.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\version.hpp"
 				>
 			</File>
@@ -214,10 +218,6 @@
 				</File>
 				<File
 					RelativePath=".\src\sprite\bubble.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\deathArea.hpp"
 					>
 				</File>
 				<File
@@ -286,6 +286,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\powerup\powerUpManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\WebViewListener.cpp"
 				>
 			</File>
@@ -306,10 +310,6 @@
 				</File>
 				<File
 					RelativePath=".\src\sprite\bubble.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\deathArea.cpp"
 					>
 				</File>
 				<File

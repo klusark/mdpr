@@ -8,9 +8,9 @@
 struct AnimationInfoContainer
 {
 	AnimationInfoContainer():reverseOnFinish(false),
-		pauseOnFinish(false),playBackward(false),padding(0){}
+		pauseOnFinish(false),padding(0){}
 	int delay, frames, startx, starty, width, height, padding;
-	bool playBackward, pauseOnFinish, reverseOnFinish;
+	bool pauseOnFinish, reverseOnFinish;
 	sf::IntRect collisionRect;
 
 };
@@ -28,8 +28,8 @@ public:
 	std::string name;
 	sf::Clock Clock;
 	float updateTime;
-	int currentFrame;
-	bool paused, needsUpdate, infoSaved, needsReset;
+	unsigned char currentFrame;
+	bool paused, needsUpdate, infoSaved, needsReset, playBackward;
 
 	AnimationInfoContainer AnimationInfo;
 	AnimationInfoContainer OriginalAnimationInfo;

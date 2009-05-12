@@ -3,7 +3,7 @@
 
 #include <SFML\Graphics\Rect.hpp>
 
-short stringToCRC(std::string string);
+unsigned short stringToCRC(std::string string);
 
 sf::IntRect XYWHToLTRB(int x, int y, int w, int h);
 
