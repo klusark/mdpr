@@ -237,26 +237,27 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 		packet.flipped = currentSprite->flipped;
 
 		animationChangePacket animationPacket;
-		bool useAnimationPacked = false;
-		if (currentSprite->lastAnimationName != currentSprite->currentAnimation->name || currentSprite->currentAnimation->needsUpdate){
-			currentSprite->currentAnimation->needsUpdate = false;
+		//bool useAnimationPacked = false;
+		//if (currentSprite->lastAnimationName != currentSprite->currentAnimation->name || currentSprite->currentAnimation->needsUpdate){
+			//currentSprite->currentAnimation->needsUpdate = false;
 			animationPacket.packetID = animationChangePacketID;
 			animationPacket.spriteID = it->first;
 			animationPacket.animationID = stringToCRC(currentSprite->currentAnimation->name);
 			animationPacket.paused = currentSprite->currentAnimation->paused;
 			animationPacket.reset = currentSprite->currentAnimation->needsReset;
-			currentSprite->currentAnimation->needsReset = false;
+			animationPacket.currentFrame = currentSprite->currentAnimation->currentFrame;
+			//currentSprite->currentAnimation->needsReset = false;
 			currentSprite->lastAnimationName = currentSprite->currentAnimation->name;
-			useAnimationPacked = true;
-		}
+			//useAnimationPacked = true;
+		//}
 		//boost::asio::ConstBufferSequence handler;
 		playerContainer::iterator iter;
 		for( iter = Players.begin(); iter != Players.end(); ++iter ) {
 			
 			//a bit too hackish for my likings
-			if (useAnimationPacked){
+			//if (useAnimationPacked){
 				serverSocket.async_send_to(boost::asio::buffer((const void *)&animationPacket, sizeof(animationPacket)), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
-			}
+			//}
 			serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(packet)), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 		}
 	}

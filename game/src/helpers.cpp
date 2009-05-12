@@ -5,7 +5,7 @@
 #include "helpers.hpp"
 
 
-short stringToCRC(std::string string)
+unsigned short stringToCRC(std::string string)
 {
 	boost::crc_16_type result;
 	result.process_bytes(string.c_str(), string.length());

@@ -1,7 +1,7 @@
 #include <SFML\System.hpp>
 #include "spriteManager.hpp"
 #include "spriteCollision.hpp"
-#include "deathArea.hpp"
+#include "selectionArea.hpp"
 #include "../network/packets.hpp"
 #include <map>
 #include <SFML/System/Vector2.hpp>
@@ -37,18 +37,18 @@ void spriteCollision::update(int spriteID)
 					Sprites[spriteID]->onGround = false;
 				}
 			}
-		}else if (Sprites[spriteID]->spriteType == deathArea){
-			if (iter->second->spriteType == player){
+		}/*else if (Sprites[spriteID]->spriteType == selectionarea){
+			if (iter->second->spriteType == Sprites[spriteID]->selectType){
 				sf::IntRect collisionRect = iter->second->currentAnimation->AnimationInfo.collisionRect;
 				collisionRect.Offset(int(iter->second->GetPosition().x), int(iter->second->GetPosition().y));
-				DeathArea *death = dynamic_cast<DeathArea *>(Sprites[spriteID].get());
+				selectionArea *death = dynamic_cast<selectionArea *>(Sprites[spriteID].get());
 				if (death->collisionRect.Intersects(collisionRect)){
 					std::cout << "1";
 					
 				}
 				death->collisionChecked = true;
 			}
-		}
+		}*/
 	}
 }
 

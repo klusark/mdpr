@@ -1,4 +1,6 @@
 animation = run
 animation = crouch
 animation = idle
+animation = roll
+animation = shoot
 image = newplayer.png

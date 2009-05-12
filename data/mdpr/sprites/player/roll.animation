@@ -1,11 +1,12 @@
 delay = 100
-frames = 3
+frames = 5
 startx = 1
-starty = 126
+starty = 76
 width = 24
 height = 24
 padding = 1
+pauseOnFinish = true
 collision.rect.top = 1
 collision.rect.bottom = 24
-collision.rect.right = 16
-collision.rect.left = 6
+collision.rect.right = 17
+collision.rect.left = 5

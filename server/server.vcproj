@@ -178,19 +178,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\sprite\deathArea.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\powerup\genericPowerUp.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\game\src\sprite\genericSprite.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\powerup\gun.cpp"
 				>
 			</File>
 			<File
@@ -218,6 +206,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\game\src\sprite\selectionArea.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\game\src\sprite\spriteCollision.cpp"
 				>
 			</File>
@@ -225,6 +217,66 @@
 				RelativePath="..\game\src\sprite\spriteManager.cpp"
 				>
 			</File>
+			<Filter
+				Name="Power Up"
+				>
+				<File
+					RelativePath="..\game\src\powerup\boots.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\chute.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\death.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\genericPowerUp.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\grenade.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\gun.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\hook.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\invisibility.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\mine.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\powerUpManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\puck.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\TNT.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\volts.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\warp.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -240,19 +292,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\sprite\deathArea.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\powerup\genericPowerUp.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\game\src\sprite\genericSprite.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\powerup\gun.hpp"
 				>
 			</File>
 			<File
@@ -280,6 +320,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\game\src\sprite\selectionArea.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\game\src\sprite\spriteCollision.hpp"
 				>
 			</File>
@@ -287,6 +331,66 @@
 				RelativePath="..\game\src\sprite\spriteManager.hpp"
 				>
 			</File>
+			<Filter
+				Name="Power Up"
+				>
+				<File
+					RelativePath="..\game\src\powerup\boots.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\chute.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\death.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\genericPowerUp.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\grenade.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\gun.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\hook.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\invisibility.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\mine.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\powerUpManager.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\puck.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\TNT.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\volts.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\game\src\powerup\warp.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

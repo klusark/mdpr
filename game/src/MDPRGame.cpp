@@ -3,9 +3,11 @@
 
 #include <boost/program_options.hpp>
 #include <boost/thread.hpp>
+#include <boost/random.hpp>
 #include <WebCore.h>
 #include <iostream>
 #include <fstream>
+#include <time.h>
 
 #include "sprite/player.hpp"
 #include "network/networkClient.hpp"
@@ -15,7 +17,7 @@
 #include "sprite/platform.hpp"
 #include "sprite/bubble.hpp"
 #include "sprite/powerup.hpp"
-#include "sprite/deathArea.hpp"
+//#include "sprite/deathArea.hpp"
 #include "MDPRGame.hpp"
 #include "WebViewListener.hpp"
 
@@ -27,6 +29,13 @@ boost::shared_ptr<MDPRGame> MDPR;
 
 int main(int argc, char** argv)
 {
+	boost::mt19937 rng;
+	rng.seed((boost::uint32_t)time(0));
+
+	boost::uniform_int<> myRange(0, 10);
+
+	boost::variate_generator<boost::mt19937&, boost::uniform_int<> > myRand(rng, myRange);
+
 	try {
 
 		// Set display mode

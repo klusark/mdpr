@@ -12,10 +12,12 @@ public:
 	~Player();
 	void update();
 	void crouchingFinish();
+	void rollingFinish();
 	static sf::Image Image;
 	typedef std::map<keys, bool> keysContainter;
 	keysContainter keyMap;
-	bool rolling, running, crouching, idle;
+	bool rolling, running, crouching, idle, jumpingUp;
+	float velocity;
 	
 };
 

@@ -97,6 +97,7 @@ struct animationChangePacket
 
 	unsigned short spriteID;
 	unsigned short animationID;
+	unsigned char currentFrame;
 	bool paused, reset;
 };
 

@@ -6,7 +6,7 @@ enum spriteTypes
 	player,
 	platform,
 	bubble,
-	deathArea,
+	selectionarea,
 };
 
 enum keys
