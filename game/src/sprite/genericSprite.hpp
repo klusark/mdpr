@@ -47,14 +47,10 @@ public:
 
 	std::string lastAnimationName;
 
-
 	spriteTypes spriteType;
-
-
 
 	boost::shared_ptr<Animation> currentAnimation;
 	
-	powerups currentPowerupID;
 	float lastX, lastY;
 	int timesSkiped;
 	bool flipped;
@@ -65,12 +61,8 @@ protected:
 	
 	sf::Clock Clock;
 
-
-
 	typedef std::map<unsigned int, boost::shared_ptr<Animation> > animationContainer;
 	animationContainer Animations;
-
-
 };
 
 #endif // ifndef genericSprite_hpp

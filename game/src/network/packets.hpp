@@ -13,6 +13,7 @@ enum packetIDs
 	keyPacketID,
 	animationChangePacketID,
 	changePowerUpPacketID,
+	changeBubblePowerUpPacketID,
 	needSpritePacketID,
 	serverInfoPacketID,
 	getServersPacketID,
@@ -62,12 +63,6 @@ struct spritePosPacket
 	bool flipped;
 };
 
-enum errorIDs
-{
-	nameInUse,
-
-};
-
 /*
 Size: 8
 */
@@ -98,7 +93,7 @@ struct animationChangePacket
 	unsigned short spriteID;
 	unsigned short animationID;
 	unsigned char currentFrame;
-	bool paused, reset;
+	//bool paused, reset;
 };
 
 /*
@@ -109,7 +104,15 @@ struct changePowerUpPacket
 	packetIDs packetID;
 
 	unsigned short spriteID;
-	powerups powerupID;
+	unsigned short powerupID;
+};
+
+struct changeBubblePowerUpPacket
+{
+	packetIDs packetID;
+
+	unsigned short spriteID;
+	unsigned short powerupID;
 };
 
 struct needSpritePacket

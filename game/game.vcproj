@@ -117,7 +117,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories=""
-				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0501;SFML_DYNAMIC"
+				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0501;SFML_DYNAMIC;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
@@ -225,10 +225,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\sprite\imageManager.hpp"
-					>
-				</File>
-				<File
 					RelativePath=".\src\sprite\platform.hpp"
 					>
 				</File>
@@ -253,11 +249,55 @@
 				Name="PowerUp"
 				>
 				<File
+					RelativePath=".\src\powerup\boots.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\chute.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\death.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\powerup\genericPowerUp.hpp"
 					>
 				</File>
 				<File
+					RelativePath=".\src\powerup\grenade.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\powerup\gun.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\hook.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\invisibility.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\mine.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\puck.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\TNT.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\volts.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\warp.hpp"
 					>
 				</File>
 			</Filter>
@@ -317,10 +357,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\sprite\imageManager.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\src\sprite\platform.cpp"
 					>
 				</File>
@@ -345,11 +381,55 @@
 				Name="PowerUp"
 				>
 				<File
+					RelativePath=".\src\powerup\boots.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\chute.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\death.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\powerup\genericPowerUp.cpp"
 					>
 				</File>
 				<File
+					RelativePath=".\src\powerup\grenade.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\powerup\gun.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\hook.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\invisibility.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\mine.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\puck.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\TNT.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\volts.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\warp.cpp"
 					>
 				</File>
 			</Filter>

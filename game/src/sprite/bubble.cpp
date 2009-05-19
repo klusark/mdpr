@@ -1,6 +1,7 @@
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#include "../powerup/powerUpManager.hpp"
 #include "../enumerations.hpp"
 #include "../helpers.hpp"
 #include "genericSprite.hpp"
@@ -11,7 +12,7 @@ sf::Image Bubble::Image;
 
 Bubble::Bubble(const std::string &name)
 	:	genericSprite(name, "bubble", Image),
-		powerup("powerup")
+		powerup(name+"powerup")
 {
 	spriteType = bubble;
 
@@ -19,7 +20,8 @@ Bubble::Bubble(const std::string &name)
 
 	setYVelocity(100.0f);
 	setXVelocity(100.0f);
-
+	
+	powerup.changeAnimation(PUManage->selectRandom());
 }
 
 Bubble::~Bubble()
@@ -29,6 +31,7 @@ Bubble::~Bubble()
 
 void Bubble::update()
 {
+	
 	sf::Vector2f position = GetPosition();
 	if (position.x >= 640 - 16 || position.x < 0){
 		setXVelocity(-getXVelocity());

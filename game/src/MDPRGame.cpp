@@ -29,17 +29,8 @@ boost::shared_ptr<MDPRGame> MDPR;
 
 int main(int argc, char** argv)
 {
-	boost::mt19937 rng;
-	rng.seed((boost::uint32_t)time(0));
-
-	boost::uniform_int<> myRange(0, 10);
-
-	boost::variate_generator<boost::mt19937&, boost::uniform_int<> > myRand(rng, myRange);
-
 	try {
-
 		// Set display mode
-		
 		sf::RenderWindow App;
 
 		boost::shared_ptr<MDPRGame> newMDPR(new MDPRGame(App));
