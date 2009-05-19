@@ -6,7 +6,7 @@
 #include "powerUpManager.hpp"
 #include "gun.hpp"
 
-RegisterPowerup Register("gun");
+RegisterPowerup RegisterGun("gun");
 
 Gun::Gun(genericSprite *owner)
 	:	genericPowerUp(owner),

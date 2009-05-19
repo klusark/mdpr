@@ -11,9 +11,9 @@ PowerUp::PowerUp(const std::string &name)
 	:	genericSprite(name, "powerup", Image)
 {
 	spriteType = player;
-	changeAnimation(stringToCRC("gun"));
-	SetX(125);
-	SetY(125);
+	//changeAnimation(stringToCRC("gun"));
+	//SetX(125);
+	//SetY(125);
 
 }
 

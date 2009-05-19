@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <boost\shared_ptr.hpp>
 
 class RegisterPowerup
 {
@@ -14,9 +15,13 @@ class PowerUpManager
 {
 public:
 	PowerUpManager();
+	~PowerUpManager();
 	std::string selectRandom();
 	typedef std::vector<std::string> powerUpListContainer;
-	static powerUpListContainer powerUpList;
+	powerUpListContainer powerUpList;
+	
 };
 
-#endif
+extern PowerUpManager *PUManage;
+
+#endif // #ifndef powerUpManager_hpp

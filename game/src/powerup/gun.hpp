@@ -17,4 +17,4 @@ public:
 	boost::shared_ptr<genericSprite> myDeathArea;
 };
 
-#endif // ifndef gun_hpp
+#endif // #ifndef gun_hpp

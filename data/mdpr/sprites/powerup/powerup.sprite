@@ -1,2 +1,13 @@
 animation = gun
+animation = mine
+animation = puck
+animation = tnt
+animation = volts
+animation = warp
+animation = boots
+animation = death
+animation = grenade
+animation = gun
+animation = hook
+animation = invisibility
 image = powerup.png

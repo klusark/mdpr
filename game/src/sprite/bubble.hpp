@@ -5,6 +5,7 @@
 
 #include "genericSprite.hpp"
 #include "powerup.hpp"
+#include "../powerup/powerUpManager.hpp"
 
 class Bubble : public genericSprite
 {

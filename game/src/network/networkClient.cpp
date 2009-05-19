@@ -76,11 +76,12 @@ private:
 networkClient::networkClient()
 	:	socket(ioService, udp::endpoint()),
 		inGame(true),
-		connected(false)
+		connected(false),
+		totalBytesRecived(0)
 {
 
 
-	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&networkClient::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&networkClient::onReceivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 
 	thread threads(ioService);
 	ioThread = new boost::thread(threads);
@@ -139,8 +140,9 @@ bool networkClient::connect()
 	return true;
 }
 
-void networkClient::onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd)
+void networkClient::onReceivePacket(const boost::system::error_code& error, size_t bytesReceived)
 {
+	totalBytesRecived += bytesReceived;
 	if (error){
 		std::cout << error.message() << std::endl;
 		
@@ -207,9 +209,7 @@ void networkClient::onRecivePacket(const boost::system::error_code& error, size_
 				switch(packet->errorID)
 				{
 				case nameInUse:
-					{
 						std::cout << "Error: Name already in use" << std::endl;
-					}
 					break;
 				}
 				
@@ -219,11 +219,7 @@ void networkClient::onRecivePacket(const boost::system::error_code& error, size_
 			{
 				animationChangePacket *packet = (animationChangePacket *)buffer;
 				sprite.Sprites[packet->spriteID]->changeAnimation(packet->animationID);
-				//sprite.Sprites[packet->spriteID]->currentAnimation->paused = packet->paused;
 				sprite.Sprites[packet->spriteID]->currentAnimation->currentFrame = packet->currentFrame;
-				//if (packet->reset){
-				//	sprite.Sprites[packet->spriteID]->currentAnimation->reset();
-				//}
 			}
 			break;
 		case serversListPacketID:
@@ -235,7 +231,19 @@ void networkClient::onRecivePacket(const boost::system::error_code& error, size_
 					serverList.push_back(newEntry);
 					serversToUpdate[0].push_back(&newEntry);
 				}
-
+			}
+			break;
+		case changePowerUpPacketID:
+			{
+				changePowerUpPacket *packet = (changePowerUpPacket *)buffer;
+				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
+					std::cout << "Can not find sprite" << std::endl;
+				}
+				Bubble *tempSprite;
+				if (sprite.Sprites[packet->spriteID]->spriteType == bubble){
+					tempSprite = dynamic_cast<Bubble *>(sprite.Sprites[packet->spriteID].get());
+				}
+				tempSprite->powerup.changeAnimation(packet->powerupID);
 			}
 			break;
 		default:
@@ -244,7 +252,7 @@ void networkClient::onRecivePacket(const boost::system::error_code& error, size_
 
 		}
 	}
-	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&networkClient::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&networkClient::onReceivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }
 
 void networkClient::sendKeyPress(sf::Key::Code key, bool down)

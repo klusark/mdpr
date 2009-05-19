@@ -30,7 +30,7 @@ protected:
 
 	void onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd);
 
-	void handleSendTo(const boost::system::error_code& error, size_t bytes_sent);
+	void handleSendTo(const boost::system::error_code& error, size_t bytesSent);
 
 	void onSpriteUpdate(const boost::system::error_code& error);
 

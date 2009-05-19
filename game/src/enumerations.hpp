@@ -18,9 +18,9 @@ enum keys
 	keyAction,
 };
 
-enum powerups
+enum errorIDs
 {
-	gun,
+	nameInUse,
 };
 
-#endif // ifndef enumeration_hpp
+#endif // #ifndef enumeration_hpp

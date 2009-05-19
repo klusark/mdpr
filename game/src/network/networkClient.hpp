@@ -45,7 +45,10 @@ protected:
 	boost::thread_group serverListUpdateThreads;
 	boost::thread *ioThread;
 
-	void onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd);
+	void onReceivePacket(const boost::system::error_code& error, size_t bytesReceived);
+	void handleSendTo();
+
+	unsigned int totalBytesRecived;
 
 };
 
