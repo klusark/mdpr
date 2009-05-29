@@ -37,18 +37,19 @@ void spriteCollision::update(int spriteID)
 					Sprites[spriteID]->onGround = false;
 				}
 			}
-		}/*else if (Sprites[spriteID]->spriteType == selectionarea){
-			if (iter->second->spriteType == Sprites[spriteID]->selectType){
+		}else if (Sprites[spriteID]->spriteType == selectionarea){
+			selectionArea *area = dynamic_cast<selectionArea *>(Sprites[spriteID].get());
+			if (iter->second->spriteType == area->typeToSelect){
 				sf::IntRect collisionRect = iter->second->currentAnimation->AnimationInfo.collisionRect;
 				collisionRect.Offset(int(iter->second->GetPosition().x), int(iter->second->GetPosition().y));
-				selectionArea *death = dynamic_cast<selectionArea *>(Sprites[spriteID].get());
-				if (death->collisionRect.Intersects(collisionRect)){
-					std::cout << "1";
+				
+				if (area->collisionRect.Intersects(collisionRect)){
+					area->selectedSprites.push_back(iter->second->name);
 					
 				}
-				death->collisionChecked = true;
+				area->collisionChecked = true;
 			}
-		}*/
+		}
 	}
 }
 

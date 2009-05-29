@@ -14,7 +14,7 @@ public:
 	void update();
 	sf::Clock clock;
 	bool justShot;
-	boost::shared_ptr<genericSprite> myDeathArea;
+	boost::shared_ptr<genericSprite> mySelectionArea;
 };
 
 #endif // #ifndef gun_hpp

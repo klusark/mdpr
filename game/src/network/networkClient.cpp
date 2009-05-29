@@ -77,7 +77,8 @@ networkClient::networkClient()
 	:	socket(ioService, udp::endpoint()),
 		inGame(true),
 		connected(false),
-		totalBytesRecived(0)
+		totalBytesRecived(0),
+		bytesInLastFive(0)
 {
 
 
@@ -87,10 +88,10 @@ networkClient::networkClient()
 	ioThread = new boost::thread(threads);
 
 		
-	for (short i = 0; i<numServerUpdateThreads; ++i){
+	/*for (short i = 0; i<numServerUpdateThreads; ++i){
 		serverListUpdateThread thread(serversToUpdate[i], socket);
 		serverListUpdateThreads.create_thread(thread);
-	}
+	}*/
 
 
 }
@@ -143,6 +144,14 @@ bool networkClient::connect()
 void networkClient::onReceivePacket(const boost::system::error_code& error, size_t bytesReceived)
 {
 	totalBytesRecived += bytesReceived;
+	bytesInLastFive += bytesReceived;
+	float time = timer.GetElapsedTime();
+	if (time >= 5) {
+		float bps = bytesInLastFive/time;
+		std::cout << bytesInLastFive << " bytes in " << time << " seconds = " << bps << " BPS" << std::endl;
+		timer.Reset();
+		bytesInLastFive = 0;
+	}
 	if (error){
 		std::cout << error.message() << std::endl;
 		
@@ -218,10 +227,28 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 		case animationChangePacketID:
 			{
 				animationChangePacket *packet = (animationChangePacket *)buffer;
+				boost::mutex::scoped_lock lock(sprite.spriteMutex);
+				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
+					std::cout << "Could not find sprite" << std::endl;
+					break;
+				}
 				sprite.Sprites[packet->spriteID]->changeAnimation(packet->animationID);
-				sprite.Sprites[packet->spriteID]->currentAnimation->currentFrame = packet->currentFrame;
+				//sprite.Sprites[packet->spriteID]->currentAnimation->currentFrame = packet->currentFrame;
 			}
 			break;
+		case positionAndFrameUpdatePacketID:
+			{
+				positionAndFrameUpdatePacket *packet = (positionAndFrameUpdatePacket *)buffer;
+				boost::mutex::scoped_lock lock(sprite.spriteMutex);
+				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
+					std::cout << "Could not find sprite" << std::endl;
+					break;
+				}
+				sprite.Sprites[packet->spriteID]->SetX(packet->x);
+				sprite.Sprites[packet->spriteID]->SetY(packet->y);
+				sprite.Sprites[packet->spriteID]->flipped = packet->flipped;
+				sprite.Sprites[packet->spriteID]->currentAnimation->currentFrame = packet->currentFrame;
+			}
 		case serversListPacketID:
 			{
 				serversListPacket *packet = (serversListPacket *)buffer;

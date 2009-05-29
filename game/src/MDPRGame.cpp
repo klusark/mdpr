@@ -29,6 +29,7 @@ boost::shared_ptr<MDPRGame> MDPR;
 
 int main(int argc, char** argv)
 {
+	std::cout<<sizeof(positionAndFrameUpdatePacket)<<std::endl;
 	try {
 		// Set display mode
 		sf::RenderWindow App;
@@ -165,7 +166,7 @@ void MDPRGame::run()
 			}
 
 		}
-		sf::Sleep(0.0001f);
+		sf::Sleep(0.001f);
 		
 	}
 	delete myNetworkClient;
@@ -237,7 +238,7 @@ void MDPRGame::drawThread()
 		if (seconds >= 5) {
 
 			fps = Frames / seconds;
-			std::cout << Frames << " frames in " << seconds << " seconds = " << fps << " FPS" << std::endl;
+			//std::cout << Frames << " frames in " << seconds << " seconds = " << fps << " FPS" << std::endl;
 
 			MDPR->Clock.Reset();
 			Frames = 0;

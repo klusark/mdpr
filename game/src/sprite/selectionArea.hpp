@@ -1,7 +1,8 @@
-#ifndef deathArea_hpp
-#define deathArea_hpp
+#ifndef selectionArea_hpp
+#define selectionArea_hpp
 
 #include <SFML/Graphics/Image.hpp>
+#include <vector>
 
 #include "genericSprite.hpp"
 
@@ -14,9 +15,12 @@ public:
 	static sf::Image Image;
 	sf::IntRect collisionRect;
 	bool collisionChecked;
+	spriteTypes typeToSelect;
 	void update();
 	void draw();
+	typedef std::vector<std::string> selectedSpriteContainer;
+	selectedSpriteContainer selectedSprites;
 	
 };
 
-#endif // ifndef deathArea_hpp
+#endif // #ifndef selectionArea_hpp

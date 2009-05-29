@@ -6,6 +6,8 @@
 
 #include <SFML/Window/Event.hpp>
 
+#include <SFML/System.hpp>
+
 #include "packets.hpp"
 
 class spriteManager;
@@ -39,6 +41,9 @@ protected:
 	udp::socket socket;
 	bool inGame;
 	char buffer[512];
+
+	sf::Clock timer;
+
 	udp::endpoint receiverEndpoint;
 	udp::endpoint masterServerEndpoint;
 
@@ -48,7 +53,7 @@ protected:
 	void onReceivePacket(const boost::system::error_code& error, size_t bytesReceived);
 	void handleSendTo();
 
-	unsigned int totalBytesRecived;
+	unsigned int totalBytesRecived, bytesInLastFive;
 
 };
 
