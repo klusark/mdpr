@@ -31,7 +31,6 @@ public:
 	virtual void update();
 	virtual void draw(sf::RenderWindow &App);
 
-	float round(float number);
 	void changeAnimation(unsigned int name);
 	void changeAnimation(std::string name);
 
@@ -44,6 +43,7 @@ public:
 	bool nonNetworked;
 	bool keyLock;
 	bool animationLock;
+	bool noAnimation;
 
 	std::string lastAnimationName;
 

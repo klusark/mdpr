@@ -32,11 +32,27 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 		flipped(false),
 		nonNetworked(false),
 		animationLock(false),
-		keyLock(false)
+		keyLock(false),
+		noAnimation(false)
 {
 
 	SetX(0);
 	SetY(0);
+
+	std::string file;
+
+	file = "data/mdpr/sprites/";
+	file += spriteType;
+	file += "/";
+	file += spriteType;
+	file += ".sprite";
+
+	std::ifstream spriteFileStream(file.c_str());
+	if (!spriteFileStream.is_open()){
+		noAnimation = true;
+		return;
+	}
+
 	std::vector<std::string> animations;
 	std::string image;
 	boost::program_options::options_description spriteConfig("Configuration");
@@ -49,15 +65,7 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 	boost::program_options::options_description spriteConfigFileOptions;
 	spriteConfigFileOptions.add(spriteConfig);
 	
-	std::string file;
 
-	file = "data/mdpr/sprites/";
-	file += spriteType;
-	file += "/";
-	file += spriteType;
-	file += ".sprite";
-
-	std::ifstream spriteFileStream(file.c_str());
 
 	boost::program_options::store(parse_config_file(spriteFileStream, spriteConfigFileOptions), spriteVariableMap);
 	notify(spriteVariableMap);
@@ -77,7 +85,7 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 		}
 		SetImage(Image);
 	}
-#endif // ifndef SERVER
+#endif // #ifndef SERVER
 	std::vector< std::string >::iterator iter;
 	for (iter = animations.begin(); iter < animations.end(); ++iter){
 
@@ -128,12 +136,14 @@ genericSprite::~genericSprite()
 
 void genericSprite::update()
 {
+	if(!noAnimation){
 #ifndef SERVER
-	SetSubRect(currentAnimation->update());
-	FlipX(flipped);
+		SetSubRect(currentAnimation->update());
+		FlipX(flipped);
 #else 
-	currentAnimation->update();
+		currentAnimation->update();
 #endif
+	}
 	float deltaTime = Clock.GetElapsedTime();
 	Clock.Reset();
 

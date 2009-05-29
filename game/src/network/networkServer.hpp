@@ -5,6 +5,7 @@
 #include <boost/shared_ptr.hpp>
 #include <map>
 #include <boost/thread.hpp>
+#include <SFML/System.hpp>
 
 #include "packets.hpp"
 
@@ -49,6 +50,8 @@ protected:
 
 	serverInfoPacket packetServerInfo;
 	udp::endpoint masterServerEndpoint;
+
+	sf::Clock timer;
 
 	class playerInfo
 	{

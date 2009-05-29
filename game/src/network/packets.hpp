@@ -11,6 +11,7 @@ enum packetIDs
 	spritePosPacketID,
 	errorPacketID,
 	keyPacketID,
+	positionAndFrameUpdatePacketID,
 	animationChangePacketID,
 	changePowerUpPacketID,
 	changeBubblePowerUpPacketID,
@@ -57,9 +58,10 @@ Size: 15
 struct spritePosPacket
 {
 	packetIDs packetID;
-	unsigned short spriteID;
 	float x;
 	float y;
+
+	unsigned short spriteID;
 	bool flipped;
 };
 
@@ -92,8 +94,20 @@ struct animationChangePacket
 
 	unsigned short spriteID;
 	unsigned short animationID;
+};
+
+/*
+Size: 16
+*/
+struct positionAndFrameUpdatePacket
+{
+	packetIDs packetID;
+	float x;
+	float y;
+
+	unsigned short spriteID;
 	unsigned char currentFrame;
-	//bool paused, reset;
+	bool flipped;
 };
 
 /*
