@@ -4,7 +4,6 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 #include <boost/thread.hpp>
-#include <WebCore.h>
 
 class MDPRGame
 {
@@ -22,8 +21,6 @@ public:
 	static bool quit;
 	sf::Clock Clock;
 	networkClient *myNetworkClient;
-	boost::shared_ptr<Awesomium::WebCore> webCore;
-	Awesomium::WebView *webView;
 	bool isRunning, userInterface;
 private:
 

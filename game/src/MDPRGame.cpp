@@ -4,10 +4,14 @@
 #include <boost/program_options.hpp>
 #include <boost/thread.hpp>
 #include <boost/random.hpp>
-#include <WebCore.h>
 #include <iostream>
 #include <fstream>
 #include <time.h>
+#include <guichan.hpp>
+#include <guichan/sfml/sfmlgraphics.hpp>
+#include <guichan/sfml/sfmlinput.hpp>
+#include <guichan/sfml/sfmlimageloader.hpp>
+#include <guichan/sfml/sfmlfont.hpp>
 
 #include "sprite/player.hpp"
 #include "network/networkClient.hpp"
@@ -19,17 +23,15 @@
 #include "sprite/powerup.hpp"
 //#include "sprite/deathArea.hpp"
 #include "MDPRGame.hpp"
-#include "WebViewListener.hpp"
 
 
 #define WIDTH 640
 #define HEIGHT 400
-//sf::RenderWindow App;
+
 boost::shared_ptr<MDPRGame> MDPR;
 
 int main(int argc, char** argv)
 {
-	std::cout<<sizeof(positionAndFrameUpdatePacket)<<std::endl;
 	try {
 		// Set display mode
 		sf::RenderWindow App;
@@ -89,23 +91,7 @@ void MDPRGame::run()
 		PowerUp powerup("Powerup");
 		DeathArea death("Death", sf::IntRect());
 	}*/
-	std::map<unsigned int, unsigned int> SFMLKToVK;
-	SFMLKToVK[sf::Key::Back] = VK_BACK;
-	SFMLKToVK[sf::Key::Return] = VK_RETURN;
-	SFMLKToVK[sf::Key::RShift] = VK_SHIFT;
-	SFMLKToVK[sf::Key::LShift] = VK_SHIFT;
-	boost::shared_ptr<Awesomium::WebCore> newWebCore(new Awesomium::WebCore(Awesomium::LOG_NORMAL, false, Awesomium::PF_RGBA));
-	webCore = newWebCore;
 
-	webView = webCore->createWebView(WIDTH, HEIGHT, false, false);
-	webView->loadFile("menu.html");
-	WebViewListener* myListener = new WebViewListener();
-	webView->setListener(myListener);
-	webView->setCallback("Quit");
-	webView->setCallback("populateResolution");
-
-
-	//menu->setActive(false);
 	sprite.setActive(true);
 
 	
@@ -127,34 +113,6 @@ void MDPRGame::run()
 			// Window closed
 			if (Event.Type == sf::Event::Closed){
 				quit = true;
-			}else if (Event.Type == sf::Event::MouseMoved){
-				webView->injectMouseMove(Event.MouseMove.X, Event.MouseMove.Y);
-			}else if(Event.Type == sf::Event::MouseButtonPressed){
-				if (Event.MouseButton.Button == sf::Mouse::Left){
-					webView->injectMouseDown(Awesomium::LEFT_MOUSE_BTN);
-				}else if (Event.MouseButton.Button == sf::Mouse::Right){
-					webView->injectMouseDown(Awesomium::RIGHT_MOUSE_BTN);
-				}
-			}else if(Event.Type == sf::Event::MouseButtonReleased){
-				if (Event.MouseButton.Button == sf::Mouse::Left){
-					webView->injectMouseUp(Awesomium::LEFT_MOUSE_BTN);
-				}else if (Event.MouseButton.Button == sf::Mouse::Right){
-					webView->injectMouseUp(Awesomium::RIGHT_MOUSE_BTN);
-				}
-			}else if (Event.Type == sf::Event::KeyPressed){
-
-				unsigned int key = Event.Key.Code;
-				if (SFMLKToVK.find(Event.Key.Code) != SFMLKToVK.end()){
-					key = SFMLKToVK[Event.Key.Code];
-				}
-				
-				webView->injectKeyboardEvent(0, WM_CHAR, key, 0);
-				webView->injectKeyboardEvent(0, WM_KEYDOWN, key, 0);
-
-			}else if (Event.Type == sf::Event::KeyReleased){
-				webView->injectKeyboardEvent(0, WM_KEYUP, Event.Key.Code, 0);
-
-				
 			}
 
 			if (myNetworkClient->connected){
@@ -184,55 +142,17 @@ void MDPRGame::drawThread()
 	App.SetActive(true);
 	static int Frames = 0;
 	float seconds, fps = 0;
-	unsigned char* buffer = new unsigned char[WIDTH * HEIGHT * 4];
-	unsigned int texture;
-	//App.Clear(sf::Color(255,0,0));
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	glDisable(GL_DEPTH_TEST);
-	glEnable(GL_TEXTURE_2D);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, WIDTH, HEIGHT, 0, 0, 1);
-	glMatrixMode(GL_MODELVIEW);
 
-
-
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	webView->render(buffer, WIDTH*4, 4);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, 4, WIDTH, HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-
-
-	
-	//newsprite.SetImage(image);
 	while (!quit){
 
 		App.Clear(sf::Color(0,0,0));
-		/*if (menu->isActive()){
-			boost::mutex::scoped_lock lock(menu->menuMutex);
-			menu->draw();
-		}*/
+
 
 		if (sprite.isActive()){
 			boost::mutex::scoped_lock lock(sprite.spriteMutex);
 			sprite.draw(App);
 		}
-		if (userInterface){
-			if (!quit && webView->isDirty()){
-				webView->render(buffer, WIDTH*4, 4);
-				glBindTexture(GL_TEXTURE_2D, texture);
-				glTexImage2D(GL_TEXTURE_2D, 0, 4, WIDTH, HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-				glBegin(GL_QUADS);
-					glTexCoord2i(0, 0); glVertex2i(0, 0);
-					glTexCoord2i(1, 0); glVertex2i(WIDTH, 0);
-					glTexCoord2i(1, 1); glVertex2i(WIDTH, HEIGHT);
-					glTexCoord2i(0, 1); glVertex2i(0, HEIGHT);
-				glEnd();
-			}
-		}
+
 		Frames++;
 		seconds = Clock.GetElapsedTime();
 		if (seconds >= 5) {
@@ -252,11 +172,7 @@ void MDPRGame::drawThread()
 void MDPRGame::updateThread()
 {
 	while (!quit){
-		/*if (menu->isActive()){
-			boost::mutex::scoped_lock lock(menu->menuMutex);
-			menu->update();
-		}*/
-		webCore->update();
+
 		if (sprite.isActive()){
 			boost::mutex::scoped_lock lock(sprite.spriteMutex);
 			sprite.update();
