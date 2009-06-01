@@ -1,0 +1,5 @@
+glob:Debug
+glob:Release
+glob:*.suo
+glob:*.ncb
+glob:*.user

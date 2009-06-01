@@ -63,7 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sfml-system-d.lib sfml-window-d.lib sfml-graphics-d.lib Awesomium_d.lib OpenGL32.lib"
+				AdditionalDependencies="sfml-system-d.lib sfml-window-d.lib sfml-graphics-d.lib guichand.lib guichan_sfmld.lib"
 				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -212,7 +212,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sfml-system.lib sfml-main.lib sfml-window.lib sfml-graphics.lib Awesomium.lib OpenGL32.lib"
+				AdditionalDependencies="sfml-system.lib sfml-main.lib sfml-window.lib sfml-graphics.lib guichan.lib guichan_sfml.lib"
 				ModuleDefinitionFile=""
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -345,10 +345,6 @@
 			</File>
 			<File
 				RelativePath=".\version.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\WebViewListener.hpp"
 				>
 			</File>
 			<Filter
@@ -485,10 +481,6 @@
 			</File>
 			<File
 				RelativePath=".\src\powerup\powerUpManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\WebViewListener.cpp"
 				>
 			</File>
 			<Filter
