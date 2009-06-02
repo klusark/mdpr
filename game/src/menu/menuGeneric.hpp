@@ -18,7 +18,6 @@ public:
 	menuGeneric(sf::RenderWindow &App);
 	~menuGeneric();
 	virtual void onChange();
-	gcn::Gui			gui;
 	gcn::SFMLGraphics	graphics;
 	gcn::SFMLInput		input;
 	gcn::Container		top;

@@ -332,10 +332,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\gui.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\helpers.hpp"
 				>
 			</File>
@@ -463,6 +459,10 @@
 				Name="Menu"
 				>
 				<File
+					RelativePath=".\src\menu\button.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\menu\menuGeneric.hpp"
 					>
 				</File>
@@ -507,10 +507,6 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<File
-				RelativePath=".\src\gui.cpp"
-				>
-			</File>
 			<File
 				RelativePath=".\src\helpers.cpp"
 				>
@@ -630,6 +626,10 @@
 			<Filter
 				Name="Menu"
 				>
+				<File
+					RelativePath=".\src\menu\button.cpp"
+					>
+				</File>
 				<File
 					RelativePath=".\src\menu\menuGeneric.cpp"
 					>

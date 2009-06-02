@@ -8,8 +8,12 @@
 
 boost::shared_ptr<menuManager> menu;
 
-menuManager::menuManager(sf::RenderWindow &App) : active(false)
+menuManager::menuManager(sf::RenderWindow &App)
+	:	active(false),
+		App(App),
+		font("data/mdpr/marshmallowDuel.ttf", 20)
 {
+	gcn::Widget::setGlobalFont(&font);
 	boost::shared_ptr<menuGeneric> mainMenu(new menuMain(App));
 	menus["menuMain"] = mainMenu;
 

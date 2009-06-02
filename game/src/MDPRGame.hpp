@@ -4,7 +4,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 #include <boost/thread.hpp>
-#include "gui.hpp"
+
 
 class MDPRGame
 {
@@ -23,7 +23,6 @@ public:
 	sf::Clock Clock;
 	networkClient *myNetworkClient;
 	bool isRunning, userInterface;
-	boost::shared_ptr<GUI> gui;
 private:
 
 };
