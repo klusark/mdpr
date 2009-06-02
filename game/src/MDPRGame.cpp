@@ -7,15 +7,11 @@
 #include <iostream>
 #include <fstream>
 #include <time.h>
-#include <guichan.hpp>
-#include <guichan/sfml/sfmlgraphics.hpp>
-#include <guichan/sfml/sfmlinput.hpp>
-#include <guichan/sfml/sfmlimageloader.hpp>
-#include <guichan/sfml/sfmlfont.hpp>
+
 
 #include "sprite/player.hpp"
 #include "network/networkClient.hpp"
-//#include "menu/menuManager.hpp"
+#include "menu/menuManager.hpp"
 #include "sprite/spriteManager.hpp"
 #include "sprite/player.hpp"
 #include "sprite/platform.hpp"
@@ -74,6 +70,8 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 	App.Create(sf::VideoMode(WIDTH, HEIGHT, 32), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, 0));
 	App.EnableKeyRepeat(false);
 	App.UseVerticalSync(true);
+	boost::shared_ptr<menuManager> newMenu(new menuManager(App));
+	menu = newMenu;
 	
 }
 
@@ -96,7 +94,7 @@ void MDPRGame::run()
 
 	
 	myNetworkClient = new networkClient;
-	myNetworkClient->connect();
+	//myNetworkClient->connect();
 	
 	App.SetActive(false);
 
@@ -122,6 +120,7 @@ void MDPRGame::run()
 					myNetworkClient->sendKeyPress(Event.Key.Code, false);
 				}
 			}
+			menu->currentMenu->input.pushEvent(Event, App.GetInput());
 
 		}
 		sf::Sleep(0.001f);
@@ -139,44 +138,54 @@ void MDPRGame::quitGame()
 
 void MDPRGame::drawThread()
 {
-	App.SetActive(true);
-	static int Frames = 0;
-	float seconds, fps = 0;
+	try {
+		App.SetActive(true);
+		static int Frames = 0;
+		float seconds, fps = 0;
 
-	while (!quit){
+		while (!quit){
 
-		App.Clear(sf::Color(0,0,0));
+			App.Clear(sf::Color(0,0,0));
 
 
-		if (sprite.isActive()){
-			boost::mutex::scoped_lock lock(sprite.spriteMutex);
-			sprite.draw(App);
+			if (sprite.isActive()){
+				boost::mutex::scoped_lock lock(sprite.spriteMutex);
+				sprite.draw(App);
+			}
+
+			Frames++;
+			seconds = Clock.GetElapsedTime();
+			if (seconds >= 5) {
+
+				fps = Frames / seconds;
+				std::cout << Frames << " frames in " << seconds << " seconds = " << fps << " FPS" << std::endl;
+
+				MDPR->Clock.Reset();
+				Frames = 0;
+			}
+			
+			menu->currentMenu->draw();
+			App.Display();
+			//sf::Sleep(0.001f);
 		}
+	}catch(gcn::Exception except){
 
-		Frames++;
-		seconds = Clock.GetElapsedTime();
-		if (seconds >= 5) {
-
-			fps = Frames / seconds;
-			//std::cout << Frames << " frames in " << seconds << " seconds = " << fps << " FPS" << std::endl;
-
-			MDPR->Clock.Reset();
-			Frames = 0;
-		}
-		
-		App.Display();
-		//sf::Sleep(0.001f);
 	}
 }
 
 void MDPRGame::updateThread()
 {
-	while (!quit){
+	try {
+		while (!quit){
 
-		if (sprite.isActive()){
-			boost::mutex::scoped_lock lock(sprite.spriteMutex);
-			sprite.update();
+			menu->currentMenu->logic();
+			if (sprite.isActive()){
+				boost::mutex::scoped_lock lock(sprite.spriteMutex);
+				sprite.update();
+			}
+			sf::Sleep(0.001f);
 		}
-		sf::Sleep(0.001f);
+	}catch(gcn::Exception except){
+
 	}
 }

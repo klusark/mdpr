@@ -332,6 +332,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\gui.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\helpers.hpp"
 				>
 			</File>
@@ -455,6 +459,38 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Menu"
+				>
+				<File
+					RelativePath=".\src\menu\menuGeneric.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuInGame.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuMain.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuManager.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuOptions.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuProfile.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuServerBrowser.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -471,6 +507,10 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath=".\src\gui.cpp"
+				>
+			</File>
 			<File
 				RelativePath=".\src\helpers.cpp"
 				>
@@ -584,6 +624,38 @@
 				</File>
 				<File
 					RelativePath=".\src\powerup\warp.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Menu"
+				>
+				<File
+					RelativePath=".\src\menu\menuGeneric.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuInGame.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuMain.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuOptions.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuProfile.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuServerBrowser.cpp"
 					>
 				</File>
 			</Filter>
