@@ -2,6 +2,7 @@
 #define menuMain_hpp
 
 #include "menuGeneric.hpp"
+#include "button.hpp"
 
 class menuMain : public menuGeneric
 {
@@ -11,6 +12,7 @@ public:
 	static void toThis();
 
 	gcn::Label label;
+	Button optionsButton;
 
 
 };

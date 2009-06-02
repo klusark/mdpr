@@ -70,6 +70,7 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 	App.Create(sf::VideoMode(WIDTH, HEIGHT, 32), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, 0));
 	App.EnableKeyRepeat(false);
 	App.UseVerticalSync(true);
+	App.SetFramerateLimit(10);
 	boost::shared_ptr<menuManager> newMenu(new menuManager(App));
 	menu = newMenu;
 	

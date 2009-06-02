@@ -21,6 +21,8 @@ public:
 	void setActive(bool toggle);
 	void draw();
 	boost::mutex menuMutex;
+	sf::RenderWindow &App;
+	gcn::SFMLFont font;
 
 	typedef std::map<std::string, boost::shared_ptr<menuGeneric> > menuContainer;
 	menuContainer menus;

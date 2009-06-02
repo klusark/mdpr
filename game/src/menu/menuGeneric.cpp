@@ -1,6 +1,5 @@
 #include "menuGeneric.hpp"
 #include "menuManager.hpp"
-#include "../MDPRGame.hpp"
 
 menuGeneric::menuGeneric(sf::RenderWindow &App)
 	:	graphics(App)
