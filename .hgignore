@@ -3,3 +3,8 @@ glob:Release
 glob:*.suo
 glob:*.ncb
 glob:*.user
+glob:*.exe
+glob:CMakeFiles
+glob:*.dir
+glob:CMakeCache.txt
+glob:*.cmake

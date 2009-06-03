@@ -1,65 +1,77 @@
 project( game )
 
 set(SOURCES 
-  src/MDPRGame.cpp
-  src/MDPRGame.hpp
-  src/crc.cpp
-  src/crc.hpp
-  src/network/networkClient.cpp
-  src/network/networkServer.cpp
-  src/network/networkClient.hpp
-  src/network/networkServer.hpp
-  src/network/packets.hpp
-  src/sprite/genericSprite.cpp
-  src/sprite/imageManager.cpp
-  src/sprite/spriteManager.cpp
-  src/sprite/genericSprite.hpp
-  src/sprite/imageManager.hpp
-  src/sprite/player.cpp
-  src/sprite/player.hpp
-  src/sprite/bubble.cpp
-  src/sprite/bubble.hpp
-  src/sprite/powerup.cpp
-  src/sprite/powerup.hpp
-  src/sprite/platform.cpp
-  src/sprite/platform.hpp
-  src/sprite/spriteCollision.cpp
-  src/sprite/spriteCollision.hpp  
-  src/sprite/spriteManager.hpp
-  src/menu/menuGeneric.hpp
-  src/menu/menuMain.hpp
-  src/menu/menuManager.hpp
-  src/menu/menuOptions.hpp
-  src/menu/menuProfile.hpp
-  src/menu/menuGeneric.cpp
-  src/menu/menuMain.cpp
-  src/menu/menuManager.cpp
-  src/menu/menuOptions.cpp
-  src/menu/menuProfile.cpp
-  src/menu/GUI/window.cpp
-  src/menu/GUI/window.hpp
-  src/menu/GUI/clickable.cpp
-  src/menu/GUI/clickable.hpp
-  src/menu/GUI/button.cpp
-  src/menu/GUI/button.hpp
-  src/menu/GUI/widget.cpp
-  src/menu/GUI/widget.hpp
-
+	src/MDPRGame.cpp
+	src/MDPRGame.hpp
+	
+	src/network/networkClient.cpp
+	src/network/networkClient.hpp
+	src/network/packets.hpp
+	
+	src/sprite/genericSprite.cpp
+	src/sprite/spriteManager.cpp
+	src/sprite/genericSprite.hpp
+	src/sprite/player.cpp
+	src/sprite/player.hpp
+	src/sprite/bubble.cpp
+	src/sprite/bubble.hpp
+	src/sprite/powerup.cpp
+	src/sprite/powerup.hpp
+	src/sprite/platform.cpp
+	src/sprite/platform.hpp
+	src/sprite/spriteCollision.cpp
+	src/sprite/spriteCollision.hpp  
+	src/sprite/spriteManager.hpp
+	src/sprite/animation.cpp
+	src/sprite/animation.hpp
+	src/sprite/selectionArea.cpp
+	src/sprite/selectionArea.hpp
+	
+	src/powerup/powerupmanager.cpp
+	src/powerup/powerupmanager.hpp
+	src/powerup/genericPowerUp.cpp
+	src/powerup/genericPowerUp.hpp
+	src/powerup/gun.cpp
+	src/powerup/gun.hpp
+	
+	src/menu/menuGeneric.hpp
+	src/menu/menuMain.hpp
+	src/menu/menuManager.hpp
+	src/menu/menuOptions.hpp
+	src/menu/menuProfile.hpp
+	src/menu/menuGeneric.cpp
+	src/menu/menuMain.cpp
+	src/menu/menuManager.cpp
+	src/menu/menuOptions.cpp
+	src/menu/menuProfile.cpp
+	src/menu/menuInGame.cpp
+	src/menu/menuInGame.hpp
+	src/menu/menuServerBrowser.cpp
+	src/menu/menuServerBrowser.hpp
+	src/menu/button.cpp
+	src/menu/button.hpp
+	src/menu/filteredTextField.cpp
+	src/menu/filteredTextField.hpp
+	
+	src/helpers.cpp
+	src/helpers.hpp
 )
 
 include_directories( 
-  ../../include
+	../../include
 )
 
 add_definitions( 
-  -DSFML_DYNAMIC
+	-DSFML_DYNAMIC
+	-D_CRT_SECURE_NO_WARNINGS
+	-D_WIN32_WINNT=0x0501
 )
 
 add_executable( game ${SOURCES} )
 
 SET(Boost_USE_MULTITHREAD ON)
 
-FIND_PACKAGE( Boost 1.35 COMPONENTS system program_options thread signals)
+FIND_PACKAGE( Boost 1.39 COMPONENTS system program_options thread signals)
 
 set(LINKFILES
 	optimized sfml-graphics
@@ -68,6 +80,10 @@ set(LINKFILES
 	debug sfml-window-d
 	optimized sfml-system
 	debug sfml-system-d
+	optimized guichan
+	debug guichand
+	optimized guichan_sfml
+	debug guichan_sfmld
 	${Boost_LIBRARIES}
 )
 

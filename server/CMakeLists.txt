@@ -19,8 +19,6 @@ set(SOURCES
 	../game/src/sprite/powerup.hpp
 	../game/src/sprite/platform.cpp
 	../game/src/sprite/platform.hpp
-	../game/src/crc.cpp
-	../game/src/crc.hpp
 )
 
 include_directories( 
