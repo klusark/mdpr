@@ -290,15 +290,15 @@ void networkClient::sendKeyPress(sf::Key::Code key, bool down)
 	keyPacket packet;
 	packet.packetID = keyPacketID;
 	packet.down = down;
-	if (key == sf::Key::D){
+	if (key == MDPR->controls.right){
 		packet.key = keyRight;
-	}else if (key == sf::Key::A){
+	}else if (key == MDPR->controls.left){
 		packet.key = keyLeft;
-	}else if (key == sf::Key::Q){
+	}else if (key == MDPR->controls.use){
 		packet.key = keyAction;
-	}else if (key == sf::Key::W){
+	}else if (key == MDPR->controls.up){
 		packet.key = keyUp;
-	}else if (key == sf::Key::S){
+	}else if (key == MDPR->controls.down){
 		packet.key = keyDown;
 	}else{
 		return;

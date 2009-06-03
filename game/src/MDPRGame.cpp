@@ -50,13 +50,20 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 		width(640),
 		userInterface(false)
 {
+	
 	{
+		
 		boost::program_options::options_description config("Configuration");
 		config.add_options()
 			("playerName",		boost::program_options::value<std::string>(&playerName),"")
 			("serverIP",		boost::program_options::value<std::string>(&serverIP), 	"")
 			("width",			boost::program_options::value<unsigned int>(&width), 	"")
-			("height",			boost::program_options::value<unsigned int>(&height), 	"");
+			("height",			boost::program_options::value<unsigned int>(&height), 	"")
+			("controls.up",		boost::program_options::value<unsigned char>(&controls.up),		"")
+			("controls.down",	boost::program_options::value<unsigned char>(&controls.down), 	"")
+			("controls.left",	boost::program_options::value<unsigned char>(&controls.left), 	"")
+			("controls.right",	boost::program_options::value<unsigned char>(&controls.right), 	"")
+			("controls.use",	boost::program_options::value<unsigned char>(&controls.use),	"");
 
 		boost::program_options::variables_map configVariableMap;
 
@@ -168,7 +175,7 @@ void MDPRGame::drawThread()
 				Frames = 0;
 			}
 			
-			menu->currentMenu->draw();
+			menu->draw();
 			App.Display();
 			//sf::Sleep(0.001f);
 		}
@@ -182,7 +189,7 @@ void MDPRGame::updateThread()
 	try {
 		while (!quit){
 
-			menu->currentMenu->logic();
+			menu->logic();
 			if (sprite.isActive()){
 				boost::mutex::scoped_lock lock(sprite.spriteMutex);
 				sprite.update();

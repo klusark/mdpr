@@ -4,13 +4,14 @@
 #include "menuManager.hpp"
 #include "menuOptions.hpp"
 #include "menuServerBrowser.hpp"
+#include "menuControls.hpp"
 #include "../helpers.hpp"
 #include "../MDPRGame.hpp"
 
 menuMain::menuMain(sf::RenderWindow &App)
 	:	menuGeneric(App)
 {
-	label.setCaption("Confirm this action?");
+	label.setCaption("Marshmallow Duels");
 	label.setDimension(gcn::Rectangle(100, 40, 200, 25));
 
 	optionsButton.setCaption("Options");
@@ -18,10 +19,17 @@ menuMain::menuMain(sf::RenderWindow &App)
 	optionsButton.adjustSize();
 	optionsButton.setActionEventId("options");
 	optionsButton.addActionListener(this);
-	//optionsButton.onMouseReleased.connect(boost::bind(&menuOptions::toThis));
+
+	controlsButton.setCaption("Controls");
+	controlsButton.setDimension(gcn::Rectangle(100, 140, 0, 0));
+	controlsButton.adjustSize();
+	controlsButton.setActionEventId("controls");
+	controlsButton.addActionListener(this);
+
 
 	top.add(&label);
 	top.add(&optionsButton);
+	top.add(&controlsButton);
 	
 }
 
@@ -33,7 +41,10 @@ void menuMain::action(const gcn::ActionEvent &actionEvent)
 {
 	if(actionEvent.getId() == "options"){
 		menuOptions::toThis();
+	}else if(actionEvent.getId() == "controls"){
+		menuControls::toThis();
 	}
+
 }
 
 void menuMain::toThis()
