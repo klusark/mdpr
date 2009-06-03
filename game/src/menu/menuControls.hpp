@@ -14,6 +14,7 @@ public:
 
 	gcn::Label labelUpKey;
 	ControlChangeButton upButton;
+	ControlChangeButton downButton;
 
 
 };

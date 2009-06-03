@@ -8,17 +8,22 @@
 #include "../MDPRGame.hpp"
 
 menuControls::menuControls(sf::RenderWindow &App)
-	:	menuGeneric(App)
+	:	menuGeneric(App),
+		upButton(&MDPR->controls.up),
+		downButton(&MDPR->controls.down)
 {
 	labelUpKey.setCaption("Jump/Climb");
 	labelUpKey.setDimension(gcn::Rectangle(20, 50, 0, 0));
 	labelUpKey.adjustSize();
 
-	upButton.setCaption("test");
-	upButton.setDimension(gcn::Rectangle(150, 50, 0, 0));
-	upButton.adjustSize();
+	//upButton.setCaption("test");
+	upButton.setDimension(gcn::Rectangle(150, 50, 50, 20));
+	//upButton.adjustSize();
+
+	downButton.setDimension(gcn::Rectangle(150, 90, 50, 20));
 
 	top.add(&upButton);
+	top.add(&downButton);
 	top.add(&labelUpKey);
 	
 }
