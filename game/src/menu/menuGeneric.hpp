@@ -12,7 +12,8 @@
 #include <guichan/sfml/sfmlfont.hpp>
 
 class menuGeneric
-	:	public gcn::Gui
+	:	public gcn::Gui, 
+		public gcn::ActionListener
 {
 public:
 	menuGeneric(sf::RenderWindow &App);
@@ -21,6 +22,7 @@ public:
 	gcn::SFMLGraphics	graphics;
 	gcn::SFMLInput		input;
 	gcn::Container		top;
+	void action(const gcn::ActionEvent &actionEvent);
 
 };
 

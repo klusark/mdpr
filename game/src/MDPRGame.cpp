@@ -21,9 +21,6 @@
 #include "MDPRGame.hpp"
 
 
-#define WIDTH 640
-#define HEIGHT 400
-
 boost::shared_ptr<MDPRGame> MDPR;
 
 int main(int argc, char** argv)
@@ -49,13 +46,17 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 		playerName("No Name"),
 		serverIP("127.0.0.1"),
 		serverPort("9935"),
+		height(400),
+		width(640),
 		userInterface(false)
 {
 	{
 		boost::program_options::options_description config("Configuration");
 		config.add_options()
 			("playerName",		boost::program_options::value<std::string>(&playerName),"")
-			("serverIP",		boost::program_options::value<std::string>(&serverIP), 	"");
+			("serverIP",		boost::program_options::value<std::string>(&serverIP), 	"")
+			("width",			boost::program_options::value<unsigned int>(&width), 	"")
+			("height",			boost::program_options::value<unsigned int>(&height), 	"");
 
 		boost::program_options::variables_map configVariableMap;
 
@@ -67,12 +68,11 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 		boost::program_options::store(parse_config_file(configFileStream, configFileOptions), configVariableMap);
 		notify(configVariableMap);
 	}
-	App.Create(sf::VideoMode(WIDTH, HEIGHT, 32), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, 0));
+	App.Create(sf::VideoMode(width, height, 32), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, 0));
 	App.EnableKeyRepeat(false);
 	App.UseVerticalSync(true);
-	App.SetFramerateLimit(10);
-	boost::shared_ptr<menuManager> newMenu(new menuManager(App));
-	menu = newMenu;
+	//App.SetFramerateLimit(10);
+	
 	
 }
 
@@ -90,6 +90,9 @@ void MDPRGame::run()
 		PowerUp powerup("Powerup");
 		DeathArea death("Death", sf::IntRect());
 	}*/
+
+	boost::shared_ptr<menuManager> newMenu(new menuManager(App));
+	menu = newMenu;
 
 	sprite.setActive(true);
 

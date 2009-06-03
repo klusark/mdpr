@@ -23,6 +23,7 @@ public:
 	sf::Clock Clock;
 	networkClient *myNetworkClient;
 	bool isRunning, userInterface;
+	unsigned int width, height;
 private:
 
 };
