@@ -9,6 +9,7 @@ public:
 	menuServerBrowser(sf::RenderWindow &App);
 	~menuServerBrowser();
 	static void toThis();
+	//void action(const gcn::ActionEvent &actionEvent);
 
 
 };

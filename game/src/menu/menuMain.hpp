@@ -10,9 +10,10 @@ public:
 	menuMain(sf::RenderWindow &App);
 	~menuMain();
 	static void toThis();
+	void action(const gcn::ActionEvent &actionEvent);
 
 	gcn::Label label;
-	Button optionsButton;
+	gcn::Button optionsButton;
 
 
 };

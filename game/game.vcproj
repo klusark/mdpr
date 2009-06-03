@@ -463,6 +463,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\menu\filteredTextField.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\menu\menuGeneric.hpp"
 					>
 				</File>
@@ -628,6 +632,10 @@
 				>
 				<File
 					RelativePath=".\src\menu\button.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\filteredTextField.cpp"
 					>
 				</File>
 				<File

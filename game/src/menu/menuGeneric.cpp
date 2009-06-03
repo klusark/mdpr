@@ -2,7 +2,8 @@
 #include "menuManager.hpp"
 
 menuGeneric::menuGeneric(sf::RenderWindow &App)
-	:	graphics(App)
+	:	graphics(App),
+		ActionListener()
 {
 	setGraphics(&graphics);
 	setInput(&input);
@@ -16,5 +17,9 @@ menuGeneric::~menuGeneric()
 }
 
 void menuGeneric::onChange()
+{
+}
+
+void menuGeneric::action(const gcn::ActionEvent &actionEvent)
 {
 }
