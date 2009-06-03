@@ -7,12 +7,14 @@
 class ControlChangeButton : public gcn::Button, public gcn::ActionListener
 {
 public:
-	ControlChangeButton();
+	ControlChangeButton(char *key);
 	~ControlChangeButton();
+	char *myKey;
+	bool getKey;
 
 	void keyPressed (gcn::KeyEvent &keyEvent);
-	void keyReleased (gcn::KeyEvent &keyEvent);
 	void action(const gcn::ActionEvent &actionEvent);
+	void focusLost(const gcn::Event &event);
 
 };
 

@@ -59,11 +59,11 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 			("serverIP",		boost::program_options::value<std::string>(&serverIP), 	"")
 			("width",			boost::program_options::value<unsigned int>(&width), 	"")
 			("height",			boost::program_options::value<unsigned int>(&height), 	"")
-			("controls.up",		boost::program_options::value<unsigned char>(&controls.up),		"")
-			("controls.down",	boost::program_options::value<unsigned char>(&controls.down), 	"")
-			("controls.left",	boost::program_options::value<unsigned char>(&controls.left), 	"")
-			("controls.right",	boost::program_options::value<unsigned char>(&controls.right), 	"")
-			("controls.use",	boost::program_options::value<unsigned char>(&controls.use),	"");
+			("controls.up",		boost::program_options::value<char>(&controls.up),		"")
+			("controls.down",	boost::program_options::value<char>(&controls.down), 	"")
+			("controls.left",	boost::program_options::value<char>(&controls.left), 	"")
+			("controls.right",	boost::program_options::value<char>(&controls.right), 	"")
+			("controls.use",	boost::program_options::value<char>(&controls.use),	"");
 
 		boost::program_options::variables_map configVariableMap;
 
@@ -78,7 +78,7 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 	App.Create(sf::VideoMode(width, height, 32), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, 0));
 	App.EnableKeyRepeat(false);
 	App.UseVerticalSync(true);
-	//App.SetFramerateLimit(10);
+	App.SetFramerateLimit(10);
 	
 	
 }

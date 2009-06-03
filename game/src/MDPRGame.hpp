@@ -26,7 +26,7 @@ public:
 	unsigned int width, height;
 	struct
 	{
-		unsigned char up, down, left, right ,use;
+		char up, down, left, right ,use;
 	}controls;
 private:
 
