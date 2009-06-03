@@ -4,6 +4,7 @@
 #include "menuOptions.hpp"
 #include "menuInGame.hpp"
 #include "menuServerBrowser.hpp"
+#include "menuControls.hpp"
 #include <iostream>
 
 boost::shared_ptr<menuManager> menu;
@@ -25,6 +26,9 @@ menuManager::menuManager(sf::RenderWindow &App)
 
 	boost::shared_ptr<menuGeneric> serverBrowserMenu(new menuServerBrowser(App));
 	menus["menuServerBrowser"] = serverBrowserMenu;
+
+	boost::shared_ptr<menuGeneric> controlsMenu(new menuControls(App));
+	menus["menuControls"] = controlsMenu;
 
 	changeCurrentMenu("menuMain");
 }

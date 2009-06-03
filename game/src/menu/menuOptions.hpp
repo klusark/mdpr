@@ -18,6 +18,7 @@ public:
 	FilteredTextField textResHeight;
 	gcn::Label labelResWidth;
 	gcn::Label labelResHeight;
+	gcn::CheckBox fullScreen;
 
 	Button saveButton;
 

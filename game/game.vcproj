@@ -67,6 +67,7 @@
 				AdditionalLibraryDirectories="../../lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
+				RandomizedBaseAddress="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -463,7 +464,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\menu\controlChangeButton.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\menu\filteredTextField.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuControls.hpp"
 					>
 				</File>
 				<File
@@ -635,7 +644,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\menu\controlChangeButton.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\menu\filteredTextField.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\menuControls.cpp"
 					>
 				</File>
 				<File

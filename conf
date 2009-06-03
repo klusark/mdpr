@@ -2,3 +2,10 @@ playerName = klusark
 serverIP = 127.0.0.1
 width = 640
 height = 400
+
+[controls]
+up = w
+down = s
+left = a
+right = a
+use = q

@@ -31,13 +31,15 @@ menuOptions::menuOptions(sf::RenderWindow &App)
 	labelResHeight.setDimension(gcn::Rectangle(100, 130, 0, 0));
 	labelResHeight.adjustSize();
 
-
-
 	saveButton.setCaption("Save");
 	saveButton.setDimension(gcn::Rectangle(320, 320, 0, 0));
 	saveButton.adjustSize();
 	saveButton.setActionEventId("save");
 	saveButton.addActionListener(this);
+
+	fullScreen.setDimension(gcn::Rectangle(200, 200, 20, 20));
+	fullScreen.setActionEventId("full");
+	fullScreen.addActionListener(this);
 
 
 	top.add(&textResWidth);
@@ -45,6 +47,7 @@ menuOptions::menuOptions(sf::RenderWindow &App)
 	top.add(&labelResWidth);
 	top.add(&labelResHeight);
 	top.add(&saveButton);
+	top.add(&fullScreen);
 }
 
 menuOptions::~menuOptions()

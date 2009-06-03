@@ -24,6 +24,10 @@ public:
 	networkClient *myNetworkClient;
 	bool isRunning, userInterface;
 	unsigned int width, height;
+	struct
+	{
+		unsigned char up, down, left, right ,use;
+	}controls;
 private:
 
 };
