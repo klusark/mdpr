@@ -15,6 +15,7 @@ public:
 	gcn::Label label;
 	gcn::Button optionsButton;
 	gcn::Button controlsButton;
+	gcn::Button serverBrowseButton;
 
 
 };

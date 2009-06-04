@@ -173,6 +173,15 @@ void genericSprite::changeAnimation(unsigned int name)
 	}
 }
 
+void genericSprite::kill()
+{
+	
+}
+
+void genericSprite::die()
+{
+}
+
 void genericSprite::changeAnimation(std::string name)
 {
 	changeAnimation(stringToCRC(name));

@@ -2,6 +2,7 @@
 #define menuServerBrowser_hpp
 
 #include "menuGeneric.hpp"
+#include "serverListModel.hpp"
 
 class menuServerBrowser : public menuGeneric
 {
@@ -10,6 +11,8 @@ public:
 	~menuServerBrowser();
 	static void toThis();
 	//void action(const gcn::ActionEvent &actionEvent);
+	gcn::ListBox serverListBox;
+	ServerListModel serverListModel;
 
 
 };

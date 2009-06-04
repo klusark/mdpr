@@ -42,7 +42,7 @@ networkServer::networkServer()
 	masterServerEndpoint = *resolver.resolve(query);
 
 	spriteUpdateTimer.async_wait(boost::bind(&networkServer::onSpriteUpdate, this, boost::asio::placeholders::error));
-	//masterServerUpdateTimer.async_wait(boost::bind(&networkServer::updateMasterServer, this, boost::asio::placeholders::error));
+	masterServerUpdateTimer.async_wait(boost::bind(&networkServer::updateMasterServer, this, boost::asio::placeholders::error));
 	removeIdlePlayersTimer.async_wait(boost::bind(&networkServer::removeIdlePlayers, this, boost::asio::placeholders::error));
 
 	for (short i=0; i<5; ++i){
@@ -171,6 +171,15 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 					break;
 				}
 				dynamic_cast<Player *>(Players[endpoint.port()]->playerSprite.get())->keyMap[packet->key] = packet->down;
+			}
+			break;
+		case getFullServerInfoPacketID:
+			{
+				//getFullServerInfoPacket *packet = (getFullServerInfoPacket *)buffer;
+				fullServerInfoPacket packet;
+				packet.packetID = fullServerInfoPacketID;
+
+				serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(fullServerInfoPacket)), endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 			}
 			break;
 		default:

@@ -34,6 +34,10 @@ public:
 	void changeAnimation(unsigned int name);
 	void changeAnimation(std::string name);
 
+	void kill();
+
+	virtual void die();
+
 	std::string name;
 
 	boost::shared_ptr<genericPowerUp> currentPowerup;
