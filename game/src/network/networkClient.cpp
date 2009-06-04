@@ -32,46 +32,37 @@ private:
 	boost::asio::io_service& ioService;
 };
 
-struct serverListUpdateThread
+void networkClient::serverListUpdateThread(int i)
 {
-public:
-	serverListUpdateThread(networkClient::fullServerContainter2 &serversNeedingUpdate, udp::socket &socket) 
-		:	serversToUpdate(serversNeedingUpdate),
-			socket(socket)
-	{}
-	void operator()(){
-		while (1){
-			if (serversToUpdate.size() == 0){
-				Sleep(2);
-			}else{
-				boost::asio::io_service ioService;
-				udp::resolver resolver(ioService);
-				std::string test;
-				char *buffers;
-				buffers = new char[6];
-				for (int i = 0; i < 4; ++i){
-					test += _itoa(serversToUpdate[0]->entry.ip[i], buffers, 10);
-					if (i != 3){
-						test += ".";
-					}
+	while (1){
+		if (serversToUpdate[i].size() == 0){
+			Sleep(2);
+		}else{
+			boost::asio::io_service ioService;
+			udp::resolver resolver(ioService);
+			std::string test;
+			char *buffers;
+			buffers = new char[6];
+			for (int x = 0; x < 4; ++x){
+				char asdf[3];
+				sprintf(asdf, "%d", serversToUpdate[i][0]->entry.ip[x]);
+				test += asdf;
+				if (x != 3){
+					test += ".";
 				}
-				char *buffer;
-				buffer = new char[6];
-				_itoa(serversToUpdate[0]->entry.port, buffer, 10);
-				udp::resolver::query query(udp::v4(), test, buffer);
-				udp::endpoint receiverEndpoint = *resolver.resolve(query);
-				getFullServerInfoPacket packet;
-				packet.packetID = getFullServerInfoPacketID;
-				socket.send_to(boost::asio::buffer((const void *)&packet, 4), receiverEndpoint);
-				serversToUpdate.erase(serversToUpdate.begin());
 			}
+			char *buffer;
+			buffer = new char[6];
+			sprintf(buffer, "%d", serversToUpdate[i][0]->entry.port);
+			udp::resolver::query query(udp::v4(), test, buffer);
+			udp::endpoint receiverEndpoint = *resolver.resolve(query);
+			getFullServerInfoPacket packet;
+			packet.packetID = getFullServerInfoPacketID;
+			socket.send_to(boost::asio::buffer((const void *)&packet, 4), receiverEndpoint);
+			serversToUpdate[i].erase(serversToUpdate[i].begin());
 		}
-		
 	}
-private:
-	networkClient::fullServerContainter2 &serversToUpdate;
-	udp::socket &socket;
-};
+}
 
 networkClient::networkClient()
 	:	socket(ioService, udp::endpoint()),
@@ -88,9 +79,9 @@ networkClient::networkClient()
 	ioThread = new boost::thread(threads);
 
 		
-	/*for (short i = 0; i<numServerUpdateThreads; ++i){
-		serverListUpdateThread thread(serversToUpdate[i], socket);
-		serverListUpdateThreads.create_thread(thread);
+	/*for (short i = 0; i <= numServerUpdateThreads-1; ++i){
+		//serverListUpdateThread thread(serversToUpdate[i], socket);
+		serverListUpdateThreads.create_thread(boost::bind(&networkClient::serverListUpdateThread, this, i));
 	}*/
 
 
@@ -273,6 +264,10 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 				tempSprite->powerup.changeAnimation(packet->powerupID);
 			}
 			break;
+		case fullServerInfoPacketID:
+			{
+
+			}
 		default:
 			std::cout << "Error in client receve packet" << std::endl;
 			break;

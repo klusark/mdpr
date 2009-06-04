@@ -31,6 +31,14 @@ menuOptions::menuOptions(sf::RenderWindow &App)
 	labelResHeight.setDimension(gcn::Rectangle(100, 130, 0, 0));
 	labelResHeight.adjustSize();
 
+	labelVsync.setCaption("Vsync");
+	labelVsync.setDimension(gcn::Rectangle(100, 200, 0, 0));
+	labelVsync.adjustSize();
+
+	labelFullScreen.setCaption("Full Screen");
+	labelFullScreen.setDimension(gcn::Rectangle(100, 250, 0, 0));
+	labelFullScreen.adjustSize();
+
 	saveButton.setCaption("Save");
 	saveButton.setDimension(gcn::Rectangle(320, 320, 0, 0));
 	saveButton.adjustSize();
@@ -38,8 +46,8 @@ menuOptions::menuOptions(sf::RenderWindow &App)
 	saveButton.addActionListener(this);
 
 	fullScreen.setDimension(gcn::Rectangle(200, 200, 20, 20));
-	fullScreen.setActionEventId("full");
-	fullScreen.addActionListener(this);
+
+	vsync.setDimension(gcn::Rectangle(200, 250, 20, 20));
 
 
 	top.add(&textResWidth);
@@ -48,6 +56,9 @@ menuOptions::menuOptions(sf::RenderWindow &App)
 	top.add(&labelResHeight);
 	top.add(&saveButton);
 	top.add(&fullScreen);
+	top.add(&vsync);
+	top.add(&labelVsync);
+	top.add(&labelFullScreen);
 }
 
 menuOptions::~menuOptions()
@@ -57,6 +68,8 @@ menuOptions::~menuOptions()
 void menuOptions::action(const gcn::ActionEvent &actionEvent)
 {
 	if(actionEvent.getId() == "save"){
+		MDPR->App.UseVerticalSync(vsync.isSelected());
+		
 		menuMain::toThis();
 	}
 }

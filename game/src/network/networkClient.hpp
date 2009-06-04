@@ -52,6 +52,7 @@ protected:
 
 	void onReceivePacket(const boost::system::error_code& error, size_t bytesReceived);
 	void handleSendTo();
+	void networkClient::serverListUpdateThread(int i);
 
 	unsigned int totalBytesRecived, bytesInLastFive;
 

@@ -7,5 +7,5 @@ height = 400
 up = w
 down = s
 left = a
-right = a
+right = d
 use = q

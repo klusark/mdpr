@@ -47,6 +47,7 @@ void Gun::update()
 {
 	if (justShot){
 		if (dynamic_cast<selectionArea *>(mySelectionArea.get())->collisionChecked){
+
 			sprite.removeSprite(stringToCRC(mySelectionArea->name));
 			//mySelectionArea = 0;
 		}

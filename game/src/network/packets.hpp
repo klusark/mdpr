@@ -20,6 +20,7 @@ enum packetIDs
 	getServersPacketID,
 	serversListPacketID,
 	getFullServerInfoPacketID,
+	fullServerInfoPacketID,
 };
 
 /*
@@ -172,4 +173,9 @@ struct getFullServerInfoPacket
 	packetIDs packetID;
 };
 
-#endif // ifndef packets_hpp
+struct fullServerInfoPacket
+{
+	packetIDs packetID;
+};
+
+#endif // #ifndef packets_hpp

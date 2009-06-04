@@ -127,3 +127,8 @@ void Player::rollingFinish()
 	currentAnimation->pause();
 
 }
+
+void Player::die()
+{
+	//changeAnimation
+}

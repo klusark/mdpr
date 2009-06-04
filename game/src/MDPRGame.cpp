@@ -77,8 +77,8 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 	}
 	App.Create(sf::VideoMode(width, height, 32), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, 0));
 	App.EnableKeyRepeat(false);
-	App.UseVerticalSync(true);
-	App.SetFramerateLimit(10);
+	//App.UseVerticalSync(true);
+	//App.SetFramerateLimit(25);
 	
 	
 }
@@ -105,7 +105,7 @@ void MDPRGame::run()
 
 	
 	myNetworkClient = new networkClient;
-	//myNetworkClient->connect();
+	myNetworkClient->connect();
 	
 	App.SetActive(false);
 
@@ -131,7 +131,7 @@ void MDPRGame::run()
 					myNetworkClient->sendKeyPress(Event.Key.Code, false);
 				}
 			}
-			menu->currentMenu->input.pushEvent(Event, App.GetInput());
+			//menu->currentMenu->input.pushEvent(Event, App.GetInput());
 
 		}
 		sf::Sleep(0.001f);
@@ -175,7 +175,7 @@ void MDPRGame::drawThread()
 				Frames = 0;
 			}
 			
-			menu->draw();
+			//menu->draw();
 			App.Display();
 			//sf::Sleep(0.001f);
 		}
@@ -189,7 +189,7 @@ void MDPRGame::updateThread()
 	try {
 		while (!quit){
 
-			menu->logic();
+			//menu->logic();
 			if (sprite.isActive()){
 				boost::mutex::scoped_lock lock(sprite.spriteMutex);
 				sprite.update();

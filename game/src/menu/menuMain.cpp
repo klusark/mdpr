@@ -26,10 +26,17 @@ menuMain::menuMain(sf::RenderWindow &App)
 	controlsButton.setActionEventId("controls");
 	controlsButton.addActionListener(this);
 
+	serverBrowseButton.setCaption("Server Browser");
+	serverBrowseButton.setDimension(gcn::Rectangle(100, 180, 0, 0));
+	serverBrowseButton.adjustSize();
+	serverBrowseButton.setActionEventId("browse");
+	serverBrowseButton.addActionListener(this);
+
 
 	top.add(&label);
 	top.add(&optionsButton);
 	top.add(&controlsButton);
+	top.add(&serverBrowseButton);
 	
 }
 
@@ -43,6 +50,8 @@ void menuMain::action(const gcn::ActionEvent &actionEvent)
 		menuOptions::toThis();
 	}else if(actionEvent.getId() == "controls"){
 		menuControls::toThis();
+	}else if(actionEvent.getId() == "browse"){
+		menuServerBrowser::toThis();
 	}
 
 }

@@ -13,6 +13,9 @@ public:
 	void update();
 	void crouchingFinish();
 	void rollingFinish();
+
+	void die();
+
 	static sf::Image Image;
 	typedef std::map<keys, bool> keysContainter;
 	keysContainter keyMap;

@@ -21,4 +21,5 @@ void Death::onActionKey()
 
 void Death::update()
 {
+	owner->die();
 }

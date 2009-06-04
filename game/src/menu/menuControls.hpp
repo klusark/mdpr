@@ -13,8 +13,18 @@ public:
 	void action(const gcn::ActionEvent &actionEvent);
 
 	gcn::Label labelUpKey;
+	gcn::Label labelDownKey;
+	gcn::Label labelRightKey;
+	gcn::Label labelLeftKey;
+	gcn::Label labelUseKey;
+
 	ControlChangeButton upButton;
 	ControlChangeButton downButton;
+	ControlChangeButton leftButton;
+	ControlChangeButton rightButton;
+	ControlChangeButton useButton;
+
+	gcn::Button saveButton;
 
 
 };

@@ -503,6 +503,10 @@
 					RelativePath=".\src\menu\menuServerBrowser.hpp"
 					>
 				</File>
+				<File
+					RelativePath=".\src\menu\serverListModel.hpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -681,6 +685,10 @@
 				</File>
 				<File
 					RelativePath=".\src\menu\menuServerBrowser.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\serverListModel.cpp"
 					>
 				</File>
 			</Filter>

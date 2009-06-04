@@ -18,7 +18,10 @@ public:
 	FilteredTextField textResHeight;
 	gcn::Label labelResWidth;
 	gcn::Label labelResHeight;
+	gcn::Label labelFullScreen;
+	gcn::Label labelVsync;
 	gcn::CheckBox fullScreen;
+	gcn::CheckBox vsync;
 
 	Button saveButton;
 
