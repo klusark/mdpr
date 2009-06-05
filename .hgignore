@@ -8,3 +8,4 @@ glob:CMakeFiles
 glob:*.dir
 glob:CMakeCache.txt
 glob:*.cmake
+glob:doxygen
