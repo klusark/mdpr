@@ -64,7 +64,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="sfml-system-d.lib sfml-window-d.lib sfml-graphics-d.lib guichand.lib guichan_sfmld.lib"
-				AdditionalLibraryDirectories="../../lib"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				RandomizedBaseAddress="1"

@@ -175,7 +175,7 @@ void MDPRGame::drawThread()
 				Frames = 0;
 			}
 			
-			//menu->draw();
+			menu->draw();
 			App.Display();
 			//sf::Sleep(0.001f);
 		}
@@ -189,7 +189,7 @@ void MDPRGame::updateThread()
 	try {
 		while (!quit){
 
-			//menu->logic();
+			menu->logic();
 			if (sprite.isActive()){
 				boost::mutex::scoped_lock lock(sprite.spriteMutex);
 				sprite.update();

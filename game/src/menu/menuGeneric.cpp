@@ -23,3 +23,8 @@ void menuGeneric::onChange()
 void menuGeneric::action(const gcn::ActionEvent &actionEvent)
 {
 }
+
+void menuGeneric::logic()
+{
+	gcn::Gui::logic();
+}

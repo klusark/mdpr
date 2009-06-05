@@ -442,6 +442,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\game\src\enumerations.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\game\src\sprite\genericSprite.hpp"
 				>
 			</File>

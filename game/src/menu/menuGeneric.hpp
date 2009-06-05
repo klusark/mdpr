@@ -23,6 +23,7 @@ public:
 	gcn::SFMLInput		input;
 	gcn::Container		top;
 	void action(const gcn::ActionEvent &actionEvent);
+	virtual void logic();
 
 };
 

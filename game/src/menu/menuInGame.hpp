@@ -11,7 +11,8 @@ public:
 	static void toThis();
 	void onChange();
 
-
+	gcn::Label connectingLabel;
+	gcn::Label statusLabel;
 
 };
 

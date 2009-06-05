@@ -23,4 +23,11 @@ enum errorIDs
 	nameInUse,
 };
 
+enum spriteStates
+{
+	alive,
+	spawning,
+	dead,
+};
+
 #endif // #ifndef enumeration_hpp
