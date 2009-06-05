@@ -159,9 +159,15 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 						
 					}
 				}
+
 				Players[endpoint.port()] = player;
 
-			
+				{
+					doneConnectingPacket packet;
+					packet.packetID = doneConnectingPacketID;
+
+					serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 4), player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+				}			
 			}
 			break;
 		case keyPacketID:
@@ -229,7 +235,7 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 		}
 		sf::Vector2f position = currentSprite->GetPosition();
 		if (currentSprite->timesSkiped <= 100){
-			if (floor(currentSprite->lastX) == floor(position.x) && floor(currentSprite->lastY) == floor(position.y)){
+			if ((floor(currentSprite->lastX) == floor(position.x)) && (floor(currentSprite->lastY) == floor(position.y)) && (currentSprite->lastAnimationName == currentSprite->currentAnimation->name)){
 				++currentSprite->timesSkiped;
 				continue;
 			}
@@ -247,20 +253,23 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 		packet.flipped = currentSprite->flipped;
 		packet.currentFrame = currentSprite->currentAnimation->currentFrame;
 
-		/*animationChangePacket animationPacket;
+		animationChangePacket animationPacket;
+		bool useChangePacket = false;
+		if (currentSprite->lastAnimationName != currentSprite->currentAnimation->name){
 
-		animationPacket.packetID = animationChangePacketID;
-		animationPacket.spriteID = it->first;
-		animationPacket.animationID = stringToCRC(currentSprite->currentAnimation->name);
+			animationPacket.packetID = animationChangePacketID;
+			animationPacket.spriteID = it->first;
+			animationPacket.animationID = stringToCRC(currentSprite->currentAnimation->name);
 
-		animationPacket.currentFrame = currentSprite->currentAnimation->currentFrame;*/
-
-		currentSprite->lastAnimationName = currentSprite->currentAnimation->name;
+			currentSprite->lastAnimationName = currentSprite->currentAnimation->name;
+			useChangePacket = true;
+		}
 
 		playerContainer::iterator iter;
 		for( iter = Players.begin(); iter != Players.end(); ++iter ) {
-			
-			//serverSocket.async_send_to(boost::asio::buffer((const void *)&animationPacket, sizeof(animationPacket)), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+			if(useChangePacket){
+				serverSocket.async_send_to(boost::asio::buffer((const void *)&animationPacket, sizeof(animationPacket)), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+			}
 			serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(packet)), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 		}
 	}

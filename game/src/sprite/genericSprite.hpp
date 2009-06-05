@@ -58,6 +58,7 @@ public:
 	float lastX, lastY;
 	int timesSkiped;
 	bool flipped;
+	spriteStates currentState;
 protected:
 	sf::Image &Image;
 	float xAccel,		yAccel;

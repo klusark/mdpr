@@ -9,6 +9,14 @@
 menuInGame::menuInGame(sf::RenderWindow &App)
 	:	menuGeneric(App)
 {
+	top.setOpaque(false);
+
+	connectingLabel.setCaption("Connecting");
+	connectingLabel.setDimension(gcn::Rectangle(250, 10, 0, 0));
+	connectingLabel.adjustSize();
+
+	top.add(&connectingLabel);
+	top.add(&statusLabel);
 
 }
 
@@ -19,7 +27,7 @@ menuInGame::~menuInGame()
 void menuInGame::toThis()
 {
 	menu->changeCurrentMenu("menuInGame");
-	MDPR->myNetworkClient->connect();
+	
 }
 
 void menuInGame::onChange()
