@@ -9,7 +9,7 @@
 menuInGame::menuInGame(sf::RenderWindow &App)
 	:	menuGeneric(App)
 {
-	top.setOpaque(false);
+	top.setOpaque(true);
 
 	connectingLabel.setCaption("Connecting");
 	connectingLabel.setDimension(gcn::Rectangle(250, 10, 0, 0));
@@ -22,6 +22,13 @@ menuInGame::menuInGame(sf::RenderWindow &App)
 
 menuInGame::~menuInGame()
 {
+}
+
+void menuInGame::logic()
+{
+	if(MDPR->myNetworkClient->currentState == connectedState){
+		top.setOpaque(false);
+	}
 }
 
 void menuInGame::toThis()

@@ -51,6 +51,8 @@ protected:
 	serverInfoPacket packetServerInfo;
 	udp::endpoint masterServerEndpoint;
 
+	static const unsigned short numIOServiceThreads = 8;
+
 	sf::Clock timer;
 
 	class playerInfo

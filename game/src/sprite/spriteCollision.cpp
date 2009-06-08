@@ -19,8 +19,8 @@ void spriteCollision::update(int spriteID)
 {
 	spriteContainer::iterator iter;
 	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
-		if (Sprites[spriteID]->spriteType == player){
-			if (iter->second->spriteType == platform){
+		if (Sprites[spriteID]->spriteType == playerType){
+			if (iter->second->spriteType == platformType){
 				int height = Sprites[spriteID]->currentAnimation->AnimationInfo.collisionRect.Bottom;
 				int left = Sprites[spriteID]->currentAnimation->AnimationInfo.collisionRect.Left;
 				int width = Sprites[spriteID]->currentAnimation->AnimationInfo.collisionRect.GetWidth();
@@ -37,7 +37,7 @@ void spriteCollision::update(int spriteID)
 					Sprites[spriteID]->onGround = false;
 				}
 			}
-		}else if (Sprites[spriteID]->spriteType == selectionarea){
+		}else if (Sprites[spriteID]->spriteType == selectionAreaType){
 			selectionArea *area = dynamic_cast<selectionArea *>(Sprites[spriteID].get());
 			if (iter->second->spriteType == area->typeToSelect){
 				sf::IntRect collisionRect = iter->second->currentAnimation->AnimationInfo.collisionRect;

@@ -12,7 +12,7 @@ selectionArea::selectionArea(const std::string &name, sf::IntRect rect)
 	:	genericSprite(name, "selectionArea", Image),
 		collisionChecked(false)
 {
-	spriteType = selectionarea;
+	spriteType = selectionAreaType;
 	collisionRect = rect;
 	nonNetworked = true;
 

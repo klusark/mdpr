@@ -372,6 +372,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\sprite\effect.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\sprite\genericSprite.hpp"
 					>
 				</File>
@@ -553,6 +557,10 @@
 				</File>
 				<File
 					RelativePath=".\src\sprite\bubble.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\effect.cpp"
 					>
 				</File>
 				<File

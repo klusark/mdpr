@@ -10,7 +10,7 @@ sf::Image PowerUp::Image;
 PowerUp::PowerUp(const std::string &name)
 	:	genericSprite(name, "powerup", Image)
 {
-	spriteType = player;
+	spriteType = playerType;
 	//changeAnimation(stringToCRC("gun"));
 	//SetX(125);
 	//SetY(125);

@@ -16,82 +16,34 @@
 #include "networkClient.hpp"
 
 using boost::asio::ip::udp;
-struct thread
-{
-public:
-	thread(boost::asio::io_service &ioService) 
-		:	ioService(ioService)
-	{}
-	void operator()(){
-		try{
-			ioService.run();
-		}catch(...){
-		}
-	}
-private:
-	boost::asio::io_service& ioService;
-};
-
-void networkClient::serverListUpdateThread(int i)
-{
-	while (1){
-		if (serversToUpdate[i].size() == 0){
-			Sleep(2);
-		}else{
-			boost::asio::io_service ioService;
-			udp::resolver resolver(ioService);
-			std::string test;
-			char *buffers;
-			buffers = new char[6];
-			for (int x = 0; x < 4; ++x){
-				char asdf[3];
-				sprintf(asdf, "%d", serversToUpdate[i][0]->entry.ip[x]);
-				test += asdf;
-				if (x != 3){
-					test += ".";
-				}
-			}
-			char *buffer;
-			buffer = new char[6];
-			sprintf(buffer, "%d", serversToUpdate[i][0]->entry.port);
-			udp::resolver::query query(udp::v4(), test, buffer);
-			udp::endpoint receiverEndpoint = *resolver.resolve(query);
-			getFullServerInfoPacket packet;
-			packet.packetID = getFullServerInfoPacketID;
-			socket.send_to(boost::asio::buffer((const void *)&packet, 4), receiverEndpoint);
-			serversToUpdate[i].erase(serversToUpdate[i].begin());
-		}
-	}
-}
 
 networkClient::networkClient()
 	:	socket(ioService, udp::endpoint()),
 		inGame(true),
 		connected(false),
 		totalBytesRecived(0),
-		bytesInLastFive(0)
+		bytesInLastFive(0),
+		currentState(idleState)
 {
 
 
 	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&networkClient::onReceivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 
-	thread threads(ioService);
-	ioThread = new boost::thread(threads);
+	for (short i = 0; i < numIOServiceThreads; ++i){
+		ioServiceThreadPool.create_thread(boost::bind(&networkClient::ioServiceThread, this));
+	}
 
 		
 	/*for (short i = 0; i <= numServerUpdateThreads-1; ++i){
-		//serverListUpdateThread thread(serversToUpdate[i], socket);
 		serverListUpdateThreads.create_thread(boost::bind(&networkClient::serverListUpdateThread, this, i));
 	}*/
-
-
 }
 
 networkClient::~networkClient()
 {
 	ioService.stop();
-	ioThread->join();
-	delete ioThread;
+	ioServiceThreadPool.join_all();
+	//delete ioThread;
 
 }
 
@@ -110,6 +62,7 @@ bool networkClient::connect()
 			receiverEndpoint = *resolver.resolve(query);
 			
 			socket.send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), receiverEndpoint);
+			currentState = connectingState;
 		}
 
 		{
@@ -157,19 +110,19 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 				spriteCreationPacket *packet = (spriteCreationPacket *)buffer;
 				switch(packet->spriteType)
 				{
-				case player:
+				case playerType:
 					{
 						boost::shared_ptr<genericSprite> newSprite(new Player(packet->name));
 						sprite.registerSprite(newSprite);
 					}
 					break;
-				case platform:
+				case platformType:
 					{
 						boost::shared_ptr<genericSprite> newSprite(new Platform(packet->name));
 						sprite.registerSprite(newSprite);
 					}
 					break;
-				case bubble:
+				case bubbleType:
 					{
 						boost::shared_ptr<genericSprite> newSprite(new Bubble(packet->name));
 						sprite.registerSprite(newSprite);
@@ -258,7 +211,7 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 					std::cout << "Can not find sprite" << std::endl;
 				}
 				Bubble *tempSprite;
-				if (sprite.Sprites[packet->spriteID]->spriteType == bubble){
+				if (sprite.Sprites[packet->spriteID]->spriteType == bubbleType){
 					tempSprite = dynamic_cast<Bubble *>(sprite.Sprites[packet->spriteID].get());
 				}
 				tempSprite->powerup.changeAnimation(packet->powerupID);
@@ -268,8 +221,16 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 			{
 
 			}
+			break;
+		case connectionAcceptedPacketID:
+
+			break;
+		case doneConnectingPacketID:
+			currentState = connectedState;
+
+			break;
 		default:
-			std::cout << "Error in client receve packet" << std::endl;
+			std::cout << "onReceivePacket: Could not identify packet" << std::endl;
 			break;
 
 		}
@@ -300,4 +261,47 @@ void networkClient::sendKeyPress(sf::Key::Code key, bool down)
 	}
 
 	socket.send_to(boost::asio::buffer((const void *)&packet, 9), receiverEndpoint);
+}
+
+void networkClient::serverListUpdateThread(int i)
+{
+	while (1){
+		if (serversToUpdate[i].size() == 0){
+			Sleep(2);
+		}else{
+			boost::asio::io_service ioService;
+			udp::resolver resolver(ioService);
+			std::string test;
+			char *buffers;
+			buffers = new char[6];
+			for (int x = 0; x < 4; ++x){
+				char asdf[3];
+				sprintf(asdf, "%d", serversToUpdate[i][0]->entry.ip[x]);
+				test += asdf;
+				if (x != 3){
+					test += ".";
+				}
+			}
+			char *buffer;
+			buffer = new char[6];
+			sprintf(buffer, "%d", serversToUpdate[i][0]->entry.port);
+			udp::resolver::query query(udp::v4(), test, buffer);
+			udp::endpoint receiverEndpoint = *resolver.resolve(query);
+			getFullServerInfoPacket packet;
+			packet.packetID = getFullServerInfoPacketID;
+			socket.send_to(boost::asio::buffer((const void *)&packet, 4), receiverEndpoint);
+			serversToUpdate[i].erase(serversToUpdate[i].begin());
+		}
+	}
+}
+
+void networkClient::ioServiceThread()
+{
+	try{
+		ioService.run();
+	}catch (std::exception& e){
+		std::cout << "Exception: " << e.what() << std::endl;
+	}catch(...){
+		std::cout << "Unknown Exception caught" << std::endl; 
+	}
 }

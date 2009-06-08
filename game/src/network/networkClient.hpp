@@ -34,8 +34,8 @@ public:
 	typedef std::vector<fullServerEntry *> fullServerContainter2;
 	fullServerContainter serverList;
 
-	static const unsigned short numServerUpdateThreads = 1;
-	fullServerContainter2 serversToUpdate[numServerUpdateThreads];
+
+	connectionState currentState;
 protected:
 	boost::asio::io_service ioService;
 	udp::socket socket;
@@ -48,14 +48,21 @@ protected:
 	udp::endpoint masterServerEndpoint;
 
 	boost::thread_group serverListUpdateThreads;
-	boost::thread *ioThread;
+	boost::thread_group ioServiceThreadPool;
 
 	void onReceivePacket(const boost::system::error_code& error, size_t bytesReceived);
 	void handleSendTo();
 	void networkClient::serverListUpdateThread(int i);
+	void ioServiceThread();
+
+	static const unsigned short numServerUpdateThreads = 1;
+	
+	static const unsigned short numIOServiceThreads = 5;
+
+	fullServerContainter2 serversToUpdate[numServerUpdateThreads];
 
 	unsigned int totalBytesRecived, bytesInLastFive;
 
 };
 
-#endif //networkClient_hpp
+#endif // #ifndef networkClient_hpp
