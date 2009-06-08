@@ -328,6 +328,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\game\src\sprite\effect.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\game\src\sprite\effectManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\game\src\sprite\genericSprite.cpp"
 				>
 			</File>
@@ -439,6 +447,14 @@
 			</File>
 			<File
 				RelativePath="..\game\src\sprite\bubble.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\game\src\sprite\effect.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\game\src\sprite\effectManager.hpp"
 				>
 			</File>
 			<File

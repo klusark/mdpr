@@ -14,7 +14,7 @@ Bubble::Bubble(const std::string &name)
 	:	genericSprite(name, "bubble", Image),
 		powerup(name+"powerup")
 {
-	spriteType = bubble;
+	spriteType = bubbleType;
 
 	changeAnimation(stringToCRC("bubble"));
 

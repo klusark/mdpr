@@ -11,9 +11,7 @@ Platform::Platform(const std::string &name)
 {
 
 	changeAnimation("platform");
-	spriteType = platform;
-	SetX(50);
-
+	spriteType = platformType;
 }
 
 Platform::~Platform()

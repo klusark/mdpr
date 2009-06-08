@@ -3,10 +3,11 @@
 
 enum spriteTypes
 {
-	player,
-	platform,
-	bubble,
-	selectionarea,
+	playerType,
+	platformType,
+	bubbleType,
+	selectionAreaType,
+	effectType
 };
 
 enum keys
@@ -28,6 +29,13 @@ enum spriteStates
 	alive,
 	spawning,
 	dead,
+};
+
+enum connectionState
+{
+	connectingState,
+	connectedState,
+	idleState,
 };
 
 #endif // #ifndef enumeration_hpp

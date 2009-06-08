@@ -10,6 +10,7 @@ public:
 	~menuInGame();
 	static void toThis();
 	void onChange();
+	void logic();
 
 	gcn::Label connectingLabel;
 	gcn::Label statusLabel;

@@ -37,7 +37,7 @@ void Gun::onActionKey()
 			newRect.Right = int(owner->GetPosition().x);
 		}
 		boost::shared_ptr<genericSprite> newSelectionArea(new selectionArea("gunShotSelectArea", newRect));
-		dynamic_cast<selectionArea *>(newSelectionArea.get())->typeToSelect = player;
+		dynamic_cast<selectionArea *>(newSelectionArea.get())->typeToSelect = playerType;
 		mySelectionArea = newSelectionArea;
 		sprite.registerSprite(mySelectionArea);
 	}

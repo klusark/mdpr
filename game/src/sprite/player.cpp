@@ -17,7 +17,7 @@ Player::Player(const std::string &name)
 		idle(false),
 		velocity(0)
 {
-	spriteType = player;
+	spriteType = playerType;
 
 	
 	keyMap[keyLeft]		= false;
@@ -26,9 +26,8 @@ Player::Player(const std::string &name)
 	keyMap[keyUp]		= false;
 	keyMap[keyAction]	= false;
 
-	SetX(50);
 	changeAnimation("idle");
-	setYVelocity(30.0f);
+	//setYVelocity(30.0f);
 	hasPowerUp = true;
 	
 	currentPowerup = boost::shared_ptr<genericPowerUp>(new Gun(this));

@@ -7,6 +7,7 @@ enum packetIDs
 {
 	connectPacketID,
 	doneConnectingPacketID,
+	connectionAcceptedPacketID,
 	spriteCreationPacketID,
 	spriteDeletionPacketID,
 	spritePosPacketID,
@@ -24,7 +25,7 @@ enum packetIDs
 	fullServerInfoPacketID,
 };
 
-/**
+/*!
 Size: 6+nameLength
 Client -> Server
 */
@@ -35,16 +36,26 @@ struct connectPacket
 	char name[255];
 };
 
-/**
+/*!
 Size: 4
 Client <- Server
 */
 struct doneConnectingPacket
 {
-	packetIDs packetID;;
+	packetIDs packetID;
 };
 
-/**
+/*!
+Sent when the server has accpeted the client
+Size: 4
+Client <- Server
+*/
+struct connectionAcceptedPacket
+{
+	packetIDs packetID;
+};
+
+/*!
 Size: 10+nameLength
 Client <- Server
 */

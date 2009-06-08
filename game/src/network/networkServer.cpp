@@ -45,14 +45,14 @@ networkServer::networkServer()
 	masterServerUpdateTimer.async_wait(boost::bind(&networkServer::updateMasterServer, this, boost::asio::placeholders::error));
 	removeIdlePlayersTimer.async_wait(boost::bind(&networkServer::removeIdlePlayers, this, boost::asio::placeholders::error));
 
-	for (short i=0; i<5; ++i){
+	for (short i = 0; i < numIOServiceThreads; ++i){
 		ioThreads.create_thread(boost::bind(&networkServer::ioServiceThread, this));
 	}
 
 	for (int i = 0; i < 20; ++i){
 		std::string name = "platform";
 		char buff[4];
-		_itoa(i, buff, 15);
+		sprintf(buff, "%d", i);
 		name += buff;
 		boost::shared_ptr<genericSprite> newPlatform(new Platform(name));
 		newPlatform->SetY(100);
@@ -118,6 +118,13 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 					break;
 				}
 
+				{
+					//Sends the connection accepted packet to tell the client that they have succesfuly joined the server.
+					connectionAcceptedPacket packet;
+					packet.packetID = connectionAcceptedPacketID;
+					serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(packet)), endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+				}
+
 				boost::shared_ptr<playerInfo> player(new playerInfo);
 				player->endpoint = endpoint;
 				player->name = packet->name;
@@ -145,6 +152,9 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 						
 					}
 				}
+
+				
+
 				{
 					playerContainer::iterator iter;
 					for(iter = Players.begin(); iter != Players.end(); ++iter){
@@ -159,9 +169,7 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 						
 					}
 				}
-
 				Players[endpoint.port()] = player;
-
 				{
 					doneConnectingPacket packet;
 					packet.packetID = doneConnectingPacketID;
