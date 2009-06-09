@@ -10,6 +10,10 @@
 
 #include "genericSprite.hpp"
 
+#ifdef SERVER
+#include "effectManager.hpp"
+#endif // #indef SERVER
+
 class spriteManager
 {
 public:
@@ -26,6 +30,10 @@ public:
 	void removeSprite(unsigned int spriteID);
 	boost::mutex spriteMutex;
 	spriteCollision collision;
+	void spawn(boost::shared_ptr<genericSprite> spriteToSpawn);
+#ifdef SERVER
+	EffectManager myEffectManager;
+#endif // #ifdef SERVER
 private:
     bool active;
 	
@@ -35,4 +43,4 @@ private:
 extern spriteManager sprite;
 
 
-#endif // ifndef spriteManager_hpp
+#endif // #ifndef spriteManager_hpp

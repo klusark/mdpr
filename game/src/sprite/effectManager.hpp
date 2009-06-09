@@ -6,12 +6,13 @@
 #include <boost/shared_ptr.hpp>
 
 #include "effect.hpp"
-#include "spriteManager.hpp"
+
+class spriteManager;
 
 class EffectManager
 {
 public:
-	EffectManager(spriteManager &SM);
+	EffectManager(spriteManager *SM);
 	~EffectManager();
 	typedef std::vector<Effect *> effectContainer;
 
@@ -20,14 +21,15 @@ public:
 	bool isActive();
 	void setActive(bool toggle);
 
-	void addEffect(unsigned short effectID, float x, float y);
+	void addEffect(unsigned short effectID,	float x, float y);
+	void addEffect(std::string effectID,	float x, float y);
 
 	const static unsigned short initialNumberOfEffects = 2;
 	const static unsigned short minimumExtraEffects = 2;
 	unsigned short currentNumberEffects;
 
 private:
-	spriteManager &mySpriteManager;
+	spriteManager *mySpriteManager;
     bool active;
 };
 

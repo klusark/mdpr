@@ -8,6 +8,7 @@
 #include "genericSprite.hpp"
 #include "player.hpp"
 #include "spriteCollision.hpp"
+
 #include "spriteManager.hpp"
 
 spriteManager sprite;
@@ -15,6 +16,9 @@ spriteManager sprite;
 spriteManager::spriteManager()
 	:	active(false),
 		collision(Sprites)
+#ifdef SERVER
+		,myEffectManager(&sprite)
+#endif //#ifdef SERVER
 {
 }
 
@@ -35,6 +39,9 @@ void spriteManager::update()
 	spriteContainer::iterator iter;
 	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
 		iter->second->update();
+		if (iter->second->currentState == readyToSpawnState){
+			spawn(iter->second);
+		}
 		collision.update(iter->first);
 	}
 }
@@ -55,6 +62,17 @@ void spriteManager::removeSprite(unsigned int spriteID)
 	if (spriteToErase != Sprites.end()){
 		Sprites.erase(spriteToErase);
 	}
+}
+
+void spriteManager::spawn(boost::shared_ptr<genericSprite> spriteToSpawn)
+{
+	spriteToSpawn->currentState = aliveState;
+	spriteToSpawn->SetX(50);
+	spriteToSpawn->SetY(50);
+#ifdef SERVER
+	sf::Vector2f pos = spriteToSpawn->GetPosition();
+	myEffectManager.addEffect(spriteToSpawn->spawnEffect, pos.x, pos.y);
+#endif
 }
 
 bool spriteManager::isActive()

@@ -1,2 +1,3 @@
 animation = bubble
 image = bubble.png
+spawnEffect = greenPoof

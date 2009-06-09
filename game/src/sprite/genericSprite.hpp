@@ -28,6 +28,7 @@ public:
 	\param Image  The static image from the sprite class that inherits this one. 
 	*/
 	genericSprite(const std::string &name, std::string spriteType, sf::Image &Image);
+
 	//!The deconstructor
 	~genericSprite();
 
@@ -105,6 +106,15 @@ public:
 
 	//!Pointer to the current animaiton
 	boost::shared_ptr<Animation> currentAnimation;
+
+	//!The effect to show when this sprite spawns
+	std::string spawnEffect;
+
+	//!The timer used for timing respawn.
+	sf::Clock spawnTimer;
+
+	//!The amount of time it takes for this sprite to respawn.
+	unsigned short respawnTime; 
 	
 	float lastX, lastY;
 	int timesSkiped;

@@ -10,6 +10,7 @@ public:
 	Effect(const std::string &name);
 	~Effect();
 	static sf::Image Image;
+	bool inUse;
 	
 };
 
