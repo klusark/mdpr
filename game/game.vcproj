@@ -341,10 +341,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\powerup\powerUpManager.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\version.hpp"
 				>
 			</File>
@@ -444,6 +440,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\powerup\powerUpManager.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\powerup\puck.hpp"
 					>
 				</File>
@@ -536,10 +536,6 @@
 				RelativePath=".\src\MDPRGame.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\src\powerup\powerUpManager.cpp"
-				>
-			</File>
 			<Filter
 				Name="Network"
 				>
@@ -629,6 +625,10 @@
 				</File>
 				<File
 					RelativePath=".\src\powerup\mine.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\powerUpManager.cpp"
 					>
 				</File>
 				<File

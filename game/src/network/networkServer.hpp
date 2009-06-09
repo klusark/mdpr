@@ -5,7 +5,7 @@
 #include <boost/shared_ptr.hpp>
 #include <map>
 #include <boost/thread.hpp>
-#include <SFML/System.hpp>
+#include <SFML/System/Clock.hpp>
 
 #include "packets.hpp"
 
@@ -13,24 +13,44 @@ using boost::asio::ip::udp;
 
 class genericSprite;
 class spriteManager;
+
+//!The server
+/*!
+A self contained server in a class.
+*/
 class networkServer
 {
 public:
+	//!The constructor
+	/*!
+	Constructs the server and sets up the async operations.
+	*/
 	networkServer();
+
+	//!The deconstructor
+	/*!
+	Destroys the server.
+	*/
 	~networkServer();
-	bool runServer();
-	void disconnect(unsigned short playerID);
+
+	/*!
+	Waits untill the server is ready to shut down
+	*/
+	void runServer();
+	
 protected:
-	boost::asio::io_service ioService;
-	boost::asio::ip::udp::socket serverSocket;
-	char buffer[512];
-	udp::endpoint endpoint;
-	boost::asio::deadline_timer spriteUpdateTimer;
-	boost::asio::deadline_timer masterServerUpdateTimer;
-	boost::asio::deadline_timer removeIdlePlayersTimer;
+	/*!
+	Called when  a packet is received
+	\param error if there is an error, this contains the message.
+	\param bytesReceived number of bytes received.
+	*/
+	void onReceivePacket(const boost::system::error_code& error, size_t bytesReceived);
 
-	void onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd);
-
+	/*!
+	Handles async sending of packets
+	\param error if there is an error, this contains the message.
+	\param bytesSent number of bytes sent.
+	*/
 	void handleSendTo(const boost::system::error_code& error, size_t bytesSent);
 
 	void onSpriteUpdate(const boost::system::error_code& error);
@@ -40,6 +60,16 @@ protected:
 	void removeIdlePlayers(const boost::system::error_code& error);
 
 	void ioServiceThread();
+
+	void disconnect(unsigned short playerID);
+
+	boost::asio::io_service ioService;
+	boost::asio::ip::udp::socket serverSocket;
+	char buffer[512];
+	udp::endpoint endpoint;
+	boost::asio::deadline_timer spriteUpdateTimer;
+	boost::asio::deadline_timer masterServerUpdateTimer;
+	boost::asio::deadline_timer removeIdlePlayersTimer;
 
 	boost::thread_group ioThreads;
 

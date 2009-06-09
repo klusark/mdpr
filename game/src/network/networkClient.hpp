@@ -6,7 +6,7 @@
 
 #include <SFML/Window/Event.hpp>
 
-#include <SFML/System.hpp>
+#include <SFML/System/Clock.hpp>
 
 #include "packets.hpp"
 
