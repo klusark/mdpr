@@ -52,7 +52,7 @@ protected:
 
 	void onReceivePacket(const boost::system::error_code& error, size_t bytesReceived);
 	void handleSendTo();
-	void networkClient::serverListUpdateThread(int i);
+	void serverListUpdateThread(int i);
 	void ioServiceThread();
 
 	static const unsigned short numServerUpdateThreads = 1;

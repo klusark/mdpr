@@ -11,6 +11,7 @@
 #include "../sprite/bubble.hpp"
 #include "../sprite/platform.hpp"
 #include "../sprite/player.hpp"
+#include "../sprite/effect.hpp"
 #include "../sprite/spriteManager.hpp"
 #include "packets.hpp"
 #include "networkClient.hpp"
@@ -125,6 +126,12 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 				case bubbleType:
 					{
 						boost::shared_ptr<genericSprite> newSprite(new Bubble(packet->name));
+						sprite.registerSprite(newSprite);
+					}
+					break;
+				case effectType:
+					{
+						boost::shared_ptr<genericSprite> newSprite(new Effect(packet->name));
 						sprite.registerSprite(newSprite);
 					}
 					break;

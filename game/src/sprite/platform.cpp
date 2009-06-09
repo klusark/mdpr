@@ -12,6 +12,7 @@ Platform::Platform(const std::string &name)
 
 	changeAnimation("platform");
 	spriteType = platformType;
+	currentState = aliveState;
 }
 
 Platform::~Platform()

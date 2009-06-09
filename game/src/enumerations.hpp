@@ -26,9 +26,10 @@ enum errorIDs
 
 enum spriteStates
 {
-	alive,
-	spawning,
-	dead,
+	aliveState,
+	spawningState,
+	readyToSpawnState,
+	deadState,
 };
 
 enum connectionState

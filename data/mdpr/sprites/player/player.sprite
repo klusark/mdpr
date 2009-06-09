@@ -4,3 +4,4 @@ animation = idle
 animation = roll
 animation = shoot
 image = newplayer.png
+spawnEffect = greenPoof

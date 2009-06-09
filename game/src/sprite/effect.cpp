@@ -7,12 +7,13 @@
 sf::Image Effect::Image;
 
 Effect::Effect(const std::string &name)
-	:	genericSprite(name, "effect", Image)
+	:	genericSprite(name, "effect", Image),
+		inUse(false)
 {
 
-	changeAnimation("Effect");
+	changeAnimation("blank");
 	spriteType = effectType;
-	SetX(50);
+	currentState = aliveState;
 
 }
 

@@ -28,12 +28,14 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 		lastX(0),
 		lastY(0),
 		timesSkiped(0),
+		respawnTime(5),
 		hasPowerUp(false),
 		flipped(false),
 		nonNetworked(false),
 		animationLock(false),
 		keyLock(false),
-		noAnimation(false)
+		noAnimation(false),
+		currentState(deadState)
 {
 
 	SetX(unsigned short(-1));
@@ -58,7 +60,8 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 	boost::program_options::options_description spriteConfig("Configuration");
 	spriteConfig.add_options()
 		("animation",	boost::program_options::value<std::vector<std::string> >(&animations), "")
-		("image",		boost::program_options::value<std::string>(&image), "");
+		("image",		boost::program_options::value<std::string>(&image), "")
+		("spawnEffect",	boost::program_options::value<std::string>(&spawnEffect), "");
 
 	boost::program_options::variables_map spriteVariableMap;
 
@@ -150,6 +153,9 @@ void genericSprite::update()
 	Move(sf::Vector2<float>::Vector2(static_cast<float>(xVelocity*deltaTime+(0.5)*xAccel*pow(deltaTime,2)), static_cast<float>(yVelocity*deltaTime+(0.5)*yAccel*pow(deltaTime,2))));
 	xVelocity+=xAccel*deltaTime;
 	yVelocity+=yAccel*deltaTime;
+	if (currentState == deadState){
+		currentState = readyToSpawnState;
+	}
 	if (hasPowerUp){
 		currentPowerup->update();
 	}

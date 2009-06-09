@@ -1,0 +1,11 @@
+delay = 1000
+frames = 1
+startx = 76
+starty = 126
+width = 24
+height = 24
+padding = 0
+collision.rect.top = 0
+collision.rect.bottom = 0
+collision.rect.right = 0
+collision.rect.left = 0

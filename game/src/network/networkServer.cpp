@@ -99,8 +99,6 @@ void networkServer::onReceivePacket(const boost::system::error_code& error, size
 			{
 				connectPacket *packet = (connectPacket *)buffer;
 
-
-				//boost::crc_16_type  result;
 				std::string name = packet->name;//, packet->nameLength);
 
 				int playerID = stringToCRC(name);
@@ -148,8 +146,6 @@ void networkServer::onReceivePacket(const boost::system::error_code& error, size
 						
 					}
 				}
-
-				
 
 				{
 					playerContainer::iterator iter;
