@@ -21,9 +21,6 @@ using boost::asio::ip::udp;
 
 boost::shared_ptr<networkServer> server;
 
-//boost::asio::io_service networkServer::ioService;
-
-
 networkServer::networkServer() 
 	:	serverSocket(ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 9935)),
 		spriteUpdateTimer(ioService, boost::posix_time::seconds(2)),
@@ -32,7 +29,7 @@ networkServer::networkServer()
 {
 	posUpdate = 0;
 
-	serverSocket.async_receive_from(boost::asio::buffer(buffer), endpoint, boost::bind(&networkServer::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	serverSocket.async_receive_from(boost::asio::buffer(buffer), endpoint, boost::bind(&networkServer::onReceivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 
 	packetServerInfo.packetID = serverInfoPacketID;
 	packetServerInfo.port = 9935;
@@ -70,19 +67,18 @@ networkServer::~networkServer()
 {
 }
 
-bool networkServer::runServer()
+void networkServer::runServer()
 {
 	
 	std::cout << "Server Started" << std::endl;
 	ioThreads.join_all();
 
-	return true;
 }
 
-void networkServer::onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd)
+void networkServer::onReceivePacket(const boost::system::error_code& error, size_t bytesRecvd)
 {
 	if (error){
-		//std::cout << "onRecivePacket: " << error.message() << std::endl;
+		//std::cout << "onReceivePacket: " << error.message() << std::endl;
 
 		if (!(Players.find(endpoint.port()) == Players.end())){
 
@@ -202,7 +198,7 @@ void networkServer::onRecivePacket(const boost::system::error_code& error, size_
 
 		}
 	}
-	serverSocket.async_receive_from(boost::asio::buffer(buffer), endpoint, boost::bind(&networkServer::onRecivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	serverSocket.async_receive_from(boost::asio::buffer(buffer), endpoint, boost::bind(&networkServer::onReceivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 	
 }
 

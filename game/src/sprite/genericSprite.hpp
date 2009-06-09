@@ -81,15 +81,11 @@ public:
 	
 		//!True if the sprite is currently on the groud.
 		onGround, 
-		
-		//!True if the sprite has its input disabled
-		inputDisabled, 
-		
+				
 		//!True if the sprite should be server side only.
 		nonNetworked, 
 		
-		//TODO figure out the difference between this and inputDisabled
-		//!I am not sure...
+		//!True if the sprite has its input disabled
 		keyLock, 
 		
 		//!true if the sprite should be locked to it's current animaiton
