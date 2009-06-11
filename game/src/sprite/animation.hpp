@@ -26,6 +26,7 @@ public:
 	void reset();
 	boost::signal<void ()> onFinish;
 	std::string name;
+	unsigned int CRCName;
 	sf::Clock Clock;
 	float updateTime;
 	unsigned char currentFrame;

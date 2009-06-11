@@ -96,10 +96,16 @@ public:
 		noAnimation,
 		
 		//!true if the sprite is currently flipped.
-		flipped;
+		flipped,
+
+		//!true of the spawn timer has been started
+		spawnTimerStarted;
 
 	//!The name of the last animation. Used to figure out when to send animation change packets.
 	std::string lastAnimationName;
+
+	//!The last frame sent to the clients
+	unsigned short lastFrame;
 
 	//!The sprite type. Mainly used for collision detection
 	spriteTypes spriteType;

@@ -58,8 +58,8 @@ networkServer::networkServer()
 	}
 
 	{
-		boost::shared_ptr<genericSprite> newBubble(new Bubble("bubble0"));
-		sprite.registerSprite(newBubble);
+	//	boost::shared_ptr<genericSprite> newBubble(new Bubble("bubble0"));
+	//	sprite.registerSprite(newBubble);
 	}
 }
 
@@ -235,11 +235,12 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 		}
 		sf::Vector2f position = currentSprite->GetPosition();
 		if (currentSprite->timesSkiped <= 100){
-			if ((floor(currentSprite->lastX) == floor(position.x)) && (floor(currentSprite->lastY) == floor(position.y)) && (currentSprite->lastAnimationName == currentSprite->currentAnimation->name)){
+			if ((floor(currentSprite->lastX) == floor(position.x)) && (floor(currentSprite->lastY) == floor(position.y)) && (currentSprite->lastAnimationName == currentSprite->currentAnimation->name) && (currentSprite->lastFrame == currentSprite->currentAnimation->currentFrame)){
 				++currentSprite->timesSkiped;
 				continue;
 			}
 		}
+		currentSprite->lastFrame = currentSprite->currentAnimation->currentFrame;
 		currentSprite->lastX = position.x;
 		currentSprite->lastY = position.y;
 		currentSprite->timesSkiped = 0;
@@ -259,7 +260,7 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 
 			animationPacket.packetID = animationChangePacketID;
 			animationPacket.spriteID = it->first;
-			animationPacket.animationID = stringToCRC(currentSprite->currentAnimation->name);
+			animationPacket.animationID = currentSprite->currentAnimation->CRCName;
 
 			currentSprite->lastAnimationName = currentSprite->currentAnimation->name;
 			useChangePacket = true;

@@ -27,7 +27,7 @@ Player::Player(const std::string &name)
 	keyMap[keyAction]	= false;
 
 	changeAnimation("idle");
-	//setYVelocity(30.0f);
+	setYVelocity(30.0f);
 	hasPowerUp = true;
 	
 	currentPowerup = boost::shared_ptr<genericPowerUp>(new Gun(this));

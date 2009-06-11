@@ -20,3 +20,13 @@ Effect::Effect(const std::string &name)
 Effect::~Effect()
 {
 }
+
+void Effect::update()
+{
+	genericSprite::update();
+	if (currentAnimation->paused && inUse){
+		inUse = false;
+		SetX(unsigned short(-1));
+		SetY(unsigned short(-1));
+	}
+}

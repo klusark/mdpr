@@ -27,7 +27,6 @@ EffectManager::~EffectManager()
 void EffectManager::addEffect(unsigned short effectID,	float x, float y)
 {
 	for (unsigned short i = 0; i < Effects.size(); ++i){
-		
 		if (!Effects[i]->inUse){
 			Effects[i]->inUse = true;
 			Effects[i]->SetX(x);

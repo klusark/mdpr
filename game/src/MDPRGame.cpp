@@ -78,7 +78,7 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 	App.Create(sf::VideoMode(width, height, 32), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, 0));
 	App.EnableKeyRepeat(false);
 	App.UseVerticalSync(true);
-	App.SetFramerateLimit(15);
+	//App.SetFramerateLimit(15);
 	
 	
 }
