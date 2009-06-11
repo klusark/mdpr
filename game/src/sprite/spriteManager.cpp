@@ -51,7 +51,6 @@ void spriteManager::draw(sf::RenderWindow &App)
     spriteContainer::iterator iter;
 	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
 		iter->second->draw(App);
-		//App.Draw(*iter->second.get());
 		
 	}
 }

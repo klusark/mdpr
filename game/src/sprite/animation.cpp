@@ -13,6 +13,7 @@ Animation::Animation(std::string name)
 		needsReset(false),
 		playBackward(false)
 {
+	CRCName = stringToCRC(name);
 }
 
 Animation::~Animation()

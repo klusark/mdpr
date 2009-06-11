@@ -27,6 +27,7 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 		yAccel(0),
 		lastX(0),
 		lastY(0),
+		lastFrame(0),
 		timesSkiped(0),
 		respawnTime(5),
 		hasPowerUp(false),
@@ -35,6 +36,7 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 		animationLock(false),
 		keyLock(false),
 		noAnimation(false),
+		spawnTimerStarted(false),
 		currentState(deadState)
 {
 
@@ -127,8 +129,8 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 
 		boost::program_options::store(parse_config_file(animationFileStream, animationConfigFileOptions), animationVariableMap);
 		notify(animationVariableMap);
-		unsigned int test = stringToCRC(*iter);
-		Animations[test] = newAnimation;
+		unsigned int animationName = stringToCRC(*iter);
+		Animations[animationName] = newAnimation;
 			
 	}
 }
@@ -154,7 +156,14 @@ void genericSprite::update()
 	xVelocity+=xAccel*deltaTime;
 	yVelocity+=yAccel*deltaTime;
 	if (currentState == deadState){
-		currentState = readyToSpawnState;
+		if (!spawnTimerStarted){
+			spawnTimer.Reset();
+			spawnTimerStarted = true;
+		}
+		if (spawnTimer.GetElapsedTime() >= respawnTime){
+			currentState = readyToSpawnState;
+			spawnTimerStarted = false;
+		}
 	}
 	if (hasPowerUp){
 		currentPowerup->update();

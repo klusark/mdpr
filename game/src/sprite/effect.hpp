@@ -11,6 +11,7 @@ public:
 	~Effect();
 	static sf::Image Image;
 	bool inUse;
+	void update();
 	
 };
 
