@@ -6,13 +6,10 @@
 
 #include <iostream>
 
-#include "../enumerations.hpp"
-#include "../MDPRGame.hpp"
-#include "../sprite/bubble.hpp"
-#include "../sprite/platform.hpp"
-#include "../sprite/player.hpp"
-#include "../sprite/effect.hpp"
-#include "../sprite/spriteManager.hpp"
+#include "enumerations.hpp"
+#include "MDPRGame.hpp"
+
+#include "sprite/clientSpriteManager.hpp"
 #include "packets.hpp"
 #include "networkClient.hpp"
 

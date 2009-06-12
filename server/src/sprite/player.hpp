@@ -2,7 +2,7 @@
 #define player_hpp
 
 #include "genericSprite.hpp"
-#include "../enumerations.hpp"
+#include "enumerations.hpp"
 #include <SFML/Graphics/Image.hpp>
 
 class Player : public genericSprite

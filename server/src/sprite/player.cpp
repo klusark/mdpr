@@ -3,7 +3,7 @@
 
 #include "player.hpp"
 #include "genericSprite.hpp"
-#include "../network/packets.hpp"
+#include "network/packets.hpp"
 
 #include "../powerup/gun.hpp"
 

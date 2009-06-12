@@ -2,7 +2,6 @@
 #include "menuGeneric.hpp"
 #include "menuManager.hpp"
 #include "menuOptions.hpp"
-#include "../sprite/spriteManager.hpp"
 #include "../MDPRGame.hpp"
 
 
@@ -39,5 +38,5 @@ void menuInGame::toThis()
 
 void menuInGame::onChange()
 {
-	sprite.setActive(true);
+	//sprite.setActive(true);
 }

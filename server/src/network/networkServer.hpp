@@ -7,7 +7,7 @@
 #include <boost/thread.hpp>
 #include <SFML/System/Clock.hpp>
 
-#include "packets.hpp"
+#include "network/packets.hpp"
 
 using boost::asio::ip::udp;
 

@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\game\src\"
+				AdditionalIncludeDirectories="..\game\src;src"
 				PreprocessorDefinitions="_WIN32_WINNT=0x0501;SERVER;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -320,23 +320,47 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\game\src\sprite\animation.cpp"
+				RelativePath=".\src\sprite\animation.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\sprite\bubble.cpp"
+				RelativePath=".\src\powerup\boots.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\sprite\effect.cpp"
+				RelativePath=".\src\sprite\bubble.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\sprite\effectManager.cpp"
+				RelativePath=".\src\powerup\chute.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\sprite\genericSprite.cpp"
+				RelativePath=".\src\powerup\death.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\sprite\effect.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\sprite\effectManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\powerup\genericPowerUp.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\sprite\genericSprite.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\powerup\grenade.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\powerup\gun.cpp"
 				>
 			</File>
 			<File
@@ -344,97 +368,69 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\powerup\hook.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\powerup\invisibility.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\main.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\network\networkServer.cpp"
+				RelativePath=".\src\powerup\mine.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\sprite\platform.cpp"
+				RelativePath=".\src\network\networkServer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\sprite\player.cpp"
+				RelativePath=".\src\sprite\platform.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\sprite\powerup.cpp"
+				RelativePath=".\src\sprite\player.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\sprite\selectionArea.cpp"
+				RelativePath=".\src\sprite\powerup.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\sprite\spriteCollision.cpp"
+				RelativePath=".\src\powerup\powerUpManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\sprite\spriteManager.cpp"
+				RelativePath=".\src\powerup\puck.cpp"
 				>
 			</File>
-			<Filter
-				Name="Power Up"
+			<File
+				RelativePath=".\src\sprite\selectionArea.cpp"
 				>
-				<File
-					RelativePath="..\game\src\powerup\boots.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\game\src\powerup\chute.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\game\src\powerup\death.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\game\src\powerup\genericPowerUp.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\game\src\powerup\grenade.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\game\src\powerup\gun.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\game\src\powerup\hook.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\game\src\powerup\invisibility.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\game\src\powerup\mine.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\game\src\powerup\powerUpManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\game\src\powerup\puck.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\game\src\powerup\TNT.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\game\src\powerup\volts.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\game\src\powerup\warp.cpp"
-					>
-				</File>
-			</Filter>
+			</File>
+			<File
+				RelativePath=".\src\sprite\spriteCollision.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\sprite\spriteManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\powerup\TNT.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\powerup\volts.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\powerup\warp.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -442,27 +438,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\game\src\sprite\animation.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\sprite\bubble.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\sprite\effect.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\sprite\effectManager.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\game\src\enumerations.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\sprite\genericSprite.hpp"
 				>
 			</File>
 			<File
@@ -470,94 +446,114 @@
 				>
 			</File>
 			<File
-				RelativePath="..\game\src\network\networkServer.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\network\packets.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\sprite\platform.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\sprite\player.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\sprite\powerup.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\sprite\selectionArea.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\sprite\spriteCollision.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\game\src\sprite\spriteManager.hpp"
+				RelativePath=".\src\network\networkServer.hpp"
 				>
 			</File>
 			<Filter
-				Name="Power Up"
+				Name="PowerUps"
 				>
 				<File
-					RelativePath="..\game\src\powerup\boots.hpp"
+					RelativePath=".\src\powerup\boots.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\game\src\powerup\chute.hpp"
+					RelativePath=".\src\powerup\chute.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\game\src\powerup\death.hpp"
+					RelativePath=".\src\powerup\death.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\game\src\powerup\genericPowerUp.hpp"
+					RelativePath=".\src\powerup\genericPowerUp.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\game\src\powerup\grenade.hpp"
+					RelativePath=".\src\powerup\grenade.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\game\src\powerup\gun.hpp"
+					RelativePath=".\src\powerup\gun.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\game\src\powerup\hook.hpp"
+					RelativePath=".\src\powerup\hook.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\game\src\powerup\invisibility.hpp"
+					RelativePath=".\src\powerup\invisibility.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\game\src\powerup\mine.hpp"
+					RelativePath=".\src\powerup\mine.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\game\src\powerup\powerUpManager.hpp"
+					RelativePath=".\src\sprite\powerup.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\game\src\powerup\puck.hpp"
+					RelativePath=".\src\powerup\powerUpManager.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\game\src\powerup\TNT.hpp"
+					RelativePath=".\src\powerup\puck.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\game\src\powerup\volts.hpp"
+					RelativePath=".\src\powerup\TNT.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\game\src\powerup\warp.hpp"
+					RelativePath=".\src\powerup\volts.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\powerup\warp.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Sprite"
+				>
+				<File
+					RelativePath=".\src\sprite\animation.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\bubble.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\effect.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\effectManager.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\genericSprite.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\platform.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\player.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\selectionArea.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\spriteCollision.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\spriteManager.hpp"
 					>
 				</File>
 			</Filter>

@@ -1,6 +1,6 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
-#include "../helpers.hpp"
+#include "helpers.hpp"
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
@@ -10,12 +10,12 @@
 #include <vector>
 
 #include "networkServer.hpp"
-#include "packets.hpp"
-#include "../sprite/spriteManager.hpp"
-#include "../sprite/genericSprite.hpp"
-#include "../sprite/player.hpp"
-#include "../sprite/platform.hpp"
-#include "../sprite/bubble.hpp"
+#include "network/packets.hpp"
+#include "sprite/spriteManager.hpp"
+#include "sprite/genericSprite.hpp"
+#include "sprite/player.hpp"
+#include "sprite/platform.hpp"
+#include "sprite/bubble.hpp"
 
 using boost::asio::ip::udp;
 
@@ -234,7 +234,7 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 		if (currentSprite->nonNetworked){
 			continue;
 		}
-		sf::Vector2f position = currentSprite->GetPosition();
+		Position position = currentSprite->GetPosition();
 		if (currentSprite->timesSkiped <= 100){
 			if ((floor(currentSprite->lastX) == floor(position.x)) && (floor(currentSprite->lastY) == floor(position.y)) && (currentSprite->lastAnimationName == currentSprite->currentAnimation->name) && (currentSprite->lastFrame == currentSprite->currentAnimation->currentFrame)){
 				++currentSprite->timesSkiped;

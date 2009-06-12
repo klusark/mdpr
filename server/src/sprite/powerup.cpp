@@ -2,8 +2,8 @@
 
 #include "powerup.hpp"
 #include "genericSprite.hpp"
-#include "../network/packets.hpp"
-#include "../helpers.hpp"
+#include "network/packets.hpp"
+#include "helpers.hpp"
 
 sf::Image PowerUp::Image;
 

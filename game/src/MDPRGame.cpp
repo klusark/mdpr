@@ -9,10 +9,9 @@
 #include <time.h>
 
 
-#include "sprite/player.hpp"
 #include "network/networkClient.hpp"
 #include "menu/menuManager.hpp"
-#include "sprite/spriteManager.hpp"
+#include "sprite/clientSpriteManager.hpp"
 #include "sprite/player.hpp"
 #include "sprite/platform.hpp"
 #include "sprite/bubble.hpp"

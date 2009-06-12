@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 #include "animation.hpp"
-#include "../helpers.hpp"
+#include "helpers.hpp"
 
 Animation::Animation(std::string name)
 	:	paused(false),

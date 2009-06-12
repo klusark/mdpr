@@ -6,18 +6,23 @@
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/System/Clock.hpp>
 #include <map>
-#include "../enumerations.hpp"
+#include "enumerations.hpp"
 
 #include "animation.hpp"
 
 class genericPowerUp;
+
+struct Position
+{
+	float x,y;
+};
 
 //! The base sprite class
 /*!
 All sprites must inherit this class
  Provides movement, animation, and  access to colliiton
 */
-class genericSprite : public sf::Sprite
+class genericSprite //: public sf::Sprite
 {
 public:
 	//! The constructor.
@@ -31,16 +36,6 @@ public:
 
 	//!The deconstructor
 	~genericSprite();
-
-	float getXAccel();
-	float getYAccel();
-	void setXAccel(float xAccel);
-	void setYAccel(float yAccel);
-
-	float getXVelocity();
-	float getYVelocity();
-	void setXVelocity(float xVelocity);
-	void setYVelocity(float yVelocity);
 
 	//!Updates the sprite
 	/*!
@@ -125,6 +120,25 @@ public:
 	float lastX, lastY;
 	int timesSkiped;
 	spriteStates currentState;
+
+	
+	float getXAccel();
+	float getYAccel();
+	void setXAccel(float xAccel);
+	void setYAccel(float yAccel);
+
+	float getXVelocity();
+	float getYVelocity();
+	void setXVelocity(float xVelocity);
+	void setYVelocity(float yVelocity);
+
+	void SetY(float);
+	void SetX(float);
+	float GetX();
+	float GetY();
+	Position GetPosition();
+	void SetPosition(Position);
+	void Move(float,float);
 protected:
 	sf::Image &Image;
 	float xAccel,		yAccel;

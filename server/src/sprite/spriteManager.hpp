@@ -28,6 +28,7 @@ public:
 	bool isActive();
 	void setActive(bool toggle);
 	void removeSprite(unsigned int spriteID);
+	void removeSprite(std::string spriteID);
 	boost::mutex spriteMutex;
 	spriteCollision collision;
 	void spawn(boost::shared_ptr<genericSprite> spriteToSpawn);

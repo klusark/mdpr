@@ -2,8 +2,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "../powerup/powerUpManager.hpp"
-#include "../enumerations.hpp"
-#include "../helpers.hpp"
+#include "enumerations.hpp"
+#include "helpers.hpp"
 #include "genericSprite.hpp"
 #include "powerup.hpp"
 #include "bubble.hpp"
@@ -31,7 +31,7 @@ Bubble::~Bubble()
 void Bubble::update()
 {
 	
-	sf::Vector2f position = GetPosition();
+	Position position = GetPosition();
 	if (position.x >= 640 - 16 || position.x < 0){
 		setXVelocity(-getXVelocity());
 		if (position.x < 0){
@@ -53,8 +53,8 @@ void Bubble::update()
 	powerup.SetPosition(GetPosition());
 }
 
-void Bubble::draw(sf::RenderWindow &App)
+/*void Bubble::draw(sf::RenderWindow &App)
 {	
 	genericSprite::draw(App);
 	App.Draw(powerup);
-}
+}*/
