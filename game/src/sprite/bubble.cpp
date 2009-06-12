@@ -20,8 +20,7 @@ Bubble::Bubble(const std::string &name)
 
 	setYVelocity(100.0f);
 	setXVelocity(100.0f);
-	
-	powerup.changeAnimation(PUManage->selectRandom());
+	//powerup.changeAnimation(PUManage->selectRandom());
 }
 
 Bubble::~Bubble()
@@ -49,7 +48,7 @@ void Bubble::update()
 			SetY(400 - 15);
 		}
 	}
-	powerup.update();
+	//powerup.update();
 	genericSprite::update();
 	powerup.SetPosition(GetPosition());
 }

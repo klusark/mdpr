@@ -28,9 +28,6 @@ Player::Player(const std::string &name)
 
 	changeAnimation("idle");
 	setYVelocity(30.0f);
-	hasPowerUp = true;
-	
-	currentPowerup = boost::shared_ptr<genericPowerUp>(new Gun(this));
 
 
 }
