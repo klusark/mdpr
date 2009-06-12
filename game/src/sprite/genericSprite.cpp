@@ -149,6 +149,7 @@ void genericSprite::update()
 		currentAnimation->update();
 #endif
 	}
+#ifdef SERVER
 	float deltaTime = Clock.GetElapsedTime();
 	Clock.Reset();
 
@@ -168,6 +169,7 @@ void genericSprite::update()
 	if (hasPowerUp){
 		currentPowerup->update();
 	}
+#endif
 
 }
 

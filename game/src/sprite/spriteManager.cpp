@@ -35,14 +35,19 @@ void spriteManager::registerSprite(boost::shared_ptr<genericSprite> sprite)
 
 void spriteManager::update()
 {
+#ifdef SERVER
 	collision.before();
+#endif
 	spriteContainer::iterator iter;
 	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
 		iter->second->update();
+#ifdef SERVER
 		if (iter->second->currentState == readyToSpawnState){
 			spawn(iter->second);
 		}
+
 		collision.update(iter->first);
+#endif
 	}
 }
 
@@ -65,10 +70,12 @@ void spriteManager::removeSprite(unsigned int spriteID)
 
 void spriteManager::spawn(boost::shared_ptr<genericSprite> spriteToSpawn)
 {
+#ifdef SERVER
+	std::cout<<"SPAWN"<<std::endl;
 	spriteToSpawn->currentState = aliveState;
 	spriteToSpawn->SetX(50);
 	spriteToSpawn->SetY(50);
-#ifdef SERVER
+
 	sf::Vector2f pos = spriteToSpawn->GetPosition();
 	myEffectManager.addEffect(spriteToSpawn->spawnEffect, pos.x, pos.y);
 #endif

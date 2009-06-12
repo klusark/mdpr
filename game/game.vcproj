@@ -401,66 +401,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="PowerUp"
-				>
-				<File
-					RelativePath=".\src\powerup\boots.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\chute.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\death.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\genericPowerUp.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\grenade.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\gun.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\hook.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\invisibility.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\mine.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\powerUpManager.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\puck.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\TNT.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\volts.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\warp.hpp"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="Menu"
 				>
 				<File
@@ -585,66 +525,6 @@
 				</File>
 				<File
 					RelativePath=".\src\sprite\spriteManager.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="PowerUp"
-				>
-				<File
-					RelativePath=".\src\powerup\boots.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\chute.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\death.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\genericPowerUp.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\grenade.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\gun.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\hook.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\invisibility.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\mine.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\powerUpManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\puck.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\TNT.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\volts.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\powerup\warp.cpp"
 					>
 				</File>
 			</Filter>

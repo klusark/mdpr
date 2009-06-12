@@ -227,6 +227,7 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 		std::cout << "onSpriteUpdate: " << error.message() << std::endl;
 		return;
 	}
+	boost::mutex::scoped_lock lock(sprite.spriteMutex);
 	sprite.update();
 	for(spriteManager::spriteContainer::iterator it = sprite.Sprites.begin(); it != sprite.Sprites.end(); ++it){
 		boost::shared_ptr<genericSprite> currentSprite = it->second;
