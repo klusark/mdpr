@@ -5,15 +5,13 @@
 
 #include <map>
 #include "helpers.hpp"
-#include "genericSprite.hpp"
-#include "player.hpp"
-#include "spriteCollision.hpp"
+#include "clientSprite.hpp"
 
-#include "spriteManager.hpp"
+#include "clientSpriteManager.hpp"
 
-spriteManager sprite;
+ClientSpriteManager sprite;
 
-spriteManager::spriteManager()
+ClientSpriteManager::ClientSpriteManager()
 	:	active(false),
 		collision(Sprites)
 #ifdef SERVER
@@ -22,18 +20,18 @@ spriteManager::spriteManager()
 {
 }
 
-spriteManager::~spriteManager()
+ClientSpriteManager::~ClientSpriteManager()
 {
 }
 
-void spriteManager::registerSprite(boost::shared_ptr<genericSprite> sprite)
+void ClientSpriteManager::registerSprite(boost::shared_ptr<ClientSprite> sprite)
 {
 
 	boost::mutex::scoped_lock lock(spriteMutex);
 	Sprites[stringToCRC(sprite->name)] = sprite;
 }
 
-void spriteManager::update()
+void ClientSpriteManager::update()
 {
 #ifdef SERVER
 	collision.before();
@@ -51,7 +49,7 @@ void spriteManager::update()
 	}
 }
 
-void spriteManager::draw(sf::RenderWindow &App)
+void ClientSpriteManager::draw(sf::RenderWindow &App)
 {
     spriteContainer::iterator iter;
 	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
@@ -60,7 +58,7 @@ void spriteManager::draw(sf::RenderWindow &App)
 	}
 }
 
-void spriteManager::removeSprite(unsigned int spriteID)
+void ClientSpriteManager::removeSprite(unsigned int spriteID)
 {
 	spriteContainer::iterator spriteToErase = Sprites.find(spriteID);
 	if (spriteToErase != Sprites.end()){
@@ -68,12 +66,12 @@ void spriteManager::removeSprite(unsigned int spriteID)
 	}
 }
 
-void spriteManager::removeSprite(std::string spriteID)
+void ClientSpriteManager::removeSprite(std::string spriteID)
 {
 	removeSprite(stringToCRC(spriteID));
 }
 
-void spriteManager::spawn(boost::shared_ptr<genericSprite> spriteToSpawn)
+void ClientSpriteManager::spawn(boost::shared_ptr<genericSprite> spriteToSpawn)
 {
 #ifdef SERVER
 	std::cout<<"SPAWN"<<std::endl;
@@ -81,17 +79,17 @@ void spriteManager::spawn(boost::shared_ptr<genericSprite> spriteToSpawn)
 	spriteToSpawn->SetX(50);
 	spriteToSpawn->SetY(50);
 
-	Position pos = spriteToSpawn->GetPosition();
+	sf::Vector2f pos = spriteToSpawn->GetPosition();
 	myEffectManager.addEffect(spriteToSpawn->spawnEffect, pos.x, pos.y);
 #endif
 }
 
-bool spriteManager::isActive()
+bool ClientSpriteManager::isActive()
 {
     return active;
 }
 
-void spriteManager::setActive(bool toggle)
+void ClientSpriteManager::setActive(bool toggle)
 {
     active = toggle;
 }

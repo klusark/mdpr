@@ -10,7 +10,7 @@
 
 #include "packets.hpp"
 
-class spriteManager;
+class ClientSpriteManager;
 using boost::asio::ip::udp;
 
 struct fullServerEntry

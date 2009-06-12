@@ -1,8 +1,5 @@
 #include <boost/program_options.hpp>
 #include <boost/shared_ptr.hpp>
-#ifndef SERVER
-#include <boost/thread.hpp>
-#endif
 #include <SFML/Graphics.hpp>
 
 #include <string>
@@ -14,35 +11,21 @@
 #include <SFML/System/Vector2.hpp>
 #include "helpers.hpp"
 
-#include "../powerup/genericPowerUp.hpp"
-#include "genericSprite.hpp"
+#include "clientSprite.hpp"
 
-genericSprite::genericSprite(const std::string &name, std::string spriteType, sf::Image &tempImage) 
-	:	name(name),
+ClientSprite::ClientSprite(const std::string &name, std::string spriteType, sf::Image &tempImage) 
+	:	sf::Sprite(),
+		name(name),
 		Image(tempImage),
-		xVelocity(0),
-		yVelocity(0),
-		xAccel(0),
-		yAccel(0),
-		lastX(0),
-		lastY(0),
-		lastFrame(0),
 		timesSkiped(0),
-		respawnTime(5),
-		hasPowerUp(false),
 		flipped(false),
-		nonNetworked(false),
-		animationLock(false),
-		keyLock(false),
-		noAnimation(false),
-		spawnTimerStarted(false),
 		currentState(deadState)
 {
 
 	SetX(unsigned short(-1));
 	SetY(unsigned short(-1));
 
-	std::string file;
+	/*std::string file;
 
 	file = "data/mdpr/sprites/";
 	file += spriteType;
@@ -78,7 +61,7 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 #ifndef SERVER
 	if (image.length() != 0){
 		//load image hackish way to check if in a thread
-		if (Image.GetHeight() == 0 /*&& !boost::this_thread::interruption_enabled()*/){
+		if (Image.GetHeight() == 0 ){
 			std::string imageFile;
 			imageFile = "data/mdpr/sprites/";
 			imageFile += spriteType;
@@ -131,115 +114,20 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 		unsigned int animationName = stringToCRC(*iter);
 		Animations[animationName] = newAnimation;
 			
-	}
+	}*/
 }
 
-genericSprite::~genericSprite()
+ClientSprite::~ClientSprite()
 {
 }
 
-void genericSprite::update()
+void ClientSprite::update()
 {
-	if(!noAnimation){
-#ifndef SERVER
-		SetSubRect(currentAnimation->update());
-		FlipX(flipped);
-#else 
-		currentAnimation->update();
-#endif
-	}
-#ifdef SERVER
-	float deltaTime = Clock.GetElapsedTime();
-	Clock.Reset();
-
-	Move(static_cast<float>(xVelocity*deltaTime+(0.5)*xAccel*pow(deltaTime,2)), static_cast<float>(yVelocity*deltaTime+(0.5)*yAccel*pow(deltaTime,2)));
-	xVelocity+=xAccel*deltaTime;
-	yVelocity+=yAccel*deltaTime;
-	if (currentState == deadState){
-		if (!spawnTimerStarted){
-			spawnTimer.Reset();
-			spawnTimerStarted = true;
-		}
-		if (spawnTimer.GetElapsedTime() >= respawnTime){
-			currentState = readyToSpawnState;
-			spawnTimerStarted = false;
-		}
-	}
-	if (hasPowerUp){
-		currentPowerup->update();
-	}
-#endif
-
+	//SetSubRect(currentAnimation->update());
+	FlipX(flipped);
 }
 
-/*void genericSprite::draw(sf::RenderWindow &App)
+void ClientSprite::draw(sf::RenderWindow &App)
 {
 	App.Draw(*this);
-}*/
-
-void genericSprite::changeAnimation(unsigned int name)
-{
-	if (!animationLock){
-		if (Animations.find(name) != Animations.end()){
-			currentAnimation = Animations[name];
-			currentAnimation->Clock.Reset();
-		}else{
-			std::cout << "Error Cannot find Animation: " << name << std::endl;
-		}
-	}
-}
-
-void genericSprite::kill()
-{
-	
-}
-
-void genericSprite::die()
-{
-}
-
-void genericSprite::changeAnimation(std::string name)
-{
-	changeAnimation(stringToCRC(name));
-}
-
-
-float genericSprite::getXAccel()
-{
-	return xAccel;
-}
-
-float genericSprite::getYAccel()
-{
-	return yAccel;
-}
-
-void genericSprite::setXAccel(float xAccel)
-{
-	this->xAccel = xAccel;
-}
-
-void genericSprite::setYAccel(float yAccel)
-{
-	this->yAccel = yAccel;
-}
-
-float genericSprite::getXVelocity()
-{
-	return xVelocity;
-}
-
-float genericSprite::getYVelocity()
-{
-	return yVelocity;
-}
-
-void genericSprite::setXVelocity(float xVelocity)
-{
-	this->xVelocity = xVelocity;
-}
-
-void genericSprite::setYVelocity(float yVelocity)
-{
-	this->yVelocity = yVelocity;
 }

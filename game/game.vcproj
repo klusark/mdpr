@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=""
+				AdditionalIncludeDirectories="src"
 				PreprocessorDefinitions="_WIN32_WINNT=0x0501;_CRT_SECURE_NO_WARNINGS;SFML_DYNAMIC"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
@@ -360,43 +360,11 @@
 				Name="Sprite"
 				>
 				<File
-					RelativePath=".\src\sprite\animation.hpp"
+					RelativePath=".\src\sprite\clientSprite.hpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\sprite\bubble.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\effect.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\genericSprite.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\platform.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\player.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\powerup.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\selectionArea.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\spriteCollision.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\spriteManager.hpp"
+					RelativePath=".\src\sprite\clientSpriteManager.hpp"
 					>
 				</File>
 			</Filter>
@@ -488,43 +456,11 @@
 				Name="Sprite"
 				>
 				<File
-					RelativePath=".\src\sprite\animation.cpp"
+					RelativePath=".\src\sprite\clientSprite.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\sprite\bubble.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\effect.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\genericSprite.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\platform.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\player.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\powerup.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\selectionArea.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\spriteCollision.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sprite\spriteManager.cpp"
+					RelativePath=".\src\sprite\clientSpriteManager.cpp"
 					>
 				</File>
 			</Filter>

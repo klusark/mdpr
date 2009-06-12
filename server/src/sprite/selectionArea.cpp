@@ -1,9 +1,9 @@
 #include <SFML/Graphics/Image.hpp>
 
-#include "../enumerations.hpp"
+#include "enumerations.hpp"
 #include "genericSprite.hpp"
 #include "selectionArea.hpp"
-#include "../helpers.hpp"
+#include "helpers.hpp"
 #include "spriteManager.hpp"
 
 sf::Image selectionArea::Image;
