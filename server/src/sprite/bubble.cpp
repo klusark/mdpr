@@ -8,10 +8,8 @@
 #include "powerup.hpp"
 #include "bubble.hpp"
 
-sf::Image Bubble::Image;
-
 Bubble::Bubble(const std::string &name)
-	:	genericSprite(name, "bubble", Image),
+	:	genericSprite(name, "bubble"),
 		powerup(name+"powerup")
 {
 	spriteType = bubbleType;

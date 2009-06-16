@@ -1,4 +1,3 @@
-#include <SFML/Graphics/Image.hpp>
 #include <boost/bind.hpp>
 
 #include "player.hpp"
@@ -7,10 +6,8 @@
 
 #include "../powerup/gun.hpp"
 
-sf::Image Player::Image;
-
 Player::Player(const std::string &name)
-	:	 genericSprite(name, "player", Image),
+	:	 genericSprite(name, "player"),
 		rolling(false),
 		crouching(false),
 		running(false),

@@ -8,17 +8,10 @@
 #include <fstream>
 #include <time.h>
 
-
 #include "network/networkClient.hpp"
 #include "menu/menuManager.hpp"
 #include "sprite/clientSpriteManager.hpp"
-#include "sprite/player.hpp"
-#include "sprite/platform.hpp"
-#include "sprite/bubble.hpp"
-#include "sprite/powerup.hpp"
-//#include "sprite/deathArea.hpp"
 #include "MDPRGame.hpp"
-
 
 boost::shared_ptr<MDPRGame> MDPR;
 

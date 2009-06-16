@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <map>
+
 #include "helpers.hpp"
 #include "genericSprite.hpp"
 #include "player.hpp"
@@ -15,10 +16,8 @@ spriteManager sprite;
 
 spriteManager::spriteManager()
 	:	active(false),
-		collision(Sprites)
-#ifdef SERVER
-		,myEffectManager(&sprite)
-#endif //#ifdef SERVER
+		collision(Sprites),
+		myEffectManager(&sprite)
 {
 }
 
@@ -35,28 +34,17 @@ void spriteManager::registerSprite(boost::shared_ptr<genericSprite> sprite)
 
 void spriteManager::update()
 {
-#ifdef SERVER
+
 	collision.before();
-#endif
 	spriteContainer::iterator iter;
 	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
 		iter->second->update();
-#ifdef SERVER
+
 		if (iter->second->currentState == readyToSpawnState){
 			spawn(iter->second);
 		}
-
 		collision.update(iter->first);
-#endif
-	}
-}
 
-void spriteManager::draw(sf::RenderWindow &App)
-{
-    spriteContainer::iterator iter;
-	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
-		iter->second->draw(App);
-		
 	}
 }
 
@@ -75,15 +63,12 @@ void spriteManager::removeSprite(std::string spriteID)
 
 void spriteManager::spawn(boost::shared_ptr<genericSprite> spriteToSpawn)
 {
-#ifdef SERVER
-	std::cout<<"SPAWN"<<std::endl;
 	spriteToSpawn->currentState = aliveState;
 	spriteToSpawn->SetX(50);
 	spriteToSpawn->SetY(50);
 
 	Position pos = spriteToSpawn->GetPosition();
 	myEffectManager.addEffect(spriteToSpawn->spawnEffect, pos.x, pos.y);
-#endif
 }
 
 bool spriteManager::isActive()

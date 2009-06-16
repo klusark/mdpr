@@ -10,9 +10,8 @@
 
 #include "genericSprite.hpp"
 
-#ifdef SERVER
 #include "effectManager.hpp"
-#endif // #indef SERVER
+
 
 class spriteManager
 {
@@ -22,9 +21,13 @@ public:
 	typedef std::map<unsigned short, boost::shared_ptr<genericSprite> > spriteContainer;
 
 	spriteContainer Sprites;
+
+	typedef std::map<unsigned short, std::string> spriteTypeContainer;
+
+	spriteTypeContainer SpriteTypes;
+
 	void registerSprite(boost::shared_ptr<genericSprite> sprite);
 	void update();
-	void draw(sf::RenderWindow &App);
 	bool isActive();
 	void setActive(bool toggle);
 	void removeSprite(unsigned int spriteID);
@@ -32,9 +35,9 @@ public:
 	boost::mutex spriteMutex;
 	spriteCollision collision;
 	void spawn(boost::shared_ptr<genericSprite> spriteToSpawn);
-#ifdef SERVER
+
 	EffectManager myEffectManager;
-#endif // #ifdef SERVER
+
 private:
     bool active;
 	

@@ -1,25 +1,21 @@
 #include <boost/program_options.hpp>
 #include <boost/shared_ptr.hpp>
-#ifndef SERVER
 #include <boost/thread.hpp>
-#endif
-#include <SFML/Graphics.hpp>
 
 #include <string>
 #include <vector>
 #include <iostream>
 #include <fstream>
 
-#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
 #include "helpers.hpp"
 
-#include "../powerup/genericPowerUp.hpp"
+#include "powerup/genericPowerUp.hpp"
 #include "genericSprite.hpp"
+#include "spriteManager.hpp"
 
-genericSprite::genericSprite(const std::string &name, std::string spriteType, sf::Image &tempImage) 
+genericSprite::genericSprite(const std::string &name, std::string spriteType) 
 	:	name(name),
-		Image(tempImage),
 		xVelocity(0),
 		yVelocity(0),
 		xAccel(0),
@@ -36,7 +32,8 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 		keyLock(false),
 		noAnimation(false),
 		spawnTimerStarted(false),
-		currentState(deadState)
+		currentState(deadState),
+		spriteTypeName(spriteType)
 {
 
 	SetX(unsigned short(-1));
@@ -60,37 +57,33 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 	std::string image;
 	boost::program_options::options_description spriteConfig("Configuration");
 	spriteConfig.add_options()
-		("animation",	boost::program_options::value<std::vector<std::string> >(&animations), "")
-		("image",		boost::program_options::value<std::string>(&image), "")
-		("spawnEffect",	boost::program_options::value<std::string>(&spawnEffect), "");
+		("animation",	boost::program_options::value<std::vector<std::string> >(&animations),	"")
+		("image",		boost::program_options::value<std::string>(&image),						"")
+		("spawnEffect",	boost::program_options::value<std::string>(&spawnEffect),				"");
 
 	boost::program_options::variables_map spriteVariableMap;
 
 	boost::program_options::options_description spriteConfigFileOptions;
 	spriteConfigFileOptions.add(spriteConfig);
-	
-
 
 	boost::program_options::store(parse_config_file(spriteFileStream, spriteConfigFileOptions), spriteVariableMap);
 	notify(spriteVariableMap);
-	
-	
-#ifndef SERVER
-	if (image.length() != 0){
-		//load image hackish way to check if in a thread
-		if (Image.GetHeight() == 0 /*&& !boost::this_thread::interruption_enabled()*/){
-			std::string imageFile;
-			imageFile = "data/mdpr/sprites/";
-			imageFile += spriteType;
-			imageFile += "/";
-			imageFile += image;
-			Image.LoadFromFile(imageFile);
-			Image.SetSmooth(false);
+
+	{
+		std::string fullImageName;
+		fullImageName = "mdpr/sprites/";
+		fullImageName += spriteType;
+		fullImageName += "/";
+		fullImageName += image;
+
+		unsigned short spriteID = stringToCRC(spriteType);
+		spriteManager::spriteTypeContainer::iterator iter = sprite.SpriteTypes.find(spriteID);
+		if (iter == sprite.SpriteTypes.end()){
+			sprite.SpriteTypes[spriteID] = fullImageName;
 		}
-		SetImage(Image);
 	}
-#endif // #ifndef SERVER
-	std::vector< std::string >::iterator iter;
+
+	std::vector<std::string>::iterator iter;
 	for (iter = animations.begin(); iter < animations.end(); ++iter){
 
 		boost::program_options::options_description animationConfig("Configuration");
@@ -107,10 +100,10 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType, sf
 			("reverseOnFinish",			boost::program_options::value<bool>(&newAnimation->AnimationInfo.reverseOnFinish),		"")
 			("pauseOnFinish",			boost::program_options::value<bool>(&newAnimation->AnimationInfo.pauseOnFinish),		"")
 
-			("collision.rect.top",		boost::program_options::value<int >(&newAnimation->AnimationInfo.collisionRect.Top),	"")
-			("collision.rect.bottom",	boost::program_options::value<int >(&newAnimation->AnimationInfo.collisionRect.Bottom),	"")
-			("collision.rect.right",	boost::program_options::value<int >(&newAnimation->AnimationInfo.collisionRect.Right),	"")
-			("collision.rect.left",		boost::program_options::value<int >(&newAnimation->AnimationInfo.collisionRect.Left),	"");
+			("collision.rect.top",		boost::program_options::value<int>(&newAnimation->AnimationInfo.collisionRect.Top),	"")
+			("collision.rect.bottom",	boost::program_options::value<int>(&newAnimation->AnimationInfo.collisionRect.Bottom),	"")
+			("collision.rect.right",	boost::program_options::value<int>(&newAnimation->AnimationInfo.collisionRect.Right),	"")
+			("collision.rect.left",		boost::program_options::value<int>(&newAnimation->AnimationInfo.collisionRect.Left),	"");
 
 		boost::program_options::variables_map animationVariableMap;
 
@@ -242,4 +235,44 @@ void genericSprite::setXVelocity(float xVelocity)
 void genericSprite::setYVelocity(float yVelocity)
 {
 	this->yVelocity = yVelocity;
+}
+
+void genericSprite::SetY(float newY)
+{
+	y = newY;
+}
+
+void genericSprite::SetX(float newX)
+{
+	x = newX;
+}
+
+float genericSprite::GetX()
+{
+	return x;
+}
+
+float genericSprite::GetY()
+{
+	return y;
+}
+
+Position genericSprite::GetPosition()
+{
+	Position pos;
+	pos.x = x;
+	pos.y = y;
+	return pos;
+}
+
+void genericSprite::SetPosition(Position pos)
+{
+	x = pos.x;
+	y = pos.y;
+}
+
+void genericSprite::Move(float xDir, float yDir)
+{
+	x += xDir;
+	y += yDir;
 }

@@ -106,33 +106,22 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 		case spriteCreationPacketID:
 			{
 				spriteCreationPacket *packet = (spriteCreationPacket *)buffer;
-				switch(packet->spriteType)
-				{
-				case playerType:
-					{
-						boost::shared_ptr<genericSprite> newSprite(new Player(packet->name));
-						sprite.registerSprite(newSprite);
-					}
-					break;
-				case platformType:
-					{
-						boost::shared_ptr<genericSprite> newSprite(new Platform(packet->name));
-						sprite.registerSprite(newSprite);
-					}
-					break;
-				case bubbleType:
-					{
-						boost::shared_ptr<genericSprite> newSprite(new Bubble(packet->name));
-						sprite.registerSprite(newSprite);
-					}
-					break;
-				case effectType:
-					{
-						boost::shared_ptr<genericSprite> newSprite(new Effect(packet->name));
-						sprite.registerSprite(newSprite);
-					}
-					break;
-				}
+				boost::shared_ptr<ClientSprite> newSprite(new ClientSprite(packet->name));
+				newSprite->SetImage(*sprite.Images[packet->spriteType].get());
+				sprite.registerSprite(newSprite);
+				
+			}
+			break;
+		case spriteTypeCreationPacketID:
+			{
+				spriteTypeCreationPacket *packet = (spriteTypeCreationPacket *)buffer;
+				boost::shared_ptr<sf::Image> Image(new sf::Image);
+				std::string fileName;
+				fileName += "data/";
+				fileName += packet->fileName;
+				Image->LoadFromFile(fileName);
+				Image->SetSmooth(false);
+				sprite.Images[packet->spriteTypeID] = Image;
 			}
 			break;
 		case spritePosPacketID:
@@ -174,7 +163,8 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 			break;
 		case animationChangePacketID:
 			{
-				animationChangePacket *packet = (animationChangePacket *)buffer;
+				std::cout << "TODO" << std::endl;
+				/*animationChangePacket *packet = (animationChangePacket *)buffer;
 				boost::mutex::scoped_lock lock(sprite.spriteMutex);
 				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
 					std::cout << "Could not find sprite" << std::endl;
@@ -182,10 +172,11 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 				}
 				sprite.Sprites[packet->spriteID]->changeAnimation(packet->animationID);
 				//sprite.Sprites[packet->spriteID]->currentAnimation->currentFrame = packet->currentFrame;
-			}
+			*/}
 			break;
 		case positionAndFrameUpdatePacketID:
 			{
+				//std::cout << "TODO" << std::endl;
 				positionAndFrameUpdatePacket *packet = (positionAndFrameUpdatePacket *)buffer;
 				boost::mutex::scoped_lock lock(sprite.spriteMutex);
 				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
@@ -195,7 +186,7 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 				sprite.Sprites[packet->spriteID]->SetX(packet->x);
 				sprite.Sprites[packet->spriteID]->SetY(packet->y);
 				sprite.Sprites[packet->spriteID]->flipped = packet->flipped;
-				sprite.Sprites[packet->spriteID]->currentAnimation->currentFrame = packet->currentFrame;
+				//sprite.Sprites[packet->spriteID]->currentAnimation->currentFrame = packet->currentFrame;
 			}
 		case serversListPacketID:
 			{
@@ -210,7 +201,8 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 			break;
 		case changePowerUpPacketID:
 			{
-				changePowerUpPacket *packet = (changePowerUpPacket *)buffer;
+				std::cout << "TODO" << std::endl;
+				/*changePowerUpPacket *packet = (changePowerUpPacket *)buffer;
 				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
 					std::cout << "Can not find sprite" << std::endl;
 				}
@@ -218,7 +210,7 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 				if (sprite.Sprites[packet->spriteID]->spriteType == bubbleType){
 					tempSprite = dynamic_cast<Bubble *>(sprite.Sprites[packet->spriteID].get());
 				}
-				tempSprite->powerup.changeAnimation(packet->powerupID);
+				tempSprite->powerup.changeAnimation(packet->powerupID);*/
 			}
 			break;
 		case fullServerInfoPacketID:

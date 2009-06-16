@@ -13,10 +13,9 @@
 
 #include "clientSprite.hpp"
 
-ClientSprite::ClientSprite(const std::string &name, std::string spriteType, sf::Image &tempImage) 
+ClientSprite::ClientSprite(const std::string &name) 
 	:	sf::Sprite(),
 		name(name),
-		Image(tempImage),
 		timesSkiped(0),
 		flipped(false),
 		currentState(deadState)

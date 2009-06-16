@@ -1,8 +1,6 @@
 #ifndef bubble_hpp
 #define bubble_hpp
 
-#include <SFML/Graphics/Image.hpp>
-
 #include "genericSprite.hpp"
 #include "powerup.hpp"
 #include "../powerup/powerUpManager.hpp"

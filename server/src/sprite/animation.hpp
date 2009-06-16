@@ -2,8 +2,9 @@
 #define animation_hpp
 
 #include <SFML\System\Clock.hpp>
-#include <SFML\Graphics\Rect.hpp>
 #include <boost\signal.hpp>
+
+#include <SFML\Graphics\Rect.hpp>
 
 struct AnimationInfoContainer
 {

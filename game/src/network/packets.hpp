@@ -8,6 +8,7 @@ enum packetIDs
 	connectPacketID,
 	doneConnectingPacketID,
 	connectionAcceptedPacketID,
+	spriteTypeCreationPacketID,
 	spriteCreationPacketID,
 	spriteDeletionPacketID,
 	spritePosPacketID,
@@ -56,13 +57,26 @@ struct connectionAcceptedPacket
 };
 
 /*!
-Size: 10+nameLength
+Creates a new sprite type on the client
+Size: 7 + fileNameLength
+Client <- Server
+*/
+struct spriteTypeCreationPacket
+{
+	packetIDs packetID;
+	unsigned short spriteTypeID;
+	unsigned char fileNameLength;
+	char fileName[255];
+};
+
+/*!
+Size: 7 + nameLength
 Client <- Server
 */
 struct spriteCreationPacket
 {
 	packetIDs packetID;
-	spriteTypes spriteType;
+	unsigned short spriteType;
 	unsigned char nameLength;
 	char name[255];
 };

@@ -1,15 +1,11 @@
-#include <SFML/Graphics/Image.hpp>
-
 #include "enumerations.hpp"
 #include "genericSprite.hpp"
 #include "selectionArea.hpp"
 #include "helpers.hpp"
 #include "spriteManager.hpp"
 
-sf::Image selectionArea::Image;
-
 selectionArea::selectionArea(const std::string &name, sf::IntRect rect)
-	:	genericSprite(name, "selectionArea", Image),
+	:	genericSprite(name, "selectionArea"),
 		collisionChecked(false)
 {
 	spriteType = selectionAreaType;
