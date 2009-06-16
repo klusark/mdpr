@@ -1,4 +1,4 @@
-#include <SFML\System.hpp>
+#include <SFML/System.hpp>
 #include "spriteManager.hpp"
 #include "spriteCollision.hpp"
 #include "selectionArea.hpp"

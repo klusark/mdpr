@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../sprite/genericSprite.hpp"
+#include "sprite/genericSprite.hpp"
 #include "genericPowerUp.hpp"
 
 genericPowerUp::genericPowerUp(genericSprite *newowner)

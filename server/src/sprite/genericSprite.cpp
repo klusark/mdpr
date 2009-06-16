@@ -123,6 +123,19 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType)
 		notify(animationVariableMap);
 		unsigned int animationName = stringToCRC(*iter);
 		Animations[animationName] = newAnimation;
+
+		spriteManager::animationPacketContainer::iterator iter = sprite.Animations.find(animationName);
+		if (iter == sprite.Animations.end()){
+			animationCreationPacket packet;
+			packet.packetID		= animationCreationPacketID;
+			packet.animationID	= animationName;
+			packet.height		= newAnimation->AnimationInfo.height;
+			packet.width		= newAnimation->AnimationInfo.width;
+			packet.padding		= newAnimation->AnimationInfo.padding;
+			packet.startX		= newAnimation->AnimationInfo.startx;
+			packet.startY		= newAnimation->AnimationInfo.starty;
+			sprite.Animations[packet.animationID] = packet;
+		}
 			
 	}
 }

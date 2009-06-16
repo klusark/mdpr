@@ -46,6 +46,8 @@ public:
 	//!The name of the sprite
 	std::string name;
 
+	unsigned short currentAnimationID, currentFrame;
+
 	//!true if the sprite is currently flipped.
 	bool flipped;
 

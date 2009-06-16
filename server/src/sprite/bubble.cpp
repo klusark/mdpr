@@ -1,7 +1,7 @@
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
-#include "../powerup/powerUpManager.hpp"
+#include "powerup/powerUpManager.hpp"
 #include "enumerations.hpp"
 #include "helpers.hpp"
 #include "genericSprite.hpp"

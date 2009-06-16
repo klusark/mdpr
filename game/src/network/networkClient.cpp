@@ -124,6 +124,12 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 				sprite.Images[packet->spriteTypeID] = Image;
 			}
 			break;
+		case animationCreationPacketID:
+			{
+				animationCreationPacket *packet = (animationCreationPacket *)buffer;
+				sprite.Animations[packet->animationID] = *packet;
+			}
+			break;
 		case spritePosPacketID:
 			{
 				spritePosPacket *packet = (spritePosPacket *)buffer;
@@ -163,20 +169,17 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 			break;
 		case animationChangePacketID:
 			{
-				std::cout << "TODO" << std::endl;
-				/*animationChangePacket *packet = (animationChangePacket *)buffer;
+				animationChangePacket *packet = (animationChangePacket *)buffer;
 				boost::mutex::scoped_lock lock(sprite.spriteMutex);
 				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
 					std::cout << "Could not find sprite" << std::endl;
 					break;
 				}
-				sprite.Sprites[packet->spriteID]->changeAnimation(packet->animationID);
-				//sprite.Sprites[packet->spriteID]->currentAnimation->currentFrame = packet->currentFrame;
-			*/}
+				sprite.Sprites[packet->spriteID]->currentAnimationID = packet->animationID;
+			}
 			break;
 		case positionAndFrameUpdatePacketID:
 			{
-				//std::cout << "TODO" << std::endl;
 				positionAndFrameUpdatePacket *packet = (positionAndFrameUpdatePacket *)buffer;
 				boost::mutex::scoped_lock lock(sprite.spriteMutex);
 				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
@@ -186,7 +189,7 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 				sprite.Sprites[packet->spriteID]->SetX(packet->x);
 				sprite.Sprites[packet->spriteID]->SetY(packet->y);
 				sprite.Sprites[packet->spriteID]->flipped = packet->flipped;
-				//sprite.Sprites[packet->spriteID]->currentAnimation->currentFrame = packet->currentFrame;
+				sprite.Sprites[packet->spriteID]->currentFrame = packet->currentFrame;
 			}
 		case serversListPacketID:
 			{

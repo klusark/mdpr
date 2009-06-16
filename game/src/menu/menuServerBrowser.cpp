@@ -2,7 +2,7 @@
 #include "menuGeneric.hpp"
 #include "menuMain.hpp"
 #include "menuManager.hpp"
-#include "../MDPRGame.hpp"
+#include "MDPRGame.hpp"
 
 
 menuServerBrowser::menuServerBrowser(sf::RenderWindow &App)

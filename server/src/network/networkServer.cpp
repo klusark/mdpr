@@ -143,6 +143,16 @@ void networkServer::onReceivePacket(const boost::system::error_code& error, size
 						
 					}
 				}
+
+				{
+					//Send all the animations to the client
+					spriteManager::animationPacketContainer::iterator iter;
+					for(iter = sprite.Animations.begin(); iter != sprite.Animations.end(); ++iter){
+
+						serverSocket.async_send_to(boost::asio::buffer((const void *)&iter->second, sizeof(animationCreationPacket)), player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+						
+					}
+				}
 				
 				{
 					//Send all the sprites to the client
@@ -156,6 +166,20 @@ void networkServer::onReceivePacket(const boost::system::error_code& error, size
 						strcpy(packet.name, iter->second->name.c_str());
 
 						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(spriteCreationPacket) - 255 + packet.nameLength), player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+						
+					}
+				}
+
+				{
+					//Sends the current animation of all the sprites to the new player
+					spriteManager::spriteContainer::iterator iter;
+					for(iter = sprite.Sprites.begin(); iter != sprite.Sprites.end(); ++iter){
+						animationChangePacket packet;
+						packet.packetID = animationChangePacketID;
+						packet.spriteID = iter->first;
+						packet.animationID = iter->second->currentAnimation->CRCName;
+
+						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(animationChangePacket)), player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 						
 					}
 				}
