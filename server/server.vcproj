@@ -459,6 +459,10 @@
 				RelativePath=".\src\network\networkServer.hpp"
 				>
 			</File>
+			<File
+				RelativePath="..\game\src\network\packets.hpp"
+				>
+			</File>
 			<Filter
 				Name="PowerUps"
 				>

@@ -4,7 +4,7 @@
 #include "genericSprite.hpp"
 #include "network/packets.hpp"
 
-#include "../powerup/gun.hpp"
+#include "powerup/gun.hpp"
 
 Player::Player(const std::string &name)
 	:	 genericSprite(name, "player"),

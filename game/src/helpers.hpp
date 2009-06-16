@@ -1,7 +1,7 @@
 #ifndef helpers_hpp
 #define helpers_hpp
 
-#include <SFML\Graphics\Rect.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
 unsigned short stringToCRC(std::string string);
 

@@ -1,8 +1,6 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
 
-#include <SFML/Graphics.hpp>
-
 #include <map>
 #include "helpers.hpp"
 #include "clientSprite.hpp"

@@ -1,7 +1,7 @@
 #ifndef packets_hpp
 #define packets_hpp
 
-#include "../enumerations.hpp"
+#include "enumerations.hpp"
 
 enum packetIDs
 {
@@ -9,6 +9,7 @@ enum packetIDs
 	doneConnectingPacketID,
 	connectionAcceptedPacketID,
 	spriteTypeCreationPacketID,
+	animationCreationPacketID,
 	spriteCreationPacketID,
 	spriteDeletionPacketID,
 	spritePosPacketID,
@@ -67,6 +68,17 @@ struct spriteTypeCreationPacket
 	unsigned short spriteTypeID;
 	unsigned char fileNameLength;
 	char fileName[255];
+};
+
+/*!
+Creates a new animation on the client
+Size: 16
+Client <- Server
+*/
+struct animationCreationPacket
+{
+	packetIDs packetID;
+	unsigned short animationID, startX, startY, width, height, padding;
 };
 
 /*!

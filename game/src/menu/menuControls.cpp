@@ -5,8 +5,8 @@
 #include "menuOptions.hpp"
 #include "menuServerBrowser.hpp"
 #include "menuMain.hpp"
-#include "../helpers.hpp"
-#include "../MDPRGame.hpp"
+#include "helpers.hpp"
+#include "MDPRGame.hpp"
 
 menuControls::menuControls(sf::RenderWindow &App)
 	:	menuGeneric(App),

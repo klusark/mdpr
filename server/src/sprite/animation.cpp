@@ -27,7 +27,6 @@ sf::IntRect Animation::update()
 		infoSaved = true;
 	}
 	//sf::IntRect newRect(currentFrame * width + ((currentFrame + 1) * padding) + startx, starty, (width + currentFrame * width + (currentFrame+1 * padding)), starty + height);
-#if SERVER
 	if (!paused){
 
 		updateTime += Clock.GetElapsedTime() * 1000;
@@ -55,7 +54,6 @@ sf::IntRect Animation::update()
 	}else{
 		Clock.Reset();
 	}
-#endif
 	sf::IntRect newRect = XYWHToLTRB(AnimationInfo.startx + (currentFrame * AnimationInfo.width) + (currentFrame * AnimationInfo.padding), AnimationInfo.starty, AnimationInfo.width, AnimationInfo.height);
 	
 	return newRect;

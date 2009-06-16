@@ -1,6 +1,6 @@
 #include <boost/shared_ptr.hpp>
 
-#include "../sprite/genericSprite.hpp"
+#include "sprite/genericSprite.hpp"
 #include "powerUpManager.hpp"
 #include "boots.hpp"
 

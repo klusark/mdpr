@@ -1,10 +1,10 @@
 #ifndef animation_hpp
 #define animation_hpp
 
-#include <SFML\System\Clock.hpp>
-#include <boost\signal.hpp>
+#include <SFML/System/Clock.hpp>
+#include <boost/signal.hpp>
 
-#include <SFML\Graphics\Rect.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
 struct AnimationInfoContainer
 {

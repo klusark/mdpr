@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+#include <SFML/System/Sleep.hpp>
 #include <SFML/System/Clock.hpp>
 
 #include <boost/program_options.hpp>

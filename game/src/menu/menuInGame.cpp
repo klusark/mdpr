@@ -2,7 +2,7 @@
 #include "menuGeneric.hpp"
 #include "menuManager.hpp"
 #include "menuOptions.hpp"
-#include "../MDPRGame.hpp"
+#include "MDPRGame.hpp"
 
 
 menuInGame::menuInGame(sf::RenderWindow &App)
