@@ -128,41 +128,60 @@ void networkServer::onReceivePacket(const boost::system::error_code& error, size
 				sprite.registerSprite(newPlayer);
 				player->playerSprite = newPlayer;
 
-				//player->timer.async_wait(boost::bind(&networkServer::playerInfo::disconnect, player, boost::asio::placeholders::error));
-				
-							
-				std::cout << "Player " << player->name << " connected from " << player->endpoint.address().to_v4().to_string() << std::endl;
 				{
+					//Send all the sprite types to the client
+					spriteManager::spriteTypeContainer::iterator iter;
+					for(iter = sprite.SpriteTypes.begin(); iter != sprite.SpriteTypes.end(); ++iter){
+
+						spriteTypeCreationPacket packet;
+						packet.packetID = spriteTypeCreationPacketID;
+						packet.spriteTypeID = iter->first;
+						packet.fileNameLength = iter->second.length();
+						strcpy(packet.fileName, iter->second.c_str());
+
+						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(spriteTypeCreationPacket) - 255 + packet.fileNameLength), player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+						
+					}
+				}
+				
+				{
+					//Send all the sprites to the client
 					spriteManager::spriteContainer::iterator iter;
 					for(iter = sprite.Sprites.begin(); iter != sprite.Sprites.end(); ++iter){
 
 						spriteCreationPacket packet;
 						packet.packetID = spriteCreationPacketID;
-						packet.spriteType = iter->second->spriteType;
+						packet.spriteType = stringToCRC(iter->second->spriteTypeName);
 						packet.nameLength = iter->second->name.length();
 						strcpy(packet.name, iter->second->name.c_str());
 
-						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 10 + packet.nameLength), player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(spriteCreationPacket) - 255 + packet.nameLength), player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 						
 					}
 				}
 
 				{
+					//Send the new player to all the already connected players
 					playerContainer::iterator iter;
 					for(iter = Players.begin(); iter != Players.end(); ++iter){
 
 						spriteCreationPacket packet;
 						packet.packetID = spriteCreationPacketID;
 						packet.spriteType = player->playerSprite->spriteType;
+						packet.spriteType = stringToCRC(player->playerSprite->spriteTypeName);
 						packet.nameLength = player->playerSprite->name.length();
 						strcpy(packet.name, player->playerSprite->name.c_str());
 
-						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, 10 + packet.nameLength), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(spriteCreationPacket) - 255 + packet.nameLength), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 						
 					}
 				}
+
 				Players[endpoint.port()] = player;
+				std::cout << "Player " << player->name << " connected from " << player->endpoint.address().to_v4().to_string() << std::endl;
+
 				{
+					//Send the done connecting packet to tell the client that all the info has been sent
 					doneConnectingPacket packet;
 					packet.packetID = doneConnectingPacketID;
 

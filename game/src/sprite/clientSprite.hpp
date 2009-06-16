@@ -24,7 +24,7 @@ public:
 	\param spriteType Name of the type of sprite. Used for loading the sprites details from a file. 
 	\param Image  The static image from the sprite class that inherits this one. 
 	*/
-	ClientSprite(const std::string &name, std::string spriteType, sf::Image &Image);
+	ClientSprite(const std::string &name);
 
 	//!The deconstructor
 	~ClientSprite();
@@ -55,7 +55,6 @@ public:
 	int timesSkiped;
 	spriteStates currentState;
 protected:
-	sf::Image &Image;
 };
 
 #endif // #ifndef clientSprite_hpp

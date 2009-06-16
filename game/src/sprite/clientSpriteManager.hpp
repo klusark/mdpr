@@ -1,5 +1,5 @@
-#ifndef spriteManager_hpp
-#define spriteManager_hpp
+#ifndef clientSpriteManager_hpp
+#define clientSpriteManager_hpp
 
 #include <map>
 #include <string>
@@ -14,9 +14,13 @@ class ClientSpriteManager
 public:
 	ClientSpriteManager();
 	~ClientSpriteManager();
-	typedef std::map<unsigned short, boost::shared_ptr<ClientSprite> > spriteContainer;
 
+	typedef std::map<unsigned short, boost::shared_ptr<ClientSprite> > spriteContainer;
 	spriteContainer Sprites;
+
+	typedef std::map<unsigned short, boost::shared_ptr<sf::Image> > imageContainer;
+	imageContainer Images;
+
 	void registerSprite(boost::shared_ptr<ClientSprite> sprite);
 	void update();
 	void draw(sf::RenderWindow &App);
@@ -35,4 +39,4 @@ private:
 extern ClientSpriteManager sprite;
 
 
-#endif // #ifndef spriteManager_hpp
+#endif // #ifndef clientSpriteManager_hpp

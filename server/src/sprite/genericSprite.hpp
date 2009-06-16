@@ -2,8 +2,6 @@
 #define genericSprite_hpp
 
 #include <boost/shared_ptr.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Image.hpp>
 #include <SFML/System/Clock.hpp>
 #include <map>
 #include "enumerations.hpp"
@@ -32,7 +30,7 @@ public:
 	\param spriteType Name of the type of sprite. Used for loading the sprites details from a file. 
 	\param Image  The static image from the sprite class that inherits this one. 
 	*/
-	genericSprite(const std::string &name, std::string spriteType, sf::Image &Image);
+	genericSprite(const std::string &name, std::string spriteType);
 
 	//!The deconstructor
 	~genericSprite();
@@ -48,7 +46,7 @@ public:
 	Can be reimplemented in an inheritor for more drawing control
 	\param App The render window to draw the sprite onto. 
 	*/
-	virtual void draw(sf::RenderWindow &App);
+	//virtual void draw(sf::RenderWindow &App);
 
 	//!Changes the current animation of the sprite
 	/*!
@@ -105,6 +103,8 @@ public:
 	//!The sprite type. Mainly used for collision detection
 	spriteTypes spriteType;
 
+	std::string spriteTypeName;
+
 	//!Pointer to the current animaiton
 	boost::shared_ptr<Animation> currentAnimation;
 
@@ -140,9 +140,9 @@ public:
 	void SetPosition(Position);
 	void Move(float,float);
 protected:
-	sf::Image &Image;
 	float xAccel,		yAccel;
 	float xVelocity,	yVelocity;
+	float x,			y;
 	
 	sf::Clock Clock;
 
