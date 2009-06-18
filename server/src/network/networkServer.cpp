@@ -46,14 +46,14 @@ networkServer::networkServer()
 		ioThreads.create_thread(boost::bind(&networkServer::ioServiceThread, this));
 	}
 
-	for (int i = 0; i < 20; ++i){
+	for (int i = 0; i < 25; ++i){
 		std::string name = "platform";
 		char buff[4];
 		sprintf(buff, "%d", i);
 		name += buff;
 		boost::shared_ptr<genericSprite> newPlatform(new Platform(name));
 		newPlatform->SetY(100);
-		newPlatform->SetX(i*16);
+		newPlatform->SetX(50 + (i*16));
 		sprite.registerSprite(newPlatform);
 	}
 
@@ -171,15 +171,26 @@ void networkServer::onReceivePacket(const boost::system::error_code& error, size
 				}
 
 				{
-					//Sends the current animation of all the sprites to the new player
+					//Sends the current animation and position of all the sprites to the new player
 					spriteManager::spriteContainer::iterator iter;
 					for(iter = sprite.Sprites.begin(); iter != sprite.Sprites.end(); ++iter){
-						animationChangePacket packet;
-						packet.packetID = animationChangePacketID;
-						packet.spriteID = iter->first;
-						packet.animationID = iter->second->currentAnimation->CRCName;
+						positionAndFrameUpdatePacket POSpacket;
+						POSpacket.packetID = positionAndFrameUpdatePacketID;
+						Position position = iter->second->GetPosition();
+						POSpacket.spriteID = iter->first;
 
-						serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(animationChangePacket)), player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+						POSpacket.x = position.x;
+						POSpacket.y = position.y;
+						POSpacket.flipped = iter->second->flipped;
+						POSpacket.currentFrame = iter->second->currentAnimation->currentFrame;
+
+						animationChangePacket AnimPacket;
+						AnimPacket.packetID = animationChangePacketID;
+						AnimPacket.spriteID = iter->first;
+						AnimPacket.animationID = iter->second->currentAnimation->CRCName;
+
+						serverSocket.async_send_to(boost::asio::buffer((const void *)&POSpacket,	sizeof(positionAndFrameUpdatePacket)),	player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+						serverSocket.async_send_to(boost::asio::buffer((const void *)&AnimPacket,	sizeof(animationChangePacket)),				player->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 						
 					}
 				}
@@ -254,7 +265,7 @@ void networkServer::removeIdlePlayers(const boost::system::error_code& error)
 	//boost::mutex::scoped_lock lock(PlayerMutex);
 	for (networkServer::playerContainer::iterator it = Players.begin(); it != Players.end(); ++it){
 		if (!it->second->stillAlive){
-			disconnect(stringToCRC(it->second->name));
+			//disconnect(it->first);
 			break;
 		}else{
 			it->second->stillAlive = false;
@@ -270,7 +281,6 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 		std::cout << "onSpriteUpdate: " << error.message() << std::endl;
 		return;
 	}
-	boost::mutex::scoped_lock lock(sprite.spriteMutex);
 	sprite.update();
 	for(spriteManager::spriteContainer::iterator it = sprite.Sprites.begin(); it != sprite.Sprites.end(); ++it){
 		boost::shared_ptr<genericSprite> currentSprite = it->second;
@@ -278,7 +288,8 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 			continue;
 		}
 		Position position = currentSprite->GetPosition();
-		if (currentSprite->timesSkiped <= 100){
+		//1000 is an arbitrary number that should be put into a variable
+		if (currentSprite->timesSkiped <= 1000){
 			if ((floor(currentSprite->lastX) == floor(position.x)) && (floor(currentSprite->lastY) == floor(position.y)) && (currentSprite->lastAnimationName == currentSprite->currentAnimation->name) && (currentSprite->lastFrame == currentSprite->currentAnimation->currentFrame)){
 				++currentSprite->timesSkiped;
 				continue;
@@ -318,7 +329,7 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 			serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(packet)), iter->second->endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 		}
 	}
-	spriteUpdateTimer.expires_from_now(boost::posix_time::milliseconds(20));
+	spriteUpdateTimer.expires_from_now(boost::posix_time::milliseconds(5));
 	spriteUpdateTimer.async_wait(boost::bind(&networkServer::onSpriteUpdate, this, boost::asio::placeholders::error));
 
 }
@@ -374,4 +385,5 @@ void networkServer::ioServiceThread()
 	}catch(...){
 		std::cout << "Unknown Exception caught" << std::endl; 
 	}
+	std::cout << "ioServiceThread: Huge error. FIX ME!!!" << std::endl;
 }

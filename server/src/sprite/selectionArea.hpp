@@ -14,9 +14,26 @@ public:
 	bool collisionChecked;
 	spriteTypes typeToSelect;
 	void update();
-	void draw();
-	typedef std::vector<std::string> selectedSpriteContainer;
+	typedef std::vector<boost::shared_ptr<genericSprite> > selectedSpriteContainer;
 	selectedSpriteContainer selectedSprites;
+
+	//!Selects the closest sprite in the area
+	/*!
+	\param x when true x is included in distance calculations
+	\param y when true y is included in distance calculations
+	\param pos the position to check from
+	\return pointer to the closest sprite
+	*/
+	boost::shared_ptr<genericSprite> selectClosest(Position pos, bool x = true, bool y = true);
+
+	//!Selects the farthest sprite in th area
+	/*!
+	\param x when true x is included in distance calculations
+	\param y when true y is included in distance calculations
+	\param pos the position to check from
+	\return pointer to the farthest sprite
+	*/
+	boost::shared_ptr<genericSprite> selectFarthest(Position pos, bool x = true, bool y = true);
 	
 };
 

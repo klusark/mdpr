@@ -12,6 +12,7 @@ Player::Player(const std::string &name)
 		crouching(false),
 		running(false),
 		idle(false),
+		jumpingUp(false),
 		velocity(0)
 {
 	spriteType = playerType;
@@ -24,7 +25,11 @@ Player::Player(const std::string &name)
 	keyMap[keyAction]	= false;
 
 	changeAnimation("idle");
-	setYVelocity(30.0f);
+	setYAccel(50.0f);
+
+	hasPowerUp = true;
+
+	currentPowerup = boost::shared_ptr<genericPowerUp>(new Gun(this));
 
 
 }
@@ -35,68 +40,68 @@ Player::~Player()
 
 void Player::update()
 {
-	
-	if (keyMap[keyAction] == true && hasPowerUp){
-		currentPowerup->onActionKey();
-	}
-#ifdef SERVER
-	running = false;
+	if (currentState == aliveState){
+		if (keyMap[keyAction] == true && hasPowerUp){
+			currentPowerup->onActionKey();
+		}
+		running = false;
 
-	if (onGround){
-		if (!rolling){
-			velocity = (float)(-1*keyMap[keyLeft]+keyMap[keyRight])*30;
-		}
-		if (crouching){
-			velocity = 0;
-		}
-		if (velocity != 0){
-			if (keyMap[keyDown]){
-				rolling = true;
-			}else if (rolling){
+		if (onGround){
+			if (!rolling){
+				velocity = (float)(-1 * keyMap[keyLeft] + keyMap[keyRight]) * runSpeed;
+			}
+			if (crouching){
+				velocity = 0;
+			}
+			if (velocity != 0){
+				if (keyMap[keyDown]){
+					rolling = true;
+				}else if (rolling){
 
+				}else{
+					running = true;
+				}
+
+				if (velocity < 0){
+					flipped = true;
+				}else{
+					flipped = false;
+				}
+			}else if (!rolling){
+				if (keyMap[keyDown]){
+					crouching = true;
+				}else if (crouching){
+					currentAnimation->resume();
+					currentAnimation->onFinish.connect(boost::bind(&Player::crouchingFinish, this));
+					//crouching = false;
+				}else if (keyMap[keyUp]){
+					jumpingUp = true;
+					setYVelocity(-50.0f);
+				}
+			}
+			if ((running + rolling + crouching + jumpingUp) > 1){
+				throw 0;
+			}
+			if ((running + rolling + crouching + jumpingUp) == 0){
+				idle = true;
 			}else{
-				running = true;
+				idle = false;
 			}
-			//changeAnimation("run");
-			if (velocity < 0){
-				flipped = true;
-			}else{
-				flipped = false;
+			if (running && currentAnimation->name != "run"){
+				changeAnimation("run");
+			}else if (rolling && currentAnimation->name != "roll"){
+				changeAnimation("roll");
+				currentAnimation->onFinish.connect(boost::bind(&Player::rollingFinish, this));
+			}else if(crouching && currentAnimation->name != "crouch"){
+				changeAnimation("crouch");
+			}else if(jumpingUp && currentAnimation->name != "jumpUp"){
+				changeAnimation("jumpUp");
+			}else if (idle && currentAnimation->name != "idle"){
+				changeAnimation("idle");
 			}
-		}else if (!rolling){
-			if (keyMap[keyDown]){
-				crouching = true;
-			}else if (crouching){
-				currentAnimation->resume();
-				currentAnimation->onFinish.connect(boost::bind(&Player::crouchingFinish, this));
-				//crouching = false;
-			}else if (keyMap[keyUp]){
-				jumpingUp = true;
-			}
+			setXVelocity(velocity);
 		}
-		if ((running + rolling + crouching) > 1){
-			throw 0;
-		}
-		if ((running + rolling + crouching ) == 0){
-			idle = true;
-		}else{
-			idle = false;
-		}
-		if (running && currentAnimation->name != "run"){
-			changeAnimation("run");
-		}else if (rolling && currentAnimation->name != "roll"){
-			changeAnimation("roll");
-			currentAnimation->onFinish.connect(boost::bind(&Player::rollingFinish, this));
-		}else if(crouching && currentAnimation->name != "crouch"){
-			changeAnimation("crouch");
-		//}else if(jumpingUp && currentAnimation->name != "jumpingUp"){
-		//	changeAnimation("jumpingUp");
-		}else if (idle){
-			changeAnimation("idle");
-		}
-		setXVelocity(velocity);
 	}
-#endif
 	genericSprite::update();
 }
 
@@ -119,9 +124,4 @@ void Player::rollingFinish()
 	currentAnimation->playBackward = true;
 	currentAnimation->pause();
 
-}
-
-void Player::die()
-{
-	//changeAnimation
 }

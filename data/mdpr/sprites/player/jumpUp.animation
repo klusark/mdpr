@@ -1,7 +1,7 @@
 delay = 100
-frames = 1
+frames = 6
 startx = 1
-starty = 26
+starty = 101
 width = 24
 height = 24
 padding = 1

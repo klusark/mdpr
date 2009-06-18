@@ -1,3 +1,5 @@
+#include <cmath> //for abs
+
 #include "enumerations.hpp"
 #include "genericSprite.hpp"
 #include "selectionArea.hpp"
@@ -24,6 +26,38 @@ void selectionArea::update()
 	genericSprite::update();
 }
 
-void selectionArea::draw()
+boost::shared_ptr<genericSprite> selectionArea::selectClosest(Position pos, bool x, bool y)
 {
+	unsigned short lowest;
+	//give the shortest a very high value
+	float shortestSoFar = float(unsigned int(-1));
+
+	for (unsigned short i = 0; i < selectedSprites.size(); ++i){
+		float xDistance, yDistance, totalDistance;
+		xDistance = abs(selectedSprites[i]->GetX() - pos.x);
+		yDistance = abs(selectedSprites[i]->GetY() - pos.y);
+		totalDistance = sqrt(pow(xDistance, 2) + pow(yDistance, 2));
+		if (x && y){
+			if (shortestSoFar > totalDistance){
+				shortestSoFar = totalDistance;
+				lowest = i;
+			}
+		}else if (x){
+			if (shortestSoFar > xDistance){
+				shortestSoFar = xDistance;
+				lowest = i;
+			}
+		}else if (y){
+			if (shortestSoFar > yDistance){
+				shortestSoFar = yDistance;
+				lowest = i;
+			}
+		}
+	}
+	return selectedSprites[lowest];
+}
+
+boost::shared_ptr<genericSprite> selectionArea::selectFarthest(Position pos, bool x, bool y)
+{
+	return selectedSprites[0];
 }

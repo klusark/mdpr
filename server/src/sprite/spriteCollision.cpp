@@ -44,7 +44,7 @@ void spriteCollision::update(int spriteID)
 				collisionRect.Offset(int(iter->second->GetPosition().x), int(iter->second->GetPosition().y));
 				
 				if (area->collisionRect.Intersects(collisionRect)){
-					area->selectedSprites.push_back(iter->second->name);
+					area->selectedSprites.push_back(iter->second);
 					
 				}
 				area->collisionChecked = true;

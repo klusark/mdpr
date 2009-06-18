@@ -47,7 +47,7 @@ void Gun::update()
 	if (justShot){
 		if (dynamic_cast<selectionArea *>(mySelectionArea.get())->collisionChecked){
 
-			sprite.removeSprite(mySelectionArea->name);
+			//sprite.removeSprite(mySelectionArea->name);
 			//mySelectionArea = 0;
 		}
 		if (clock.GetElapsedTime() > 0.3f){

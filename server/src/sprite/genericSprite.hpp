@@ -18,9 +18,9 @@ struct Position
 //! The base sprite class
 /*!
 All sprites must inherit this class
- Provides movement, animation, and  access to colliiton
+Provides movement, animation, and  access to colliiton
 */
-class genericSprite //: public sf::Sprite
+class genericSprite
 {
 public:
 	//! The constructor.
@@ -60,9 +60,11 @@ public:
 	*/
 	void changeAnimation(std::string name);
 
-	void kill();
-
-	virtual void die();
+	//!Kills the sprite
+	/*!
+	\param cause the crc of the name of the cause
+	*/
+	virtual void death(unsigned short cause);
 
 	//!The name of the sprite
 	std::string name;

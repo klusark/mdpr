@@ -13,12 +13,12 @@ public:
 	void crouchingFinish();
 	void rollingFinish();
 
-	void die();
-
 	typedef std::map<keys, bool> keysContainter;
 	keysContainter keyMap;
 	bool rolling, running, crouching, idle, jumpingUp;
 	float velocity;
+
+	static const unsigned short runSpeed = 50;
 	
 };
 
