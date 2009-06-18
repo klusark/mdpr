@@ -3,6 +3,7 @@
 #include "sprite/genericSprite.hpp"
 #include "powerUpManager.hpp"
 #include "death.hpp"
+#include "helpers.hpp"
 
 RegisterPowerup RegisterDeath("death");
 
@@ -21,5 +22,5 @@ void Death::onActionKey()
 
 void Death::update()
 {
-	owner->die();
+	owner->death(stringToCRC("death"));
 }

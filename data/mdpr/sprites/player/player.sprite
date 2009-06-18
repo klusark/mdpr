@@ -3,5 +3,6 @@ animation = crouch
 animation = idle
 animation = roll
 animation = shoot
+animation = jumpUp
 image = newplayer.png
 spawnEffect = greenPoof

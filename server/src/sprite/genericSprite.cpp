@@ -146,22 +146,22 @@ genericSprite::~genericSprite()
 
 void genericSprite::update()
 {
-	if(!noAnimation){
-#ifndef SERVER
-		SetSubRect(currentAnimation->update());
-		FlipX(flipped);
-#else 
-		currentAnimation->update();
-#endif
-	}
-#ifdef SERVER
-	float deltaTime = Clock.GetElapsedTime();
-	Clock.Reset();
+	if(currentState == aliveState){
+		if(!noAnimation){
+			currentAnimation->update();
+		}
+		float deltaTime = Clock.GetElapsedTime();
+		Clock.Reset();
 
-	Move(static_cast<float>(xVelocity*deltaTime+(0.5)*xAccel*pow(deltaTime,2)), static_cast<float>(yVelocity*deltaTime+(0.5)*yAccel*pow(deltaTime,2)));
-	xVelocity+=xAccel*deltaTime;
-	yVelocity+=yAccel*deltaTime;
-	if (currentState == deadState){
+		Move(static_cast<float>(xVelocity*deltaTime+(0.5)*xAccel*pow(deltaTime,2)), static_cast<float>(yVelocity*deltaTime+(0.5)*yAccel*pow(deltaTime,2)));
+		xVelocity += xAccel*deltaTime;
+		yVelocity += yAccel*deltaTime;
+
+		if (hasPowerUp){
+			currentPowerup->update();
+		}
+
+	}else if (currentState == deadState){
 		if (!spawnTimerStarted){
 			spawnTimer.Reset();
 			spawnTimerStarted = true;
@@ -171,17 +171,7 @@ void genericSprite::update()
 			spawnTimerStarted = false;
 		}
 	}
-	if (hasPowerUp){
-		currentPowerup->update();
-	}
-#endif
-
 }
-
-/*void genericSprite::draw(sf::RenderWindow &App)
-{
-	App.Draw(*this);
-}*/
 
 void genericSprite::changeAnimation(unsigned int name)
 {
@@ -195,20 +185,15 @@ void genericSprite::changeAnimation(unsigned int name)
 	}
 }
 
-void genericSprite::kill()
-{
-	
-}
-
-void genericSprite::die()
-{
-}
-
 void genericSprite::changeAnimation(std::string name)
 {
 	changeAnimation(stringToCRC(name));
 }
 
+void genericSprite::death(unsigned short cause)
+{
+	
+}
 
 float genericSprite::getXAccel()
 {
@@ -245,9 +230,9 @@ void genericSprite::setXVelocity(float xVelocity)
 	this->xVelocity = xVelocity;
 }
 
-void genericSprite::setYVelocity(float yVelocity)
+void genericSprite::setYVelocity(float newyVelocity)
 {
-	this->yVelocity = yVelocity;
+	yVelocity = newyVelocity;
 }
 
 void genericSprite::SetY(float newY)

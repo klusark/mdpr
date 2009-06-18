@@ -135,7 +135,11 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 				spritePosPacket *packet = (spritePosPacket *)buffer;
 				boost::mutex::scoped_lock lock(sprite.spriteMutex);
 				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
-					std::cout << "Could not find sprite" << std::endl;
+					cannotFindSpritePacket newPacket;
+					newPacket.packetID = cannotFindSpritePacketID;
+					newPacket.spriteID = packet->spriteID;
+					socket.send_to(boost::asio::buffer((const void *)&newPacket, sizeof(cannotFindSpritePacket)), receiverEndpoint);
+					//std::cout << "Could not find sprite" << std::endl;
 					break;
 				}
 				sprite.Sprites[packet->spriteID]->SetX(packet->x);
@@ -200,20 +204,6 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 					serverList.push_back(newEntry);
 					serversToUpdate[0].push_back(&newEntry);
 				}
-			}
-			break;
-		case changePowerUpPacketID:
-			{
-				std::cout << "TODO" << std::endl;
-				/*changePowerUpPacket *packet = (changePowerUpPacket *)buffer;
-				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
-					std::cout << "Can not find sprite" << std::endl;
-				}
-				Bubble *tempSprite;
-				if (sprite.Sprites[packet->spriteID]->spriteType == bubbleType){
-					tempSprite = dynamic_cast<Bubble *>(sprite.Sprites[packet->spriteID].get());
-				}
-				tempSprite->powerup.changeAnimation(packet->powerupID);*/
 			}
 			break;
 		case fullServerInfoPacketID:

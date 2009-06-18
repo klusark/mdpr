@@ -17,9 +17,7 @@ enum packetIDs
 	keyPacketID,
 	positionAndFrameUpdatePacketID,
 	animationChangePacketID,
-	changePowerUpPacketID,
-	changeBubblePowerUpPacketID,
-	needSpritePacketID,
+	cannotFindSpritePacketID,
 	serverInfoPacketID,
 	getServersPacketID,
 	serversListPacketID,
@@ -160,29 +158,10 @@ struct positionAndFrameUpdatePacket
 	bool flipped;
 };
 
-/*
-Size: 10
-*/
-struct changePowerUpPacket
+struct cannotFindSpritePacket
 {
 	packetIDs packetID;
-
 	unsigned short spriteID;
-	unsigned short powerupID;
-};
-
-struct changeBubblePowerUpPacket
-{
-	packetIDs packetID;
-
-	unsigned short spriteID;
-	unsigned short powerupID;
-};
-
-struct needSpritePacket
-{
-	packetIDs packetID;
-	unsigned short stuff;
 };
 
 struct serverInfoPacket
