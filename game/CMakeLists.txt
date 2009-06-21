@@ -8,32 +8,6 @@ set(SOURCES
 	src/network/networkClient.hpp
 	src/network/packets.hpp
 	
-	src/sprite/genericSprite.cpp
-	src/sprite/spriteManager.cpp
-	src/sprite/genericSprite.hpp
-	src/sprite/player.cpp
-	src/sprite/player.hpp
-	src/sprite/bubble.cpp
-	src/sprite/bubble.hpp
-	src/sprite/powerup.cpp
-	src/sprite/powerup.hpp
-	src/sprite/platform.cpp
-	src/sprite/platform.hpp
-	src/sprite/spriteCollision.cpp
-	src/sprite/spriteCollision.hpp  
-	src/sprite/spriteManager.hpp
-	src/sprite/animation.cpp
-	src/sprite/animation.hpp
-	src/sprite/selectionArea.cpp
-	src/sprite/selectionArea.hpp
-	
-	src/powerup/powerupmanager.cpp
-	src/powerup/powerupmanager.hpp
-	src/powerup/genericPowerUp.cpp
-	src/powerup/genericPowerUp.hpp
-	src/powerup/gun.cpp
-	src/powerup/gun.hpp
-	
 	src/menu/menuGeneric.hpp
 	src/menu/menuMain.hpp
 	src/menu/menuManager.hpp

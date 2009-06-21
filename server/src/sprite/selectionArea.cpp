@@ -30,7 +30,7 @@ boost::shared_ptr<genericSprite> selectionArea::selectClosest(Position pos, bool
 {
 	unsigned short lowest;
 	//give the shortest a very high value
-	float shortestSoFar = float(unsigned int(-1));
+	float shortestSoFar = float((unsigned int)-1);
 
 	for (unsigned short i = 0; i < selectedSprites.size(); ++i){
 		float xDistance, yDistance, totalDistance;

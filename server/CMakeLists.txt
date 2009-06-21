@@ -2,40 +2,57 @@ project( server )
 
 set(SOURCES
 	src/main.cpp
-	../game/src/sprite/genericSprite.cpp
-	../game/src/sprite/genericSprite.hpp
-	../game/src/network/networkServer.cpp
-	../game/src/network/networkServer.hpp
+
+	../game/src/helpers.cpp
+	../game/src/helpers.hpp
+
+	src/network/networkServer.cpp
+	src/network/networkServer.hpp
 	../game/src/network/packets.hpp
-	../game/src/sprite/spriteManager.cpp
-	../game/src/sprite/spriteManager.hpp
-	../game/src/sprite/spriteCollision.cpp
-	../game/src/sprite/spriteCollision.hpp
-	../game/src/sprite/player.cpp
-	../game/src/sprite/player.hpp
-	../game/src/sprite/bubble.cpp
-	../game/src/sprite/bubble.hpp
-	../game/src/sprite/powerup.cpp
-	../game/src/sprite/powerup.hpp
-	../game/src/sprite/platform.cpp
-	../game/src/sprite/platform.hpp
+
+	src/powerup/gun.cpp
+	src/powerup/gun.hpp
+	src/powerup/powerUpManager.cpp
+	src/powerup/powerUpManager.hpp
+	src/powerup/genericPowerUp.cpp
+	src/powerup/genericPowerUp.hpp
+
+	src/sprite/genericSprite.cpp
+	src/sprite/genericSprite.hpp
+	src/sprite/spriteManager.cpp
+	src/sprite/spriteManager.hpp
+	src/sprite/spriteCollision.cpp
+	src/sprite/spriteCollision.hpp
+	src/sprite/player.cpp
+	src/sprite/player.hpp
+	src/sprite/effect.cpp
+	src/sprite/effect.hpp
+	src/sprite/bubble.cpp
+	src/sprite/bubble.hpp
+	src/sprite/powerup.cpp
+	src/sprite/powerup.hpp
+	src/sprite/platform.cpp
+	src/sprite/platform.hpp
+	src/sprite/animation.cpp
+	src/sprite/animation.hpp
+	src/sprite/effectManager.cpp
+	src/sprite/effectManager.hpp
+	src/sprite/selectionArea.cpp
+	src/sprite/selectionArea.hpp
 )
 
 include_directories( 
 	../game/src
+	src
 )
 
 add_definitions( 
 	-DSERVER
 )
 
-add_executable( server ${SOURCES} )
+add_executable(server ${SOURCES})
 FIND_PACKAGE( Boost 1.35 COMPONENTS system program_options thread)
 set(LINKFILES
-	optimized sfml-graphics
-	debug sfml-graphics-d
-	optimized sfml-window
-	debug sfml-window-d
 	optimized sfml-system
 	debug sfml-system-d
 	${Boost_LIBRARIES}
