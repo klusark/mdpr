@@ -51,7 +51,7 @@ add_definitions(
 )
 
 add_executable(server ${SOURCES})
-FIND_PACKAGE( Boost 1.35 COMPONENTS system program_options thread)
+FIND_PACKAGE( Boost 1.37 COMPONENTS system program_options thread signals)
 set(LINKFILES
 	optimized sfml-system
 	debug sfml-system-d
