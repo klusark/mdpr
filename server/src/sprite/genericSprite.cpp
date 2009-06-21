@@ -36,8 +36,8 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType)
 		spriteTypeName(spriteType)
 {
 
-	SetX(unsigned short(-1));
-	SetY(unsigned short(-1));
+	SetX((unsigned short)-1);
+	SetY((unsigned short)-1);
 
 	std::string file;
 
