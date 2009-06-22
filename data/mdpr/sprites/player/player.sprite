@@ -4,5 +4,5 @@ animation = idle
 animation = roll
 animation = shoot
 animation = jumpUp
-image = newplayer.png
+image = player.png
 spawnEffect = greenPoof

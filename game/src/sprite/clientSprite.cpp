@@ -1,23 +1,10 @@
-#include <boost/program_options.hpp>
-#include <boost/shared_ptr.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
-
-#include <string>
-#include <vector>
-#include <iostream>
-#include <fstream>
-
-#include <SFML/Graphics/Sprite.hpp>
-
 #include "helpers.hpp"
 #include "sprite/clientSpriteManager.hpp"
 #include "clientSprite.hpp"
 
 ClientSprite::ClientSprite(const std::string &name) 
 	:	name(name),
-		timesSkiped(0),
-		flipped(false),
-		currentState(deadState)
+		flipped(false)
 {
 
 	SetX(unsigned short(-1));

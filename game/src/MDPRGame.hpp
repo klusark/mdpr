@@ -1,9 +1,9 @@
 #ifndef MDPRGame_hpp
 #define MDPRGame_hpp
+
 #include "network/networkClient.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
-#include <boost/thread.hpp>
 
 //!The main class for the game
 /*!
@@ -53,8 +53,6 @@ public:
 	{
 		char up, down, left, right ,use;
 	}controls;
-private:
-
 };
 
 extern boost::shared_ptr<MDPRGame> MDPR;

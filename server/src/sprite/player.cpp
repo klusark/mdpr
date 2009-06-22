@@ -5,6 +5,7 @@
 #include "network/packets.hpp"
 
 #include "powerup/gun.hpp"
+#include "helpers.hpp"
 
 Player::Player(const std::string &name)
 	:	 genericSprite(name, "player"),
@@ -124,4 +125,17 @@ void Player::rollingFinish()
 	currentAnimation->playBackward = true;
 	currentAnimation->pause();
 
+}
+
+void Player::death(unsigned short cause)
+{
+	genericSprite::death(cause);
+	/*if (cause == stringToCRC("gun")){
+		currentState = dyingState;
+		changeAnimation("dieGun");
+		currentAnimation->onFinish.connect(boost::bind(&genericSprite::death, this, cause));
+		animationLock = true;
+		keyLock = true;
+		setXVelocity(0);
+	}*/
 }

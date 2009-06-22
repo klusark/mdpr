@@ -12,6 +12,7 @@ public:
 	void update();
 	void crouchingFinish();
 	void rollingFinish();
+	void death(unsigned short cause); 
 
 	typedef std::map<keys, bool> keysContainter;
 	keysContainter keyMap;

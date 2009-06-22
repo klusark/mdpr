@@ -1,13 +1,8 @@
 #ifndef clientSprite_hpp
 #define clientSprite_hpp
 
-#include <boost/shared_ptr.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Image.hpp>
-#include <SFML/System/Clock.hpp>
-#include <map>
-#include "enumerations.hpp"
-
+#include <SFML/Graphics/RenderWindow.hpp>
 
 //! The base sprite class
 /*!
@@ -50,13 +45,6 @@ public:
 
 	//!true if the sprite is currently flipped.
 	bool flipped;
-
-	//!The sprite type. Mainly used for collision detection
-	spriteTypes spriteType;
-
-	int timesSkiped;
-	spriteStates currentState;
-protected:
 };
 
 #endif // #ifndef clientSprite_hpp
