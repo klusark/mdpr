@@ -24,7 +24,7 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType)
 		lastY(0),
 		lastFrame(0),
 		timesSkiped(0),
-		respawnTime(5),
+		respawnTime(0),
 		hasPowerUp(false),
 		flipped(false),
 		nonNetworked(false),
@@ -192,6 +192,9 @@ void genericSprite::changeAnimation(std::string name)
 
 void genericSprite::death(unsigned short cause)
 {
+	currentState = deadState;
+	SetX(unsigned short(-1));
+	SetY(unsigned short(-1));
 	
 }
 

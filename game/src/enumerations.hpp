@@ -30,6 +30,7 @@ enum spriteStates
 	spawningState,
 	readyToSpawnState,
 	deadState,
+	dyingState,
 };
 
 enum connectionState

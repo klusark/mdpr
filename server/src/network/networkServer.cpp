@@ -97,6 +97,7 @@ void networkServer::onReceivePacket(const boost::system::error_code& error, size
 		case connectPacketID:
 			
 			{
+				boost::mutex::scoped_lock lock(sprite.spriteMutex);
 				connectPacket *packet = (connectPacket *)buffer;
 
 				std::string name = packet->name;//, packet->nameLength);
@@ -158,6 +159,9 @@ void networkServer::onReceivePacket(const boost::system::error_code& error, size
 					//Send all the sprites to the client
 					spriteManager::spriteContainer::iterator iter;
 					for(iter = sprite.Sprites.begin(); iter != sprite.Sprites.end(); ++iter){
+						if(iter->second->nonNetworked){
+							continue;
+						}
 
 						spriteCreationPacket packet;
 						packet.packetID = spriteCreationPacketID;
@@ -174,6 +178,9 @@ void networkServer::onReceivePacket(const boost::system::error_code& error, size
 					//Sends the current animation and position of all the sprites to the new player
 					spriteManager::spriteContainer::iterator iter;
 					for(iter = sprite.Sprites.begin(); iter != sprite.Sprites.end(); ++iter){
+						if(iter->second->nonNetworked){
+							continue;
+						}
 						positionAndFrameUpdatePacket POSpacket;
 						POSpacket.packetID = positionAndFrameUpdatePacketID;
 						Position position = iter->second->GetPosition();
@@ -281,6 +288,7 @@ void networkServer::onSpriteUpdate(const boost::system::error_code& error)
 		std::cout << "onSpriteUpdate: " << error.message() << std::endl;
 		return;
 	}
+	boost::mutex::scoped_lock lock(sprite.spriteMutex);
 	sprite.update();
 	for(spriteManager::spriteContainer::iterator it = sprite.Sprites.begin(); it != sprite.Sprites.end(); ++it){
 		boost::shared_ptr<genericSprite> currentSprite = it->second;

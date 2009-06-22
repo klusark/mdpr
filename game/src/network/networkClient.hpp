@@ -40,7 +40,7 @@ protected:
 	boost::asio::io_service ioService;
 	udp::socket socket;
 	bool inGame;
-	char buffer[512];
+	
 
 	sf::Clock timer;
 
@@ -58,6 +58,9 @@ protected:
 	static const unsigned short numServerUpdateThreads = 1;
 	
 	static const unsigned short numIOServiceThreads = 5;
+
+	char buffer[256];
+
 
 	fullServerContainter2 serversToUpdate[numServerUpdateThreads];
 

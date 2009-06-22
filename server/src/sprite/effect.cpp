@@ -24,6 +24,8 @@ void Effect::update()
 	genericSprite::update();
 	if (currentAnimation->paused && inUse){
 		inUse = false;
+		currentAnimation->reset();
+		changeAnimation("blank");
 		SetX((unsigned short)-1);
 		SetY((unsigned short)-1);
 	}
