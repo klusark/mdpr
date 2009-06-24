@@ -14,8 +14,9 @@ public:
 	void rollingFinish();
 	void death(unsigned short cause); 
 
-	typedef std::map<keys, bool> keysContainter;
-	keysContainter keyMap;
+	bool keyMap[keyAction+1];
+	bool keyMapTwo[keyAction+1];
+	//keysContainter keyMap;
 	bool rolling, running, crouching, idle, jumpingUp;
 	float velocity;
 

@@ -41,8 +41,23 @@ Player::~Player()
 
 void Player::update()
 {
+	if (keyLock){
+		wasKeyLocked = true;
+		keyMap[keyLeft]		= false;
+		keyMap[keyRight]	= false;
+		keyMap[keyDown]		= false;
+		keyMap[keyUp]		= false;
+		keyMap[keyAction]	= false;
+	}
+	if (!keyLock && wasKeyLocked){
+		keyMap[keyLeft]		= keyMapTwo[keyLeft];
+		keyMap[keyRight]	= keyMapTwo[keyRight];
+		keyMap[keyDown]		= keyMapTwo[keyDown];
+		keyMap[keyUp]		= keyMapTwo[keyUp];
+		keyMap[keyAction]	= keyMapTwo[keyAction];
+	}
 	if (currentState == aliveState){
-		if (keyMap[keyAction] == true && hasPowerUp){
+		if ((keyMap[keyAction] == true) && hasPowerUp && (keyMap[keyLeft] + keyMap[keyRight] == 0)){
 			currentPowerup->onActionKey();
 		}
 		running = false;
@@ -50,6 +65,9 @@ void Player::update()
 		if (onGround){
 			if (!rolling){
 				velocity = (float)(-1 * keyMap[keyLeft] + keyMap[keyRight]) * runSpeed;
+			}
+			if (jumpingUp){
+				jumpingUp = false;
 			}
 			if (crouching){
 				velocity = 0;

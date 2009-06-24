@@ -20,7 +20,7 @@ Gun::~Gun()
 
 void Gun::onActionKey()
 {
-	if (!justShot){
+	if (!justShot && owner->onGround){
 		clock.Reset();
 		owner->changeAnimation("shoot");
 		justShot = true;

@@ -33,7 +33,8 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType)
 		noAnimation(false),
 		spawnTimerStarted(false),
 		currentState(deadState),
-		spriteTypeName(spriteType)
+		spriteTypeName(spriteType),
+		wasKeyLocked(false)
 {
 
 	SetX((unsigned short)-1);
@@ -171,6 +172,8 @@ void genericSprite::update()
 			spawnTimerStarted = false;
 		}
 	}
+	//onGround will be set every update by the collition system
+	onGround = false;
 }
 
 void genericSprite::changeAnimation(unsigned int name)

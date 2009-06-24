@@ -82,7 +82,10 @@ public:
 		nonNetworked, 
 		
 		//!True if the sprite has its input disabled
-		keyLock, 
+		keyLock,
+
+		//!true if the keys were locked
+		wasKeyLocked,
 		
 		//!true if the sprite should be locked to it's current animaiton
 		animationLock, 

@@ -90,15 +90,14 @@ void MDPRGame::run()
 		DeathArea death("Death", sf::IntRect());
 	}*/
 
+	myNetworkClient = new networkClient;
+	myNetworkClient->connect();
+
 	boost::shared_ptr<menuManager> newMenu(new menuManager(App));
 	menu = newMenu;
 
 	sprite.setActive(true);
 
-	
-	myNetworkClient = new networkClient;
-	myNetworkClient->connect();
-	
 	App.SetActive(false);
 
 	boost::thread_group Threads;
@@ -123,7 +122,7 @@ void MDPRGame::run()
 					myNetworkClient->sendKeyPress(Event.Key.Code, false);
 				}
 			}
-			//menu->currentMenu->input.pushEvent(Event, App.GetInput());
+			menu->currentMenu->input.pushEvent(Event, App.GetInput());
 
 		}
 		sf::Sleep(0.001f);

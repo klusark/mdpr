@@ -13,14 +13,6 @@
 class ClientSpriteManager;
 using boost::asio::ip::udp;
 
-struct fullServerEntry
-{
-	serverEntry entry;
-	unsigned char numPlayers;
-	unsigned char maxPlayers;
-	std::string serverName;
-};
-
 class networkClient
 {
 public:
@@ -30,10 +22,9 @@ public:
 	void sendKeyPress(sf::Key::Code key, bool down);
 	bool connected;
 
-	typedef std::vector<fullServerEntry> fullServerContainter;
-	typedef std::vector<fullServerEntry *> fullServerContainter2;
-	fullServerContainter serverList;
-
+	//typedef std::vector<fullServerEntry> fullServerContainter;
+	//typedef std::vector<fullServerEntry *> fullServerContainter2;
+	std::vector<fullServerEntry> serverList;
 
 	connectionState currentState;
 protected:
@@ -62,7 +53,7 @@ protected:
 	char buffer[256];
 
 
-	fullServerContainter2 serversToUpdate[numServerUpdateThreads];
+	std::vector<fullServerEntry *> serversToUpdate[numServerUpdateThreads];
 
 	unsigned int totalBytesRecived, bytesInLastFive;
 
