@@ -238,6 +238,7 @@ void networkServer::onReceivePacket(const boost::system::error_code& error, size
 					break;
 				}
 				dynamic_cast<Player *>(Players[endpoint.port()]->playerSprite.get())->keyMap[packet->key] = packet->down;
+				dynamic_cast<Player *>(Players[endpoint.port()]->playerSprite.get())->keyMapTwo[packet->key] = packet->down;
 			}
 			break;
 		case getFullServerInfoPacketID:
@@ -245,8 +246,13 @@ void networkServer::onReceivePacket(const boost::system::error_code& error, size
 				//getFullServerInfoPacket *packet = (getFullServerInfoPacket *)buffer;
 				fullServerInfoPacket packet;
 				packet.packetID = fullServerInfoPacketID;
+				packet.numPlayers = 4;
+				packet.maxPlayers = 16;
+				std::string serverName = "The Best Ever Server";
+				strcpy(packet.serverName, serverName.c_str());
+				packet.port = 9935;
 
-				serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(fullServerInfoPacket)), endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+				serverSocket.async_send_to(boost::asio::buffer((const void *)&packet, sizeof(fullServerInfoPacket) - 256 + serverName.length()), endpoint, boost::bind(&networkServer::handleSendTo, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 			}
 			break;
 		default:

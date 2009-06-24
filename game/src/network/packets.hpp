@@ -201,9 +201,19 @@ struct getFullServerInfoPacket
 	packetIDs packetID;
 };
 
+struct fullServerEntry
+{
+	serverEntry entry;
+	unsigned short numPlayers;
+	unsigned short maxPlayers;
+	std::string serverName;
+};
+
 struct fullServerInfoPacket
 {
 	packetIDs packetID;
+	unsigned short numPlayers, maxPlayers, port;
+	char serverName[256];
 };
 
 #endif // #ifndef packets_hpp

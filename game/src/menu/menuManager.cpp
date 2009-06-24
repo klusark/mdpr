@@ -30,7 +30,7 @@ menuManager::menuManager(sf::RenderWindow &App)
 	boost::shared_ptr<menuGeneric> controlsMenu(new menuControls(App));
 	menus["menuControls"] = controlsMenu;
 
-	changeCurrentMenu("menuInGame");
+	changeCurrentMenu("menuMain");
 }
 
 menuManager::~menuManager()

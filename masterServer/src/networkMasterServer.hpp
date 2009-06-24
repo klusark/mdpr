@@ -15,9 +15,9 @@ public:
 	~networkMasterServer();
 	bool runServer();
 protected:
-	static boost::asio::io_service ioService;
+	boost::asio::io_service ioService;
 	udp::socket serverSocket;
-	char buffer[512];
+	char buffer[256];
 	udp::endpoint endpoint;
 	boost::thread_group ioThreads;
 
@@ -25,10 +25,14 @@ protected:
 
 	void handleSendTo(const boost::system::error_code& error, size_t bytes_sent);
 
+	void ioServiceThread();
+
 	typedef std::vector<serverEntry> serverListContainer;
 	serverListContainer serverList;
+
+	static const unsigned short numIOServiceThreads = 5;
 
 };
 extern boost::shared_ptr<networkMasterServer> masterServer;
 
-#endif // ifndef networkMasterServer_hpp
+#endif // #ifndef networkMasterServer_hpp

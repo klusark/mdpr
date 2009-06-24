@@ -1,4 +1,5 @@
 #include "serverListModel.hpp"
+#include "MDPRGame.hpp"
 
 ServerListModel::ServerListModel()
 {
@@ -11,10 +12,10 @@ ServerListModel::~ServerListModel()
 
 int ServerListModel::getNumberOfElements()
 {
-	return 5;
+	return MDPR->myNetworkClient->serverList.size();
 }
 
 std::string ServerListModel::getElementAt(int i)
 {
-	return "asdf";
+	return MDPR->myNetworkClient->serverList[i].serverName;
 }

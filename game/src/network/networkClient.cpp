@@ -1,4 +1,5 @@
 #include <iostream>
+#include <exception>
 
 #include "enumerations.hpp"
 #include "MDPRGame.hpp"
@@ -26,9 +27,9 @@ networkClient::networkClient()
 	}
 
 		
-	/*for (short i = 0; i <= numServerUpdateThreads-1; ++i){
+	for (short i = 0; i < numServerUpdateThreads; ++i){
 		serverListUpdateThreads.create_thread(boost::bind(&networkClient::serverListUpdateThread, this, i));
-	}*/
+	}
 }
 
 networkClient::~networkClient()
@@ -43,7 +44,7 @@ bool networkClient::connect()
 {
 	try
 	{
-		{
+		/*{
 			connectPacket packet;
 			packet.packetID = connectPacketID;
 			packet.nameLength = MDPR->playerName.length();
@@ -55,7 +56,7 @@ bool networkClient::connect()
 			
 			socket.send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), receiverEndpoint);
 			currentState = connectingState;
-		}
+		}*/
 
 		{
 			getServersPacket packet;
@@ -113,7 +114,13 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 				std::string fileName;
 				fileName += "data/";
 				fileName += packet->fileName;
-				Image->LoadFromFile(fileName);
+				if (!Image->LoadFromFile(fileName)){
+					std::exception exception;
+					//exception.
+					throw exception;
+				}
+				
+
 				Image->SetSmooth(false);
 				sprite.Images[packet->spriteTypeID] = Image;
 			}
@@ -195,13 +202,22 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 				for (unsigned short i = 0; i < packet->numServers; ++i){
 					fullServerEntry newEntry;
 					memcpy((void *)&newEntry.entry, (void *)&packet->serverList[i], sizeof(serverEntry));
-					serverList.push_back(newEntry);
+					//serverList.push_back(newEntry);
 					serversToUpdate[0].push_back(&newEntry);
 				}
 			}
 			break;
 		case fullServerInfoPacketID:
 			{
+				fullServerInfoPacket *packet = (fullServerInfoPacket *)buffer;
+				fullServerEntry newEntry;
+
+				memcpy(newEntry.entry.ip, receiverEndpoint.address().to_v4().to_bytes().elems, 4);
+				newEntry.entry.port = packet->port;
+				newEntry.maxPlayers = packet->maxPlayers;
+				newEntry.numPlayers = packet->numPlayers;
+				newEntry.serverName = packet->serverName;
+				serverList.push_back(newEntry);
 
 			}
 			break;
@@ -258,9 +274,9 @@ void networkClient::serverListUpdateThread(int i)
 			char *buffers;
 			buffers = new char[6];
 			for (int x = 0; x < 4; ++x){
-				char asdf[3];
-				sprintf(asdf, "%d", serversToUpdate[i][0]->entry.ip[x]);
-				test += asdf;
+				char temp[3];
+				sprintf(temp, "%d", serversToUpdate[i][0]->entry.ip[x]);
+				test += temp;
 				if (x != 3){
 					test += ".";
 				}
@@ -287,4 +303,5 @@ void networkClient::ioServiceThread()
 	}catch(...){
 		std::cout << "Unknown Exception caught" << std::endl; 
 	}
+	MDPRGame::quitGame();
 }
