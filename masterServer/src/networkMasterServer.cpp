@@ -8,12 +8,8 @@
 #include <map>
 #include <vector>
 
-
 #include "networkMasterServer.hpp"
 #include "network/packets.hpp"
-
-
-boost::shared_ptr<networkMasterServer> masterServer;
 
 networkMasterServer::networkMasterServer() 
 	:	serverSocket(ioService, udp::endpoint(udp::v4(), 9937))
@@ -112,11 +108,16 @@ void networkMasterServer::onRecivePacket(const boost::system::error_code& error,
 	
 }
 
-void networkMasterServer::handleSendTo(const boost::system::error_code& error, size_t bytes_sent)
+void networkMasterServer::handleSendTo(const boost::system::error_code& error, size_t bytesSent)
 {
 	if (error){
 		//std::cout << error.message() << std::endl;
 	}
+}
+
+void networkMasterServer::stopServer()
+{
+	ioService.stop();
 }
 
 void networkMasterServer::ioServiceThread()
@@ -128,5 +129,4 @@ void networkMasterServer::ioServiceThread()
 	}catch(...){
 		std::cout << "Unknown Exception caught" << std::endl; 
 	}
-	std::cout << "ioServiceThread: Huge error. FIX ME!!!" << std::endl;
 }

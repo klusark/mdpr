@@ -14,6 +14,7 @@ public:
 	networkMasterServer();
 	~networkMasterServer();
 	bool runServer();
+	void stopServer();
 protected:
 	boost::asio::io_service ioService;
 	udp::socket serverSocket;
@@ -33,6 +34,5 @@ protected:
 	static const unsigned short numIOServiceThreads = 5;
 
 };
-extern boost::shared_ptr<networkMasterServer> masterServer;
 
 #endif // #ifndef networkMasterServer_hpp
