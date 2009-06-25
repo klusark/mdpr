@@ -81,6 +81,8 @@ void networkMasterServer::onRecivePacket(const boost::system::error_code& error,
 		case getServersPacketID:
 			{
 				serversListPacket *packets;
+				boost::asio::ip::address_v4::bytes_type address = endpoint.address().to_v4().to_bytes();
+				std::cout << "Query From: " << (int)address.elems[0] << "." << (int)address.elems[1] << "." <<  (int)address.elems[2] << "." << (int)address.elems[3] << std::endl;
 				unsigned int numPackets = int(ceil(float(serverList.size())/32));
 				packets = new serversListPacket[numPackets];
 				//packet.packetID = serversListPacketID;
