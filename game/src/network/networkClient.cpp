@@ -1,5 +1,6 @@
 #include <iostream>
 #include <exception>
+#include <SFML/System/Sleep.hpp>
 
 #include "enumerations.hpp"
 #include "MDPRGame.hpp"
@@ -274,7 +275,7 @@ void networkClient::serverListUpdateThread(int i)
 {
 	while (1){
 		if (serversToUpdate[i].size() == 0){
-			Sleep(2);
+			sf::Sleep(0.002f);
 		}else{
 			boost::asio::io_service ioService;
 			udp::resolver resolver(ioService);

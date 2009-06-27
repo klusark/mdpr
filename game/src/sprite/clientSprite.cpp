@@ -7,8 +7,8 @@ ClientSprite::ClientSprite(const std::string &name)
 		flipped(false)
 {
 
-	SetX(unsigned short(-1));
-	SetY(unsigned short(-1));
+	SetX((unsigned short)-1);
+	SetY((unsigned short)-1);
 }
 
 ClientSprite::~ClientSprite()
