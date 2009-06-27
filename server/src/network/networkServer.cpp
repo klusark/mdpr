@@ -35,7 +35,7 @@ networkServer::networkServer()
 	packetServerInfo.port = 9935;
 
 	udp::resolver resolver(ioService);
-	udp::resolver::query query(udp::v4(), "127.0.0.1", "9937");
+	udp::resolver::query query(udp::v4(), "5.95.76.52", "9937");
 	masterServerEndpoint = *resolver.resolve(query);
 
 	spriteUpdateTimer.async_wait(boost::bind(&networkServer::onSpriteUpdate, this, boost::asio::placeholders::error));
