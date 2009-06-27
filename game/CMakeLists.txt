@@ -18,6 +18,8 @@ set(SOURCES
 	src/menu/menuManager.cpp
 	src/menu/menuOptions.cpp
 	src/menu/menuProfile.cpp
+	src/menu/menuControls.cpp
+	src/menu/menuControls.hpp
 	src/menu/menuInGame.cpp
 	src/menu/menuInGame.hpp
 	src/menu/menuServerBrowser.cpp
@@ -26,13 +28,23 @@ set(SOURCES
 	src/menu/button.hpp
 	src/menu/filteredTextField.cpp
 	src/menu/filteredTextField.hpp
-	
+	src/menu/serverListModel.cpp
+	src/menu/serverListModel.hpp
+	src/menu/controlChangeButton.cpp
+	src/menu/controlChangeButton.hpp
+
+
+	src/sprite/clientSprite.cpp
+	src/sprite/clientSprite.hpp
+	src/sprite/clientSpriteManager.cpp
+	src/sprite/clientSpriteManager.hpp
+
 	src/helpers.cpp
 	src/helpers.hpp
 )
 
 include_directories( 
-	../../include
+	src
 )
 
 add_definitions( 
