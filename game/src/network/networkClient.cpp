@@ -40,42 +40,50 @@ networkClient::~networkClient()
 
 }
 
-bool networkClient::connect()
+void networkClient::connectToServer(std::string ip, std::string port)
 {
-	try
-	{
-		/*{
-			connectPacket packet;
-			packet.packetID = connectPacketID;
-			packet.nameLength = MDPR->playerName.length();
-			strcpy(packet.name, MDPR->playerName.c_str());
+	connectPacket packet;
+	packet.packetID = connectPacketID;
+	packet.nameLength = MDPR->playerName.length();
+	strcpy(packet.name, MDPR->playerName.c_str());
 
-			udp::resolver resolver(ioService);
-			udp::resolver::query query(udp::v4(), MDPR->serverIP, MDPR->serverPort);
-			receiverEndpoint = *resolver.resolve(query);
-			
-			socket.send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), receiverEndpoint);
-			currentState = connectingState;
-		}*/
+	udp::resolver resolver(ioService);
+	udp::resolver::query query(udp::v4(), ip, port);
+	receiverEndpoint = *resolver.resolve(query);
+	
+	socket.send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), receiverEndpoint);
+	currentState = connectingState;
+	connected = true;
+}
 
-		{
-			getServersPacket packet;
-			packet.packetID = getServersPacketID;
-
-			udp::resolver resolver(ioService);
-			udp::resolver::query query(udp::v4(), MDPR->serverIP, "9937");
-			masterServerEndpoint = *resolver.resolve(query);
-			
-			socket.send_to(boost::asio::buffer((const void *)&packet, 4), masterServerEndpoint);
+void networkClient::connectToServer(serverEntry entry)
+{
+	std::string ip;
+	for (int x = 0; x < 4; ++x){
+		char segment[3];
+		sprintf(segment, "%d", entry.ip[x]);
+		ip += segment;
+		if (x != 3){
+			ip += ".";
 		}
 	}
-	catch (std::exception& e)
-	{
-		std::cout << "Exception: " << e.what() << std::endl;
-		return false;
-	}
-	connected = true;
-	return true;
+	char portChar[6];
+	std::string port;
+	sprintf(portChar, "%d", entry.port);
+	port = portChar;
+	connectToServer(ip, port);
+}
+
+void networkClient::connectToMaster()
+{
+	getServersPacket packet;
+	packet.packetID = getServersPacketID;
+
+	udp::resolver resolver(ioService);
+	udp::resolver::query query(udp::v4(), MDPR->serverIP, "9937");
+	masterServerEndpoint = *resolver.resolve(query);
+	
+	socket.send_to(boost::asio::buffer((const void *)&packet, 4), masterServerEndpoint);
 }
 
 void networkClient::onReceivePacket(const boost::system::error_code& error, size_t bytesReceived)
@@ -271,8 +279,8 @@ void networkClient::serverListUpdateThread(int i)
 			boost::asio::io_service ioService;
 			udp::resolver resolver(ioService);
 			std::string test;
-			char *buffers;
-			buffers = new char[6];
+			//char *buffers;
+			//buffers = new char[6];
 			for (int x = 0; x < 4; ++x){
 				char temp[3];
 				sprintf(temp, "%d", serversToUpdate[i][0]->entry.ip[x]);
@@ -281,8 +289,8 @@ void networkClient::serverListUpdateThread(int i)
 					test += ".";
 				}
 			}
-			char *buffer;
-			buffer = new char[6];
+			char buffer[6];
+			//buffer = new char[6];
 			sprintf(buffer, "%d", serversToUpdate[i][0]->entry.port);
 			udp::resolver::query query(udp::v4(), test, buffer);
 			udp::endpoint receiverEndpoint = *resolver.resolve(query);

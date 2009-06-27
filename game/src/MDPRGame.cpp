@@ -43,8 +43,16 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 		userInterface(false)
 {
 	
+}
+
+MDPRGame::~MDPRGame()
+{
+	//delete myNetworkClient;
+}
+
+void MDPRGame::run()
+{
 	{
-		
 		boost::program_options::options_description config("Configuration");
 		config.add_options()
 			("playerName",		boost::program_options::value<std::string>(&playerName),"")
@@ -63,6 +71,9 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 		configFileOptions.add(config);
 
 		std::ifstream configFileStream("conf");
+		if (!configFileStream.is_open()){
+			return;
+		}
 
 		boost::program_options::store(parse_config_file(configFileStream, configFileOptions), configVariableMap);
 		notify(configVariableMap);
@@ -70,28 +81,9 @@ MDPRGame::MDPRGame(sf::RenderWindow &App)
 	App.Create(sf::VideoMode(width, height, 32), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, 0));
 	App.EnableKeyRepeat(false);
 	App.UseVerticalSync(true);
-	//App.SetFramerateLimit(15);
-	
-	
-}
-
-MDPRGame::~MDPRGame()
-{
-	//delete myNetworkClient;
-}
-
-void MDPRGame::run()
-{
-	/*{
-		Player player("Player");
-		Platform platform("Platform");
-		Bubble bubble("Bubble");
-		PowerUp powerup("Powerup");
-		DeathArea death("Death", sf::IntRect());
-	}*/
 
 	myNetworkClient = new networkClient;
-	myNetworkClient->connect();
+	myNetworkClient->connectToMaster();
 
 	boost::shared_ptr<menuManager> newMenu(new menuManager(App));
 	menu = newMenu;
@@ -188,6 +180,6 @@ void MDPRGame::updateThread()
 			sf::Sleep(0.001f);
 		}
 	}catch(gcn::Exception except){
-
+		std::cout << except.getMessage() << std::endl;
 	}
 }

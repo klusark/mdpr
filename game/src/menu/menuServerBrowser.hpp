@@ -14,7 +14,12 @@ public:
 	gcn::ListBox serverListBox;
 	ServerListModel serverListModel;
 
+	gcn::Button connectButton;
+	bool connectButtonDisplayed;
 
+	void logic();
+
+	void action(const gcn::ActionEvent &actionEvent);
 };
 
 #endif // ifndef menuServerBrowser_hpp

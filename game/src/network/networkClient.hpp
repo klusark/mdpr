@@ -18,7 +18,11 @@ class networkClient
 public:
 	networkClient();
 	~networkClient();
-	bool connect();
+	void connectToServer(std::string ip, std::string port);
+	void connectToServer(serverEntry entry);
+
+	void connectToMaster();
+
 	void sendKeyPress(sf::Key::Code key, bool down);
 	bool connected;
 
