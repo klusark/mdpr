@@ -59,9 +59,10 @@ void networkClient::connectToServer(std::string ip, std::string port)
 
 void networkClient::connectToServer(serverEntry entry)
 {
-	std::string ip;
+	std::string ip = "";
+	char segment[4];
 	for (int x = 0; x < 4; ++x){
-		char segment[3];
+		
 		sprintf(segment, "%d", entry.ip[x]);
 		ip += segment;
 		if (x != 3){

@@ -1,7 +1,7 @@
 #ifndef genericPowerUp_hpp
 #define genericPowerUp_hpp
 
-#include <boost/shared_ptr.hpp>
+#include <Poco/SharedPtr.h>
 
 class genericSprite;
 

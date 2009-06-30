@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <Poco/SharedPtr.h>
 
 class RegisterPowerup
 {

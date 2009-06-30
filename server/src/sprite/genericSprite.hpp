@@ -1,7 +1,7 @@
 #ifndef genericSprite_hpp
 #define genericSprite_hpp
 
-#include <boost/shared_ptr.hpp>
+#include <Poco/SharedPtr.h>
 #include <SFML/System/Clock.hpp>
 #include <map>
 #include "enumerations.hpp"
@@ -70,7 +70,7 @@ public:
 	std::string name;
 
 	//!pointer to the current powerup
-	boost::shared_ptr<genericPowerUp> currentPowerup;
+	Poco::SharedPtr<genericPowerUp> currentPowerup;
 	
 	//!True if the sprite currently holds a powerup
 	bool hasPowerUp,
@@ -111,7 +111,7 @@ public:
 	std::string spriteTypeName;
 
 	//!Pointer to the current animaiton
-	boost::shared_ptr<Animation> currentAnimation;
+	Poco::SharedPtr<Animation> currentAnimation;
 
 	//!The effect to show when this sprite spawns
 	std::string spawnEffect;
@@ -151,7 +151,7 @@ protected:
 	
 	sf::Clock Clock;
 
-	typedef std::map<unsigned int, boost::shared_ptr<Animation> > animationContainer;
+	typedef std::map<unsigned int, Poco::SharedPtr<Animation> > animationContainer;
 	animationContainer Animations;
 };
 

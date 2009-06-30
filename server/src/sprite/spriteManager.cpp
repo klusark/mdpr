@@ -1,4 +1,4 @@
-#include <boost/shared_ptr.hpp>
+#include <Poco/SharedPtr.h>
 #include <boost/thread/mutex.hpp>
 
 #include <map>
@@ -23,7 +23,7 @@ spriteManager::~spriteManager()
 {
 }
 
-void spriteManager::registerSprite(boost::shared_ptr<genericSprite> sprite)
+void spriteManager::registerSprite(Poco::SharedPtr<genericSprite> sprite)
 {
 	//boost::mutex::scoped_lock lock(spriteMutex);
 
@@ -59,7 +59,7 @@ void spriteManager::removeSprite(std::string spriteID)
 	removeSprite(stringToCRC(spriteID));
 }
 
-void spriteManager::spawn(boost::shared_ptr<genericSprite> spriteToSpawn)
+void spriteManager::spawn(Poco::SharedPtr<genericSprite> spriteToSpawn)
 {
 	spriteToSpawn->currentState = aliveState;
 	spriteToSpawn->SetX(50);

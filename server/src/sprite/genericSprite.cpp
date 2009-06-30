@@ -1,5 +1,5 @@
 #include <boost/program_options.hpp>
-#include <boost/shared_ptr.hpp>
+#include <Poco/SharedPtr.h>
 #include <boost/thread.hpp>
 
 #include <string>
@@ -88,7 +88,7 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType)
 	for (iter = animations.begin(); iter < animations.end(); ++iter){
 
 		boost::program_options::options_description animationConfig("Configuration");
-		boost::shared_ptr<Animation> newAnimation(new Animation(*iter));
+		Poco::SharedPtr<Animation> newAnimation(new Animation(*iter));
 		
 		animationConfig.add_options()
 			("delay",	boost::program_options::value<int>(&newAnimation->AnimationInfo.delay),		"")

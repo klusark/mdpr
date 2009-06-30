@@ -1,4 +1,4 @@
-#include <boost/shared_ptr.hpp>
+#include <Poco/SharedPtr.h>
 #include "sprite/genericSprite.hpp"
 #include "sprite/spriteManager.hpp"
 #include "sprite/selectionArea.hpp"
@@ -36,7 +36,7 @@ void Gun::onActionKey()
 			newRect.Left = -640;
 			newRect.Right = int(owner->GetX());
 		}
-		boost::shared_ptr<genericSprite> newSelectionArea(new selectionArea("gunShotSelectArea", newRect));
+		Poco::SharedPtr<genericSprite> newSelectionArea(new selectionArea("gunShotSelectArea", newRect));
 		dynamic_cast<selectionArea *>(newSelectionArea.get())->typeToSelect = playerType;
 		mySelectionArea = newSelectionArea;
 		sprite.registerSprite(mySelectionArea);

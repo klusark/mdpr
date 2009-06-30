@@ -2,6 +2,6 @@
 
 int main()
 {
-	server = boost::shared_ptr<networkServer>(new networkServer());
+	server = Poco::SharedPtr<NetworkServer>(new NetworkServer());
 	server->runServer();
 }

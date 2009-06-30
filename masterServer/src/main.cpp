@@ -1,8 +1,9 @@
-#include <boost/shared_ptr.hpp>
+//#include <boost/shared_ptr.hpp>
 #include "networkMasterServer.hpp"
 #include <signal.h>
+#include <Poco/SharedPtr.h>
 
-boost::shared_ptr<networkMasterServer> masterServer;
+Poco::SharedPtr<NetworkMasterServer> masterServer;
 
 void signalHandler(int sig)
 {
@@ -11,7 +12,7 @@ void signalHandler(int sig)
 
 int main()
 {
-	masterServer = boost::shared_ptr<networkMasterServer>(new networkMasterServer());
+	masterServer = Poco::SharedPtr<NetworkMasterServer>(new NetworkMasterServer());
 
 	signal(SIGABRT, &signalHandler);
 	signal(SIGTERM, &signalHandler);

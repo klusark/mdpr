@@ -1,30 +1,36 @@
 #ifndef networkMasterServer_hpp
 #define networkMasterServer_hpp
 
-#include <boost/asio.hpp>
-#include <boost/shared_ptr.hpp>
-#include <map>
-#include <boost/thread.hpp>
+//#include <boost/asio.hpp>
+//#include <boost/shared_ptr.hpp>
+//#include <boost/thread.hpp>
 #include "network/packets.hpp"
-using boost::asio::ip::udp;
+//using boost::asio::ip::udp;
+#include <vector>
+#include <Poco/Net/StreamSocket.h>
+#include <Poco/Net/SocketReactor.h>
+#include <Poco/Net/SocketNotification.h>
+#include <Poco/AutoPtr.h>
+#include <Poco/Util/ServerApplication.h>
 
-class networkMasterServer
+class NetworkMasterServer : public Poco::Util::ServerApplication
 {
 public:
-	networkMasterServer();
-	~networkMasterServer();
-	bool runServer();
+	NetworkMasterServer();
+	~NetworkMasterServer();
+	int main(const std::vector<std::string>& args);
 	void stopServer();
 protected:
-	boost::asio::io_service ioService;
-	udp::socket serverSocket;
-	char buffer[256];
-	udp::endpoint endpoint;
-	boost::thread_group ioThreads;
+	//boost::asio::io_service ioService;
+	//udp::socket serverSocket;
 
-	void onRecivePacket(const boost::system::error_code& error, size_t bytesRecvd);
+	//udp::endpoint endpoint;
+	//boost::thread_group ioThreads;
 
-	void handleSendTo(const boost::system::error_code& error, size_t bytes_sent);
+	void onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotification>& pNf);
+	void initialize(Poco::Util::Application& self);
+
+	//void handleSendTo(const boost::system::error_code& error, size_t bytes_sent);
 
 	void ioServiceThread();
 
@@ -32,6 +38,15 @@ protected:
 	serverListContainer serverList;
 
 	static const unsigned short numIOServiceThreads = 5;
+
+	enum
+	{
+		BUFFER_SIZE = 256
+	};
+	
+	Poco::Net::SocketAddress socketAddress;
+	Poco::Net::DatagramSocket socket;
+	char* buffer;
 
 };
 

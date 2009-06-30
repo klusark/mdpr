@@ -1,4 +1,4 @@
-#include <boost/shared_ptr.hpp>
+#include <Poco/SharedPtr.h>
 
 #include "spriteManager.hpp"
 #include "effectManager.hpp"
@@ -14,7 +14,7 @@ EffectManager::EffectManager(spriteManager *SM)
 		char buff[4];
 		sprintf(buff, "%d", currentNumberEffects);
 		name += buff;
-		boost::shared_ptr<genericSprite> newEffect(new Effect(name));
+		Poco::SharedPtr<genericSprite> newEffect(new Effect(name));
 		Effects.push_back(dynamic_cast<Effect *>(newEffect.get()));
 		mySpriteManager->registerSprite(newEffect);
 	}

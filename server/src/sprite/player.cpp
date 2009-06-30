@@ -30,7 +30,7 @@ Player::Player(const std::string &name)
 
 	hasPowerUp = true;
 
-	currentPowerup = boost::shared_ptr<genericPowerUp>(new Gun(this));
+	currentPowerup = Poco::SharedPtr<genericPowerUp>(new Gun(this));
 
 
 }
