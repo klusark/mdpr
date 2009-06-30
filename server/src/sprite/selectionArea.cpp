@@ -27,7 +27,7 @@ void selectionArea::update()
 	genericSprite::update();
 }
 
-boost::shared_ptr<genericSprite> selectionArea::selectClosest(Position pos, bool x, bool y)
+Poco::SharedPtr<genericSprite> selectionArea::selectClosest(Position pos, bool x, bool y)
 {
 	unsigned short lowest;
 	//give the shortest a very high value
@@ -58,7 +58,7 @@ boost::shared_ptr<genericSprite> selectionArea::selectClosest(Position pos, bool
 	return selectedSprites[lowest];
 }
 
-boost::shared_ptr<genericSprite> selectionArea::selectFarthest(Position pos, bool x, bool y)
+Poco::SharedPtr<genericSprite> selectionArea::selectFarthest(Position pos, bool x, bool y)
 {
 	return selectedSprites[0];
 }

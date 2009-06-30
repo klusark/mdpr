@@ -1,4 +1,4 @@
-#include <boost/shared_ptr.hpp>
+#include <Poco/SharedPtr.h>
 
 #include "sprite/genericSprite.hpp"
 #include "powerUpManager.hpp"

@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 
-#include <boost/shared_ptr.hpp>
+#include <Poco/SharedPtr.h>
 #include <boost/thread/mutex.hpp>
 
 #include "spriteCollision.hpp"
@@ -17,7 +17,7 @@ class spriteManager
 public:
 	spriteManager();
 	~spriteManager();
-	typedef std::map<unsigned short, boost::shared_ptr<genericSprite> > spriteContainer;
+	typedef std::map<unsigned short, Poco::SharedPtr<genericSprite> > spriteContainer;
 	spriteContainer Sprites;
 
 	typedef std::map<unsigned short, std::string> spriteTypeContainer;
@@ -26,7 +26,7 @@ public:
 	typedef std::map<unsigned short, animationCreationPacket> animationPacketContainer;
 	animationPacketContainer Animations;
 
-	void registerSprite(boost::shared_ptr<genericSprite> sprite);
+	void registerSprite(Poco::SharedPtr<genericSprite> sprite);
 	void update();
 	bool isActive();
 	void setActive(bool toggle);
@@ -34,7 +34,7 @@ public:
 	void removeSprite(std::string spriteID);
 	boost::mutex spriteMutex;
 	spriteCollision collision;
-	void spawn(boost::shared_ptr<genericSprite> spriteToSpawn);
+	void spawn(Poco::SharedPtr<genericSprite> spriteToSpawn);
 
 	EffectManager myEffectManager;
 

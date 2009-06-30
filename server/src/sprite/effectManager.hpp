@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include <boost/shared_ptr.hpp>
+#include <Poco/SharedPtr.h>
 
 #include "effect.hpp"
 

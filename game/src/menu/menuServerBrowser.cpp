@@ -2,6 +2,7 @@
 #include "menuGeneric.hpp"
 #include "menuMain.hpp"
 #include "menuManager.hpp"
+#include "menuInGame.hpp"
 #include "MDPRGame.hpp"
 
 
@@ -32,6 +33,7 @@ void menuServerBrowser::action(const gcn::ActionEvent &actionEvent)
 	int selected = serverListBox.getSelected();
 	if (actionEvent.getId() == "connect"){
 		MDPR->myNetworkClient->connectToServer(MDPR->myNetworkClient->serverList[selected].entry);
+		menuInGame::toThis();
 	}
 }
 

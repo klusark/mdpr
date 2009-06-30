@@ -60,7 +60,7 @@ void spriteCollision::before()
 	spriteContainer::iterator iter;
 	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
 		Position position = iter->second->GetPosition();
-		boost::shared_ptr<collisionInfo> info(new collisionInfo);
+		Poco::SharedPtr<collisionInfo> info(new collisionInfo);
 		info->x = position.x;
 		info->y = position.y;
 		infos[iter->first] = info;

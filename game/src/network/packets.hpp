@@ -2,6 +2,7 @@
 #define packets_hpp
 
 #include "enumerations.hpp"
+#include <string>
 
 enum packetIDs
 {
