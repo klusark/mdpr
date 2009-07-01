@@ -1,12 +1,9 @@
 #ifndef networkServer_hpp
 #define networkServer_hpp
 
-//#include <boost/asio.hpp>
 #include <Poco/SharedPtr.h>
 #include <map>
-//#include <boost/thread.hpp>
 #include <SFML/System/Clock.hpp>
-
 #include <Poco/Net/StreamSocket.h>
 #include <Poco/Net/SocketReactor.h>
 #include <Poco/Net/SocketNotification.h>
@@ -19,10 +16,7 @@
 #include <Poco/Util/TimerTask.h>
 #include <Poco/Timer.h>
 
-
 #include "network/packets.hpp"
-
-//using boost::asio::ip::udp;
 
 class genericSprite;
 class spriteManager;
@@ -46,51 +40,35 @@ public:
 	*/
 	~NetworkServer();
 
-	/*!
-	Waits untill the server is ready to shut down
-	*/
-	void runServer();
-
 	int main(const std::vector<std::string>& args);
 	
 protected:
+	//!Initializes the server
 	void initialize(Poco::Util::Application& self);
+
 	/*!
-	Called when  a packet is received
-	\param error if there is an error, this contains the message.
-	\param bytesReceived number of bytes received.
+	Called when a packet is received
+	\param pNf the notification
 	*/
 	void onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotification>& pNf);
 
 	/*!
-	Handles async sending of packets
-	\param error if there is an error, this contains the message.
-	\param bytesSent number of bytes sent.
+	Called when there is an error
+	\param pNf the notification
 	*/
-	/*void handleSendTo(const boost::system::error_code& error, size_t bytesSent);
+	void onError(const Poco::AutoPtr<Poco::Net::ErrorNotification>& pNf);
 
-	void onSpriteUpdate(const boost::system::error_code& error);
-
-	void updateMasterServer(const boost::system::error_code& error);
-
+	/*
 	void removeIdlePlayers(const boost::system::error_code& error);
 */
-	void onSpriteUpdate(Poco::Timer& timer);
+	void spriteUpdate(Poco::Timer& timer);
+	void masterServerUpdate(Poco::Timer& timer);
 	Poco::Timer spriteUpdateTimer;
+	Poco::Timer masterServerUpdateTimer;
 
 	void ioServiceThread();
 
 	void disconnect(unsigned short playerID);
-
-	/*boost::asio::io_service ioService;
-	boost::asio::ip::udp::socket serverSocket;
-	char buffer[512];
-	udp::endpoint endpoint;
-	boost::asio::deadline_timer spriteUpdateTimer;
-	boost::asio::deadline_timer masterServerUpdateTimer;
-	boost::asio::deadline_timer removeIdlePlayersTimer;
-
-	boost::thread_group ioThreads;*/
 
 	Poco::TaskManager taskManager;
 
@@ -100,7 +78,6 @@ protected:
 	unsigned short currentPlayers;
 
 	serverInfoPacket packetServerInfo;
-	//udp::endpoint masterServerEndpoint;
 
 	static const unsigned short numIOServiceThreads = 8;
 
@@ -134,4 +111,4 @@ protected:
 };
 extern Poco::SharedPtr<NetworkServer> server;
 
-#endif
+#endif // #ifndef networkServer_hpp

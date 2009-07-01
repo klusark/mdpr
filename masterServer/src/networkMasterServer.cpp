@@ -1,27 +1,18 @@
-//#include <boost/asio.hpp>
-//#include <boost/bind.hpp>
-#include "helpers.hpp"
-//#include <boost/date_time/posix_time/posix_time.hpp>
-//#include <boost/shared_ptr.hpp>
-
-#include "Poco/Logger.h"
-#include "Poco/PatternFormatter.h"
-#include "Poco/FormattingChannel.h"
-#include "Poco/ConsoleChannel.h"
-#include "Poco/FileChannel.h"
-#include "Poco/Message.h"
-#include "Poco/NObserver.h"
+#include <Poco/Logger.h>
+#include <Poco/PatternFormatter.h>
+#include <Poco/FormattingChannel.h>
+#include <Poco/ConsoleChannel.h>
+#include <Poco/FileChannel.h>
+#include <Poco/Message.h>
+#include <Poco/NObserver.h>
 #include <Poco/Thread.h>
 #include <Poco/Net/ServerSocket.h>
 #include <Poco/Net/DatagramSocket.h>
 #include <Poco/Net/SocketAddress.h>
 
-
-//#include <iostream>
-//#include <map>
-//#include <vector>
 #include <cmath>
 
+#include "helpers.hpp"
 #include "networkMasterServer.hpp"
 #include "network/packets.hpp"
 

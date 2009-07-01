@@ -206,6 +206,7 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 				sprite.Sprites[packet->spriteID]->flipped = packet->flipped;
 				sprite.Sprites[packet->spriteID]->currentFrame = packet->currentFrame;
 			}
+			break;
 		case serversListPacketID:
 			{
 				serversListPacket *packet = (serversListPacket *)buffer;
@@ -278,7 +279,7 @@ void networkClient::serverListUpdateThread(int i)
 		if (serversToUpdate[i].size() == 0){
 			sf::Sleep(0.002f);
 		}else{
-			boost::asio::io_service ioService;
+			//boost::asio::io_service ioService;
 			udp::resolver resolver(ioService);
 			std::string test;
 			//char *buffers;
