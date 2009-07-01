@@ -27,6 +27,8 @@ int main(int argc, char** argv)
 		MDPR->run();
 	}catch (std::exception& e){
 		std::cout << "Exception: " << e.what() << std::endl;
+	}catch(gcn::Exception except){
+		std::cout << except.getMessage() << std::endl;
 	}
 	return 0;
 }
@@ -113,8 +115,9 @@ void MDPRGame::run()
 				}else if (Event.Type == sf::Event::KeyReleased){
 					myNetworkClient->sendKeyPress(Event.Key.Code, false);
 				}
+			}else{
+				menu->currentMenu->input.pushEvent(Event, App.GetInput());
 			}
-			menu->currentMenu->input.pushEvent(Event, App.GetInput());
 
 		}
 		sf::Sleep(0.001f);
@@ -163,7 +166,9 @@ void MDPRGame::drawThread()
 			//sf::Sleep(0.001f);
 		}
 	}catch(gcn::Exception except){
-
+		std::cout << except.getMessage() << std::endl;
+	}catch (std::exception& e){
+		std::cout << "Exception: " << e.what() << std::endl;
 	}
 }
 
@@ -177,9 +182,11 @@ void MDPRGame::updateThread()
 				boost::mutex::scoped_lock lock(sprite.spriteMutex);
 				sprite.update();
 			}
-			sf::Sleep(0.001f);
+			sf::Sleep(0.003f);
 		}
 	}catch(gcn::Exception except){
 		std::cout << except.getMessage() << std::endl;
+	}catch (std::exception& e){
+		std::cout << "Exception: " << e.what() << std::endl;
 	}
 }

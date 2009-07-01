@@ -1,5 +1,4 @@
-#include <boost/random.hpp>
-#include <time.h>
+#include <Poco/Random.h>
 #include "powerUpManager.hpp"
 
 PowerUpManager *PUManage;
@@ -25,13 +24,9 @@ PowerUpManager::~PowerUpManager()
 
 std::string PowerUpManager::selectRandom()
 {
-	boost::mt19937 rng;
-	rng.seed((boost::uint32_t)time(0));
-
-	boost::uniform_int<> myRange(0, powerUpList.size()-1);
-
-	boost::variate_generator<boost::mt19937&, boost::uniform_int<> > myRand(rng, myRange);
-
-	int rand = myRand();
+	Poco::Random random;
+	random.seed();
+	
+	unsigned int rand = random.next(6);;
 	return powerUpList[rand];
 }

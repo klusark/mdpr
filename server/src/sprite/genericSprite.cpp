@@ -1,6 +1,5 @@
 #include <boost/program_options.hpp>
 #include <Poco/SharedPtr.h>
-#include <boost/thread.hpp>
 
 #include <string>
 #include <vector>
