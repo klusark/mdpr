@@ -1,4 +1,4 @@
-#include <boost/shared_ptr.hpp>
+#include <Poco/SharedPtr.h>
 #include "menuManager.hpp"
 #include "menuMain.hpp"
 #include "menuOptions.hpp"
@@ -7,7 +7,7 @@
 #include "menuControls.hpp"
 #include <iostream>
 
-boost::shared_ptr<menuManager> menu;
+Poco::SharedPtr<menuManager> menu;
 
 menuManager::menuManager(sf::RenderWindow &App)
 	:	active(false),
@@ -15,19 +15,19 @@ menuManager::menuManager(sf::RenderWindow &App)
 		font("data/mdpr/marshmallowDuel.ttf", 20)
 {
 	gcn::Widget::setGlobalFont(&font);
-	boost::shared_ptr<menuGeneric> mainMenu(new menuMain(App));
+	Poco::SharedPtr<menuGeneric> mainMenu(new menuMain(App));
 	menus["menuMain"] = mainMenu;
 
-	boost::shared_ptr<menuGeneric> optionsMenu(new menuOptions(App));
+	Poco::SharedPtr<menuGeneric> optionsMenu(new menuOptions(App));
 	menus["menuOptions"] = optionsMenu;
 
-	boost::shared_ptr<menuGeneric> inGameMenu(new menuInGame(App));
+	Poco::SharedPtr<menuGeneric> inGameMenu(new menuInGame(App));
 	menus["menuInGame"] = inGameMenu;
 
-	boost::shared_ptr<menuGeneric> serverBrowserMenu(new menuServerBrowser(App));
+	Poco::SharedPtr<menuGeneric> serverBrowserMenu(new menuServerBrowser(App));
 	menus["menuServerBrowser"] = serverBrowserMenu;
 
-	boost::shared_ptr<menuGeneric> controlsMenu(new menuControls(App));
+	Poco::SharedPtr<menuGeneric> controlsMenu(new menuControls(App));
 	menus["menuControls"] = controlsMenu;
 
 	changeCurrentMenu("menuMain");

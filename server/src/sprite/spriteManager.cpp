@@ -1,5 +1,4 @@
 #include <Poco/SharedPtr.h>
-#include <boost/thread/mutex.hpp>
 
 #include <map>
 

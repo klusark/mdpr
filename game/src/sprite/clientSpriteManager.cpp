@@ -1,5 +1,5 @@
-#include <boost/shared_ptr.hpp>
-#include <boost/thread/mutex.hpp>
+#include <Poco/SharedPtr.h>
+#include <Poco/Mutex.h>
 
 #include <map>
 #include "helpers.hpp"
@@ -17,10 +17,9 @@ ClientSpriteManager::~ClientSpriteManager()
 {
 }
 
-void ClientSpriteManager::registerSprite(boost::shared_ptr<ClientSprite> sprite)
+void ClientSpriteManager::registerSprite(Poco::SharedPtr<ClientSprite> sprite)
 {
-
-	boost::mutex::scoped_lock lock(spriteMutex);
+	Poco::ScopedLock<Poco::Mutex> lock(spriteMutex);
 	Sprites[stringToCRC(sprite->name)] = sprite;
 }
 

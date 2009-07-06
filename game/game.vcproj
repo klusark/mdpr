@@ -191,15 +191,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				Optimization="1"
 				EnableIntrinsicFunctions="true"
-				FavorSizeOrSpeed="1"
+				FavorSizeOrSpeed="2"
 				AdditionalIncludeDirectories="src"
 				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0501;SFML_DYNAMIC;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				DebugInformationFormat="0"
 				ForcedIncludeFiles=""
 			/>
 			<Tool
@@ -373,10 +373,6 @@
 				Name="Menu"
 				>
 				<File
-					RelativePath=".\src\menu\button.hpp"
-					>
-				</File>
-				<File
 					RelativePath=".\src\menu\controlChangeButton.hpp"
 					>
 				</File>
@@ -468,10 +464,6 @@
 			<Filter
 				Name="Menu"
 				>
-				<File
-					RelativePath=".\src\menu\button.cpp"
-					>
-				</File>
 				<File
 					RelativePath=".\src\menu\controlChangeButton.cpp"
 					>

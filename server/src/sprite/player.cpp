@@ -8,7 +8,7 @@
 #include "helpers.hpp"
 
 Player::Player(const std::string &name)
-	:	 genericSprite(name, "player"),
+	:	genericSprite(name, "player"),
 		rolling(false),
 		crouching(false),
 		running(false),

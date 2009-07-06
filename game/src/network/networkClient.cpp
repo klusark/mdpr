@@ -1,6 +1,7 @@
 #include <iostream>
 #include <exception>
 #include <SFML/System/Sleep.hpp>
+#include <Poco/NObserver.h>
 
 #include "enumerations.hpp"
 #include "MDPRGame.hpp"
@@ -9,19 +10,25 @@
 #include "packets.hpp"
 #include "networkClient.hpp"
 
-using boost::asio::ip::udp;
+//using boost::asio::ip::udp;
 
-networkClient::networkClient()
-	:	socket(ioService, udp::endpoint()),
+NetworkClient::NetworkClient()
+	:	//socket(ioService, udp::endpoint()),
 		inGame(true),
 		connected(false),
 		totalBytesRecived(0),
 		bytesInLastFive(0),
-		currentState(idleState)
+		currentState(idleState),
+		buffer(new char[BUFFER_SIZE]),
+		serverListUpdateTimer(200, 2)
 {
 
+	reactor.addEventHandler(socket, Poco::NObserver<NetworkClient, Poco::Net::ReadableNotification>(*this, &NetworkClient::onReceivePacket));
+	
+	thread.start(reactor);
 
-	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&networkClient::onReceivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+	serverListUpdateTimer.start(Poco::TimerCallback<NetworkClient>(*this, &NetworkClient::serverListUpdateThread));
+	/*socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&networkClient::onReceivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 
 	for (short i = 0; i < numIOServiceThreads; ++i){
 		ioServiceThreadPool.create_thread(boost::bind(&networkClient::ioServiceThread, this));
@@ -30,34 +37,30 @@ networkClient::networkClient()
 		
 	for (short i = 0; i < numServerUpdateThreads; ++i){
 		serverListUpdateThreads.create_thread(boost::bind(&networkClient::serverListUpdateThread, this, i));
-	}
+	}*/
 }
 
-networkClient::~networkClient()
+NetworkClient::~NetworkClient()
 {
-	ioService.stop();
-	ioServiceThreadPool.join_all();
-	//delete ioThread;
-
+	reactor.stop();
 }
 
-void networkClient::connectToServer(std::string ip, std::string port)
+void NetworkClient::connectToServer(std::string ip, std::string port)
 {
 	connectPacket packet;
 	packet.packetID = connectPacketID;
-	packet.nameLength = MDPR->playerName.length();
-	strcpy(packet.name, MDPR->playerName.c_str());
+	std::string name = Poco::Util::Application::instance().config().getString("mdpr.playerName");
+	packet.nameLength = name.length();
+	strcpy(packet.name, name.c_str());
 
-	udp::resolver resolver(ioService);
-	udp::resolver::query query(udp::v4(), ip, port);
-	receiverEndpoint = *resolver.resolve(query);
+	serverAddress = Poco::Net::SocketAddress(ip, port);
 	
-	socket.send_to(boost::asio::buffer((const void *)&packet, 6 + packet.nameLength), receiverEndpoint);
+	socket.sendTo((const void *)&packet, sizeof(connectPacket) +  packet.nameLength - 255, serverAddress);
 	currentState = connectingState;
 	connected = true;
 }
 
-void networkClient::connectToServer(serverEntry entry)
+void NetworkClient::connectToServer(serverEntry entry)
 {
 	std::string ip = "";
 	char segment[4];
@@ -76,21 +79,20 @@ void networkClient::connectToServer(serverEntry entry)
 	connectToServer(ip, port);
 }
 
-void networkClient::connectToMaster()
+void NetworkClient::connectToMaster()
 {
 	getServersPacket packet;
 	packet.packetID = getServersPacketID;
-
-	udp::resolver resolver(ioService);
-	udp::resolver::query query(udp::v4(), MDPR->serverIP, "9937");
-	masterServerEndpoint = *resolver.resolve(query);
+	Poco::Net::SocketAddress masterServerAddress(Poco::Util::Application::instance().config().getString("master.ip"), Poco::Util::Application::instance().config().getString("master.port"));
 	
-	socket.send_to(boost::asio::buffer((const void *)&packet, 4), masterServerEndpoint);
+	socket.sendTo((const void *)&packet, 4, masterServerAddress);
 }
 
-void networkClient::onReceivePacket(const boost::system::error_code& error, size_t bytesReceived)
+void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotification>& pNf)
 {
-	totalBytesRecived += bytesReceived;
+	Poco::Net::SocketAddress socketAddress;
+	socket.receiveFrom(buffer, BUFFER_SIZE, socketAddress);
+	/*totalBytesRecived += bytesReceived;
 	bytesInLastFive += bytesReceived;
 	float time = timer.GetElapsedTime();
 	if (time >= 5) {
@@ -102,7 +104,8 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 	if (error){
 		std::cout << error.message() << std::endl;
 		
-	}else{
+	}else{*/
+	try{
 		packetIDs packetID;
 		memcpy(&packetID, buffer, 4);
 
@@ -111,7 +114,7 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 		case spriteCreationPacketID:
 			{
 				spriteCreationPacket *packet = (spriteCreationPacket *)buffer;
-				boost::shared_ptr<ClientSprite> newSprite(new ClientSprite(packet->name));
+				Poco::SharedPtr<ClientSprite> newSprite(new ClientSprite(packet->name));
 				newSprite->SetImage(*sprite.Images[packet->spriteType].get());
 				sprite.registerSprite(newSprite);
 				
@@ -120,7 +123,7 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 		case spriteTypeCreationPacketID:
 			{
 				spriteTypeCreationPacket *packet = (spriteTypeCreationPacket *)buffer;
-				boost::shared_ptr<sf::Image> Image(new sf::Image);
+				Poco::SharedPtr<sf::Image> Image(new sf::Image);
 				std::string fileName;
 				fileName += "data/";
 				fileName += packet->fileName;
@@ -144,12 +147,12 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 		case spritePosPacketID:
 			{
 				spritePosPacket *packet = (spritePosPacket *)buffer;
-				boost::mutex::scoped_lock lock(sprite.spriteMutex);
+				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
 				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
 					cannotFindSpritePacket newPacket;
 					newPacket.packetID = cannotFindSpritePacketID;
 					newPacket.spriteID = packet->spriteID;
-					socket.send_to(boost::asio::buffer((const void *)&newPacket, sizeof(cannotFindSpritePacket)), receiverEndpoint);
+					socket.sendTo((const void *)&newPacket, sizeof(cannotFindSpritePacket), socketAddress);
 					//std::cout << "Could not find sprite" << std::endl;
 					break;
 				}
@@ -164,7 +167,7 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
 					std::cout << "Can not find sprite" << std::endl;
 				}
-				boost::mutex::scoped_lock lock(sprite.spriteMutex);
+				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
 				sprite.Sprites.erase(sprite.Sprites.find(packet->spriteID));
 
 				
@@ -185,7 +188,7 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 		case animationChangePacketID:
 			{
 				animationChangePacket *packet = (animationChangePacket *)buffer;
-				boost::mutex::scoped_lock lock(sprite.spriteMutex);
+				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
 				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
 					std::cout << "Could not find sprite" << std::endl;
 					break;
@@ -196,7 +199,7 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 		case positionAndFrameUpdatePacketID:
 			{
 				positionAndFrameUpdatePacket *packet = (positionAndFrameUpdatePacket *)buffer;
-				boost::mutex::scoped_lock lock(sprite.spriteMutex);
+				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
 				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
 					std::cout << "Could not find sprite" << std::endl;
 					break;
@@ -214,7 +217,7 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 					fullServerEntry newEntry;
 					memcpy((void *)&newEntry.entry, (void *)&packet->serverList[i], sizeof(serverEntry));
 					//serverList.push_back(newEntry);
-					serversToUpdate[0].push_back(&newEntry);
+					serversToUpdate[0].push_back(newEntry);
 				}
 			}
 			break;
@@ -223,7 +226,7 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 				fullServerInfoPacket *packet = (fullServerInfoPacket *)buffer;
 				fullServerEntry newEntry;
 
-				memcpy(newEntry.entry.ip, receiverEndpoint.address().to_v4().to_bytes().elems, 4);
+				memcpy(newEntry.entry.ip, socketAddress.addr()->sa_data+2, 4);
 				newEntry.entry.port = packet->port;
 				newEntry.maxPlayers = packet->maxPlayers;
 				newEntry.numPlayers = packet->numPlayers;
@@ -244,11 +247,18 @@ void networkClient::onReceivePacket(const boost::system::error_code& error, size
 			break;
 
 		}
+	}catch (Poco::Exception& e){
+		std::string message = "Poco::Exception: "; 
+		message += e.what();
+		Poco::Util::Application::instance().logger().error(message);
+	}catch (std::exception& e){
+		std::string message = "std::exception: "; 
+		message += e.what();
+		Poco::Util::Application::instance().logger().error(message);
 	}
-	socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&networkClient::onReceivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }
 
-void networkClient::sendKeyPress(sf::Key::Code key, bool down)
+void NetworkClient::sendKeyPress(sf::Key::Code key, bool down)
 {
 	if (!inGame){
 		return;
@@ -270,49 +280,26 @@ void networkClient::sendKeyPress(sf::Key::Code key, bool down)
 		return;
 	}
 
-	socket.send_to(boost::asio::buffer((const void *)&packet, 9), receiverEndpoint);
+	socket.sendTo((const void *)&packet, 9, serverAddress);
 }
 
-void networkClient::serverListUpdateThread(int i)
+void NetworkClient::serverListUpdateThread(Poco::Timer&)
 {
-	while (1){
-		if (serversToUpdate[i].size() == 0){
-			sf::Sleep(0.002f);
-		}else{
-			//boost::asio::io_service ioService;
-			udp::resolver resolver(ioService);
-			std::string test;
-			//char *buffers;
-			//buffers = new char[6];
-			for (int x = 0; x < 4; ++x){
-				char temp[3];
-				sprintf(temp, "%d", serversToUpdate[i][0]->entry.ip[x]);
-				test += temp;
-				if (x != 3){
-					test += ".";
-				}
+	int i = 0;
+	while (serversToUpdate[i].size() != 0){
+		std::string ip;
+		char segment[4];
+		for (int x = 0; x < 4; ++x){
+			sprintf(segment, "%d", serversToUpdate[i][0].entry.ip[x]);
+			ip += segment;
+			if (x != 3){
+				ip += ".";
 			}
-			char buffer[6];
-			//buffer = new char[6];
-			sprintf(buffer, "%d", serversToUpdate[i][0]->entry.port);
-			udp::resolver::query query(udp::v4(), test, buffer);
-			udp::endpoint receiverEndpoint = *resolver.resolve(query);
-			getFullServerInfoPacket packet;
-			packet.packetID = getFullServerInfoPacketID;
-			socket.send_to(boost::asio::buffer((const void *)&packet, 4), receiverEndpoint);
-			serversToUpdate[i].erase(serversToUpdate[i].begin());
 		}
+		Poco::Net::SocketAddress address(ip, serversToUpdate[i][0].entry.port);
+		getFullServerInfoPacket packet;
+		packet.packetID = getFullServerInfoPacketID;
+		socket.sendTo((const void *)&packet, 4, address);
+		serversToUpdate[i].erase(serversToUpdate[i].begin());
 	}
-}
-
-void networkClient::ioServiceThread()
-{
-	try{
-		ioService.run();
-	}catch (std::exception& e){
-		std::cout << "Exception: " << e.what() << std::endl;
-	}catch(...){
-		std::cout << "Unknown Exception caught" << std::endl; 
-	}
-	MDPRGame::quitGame();
 }

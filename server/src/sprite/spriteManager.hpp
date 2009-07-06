@@ -5,7 +5,7 @@
 #include <string>
 
 #include <Poco/SharedPtr.h>
-#include <boost/thread/mutex.hpp>
+#include <Poco/Mutex.h>
 
 #include "spriteCollision.hpp"
 #include "genericSprite.hpp"
@@ -32,7 +32,7 @@ public:
 	void setActive(bool toggle);
 	void removeSprite(unsigned int spriteID);
 	void removeSprite(std::string spriteID);
-	boost::mutex spriteMutex;
+	Poco::Mutex spriteMutex;
 	spriteCollision collision;
 	void spawn(Poco::SharedPtr<genericSprite> spriteToSpawn);
 

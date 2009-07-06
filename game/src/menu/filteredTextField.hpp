@@ -1,7 +1,6 @@
 #ifndef FILTEREDTEXTFIELD_HPP
 #define FILTEREDTEXTFIELD_HPP
 
-#include <boost/signal.hpp>
 #include <guichan.hpp>
 #include <string>
 
