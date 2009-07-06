@@ -12,13 +12,13 @@ menuOptions::menuOptions(sf::RenderWindow &App)
 	textResWidth.setDimension(gcn::Rectangle(100, 100, 50, 20));
 	textResWidth.setAllowedCharacters("", false, true);
 	textResWidth.setMaxCharacters(4);
-	sprintf(str, "%d", MDPR->width);
+	sprintf(str, "%d", Poco::Util::Application::instance().config().getInt("graphics.width"));
 	textResWidth.setText(str);
 	
 	textResHeight.setDimension(gcn::Rectangle(100, 150, 50, 20));
 	textResHeight.setAllowedCharacters("", false, true);
 	textResHeight.setMaxCharacters(4);
-	sprintf(str, "%d", MDPR->height);
+	sprintf(str, "%d", Poco::Util::Application::instance().config().getInt("graphics.height"));
 	textResHeight.setText(str);
 	textResHeight.setActionEventId("test");
 	textResHeight.addActionListener(this);

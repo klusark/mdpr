@@ -2,7 +2,6 @@
 #define menuMain_hpp
 
 #include "menuGeneric.hpp"
-#include "button.hpp"
 
 class menuMain : public menuGeneric
 {

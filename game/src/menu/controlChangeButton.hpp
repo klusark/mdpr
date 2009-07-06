@@ -1,7 +1,6 @@
 #ifndef controlChangeButton_hpp
 #define controlChangeButton_hpp
 
-#include <boost/signal.hpp>
 #include <guichan.hpp>
 
 class ControlChangeButton : public gcn::Button, public gcn::ActionListener

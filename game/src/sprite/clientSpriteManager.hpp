@@ -4,8 +4,8 @@
 #include <map>
 #include <string>
 
-#include <boost/shared_ptr.hpp>
-#include <boost/thread/mutex.hpp>
+#include <Poco/SharedPtr.h>
+#include <Poco/Mutex.h>
 
 #include "clientSprite.hpp"
 #include "network/packets.hpp"
@@ -16,23 +16,23 @@ public:
 	ClientSpriteManager();
 	~ClientSpriteManager();
 
-	typedef std::map<unsigned short, boost::shared_ptr<ClientSprite> > spriteContainer;
+	typedef std::map<unsigned short, Poco::SharedPtr<ClientSprite> > spriteContainer;
 	spriteContainer Sprites;
 
-	typedef std::map<unsigned short, boost::shared_ptr<sf::Image> > imageContainer;
+	typedef std::map<unsigned short, Poco::SharedPtr<sf::Image> > imageContainer;
 	imageContainer Images;
 
 	typedef std::map<unsigned short, animationCreationPacket> animationPacketContainer;
 	animationPacketContainer Animations;
 
-	void registerSprite(boost::shared_ptr<ClientSprite> sprite);
+	void registerSprite(Poco::SharedPtr<ClientSprite> sprite);
 	void update();
 	void draw(sf::RenderWindow &App);
 	bool isActive();
 	void setActive(bool toggle);
 	void removeSprite(unsigned int spriteID);
 	void removeSprite(std::string spriteID);
-	boost::mutex spriteMutex;
+	Poco::Mutex spriteMutex;
 
 private:
     bool active;

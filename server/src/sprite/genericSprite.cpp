@@ -1,10 +1,11 @@
-#include <boost/program_options.hpp>
+#include <Poco/Util/PropertyFileConfiguration.h>
 #include <Poco/SharedPtr.h>
 
 #include <string>
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 #include <SFML/System/Vector2.hpp>
 #include "helpers.hpp"
@@ -39,42 +40,48 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType)
 	SetX((unsigned short)-1);
 	SetY((unsigned short)-1);
 
-	std::string file;
-
-	file = "data/mdpr/sprites/";
-	file += spriteType;
-	file += "/";
-	file += spriteType;
-	file += ".sprite";
-
+	std::string file = "data/mdpr/sprites/" + spriteType + "/" + spriteType + ".sprite";
 	std::ifstream spriteFileStream(file.c_str());
 	if (!spriteFileStream.is_open()){
 		noAnimation = true;
 		return;
 	}
 
+	Poco::Util::PropertyFileConfiguration *propertyFile = new Poco::Util::PropertyFileConfiguration(spriteFileStream);
+
+	std::string str = propertyFile->getString("animation");
+	std::string image = propertyFile->getString("image");
+	spawnEffect = propertyFile->getString("spawnEffect", "");
+
 	std::vector<std::string> animations;
-	std::string image;
-	boost::program_options::options_description spriteConfig("Configuration");
+	int cutAt;
+	while((cutAt = str.find_first_of(",")) != str.npos ){
+		if(cutAt > 0){
+			animations.push_back(str.substr(0, cutAt));
+		}
+		str = str.substr(cutAt+1);
+	}
+	if(str.length() > 0){
+		animations.push_back(str);
+	}
+	
+	/*std::ifstream spriteFileStream(file.c_str());
+	if (!spriteFileStream.is_open()){
+		noAnimation = true;
+		return;
+	}*/
+
+	/*
 	spriteConfig.add_options()
 		("animation",	boost::program_options::value<std::vector<std::string> >(&animations),	"")
 		("image",		boost::program_options::value<std::string>(&image),						"")
 		("spawnEffect",	boost::program_options::value<std::string>(&spawnEffect),				"");
 
-	boost::program_options::variables_map spriteVariableMap;
 
-	boost::program_options::options_description spriteConfigFileOptions;
-	spriteConfigFileOptions.add(spriteConfig);
-
-	boost::program_options::store(parse_config_file(spriteFileStream, spriteConfigFileOptions), spriteVariableMap);
-	notify(spriteVariableMap);
-
+*/
 	{
-		std::string fullImageName;
-		fullImageName = "mdpr/sprites/";
-		fullImageName += spriteType;
-		fullImageName += "/";
-		fullImageName += image;
+		
+		std::string fullImageName = "mdpr/sprites/" + spriteType + "/" + image;
 
 		unsigned short spriteID = stringToCRC(spriteType);
 		spriteManager::spriteTypeContainer::iterator iter = sprite.SpriteTypes.find(spriteID);
@@ -86,41 +93,25 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType)
 	std::vector<std::string>::iterator iter;
 	for (iter = animations.begin(); iter < animations.end(); ++iter){
 
-		boost::program_options::options_description animationConfig("Configuration");
+		
 		Poco::SharedPtr<Animation> newAnimation(new Animation(*iter));
 		
-		animationConfig.add_options()
-			("delay",	boost::program_options::value<int>(&newAnimation->AnimationInfo.delay),		"")
-			("frames",	boost::program_options::value<int>(&newAnimation->AnimationInfo.frames),	"")
-			("startx",	boost::program_options::value<int>(&newAnimation->AnimationInfo.startx),	"")
-			("starty",	boost::program_options::value<int>(&newAnimation->AnimationInfo.starty),	"")
-			("width",	boost::program_options::value<int>(&newAnimation->AnimationInfo.width),		"")
-			("height",	boost::program_options::value<int>(&newAnimation->AnimationInfo.height),	"")
-			("padding",	boost::program_options::value<int>(&newAnimation->AnimationInfo.padding),	"")
-			("reverseOnFinish",			boost::program_options::value<bool>(&newAnimation->AnimationInfo.reverseOnFinish),		"")
-			("pauseOnFinish",			boost::program_options::value<bool>(&newAnimation->AnimationInfo.pauseOnFinish),		"")
+		std::string animationFileName = "data/mdpr/sprites/" + spriteType + "/" + *iter + ".animation";
+		Poco::Util::PropertyFileConfiguration *animationPropertyFile = new Poco::Util::PropertyFileConfiguration(animationFileName);
+		newAnimation->AnimationInfo.delay	= animationPropertyFile->getInt("delay");
+		newAnimation->AnimationInfo.frames	= animationPropertyFile->getInt("frames");
+		newAnimation->AnimationInfo.startx	= animationPropertyFile->getInt("startx");
+		newAnimation->AnimationInfo.starty	= animationPropertyFile->getInt("starty");
+		newAnimation->AnimationInfo.width	= animationPropertyFile->getInt("width");
+		newAnimation->AnimationInfo.height	= animationPropertyFile->getInt("height");
+		newAnimation->AnimationInfo.padding	= animationPropertyFile->getInt("padding", 0);
+		newAnimation->AnimationInfo.reverseOnFinish			= animationPropertyFile->getBool("reverseOnFinish", false);
+		newAnimation->AnimationInfo.pauseOnFinish			= animationPropertyFile->getBool("pauseOnFinish", false);
+		newAnimation->AnimationInfo.collisionRect.Top		= animationPropertyFile->getInt("collision.rect.top");
+		newAnimation->AnimationInfo.collisionRect.Bottom	= animationPropertyFile->getInt("collision.rect.bottom");
+		newAnimation->AnimationInfo.collisionRect.Right		= animationPropertyFile->getInt("collision.rect.right");
+		newAnimation->AnimationInfo.collisionRect.Left		= animationPropertyFile->getInt("collision.rect.left");
 
-			("collision.rect.top",		boost::program_options::value<int>(&newAnimation->AnimationInfo.collisionRect.Top),	"")
-			("collision.rect.bottom",	boost::program_options::value<int>(&newAnimation->AnimationInfo.collisionRect.Bottom),	"")
-			("collision.rect.right",	boost::program_options::value<int>(&newAnimation->AnimationInfo.collisionRect.Right),	"")
-			("collision.rect.left",		boost::program_options::value<int>(&newAnimation->AnimationInfo.collisionRect.Left),	"");
-
-		boost::program_options::variables_map animationVariableMap;
-
-		boost::program_options::options_description animationConfigFileOptions;
-		animationConfigFileOptions.add(animationConfig);
-		
-		std::string animationFileName;
-		animationFileName = "data/mdpr/sprites/";
-		animationFileName += spriteType;
-		animationFileName += "/";
-		animationFileName += *iter;
-		animationFileName += ".animation";
-
-		std::ifstream animationFileStream(animationFileName.c_str());
-
-		boost::program_options::store(parse_config_file(animationFileStream, animationConfigFileOptions), animationVariableMap);
-		notify(animationVariableMap);
 		unsigned int animationName = stringToCRC(*iter);
 		Animations[animationName] = newAnimation;
 

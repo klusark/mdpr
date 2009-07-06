@@ -1,23 +1,33 @@
 #ifndef networkClient_hpp
 #define networkClient_hpp
 
-#include <boost/asio.hpp>
-#include <boost/thread.hpp>
+//#include <boost/asio.hpp>
+//#include <boost/thread.hpp>
 
 #include <SFML/Window/Event.hpp>
 
 #include <SFML/System/Clock.hpp>
+#include <Poco/Net/StreamSocket.h>
+#include <Poco/Net/SocketReactor.h>
+#include <Poco/Net/SocketNotification.h>
+#include <Poco/AutoPtr.h>
+#include <Poco/Util/ServerApplication.h>
+#include <Poco/Net/DatagramSocket.h>
+#include <Poco/Util/TimerTask.h>
+#include <Poco/TaskManager.h>
+#include <Poco/Util/TimerTaskAdapter.h>
+#include <Poco/Util/TimerTask.h>
+#include <Poco/Timer.h>
 
 #include "packets.hpp"
 
 class ClientSpriteManager;
-using boost::asio::ip::udp;
 
-class networkClient
+class NetworkClient
 {
 public:
-	networkClient();
-	~networkClient();
+	NetworkClient();
+	~NetworkClient();
 	void connectToServer(std::string ip, std::string port);
 	void connectToServer(serverEntry entry);
 
@@ -32,32 +42,41 @@ public:
 
 	connectionState currentState;
 protected:
-	boost::asio::io_service ioService;
-	udp::socket socket;
+	Poco::Thread thread;
+	Poco::Net::DatagramSocket socket;
+	Poco::Net::SocketReactor reactor;
 	bool inGame;
 	
 
 	sf::Clock timer;
 
-	udp::endpoint receiverEndpoint;
-	udp::endpoint masterServerEndpoint;
+	Poco::Net::SocketAddress serverAddress;
 
-	boost::thread_group serverListUpdateThreads;
-	boost::thread_group ioServiceThreadPool;
+	//udp::endpoint receiverEndpoint;
+	//udp::endpoint masterServerEndpoint;
 
-	void onReceivePacket(const boost::system::error_code& error, size_t bytesReceived);
+	//boost::thread_group serverListUpdateThreads;
+	//boost::thread_group ioServiceThreadPool;
+
+	void onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotification>& pNf);
 	void handleSendTo();
-	void serverListUpdateThread(int i);
-	void ioServiceThread();
+	void serverListUpdateThread(Poco::Timer&);
 
 	static const unsigned short numServerUpdateThreads = 1;
 	
 	static const unsigned short numIOServiceThreads = 5;
 
-	char buffer[256];
+	Poco::Timer serverListUpdateTimer;
+
+	char* buffer;
+
+	enum
+	{
+		BUFFER_SIZE = 256
+	};
 
 
-	std::vector<fullServerEntry *> serversToUpdate[numServerUpdateThreads];
+	std::vector<fullServerEntry> serversToUpdate[numServerUpdateThreads];
 
 	unsigned int totalBytesRecived, bytesInLastFive;
 

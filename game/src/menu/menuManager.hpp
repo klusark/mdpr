@@ -3,8 +3,8 @@
 
 #include <map>
 #include "menuGeneric.hpp"
-#include <boost/shared_ptr.hpp>
-#include <boost/thread/mutex.hpp>
+#include <Poco/SharedPtr.h>
+#include <Poco/Mutex.h>
 #include <string>
 
 
@@ -20,16 +20,16 @@ public:
 	bool isActive();
 	void setActive(bool toggle);
 	void draw();
-	boost::mutex menuMutex;
+	Poco::Mutex menuMutex;
 	sf::RenderWindow &App;
 	gcn::SFMLFont font;
 
-	typedef std::map<std::string, boost::shared_ptr<menuGeneric> > menuContainer;
+	typedef std::map<std::string, Poco::SharedPtr<menuGeneric> > menuContainer;
 	menuContainer menus;
-	boost::shared_ptr<menuGeneric> currentMenu;
+	Poco::SharedPtr<menuGeneric> currentMenu;
 	bool active;
 };
 
-extern boost::shared_ptr<menuManager> menu;
+extern Poco::SharedPtr<menuManager> menu;
 
 #endif

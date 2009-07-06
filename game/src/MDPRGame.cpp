@@ -1,27 +1,27 @@
 #include <SFML/System/Sleep.hpp>
 #include <SFML/System/Clock.hpp>
 
-#include <boost/program_options.hpp>
-#include <boost/thread.hpp>
-#include <boost/random.hpp>
+//#include <boost/program_options.hpp>
+//#include <boost/thread.hpp>
 #include <iostream>
 #include <fstream>
 #include <time.h>
+#include <Poco/RunnableAdapter.h>
 
 #include "network/networkClient.hpp"
 #include "menu/menuManager.hpp"
 #include "sprite/clientSpriteManager.hpp"
 #include "MDPRGame.hpp"
 
-boost::shared_ptr<MDPRGame> MDPR;
+MDPRGame *MDPR;
 
-int main(int argc, char** argv)
+/*int main(int argc, char** argv)
 {
 	try {
 		// Set display mode
 		sf::RenderWindow App;
 
-		boost::shared_ptr<MDPRGame> newMDPR(new MDPRGame(App));
+		Poco::SharedPtr<MDPRGame> newMDPR(new MDPRGame(App));
 		MDPR = newMDPR;
 
 		MDPR->run();
@@ -31,20 +31,26 @@ int main(int argc, char** argv)
 		std::cout << except.getMessage() << std::endl;
 	}
 	return 0;
-}
+}*/
+
+POCO_APP_MAIN(MDPRGame)
 
 bool MDPRGame::quit = false;
 
-MDPRGame::MDPRGame(sf::RenderWindow &App)
-	:	App(App),
-		playerName("No Name"),
-		serverIP("127.0.0.1"),
-		serverPort("9935"),
-		height(400),
-		width(640),
-		userInterface(false)
+MDPRGame::MDPRGame()
+	:	userInterface(false)
 {
 	
+}
+
+void MDPRGame::initialize(Poco::Util::Application& self)
+{
+	loadConfiguration();
+	Poco::Util::Application::initialize(self);
+}
+
+void MDPRGame::uninitialize()
+{
 }
 
 MDPRGame::~MDPRGame()
@@ -52,9 +58,9 @@ MDPRGame::~MDPRGame()
 	//delete myNetworkClient;
 }
 
-void MDPRGame::run()
+int MDPRGame::main(const std::vector<std::string>& args)
 {
-	{
+	/*{
 		boost::program_options::options_description config("Configuration");
 		config.add_options()
 			("playerName",		boost::program_options::value<std::string>(&playerName),"")
@@ -79,24 +85,28 @@ void MDPRGame::run()
 
 		boost::program_options::store(parse_config_file(configFileStream, configFileOptions), configVariableMap);
 		notify(configVariableMap);
-	}
-	App.Create(sf::VideoMode(width, height, 32), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, 0));
+	}*/
+	MDPR = this;
+	App.Create(sf::VideoMode(config().getInt("graphics.width"), config().getInt("graphics.height"), config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing")));
 	App.EnableKeyRepeat(false);
-	App.UseVerticalSync(true);
+	App.UseVerticalSync(config().getBool("graphics.VerticalSync"));
 
-	myNetworkClient = new networkClient;
+	//myNetworkClient = new NetworkClient;
+	//Poco::SharedPtr<NetworkClient> newClient(new NetworkClient);
+	myNetworkClient.assign(new NetworkClient);// = newClient;
 	myNetworkClient->connectToMaster();
 
-	boost::shared_ptr<menuManager> newMenu(new menuManager(App));
+	Poco::SharedPtr<menuManager> newMenu(new menuManager(App));
 	menu = newMenu;
 
 	sprite.setActive(true);
 
 	App.SetActive(false);
 
-	boost::thread_group Threads;
-	Threads.create_thread(boost::bind(&MDPRGame::updateThread, this));
-	Threads.create_thread(boost::bind(&MDPRGame::drawThread, this));
+	Poco::RunnableAdapter<MDPRGame> drawThreadAdapter(*this, &MDPRGame::drawThread);
+	pool.start(drawThreadAdapter);
+	Poco::RunnableAdapter<MDPRGame> updateThreadAdapter(*this, &MDPRGame::updateThread);
+	pool.start(updateThreadAdapter);
 
 	while(!quit)
 	{
@@ -123,9 +133,9 @@ void MDPRGame::run()
 		sf::Sleep(0.001f);
 		
 	}
-	delete myNetworkClient;
-	Threads.join_all();
+	pool.joinAll();
 	App.SetActive(true);
+	return Application::EXIT_OK;
 }
 
 void MDPRGame::quitGame()
@@ -137,7 +147,7 @@ void MDPRGame::drawThread()
 {
 	try {
 		App.SetActive(true);
-		static int Frames = 0;
+		int Frames = 0;
 		float seconds, fps = 0;
 
 		while (!quit){
@@ -146,7 +156,7 @@ void MDPRGame::drawThread()
 
 
 			if (sprite.isActive()){
-				boost::mutex::scoped_lock lock(sprite.spriteMutex);
+				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
 				sprite.draw(App);
 			}
 
@@ -160,10 +170,11 @@ void MDPRGame::drawThread()
 				MDPR->Clock.Reset();
 				Frames = 0;
 			}
-			
-			menu->draw();
+			//if (menu->isActive()){
+				menu->draw();
+			//}
 			App.Display();
-			//sf::Sleep(0.001f);
+			//sf::Sleep(0.01f);
 		}
 	}catch(gcn::Exception except){
 		std::cout << except.getMessage() << std::endl;
@@ -179,7 +190,7 @@ void MDPRGame::updateThread()
 
 			menu->logic();
 			if (sprite.isActive()){
-				boost::mutex::scoped_lock lock(sprite.spriteMutex);
+				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
 				sprite.update();
 			}
 			sf::Sleep(0.003f);

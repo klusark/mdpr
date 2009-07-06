@@ -1,8 +1,8 @@
-animation = run
-animation = crouch
-animation = idle
-animation = roll
-animation = shoot
-animation = jumpUp
+animation = run,crouch,idle,roll,shoot,jumpUp
+#animation = crouch
+#animation = idle
+#animation = roll
+#animation = shoot
+#animation = jumpUp
 image = player.png
 spawnEffect = greenPoof

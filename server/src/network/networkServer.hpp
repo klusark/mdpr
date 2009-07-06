@@ -70,7 +70,7 @@ protected:
 
 	void disconnect(unsigned short playerID);
 
-	Poco::TaskManager taskManager;
+	//Poco::TaskManager taskManager;
 
 	unsigned short posUpdate;
 
@@ -103,7 +103,7 @@ protected:
 		BUFFER_SIZE = 256
 	};
 	Poco::Net::SocketAddress masterServerAddress;
-	Poco::Net::SocketAddress socketAddress;
+	//Poco::Net::SocketAddress socketAddress;
 	Poco::Net::DatagramSocket socket;
 	char* buffer;
 

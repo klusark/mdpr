@@ -3,7 +3,6 @@
 
 #include "menuGeneric.hpp"
 #include "filteredTextField.hpp"
-#include "button.hpp"
 
 class menuOptions : public menuGeneric
 {
@@ -23,9 +22,8 @@ public:
 	gcn::CheckBox fullScreen;
 	gcn::CheckBox vsync;
 
-	Button saveButton;
-
+	gcn::Button saveButton;
 
 };
 
-#endif // ifndef menuOptions_hpp
+#endif // #ifndef menuOptions_hpp

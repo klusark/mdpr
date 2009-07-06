@@ -3,9 +3,11 @@
 #include <Poco/NObserver.h>
 #include <Poco/Thread.h>
 #include <Poco/Net/NetException.h>
+#include <Poco/ScopedLock.h>
 
 #include <map>
 #include <vector>
+#include <cmath>
 
 #include "networkServer.hpp"
 #include "network/packets.hpp"
@@ -21,7 +23,7 @@ Poco::SharedPtr<NetworkServer> server;
 
 NetworkServer::NetworkServer() 
 	:	buffer(new char[BUFFER_SIZE]),
-		spriteUpdateTimer(250, 5),
+		spriteUpdateTimer(250, 50),
 		masterServerUpdateTimer(200, 20000)
 {
 	posUpdate = 0;
@@ -94,7 +96,7 @@ int NetworkServer::main(const std::vector<std::string>& args)
 	packetServerInfo.packetID = serverInfoPacketID;
 	packetServerInfo.port = config().getInt("Server.port");
 
-	socketAddress = Poco::Net::SocketAddress("0.0.0.0", config().getInt("Server.port"));
+	Poco::Net::SocketAddress socketAddress("0.0.0.0", config().getInt("Server.port"));
 	// set-up a server socke
 	socket.bind(socketAddress, true);
 	// set-up a SocketReactor...
@@ -110,7 +112,7 @@ int NetworkServer::main(const std::vector<std::string>& args)
 	Poco::Thread thread;
 	thread.start(reactor);
 	if (config().getBool("Server.Master.updateToMaster")){
-		masterServerUpdateTimer.start(Poco::TimerCallback<NetworkServer>(*this, &NetworkServer::spriteUpdate));
+		masterServerUpdateTimer.start(Poco::TimerCallback<NetworkServer>(*this, &NetworkServer::masterServerUpdate));
 		unsigned short masterServerPort = (unsigned short)config().getInt("Server.Master.port");
 		std::string masterServerIP = config().getString("Server.Master.ip");
 		if (masterServerIP.length() != 0){
@@ -132,9 +134,11 @@ void NetworkServer::onError(const Poco::AutoPtr<Poco::Net::ErrorNotification>& p
 
 void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotification>& pNf)
 {
+	Poco::Net::SocketAddress socketAddress;
+	int bytesReceived;
+	
 	try{
-		socket.receiveFrom(buffer, BUFFER_SIZE, socketAddress);
-
+		bytesReceived = socket.receiveFrom(buffer, BUFFER_SIZE, socketAddress);
 		if (Players.find(socketAddress.port()) != Players.end()){
 			Players[socketAddress.port()]->stillAlive = true;
 		}
@@ -146,10 +150,17 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 		case connectPacketID:
 			
 			{
+				
 				//boost::mutex::scoped_lock lock(sprite.spriteMutex);
 				connectPacket *packet = (connectPacket *)buffer;
+				if (bytesReceived != sizeof(connectPacket) - 255 + packet->nameLength){
+					return;
+				}
+				if (packet->nameLength == 0){
+					return;
+				}
 
-				std::string name = packet->name;//, packet->nameLength);
+				std::string name(packet->name, packet->nameLength);
 
 				int playerID = stringToCRC(name);
 
@@ -214,18 +225,7 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 						packet.spriteType = stringToCRC(iter->second->spriteTypeName);
 						packet.nameLength = iter->second->name.length();
 						strcpy(packet.name, iter->second->name.c_str());
-						socket.sendTo((const void *)&packet, sizeof(spriteCreationPacket) + packet.nameLength - 255, player->address);
-						
-					}
-				}
 
-				{
-					//Sends the current animation and position of all the sprites to the new player
-					spriteManager::spriteContainer::iterator iter;
-					for(iter = sprite.Sprites.begin(); iter != sprite.Sprites.end(); ++iter){
-						if(iter->second->nonNetworked){
-							continue;
-						}
 						positionAndFrameUpdatePacket POSpacket;
 						POSpacket.packetID = positionAndFrameUpdatePacketID;
 						Position position = iter->second->GetPosition();
@@ -241,6 +241,8 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 						AnimPacket.spriteID = iter->first;
 						AnimPacket.animationID = iter->second->currentAnimation->CRCName;
 
+
+						socket.sendTo((const void *)&packet, sizeof(spriteCreationPacket) + packet.nameLength - 255, player->address);
 						socket.sendTo((const void *)&POSpacket, sizeof(positionAndFrameUpdatePacket), player->address);
 						socket.sendTo((const void *)&AnimPacket, sizeof(animationChangePacket), player->address);
 						
@@ -341,55 +343,65 @@ void NetworkServer::spriteUpdate(Poco::Timer& timer)
 		std::cout << "spriteUpdate: " << error.message() << std::endl;
 		return;
 	}*/
-	boost::mutex::scoped_lock lock(sprite.spriteMutex);
-	sprite.update();
-	for(spriteManager::spriteContainer::iterator it = sprite.Sprites.begin(); it != sprite.Sprites.end(); ++it){
-		Poco::SharedPtr<genericSprite> currentSprite = it->second;
-		if (currentSprite->nonNetworked){
-			continue;
-		}
-		Position position = currentSprite->GetPosition();
-		//1000 is an arbitrary number that should be put into a variable
-		if (currentSprite->timesSkiped <= 1000){
-			if ((floor(currentSprite->lastX) == floor(position.x)) && (floor(currentSprite->lastY) == floor(position.y)) && (currentSprite->lastAnimationName == currentSprite->currentAnimation->name) && (currentSprite->lastFrame == currentSprite->currentAnimation->currentFrame)){
-				++currentSprite->timesSkiped;
+	try{
+		Poco::ScopedLock<Poco::Mutex>(sprite.spriteMutex);
+		sprite.update();
+		for(spriteManager::spriteContainer::iterator it = sprite.Sprites.begin(); it != sprite.Sprites.end(); ++it){
+			Poco::SharedPtr<genericSprite> currentSprite = it->second;
+			if (currentSprite->nonNetworked){
 				continue;
 			}
-		}
-		currentSprite->lastFrame = currentSprite->currentAnimation->currentFrame;
-		currentSprite->lastX = position.x;
-		currentSprite->lastY = position.y;
-		currentSprite->timesSkiped = 0;
-
-		positionAndFrameUpdatePacket packet;
-		packet.packetID = positionAndFrameUpdatePacketID;
-		packet.spriteID = it->first;
-		
-		packet.x = position.x;
-		packet.y = position.y;
-		packet.flipped = currentSprite->flipped;
-		packet.currentFrame = currentSprite->currentAnimation->currentFrame;
-
-		animationChangePacket animationPacket;
-		bool useChangePacket = false;
-		if (currentSprite->lastAnimationName != currentSprite->currentAnimation->name){
-
-			animationPacket.packetID = animationChangePacketID;
-			animationPacket.spriteID = it->first;
-			animationPacket.animationID = currentSprite->currentAnimation->CRCName;
-
-			currentSprite->lastAnimationName = currentSprite->currentAnimation->name;
-			useChangePacket = true;
-		}
-
-		playerContainer::iterator iter;
-		for( iter = Players.begin(); iter != Players.end(); ++iter ) {
-			if(useChangePacket){
-				socket.sendTo((const void *)&animationPacket, sizeof(animationPacket), iter->second->address);
-				
+			Position position = currentSprite->GetPosition();
+			//1000 is an arbitrary number that should be put into a variable
+			if (currentSprite->timesSkiped <= 1000){
+				if ((floor(currentSprite->lastX) == floor(position.x)) && (floor(currentSprite->lastY) == floor(position.y)) && (currentSprite->lastAnimationName == currentSprite->currentAnimation->name) && (currentSprite->lastFrame == currentSprite->currentAnimation->currentFrame)){
+					++currentSprite->timesSkiped;
+					continue;
+				}
 			}
-			socket.sendTo((const void *)&packet, sizeof(positionAndFrameUpdatePacket), iter->second->address);
+			currentSprite->lastFrame = currentSprite->currentAnimation->currentFrame;
+			currentSprite->lastX = position.x;
+			currentSprite->lastY = position.y;
+			currentSprite->timesSkiped = 0;
+
+			positionAndFrameUpdatePacket packet;
+			packet.packetID = positionAndFrameUpdatePacketID;
+			packet.spriteID = it->first;
+			
+			packet.x = position.x;
+			packet.y = position.y;
+			packet.flipped = currentSprite->flipped;
+			packet.currentFrame = currentSprite->currentAnimation->currentFrame;
+
+			animationChangePacket animationPacket;
+			bool useChangePacket = false;
+			if (currentSprite->lastAnimationName != currentSprite->currentAnimation->name){
+
+				animationPacket.packetID = animationChangePacketID;
+				animationPacket.spriteID = it->first;
+				animationPacket.animationID = currentSprite->currentAnimation->CRCName;
+
+				currentSprite->lastAnimationName = currentSprite->currentAnimation->name;
+				useChangePacket = true;
+			}
+
+			playerContainer::iterator iter;
+			for( iter = Players.begin(); iter != Players.end(); ++iter ) {
+				if(useChangePacket){
+					socket.sendTo((const void *)&animationPacket, sizeof(animationPacket), iter->second->address);
+					
+				}
+				socket.sendTo((const void *)&packet, sizeof(positionAndFrameUpdatePacket), iter->second->address);
+			}
 		}
+	}catch (Poco::Exception& e){
+		std::string message = "Poco::Exception: "; 
+		message += e.what();
+		logger().error(message);
+	}catch (std::exception& e){
+		std::string message = "std::exception: "; 
+		message += e.what();
+		logger().error(message);
 	}
 }
 
@@ -417,15 +429,4 @@ void NetworkServer::disconnect(unsigned short playerID)
 	sprite.removeSprite(packet.spriteID);
 	Players.erase(playerID);
 	
-}/*
-
-void NetworkServer::playerInfo::disconnect(const boost::system::error_code& error)
-{
-	if (error){
-		std::cout << "disconnect: " << error.message() << std::endl;
-		return;
-	}
-	server->disconnect(endpoint.port());
 }
-
-*/
