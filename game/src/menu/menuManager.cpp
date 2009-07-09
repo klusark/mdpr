@@ -1,11 +1,11 @@
 #include <Poco/SharedPtr.h>
+#include <Poco/Util/Application.h>
 #include "menuManager.hpp"
 #include "menuMain.hpp"
 #include "menuOptions.hpp"
 #include "menuInGame.hpp"
 #include "menuServerBrowser.hpp"
 #include "menuControls.hpp"
-#include <iostream>
 
 Poco::SharedPtr<menuManager> menu;
 
@@ -54,7 +54,8 @@ void menuManager::changeCurrentMenu(std::string menuName)
 		currentMenu = iterator->second;
 		currentMenu->onChange();
 	}else{
-		std::cout << "Could not find menu." << std::endl;
+		Poco::Util::Application::instance().logger().warning("Could not find menu: " + menuName);
+		//std::cout << "Could not find menu." << std::endl;
 	}
 }
 

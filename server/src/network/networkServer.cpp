@@ -23,7 +23,7 @@ Poco::SharedPtr<NetworkServer> server;
 
 NetworkServer::NetworkServer() 
 	:	buffer(new char[BUFFER_SIZE]),
-		spriteUpdateTimer(250, 50),
+		spriteUpdateTimer(250, 5),
 		masterServerUpdateTimer(200, 20000)
 {
 	posUpdate = 0;
@@ -130,6 +130,7 @@ int NetworkServer::main(const std::vector<std::string>& args)
 
 void NetworkServer::onError(const Poco::AutoPtr<Poco::Net::ErrorNotification>& pNf)
 {
+	logger().error("OMGWTFBBQ");
 }
 
 void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotification>& pNf)
@@ -182,9 +183,9 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 
 				Poco::SharedPtr<playerInfo> player(new playerInfo);
 				player->address = socketAddress;
-				player->name = packet->name;
+				player->name = name;
 
-				Poco::SharedPtr<genericSprite> newPlayer(new Player(packet->name));
+				Poco::SharedPtr<genericSprite> newPlayer(new Player(name));
 				
 				sprite.registerSprite(newPlayer);
 				player->playerSprite = newPlayer;
@@ -323,12 +324,11 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 }
 
 
-/*void NetworkServer::removeIdlePlayers()
+void NetworkServer::removeIdlePlayers(Poco::Timer& timer)
 {
-	//boost::mutex::scoped_lock lock(PlayerMutex);
 	for (NetworkServer::playerContainer::iterator it = Players.begin(); it != Players.end(); ++it){
 		if (!it->second->stillAlive){
-			//disconnect(it->first);
+			disconnect(it->first);
 			break;
 		}else{
 			it->second->stillAlive = false;
@@ -336,7 +336,7 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 	}
 }
 
-*/
+
 void NetworkServer::spriteUpdate(Poco::Timer& timer)
 {
 	/*if (error){

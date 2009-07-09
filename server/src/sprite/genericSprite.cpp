@@ -1,9 +1,9 @@
 #include <Poco/Util/PropertyFileConfiguration.h>
 #include <Poco/SharedPtr.h>
+#include <Poco/Util/Application.h>
 
 #include <string>
 #include <vector>
-#include <iostream>
 #include <fstream>
 #include <cmath>
 
@@ -173,7 +173,8 @@ void genericSprite::changeAnimation(unsigned int name)
 			currentAnimation = Animations[name];
 			currentAnimation->Clock.Reset();
 		}else{
-			std::cout << "Error Cannot find Animation: " << name << std::endl;
+			Poco::Util::Application::instance().logger().warning("Error Cannot find Animation: " + name);
+			//std::cout << "Error Cannot find Animation: " << name << std::endl;
 		}
 	}
 }

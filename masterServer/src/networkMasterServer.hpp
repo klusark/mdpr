@@ -1,10 +1,8 @@
 #ifndef networkMasterServer_hpp
 #define networkMasterServer_hpp
 
-#include <Poco/Net/StreamSocket.h>
 #include <Poco/Net/SocketReactor.h>
 #include <Poco/Net/SocketNotification.h>
-#include <Poco/AutoPtr.h>
 #include <Poco/Util/ServerApplication.h>
 
 #include <vector>

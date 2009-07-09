@@ -1,5 +1,4 @@
 #include <string>
-#include <iostream>
 #include "animation.hpp"
 #include "helpers.hpp"
 
