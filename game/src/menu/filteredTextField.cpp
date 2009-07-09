@@ -1,5 +1,4 @@
 #include "filteredTextField.hpp"
-#include <iostream>
 
 FilteredTextField::FilteredTextField()
 	:	maxCharacters(-1), noNumbers(false), noLetters(false)

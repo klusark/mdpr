@@ -7,6 +7,7 @@
 #include <Poco/SharedPtr.h>
 #include <Poco/ThreadPool.h>
 #include <Poco/Util/Application.h>
+#include <Poco/Util/PropertyFileConfiguration.h>
 
 //!The main class for the game
 /*!
@@ -28,6 +29,8 @@ public:
 	void uninitialize();
 	//!Contains the event loop, and it starts the threads for drawing and updating. 
 	int main(const std::vector<std::string>& args);
+
+	Poco::AutoPtr<Poco::Util::PropertyFileConfiguration> propertyFile;
 	
 	//!Quits the game
 	static void quitGame();

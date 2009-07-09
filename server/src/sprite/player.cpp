@@ -24,6 +24,11 @@ Player::Player(const std::string &name)
 	keyMap[keyDown]		= false;
 	keyMap[keyUp]		= false;
 	keyMap[keyAction]	= false;
+	keyMapTwo[keyLeft]	= false;
+	keyMapTwo[keyRight]	= false;
+	keyMapTwo[keyDown]	= false;
+	keyMapTwo[keyUp]	= false;
+	keyMapTwo[keyAction]= false;
 
 	changeAnimation("idle");
 	setYAccel(50.0f);

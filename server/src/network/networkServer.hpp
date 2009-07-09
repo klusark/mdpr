@@ -48,21 +48,20 @@ protected:
 
 	/*!
 	Called when a packet is received
-	\param pNf the notification
 	*/
-	void onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotification>& pNf);
+	void onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotification>&);
 
 	/*!
 	Called when there is an error
-	\param pNf the notification
 	*/
-	void onError(const Poco::AutoPtr<Poco::Net::ErrorNotification>& pNf);
+	void onError(const Poco::AutoPtr<Poco::Net::ErrorNotification>&);
 
-	/*
-	void removeIdlePlayers(const boost::system::error_code& error);
-*/
+	
+	void removeIdlePlayers(Poco::Timer& timer);
+
 	void spriteUpdate(Poco::Timer& timer);
 	void masterServerUpdate(Poco::Timer& timer);
+
 	Poco::Timer spriteUpdateTimer;
 	Poco::Timer masterServerUpdateTimer;
 

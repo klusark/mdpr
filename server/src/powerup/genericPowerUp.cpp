@@ -1,4 +1,4 @@
-#include <iostream>
+#include <Poco/Util/Application.h>
 #include "sprite/genericSprite.hpp"
 #include "genericPowerUp.hpp"
 
@@ -13,10 +13,12 @@ genericPowerUp::~genericPowerUp()
 
 void genericPowerUp::onActionKey()
 {
-	std::cout << "Improper Use" << std::endl;
+	Poco::Util::Application::instance().logger().warning("Improper Use");
+	//std::cout << "Improper Use" << std::endl;
 }
 
 void genericPowerUp::update()
 {
-	std::cout << "Improper Use" << std::endl;
+	Poco::Util::Application::instance().logger().warning("Improper Use");
+	//std::cout << "Improper Use" << std::endl;
 }

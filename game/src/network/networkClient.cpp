@@ -1,4 +1,3 @@
-#include <iostream>
 #include <exception>
 #include <SFML/System/Sleep.hpp>
 #include <Poco/NObserver.h>
@@ -165,7 +164,8 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 			{
 				spriteDeletionPacket *packet = (spriteDeletionPacket *)buffer;
 				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
-					std::cout << "Can not find sprite" << std::endl;
+					Poco::Util::Application::instance().logger().warning("Can not find sprite");
+					//std::cout << "Can not find sprite" << std::endl;
 				}
 				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
 				sprite.Sprites.erase(sprite.Sprites.find(packet->spriteID));
@@ -179,7 +179,7 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				switch(packet->errorID)
 				{
 				case nameInUse:
-						std::cout << "Error: Name already in use" << std::endl;
+						Poco::Util::Application::instance().logger().error("Error: Name already in use");
 					break;
 				}
 				
@@ -190,7 +190,7 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				animationChangePacket *packet = (animationChangePacket *)buffer;
 				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
 				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
-					std::cout << "Could not find sprite" << std::endl;
+					Poco::Util::Application::instance().logger().warning("Can not find sprite");
 					break;
 				}
 				sprite.Sprites[packet->spriteID]->currentAnimationID = packet->animationID;
@@ -201,7 +201,7 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				positionAndFrameUpdatePacket *packet = (positionAndFrameUpdatePacket *)buffer;
 				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
 				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
-					std::cout << "Could not find sprite" << std::endl;
+					Poco::Util::Application::instance().logger().warning("Can not find sprite");
 					break;
 				}
 				sprite.Sprites[packet->spriteID]->SetX(packet->x);
@@ -243,7 +243,7 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 
 			break;
 		default:
-			std::cout << "onReceivePacket: Could not identify packet" << std::endl;
+			Poco::Util::Application::instance().logger().error("onReceivePacket: Could not identify packet");
 			break;
 
 		}

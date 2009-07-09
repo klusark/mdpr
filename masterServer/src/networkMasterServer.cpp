@@ -1,14 +1,6 @@
-#include <Poco/Logger.h>
-#include <Poco/PatternFormatter.h>
-#include <Poco/FormattingChannel.h>
-#include <Poco/ConsoleChannel.h>
-#include <Poco/FileChannel.h>
-#include <Poco/Message.h>
 #include <Poco/NObserver.h>
 #include <Poco/Thread.h>
-#include <Poco/Net/ServerSocket.h>
 #include <Poco/Net/DatagramSocket.h>
-#include <Poco/Net/SocketAddress.h>
 
 #include <cmath>
 

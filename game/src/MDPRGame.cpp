@@ -1,12 +1,9 @@
 #include <SFML/System/Sleep.hpp>
 #include <SFML/System/Clock.hpp>
 
-//#include <boost/program_options.hpp>
-//#include <boost/thread.hpp>
 #include <iostream>
-#include <fstream>
-#include <time.h>
 #include <Poco/RunnableAdapter.h>
+#include <Poco/Util/PropertyFileConfiguration.h>
 
 #include "network/networkClient.hpp"
 #include "menu/menuManager.hpp"
@@ -45,7 +42,10 @@ MDPRGame::MDPRGame()
 
 void MDPRGame::initialize(Poco::Util::Application& self)
 {
-	loadConfiguration();
+	//loadConfiguration();
+	propertyFile.assign(new Poco::Util::PropertyFileConfiguration);
+	propertyFile->load("mdpr.properties");
+	config().add(propertyFile, 0, false, true);
 	Poco::Util::Application::initialize(self);
 }
 
@@ -86,6 +86,12 @@ int MDPRGame::main(const std::vector<std::string>& args)
 		boost::program_options::store(parse_config_file(configFileStream, configFileOptions), configVariableMap);
 		notify(configVariableMap);
 	}*/
+	controls.up =		config().getString("mdpr.controls.up").c_str()[0];
+	controls.down =		config().getString("mdpr.controls.down").c_str()[0];
+	controls.left =		config().getString("mdpr.controls.left").c_str()[0];
+	controls.right =	config().getString("mdpr.controls.right").c_str()[0];
+	controls.use =		config().getString("mdpr.controls.use").c_str()[0];
+	propertyFile->setInt("stats.TotalTimesRun", propertyFile->getInt("stats.TotalTimesRun", 0)+1);
 	MDPR = this;
 	App.Create(sf::VideoMode(config().getInt("graphics.width"), config().getInt("graphics.height"), config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing")));
 	App.EnableKeyRepeat(false);
@@ -104,7 +110,7 @@ int MDPRGame::main(const std::vector<std::string>& args)
 	App.SetActive(false);
 
 	Poco::RunnableAdapter<MDPRGame> drawThreadAdapter(*this, &MDPRGame::drawThread);
-	pool.start(drawThreadAdapter);
+	//pool.start(drawThreadAdapter);
 	Poco::RunnableAdapter<MDPRGame> updateThreadAdapter(*this, &MDPRGame::updateThread);
 	pool.start(updateThreadAdapter);
 
@@ -135,6 +141,7 @@ int MDPRGame::main(const std::vector<std::string>& args)
 	}
 	pool.joinAll();
 	App.SetActive(true);
+	propertyFile->save("mdpr.properties");
 	return Application::EXIT_OK;
 }
 
@@ -163,11 +170,10 @@ void MDPRGame::drawThread()
 			Frames++;
 			seconds = Clock.GetElapsedTime();
 			if (seconds >= 5) {
-
 				fps = Frames / seconds;
 				std::cout << Frames << " frames in " << seconds << " seconds = " << fps << " FPS" << std::endl;
 
-				MDPR->Clock.Reset();
+				Clock.Reset();
 				Frames = 0;
 			}
 			//if (menu->isActive()){
@@ -177,27 +183,42 @@ void MDPRGame::drawThread()
 			//sf::Sleep(0.01f);
 		}
 	}catch(gcn::Exception except){
-		std::cout << except.getMessage() << std::endl;
+		logger().error(except.getMessage());
+		//std::cout << except.getMessage() << std::endl;
 	}catch (std::exception& e){
-		std::cout << "Exception: " << e.what() << std::endl;
+		logger().error(e.what());
+		//std::cout << "Exception: " << e.what() << std::endl;
 	}
 }
 
 void MDPRGame::updateThread()
 {
 	try {
+		int Frames = 0;
+		float seconds, fps = 0;
+		sf::Clock clock;
 		while (!quit){
+			Frames++;
+			seconds = clock.GetElapsedTime();
+			if (seconds >= 5) {
+				fps = Frames / seconds;
+				std::cout << Frames << " updates in " << seconds << " seconds = " << fps << " UPS" << std::endl;
 
+				clock.Reset();
+				Frames = 0;
+			}
 			menu->logic();
 			if (sprite.isActive()){
 				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
 				sprite.update();
 			}
-			sf::Sleep(0.003f);
+			sf::Sleep(0.001f);
 		}
 	}catch(gcn::Exception except){
-		std::cout << except.getMessage() << std::endl;
+		Poco::Util::Application::instance().logger().error(except.getMessage());
+		//std::cout << except.getMessage() << std::endl;
 	}catch (std::exception& e){
-		std::cout << "Exception: " << e.what() << std::endl;
+		Poco::Util::Application::instance().logger().error(e.what());
+		//std::cout << "Exception: " << e.what() << std::endl;
 	}
 }
