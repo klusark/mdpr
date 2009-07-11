@@ -4,7 +4,7 @@
 #include "genericSprite.hpp"
 #include "network/packets.hpp"
 
-#include "powerup/gun.hpp"
+#include "powerup/puck.hpp"
 #include "helpers.hpp"
 
 Player::Player(const std::string &name)
@@ -35,7 +35,7 @@ Player::Player(const std::string &name)
 
 	hasPowerUp = true;
 
-	currentPowerup = Poco::SharedPtr<genericPowerUp>(new Gun(this));
+	currentPowerup = Poco::SharedPtr<genericPowerUp>(new Puck(this));
 
 
 }

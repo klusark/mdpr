@@ -6,7 +6,7 @@
 #include "helpers.hpp"
 
 menuOptions::menuOptions(sf::RenderWindow &App)
-	:	menuGeneric(App)
+	:	MenuGeneric(App)
 {
 	char str[4];
 	textResWidth.setDimension(gcn::Rectangle(100, 100, 50, 20));

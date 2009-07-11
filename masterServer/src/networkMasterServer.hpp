@@ -27,7 +27,10 @@ protected:
 	//!initializes the application
 	void initialize(Poco::Util::Application& self);
 
+	//!the container for holding the server
 	typedef std::vector<serverEntry> serverListContainer;
+
+	//!the serverListContainer of servers
 	serverListContainer serverList;
 
 	enum
@@ -35,6 +38,7 @@ protected:
 		//!The size of the buffer
 		BUFFER_SIZE = 256
 	};
+
 	//!the socket used for all communication
 	Poco::Net::DatagramSocket socket;
 

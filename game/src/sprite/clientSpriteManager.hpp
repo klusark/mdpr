@@ -40,7 +40,7 @@ private:
 	
 };
 
-extern ClientSpriteManager sprite;
+extern Poco::SharedPtr<ClientSpriteManager> sprite;
 
 
 #endif // #ifndef clientSpriteManager_hpp

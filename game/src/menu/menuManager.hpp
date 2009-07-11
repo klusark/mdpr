@@ -6,15 +6,16 @@
 #include <Poco/SharedPtr.h>
 #include <Poco/Mutex.h>
 #include <string>
+#include <CEGUI.h>
+#include <openglrenderer.h>
 
+class MenuGeneric;
 
-class menuGeneric;
-
-class menuManager
+class MenuManager
 {
 public:
-	menuManager(sf::RenderWindow &App);
-	~menuManager();
+	MenuManager(sf::RenderWindow &App);
+	~MenuManager();
 	void logic();
 	void changeCurrentMenu(std::string menuName);
 	bool isActive();
@@ -24,12 +25,27 @@ public:
 	sf::RenderWindow &App;
 	gcn::SFMLFont font;
 
-	typedef std::map<std::string, Poco::SharedPtr<menuGeneric> > menuContainer;
+	typedef std::map<std::string, Poco::SharedPtr<MenuGeneric> > menuContainer;
 	menuContainer menus;
-	Poco::SharedPtr<menuGeneric> currentMenu;
+	Poco::SharedPtr<MenuGeneric> currentMenu;
 	bool active;
+
+	CEGUI::System* mSystem;
+	CEGUI::OpenGLRenderer* mRenderer;
+	CEGUI::WindowManager* mWindowManager;
+	const sf::Input* mInput;
+
+	typedef std::map<sf::Key::Code, CEGUI::Key::Scan> KeyMap;
+	typedef std::map<sf::Mouse::Button, CEGUI::MouseButton> MouseButtonMap;
+
+	KeyMap mKeyMap;
+	MouseButtonMap mMouseButtonMap;
+
+	CEGUI::Key::Scan toCEGUIKey(sf::Key::Code Code);
+	CEGUI::MouseButton toCEGUIMouseButton(sf::Mouse::Button Button);
+	void initializeMaps();
 };
 
-extern Poco::SharedPtr<menuManager> menu;
+extern Poco::SharedPtr<MenuManager> menu;
 
 #endif

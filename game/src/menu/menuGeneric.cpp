@@ -1,30 +1,30 @@
 #include "menuGeneric.hpp"
 #include "menuManager.hpp"
 
-menuGeneric::menuGeneric(sf::RenderWindow &App)
+MenuGeneric::MenuGeneric(sf::RenderWindow &App)
 	:	graphics(App),
 		ActionListener()
 {
 	setGraphics(&graphics);
 	setInput(&input);
 	setTop(&top);
-	top.setDimension(gcn::Rectangle(0, 0, 640, 400));
+	top.setDimension(gcn::Rectangle(0, 0, App.GetWidth(), App.GetHeight()));
 	top.setOpaque(true);
 }
 
-menuGeneric::~menuGeneric()
+MenuGeneric::~MenuGeneric()
 {
 }
 
-void menuGeneric::onChange()
+void MenuGeneric::onChange()
 {
 }
 
-void menuGeneric::action(const gcn::ActionEvent &actionEvent)
+void MenuGeneric::action(const gcn::ActionEvent &actionEvent)
 {
 }
 
-void menuGeneric::logic()
+void MenuGeneric::logic()
 {
 	gcn::Gui::logic();
 }

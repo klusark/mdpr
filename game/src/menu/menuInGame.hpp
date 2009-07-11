@@ -3,7 +3,7 @@
 
 #include "menuGeneric.hpp"
 
-class menuInGame : public menuGeneric
+class menuInGame : public MenuGeneric
 {
 public:
 	menuInGame(sf::RenderWindow &App);

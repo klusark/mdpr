@@ -6,7 +6,7 @@
 
 
 menuInGame::menuInGame(sf::RenderWindow &App)
-	:	menuGeneric(App)
+	:	MenuGeneric(App)
 {
 	top.setOpaque(true);
 

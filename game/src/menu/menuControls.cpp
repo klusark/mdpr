@@ -9,7 +9,7 @@
 #include "MDPRGame.hpp"
 
 menuControls::menuControls(sf::RenderWindow &App)
-	:	menuGeneric(App),
+	:	MenuGeneric(App),
 		upButton(&MDPR->controls.up),
 		downButton(&MDPR->controls.down),
 		rightButton(&MDPR->controls.right),

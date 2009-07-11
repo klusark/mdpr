@@ -9,7 +9,7 @@
 #include "MDPRGame.hpp"
 
 menuMain::menuMain(sf::RenderWindow &App)
-	:	menuGeneric(App)
+	:	MenuGeneric(App)
 {
 	label.setCaption("Marshmallow Duels");
 	label.setDimension(gcn::Rectangle(100, 40, 200, 25));

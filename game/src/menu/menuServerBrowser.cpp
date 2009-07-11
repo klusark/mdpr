@@ -7,7 +7,7 @@
 
 
 menuServerBrowser::menuServerBrowser(sf::RenderWindow &App)
-	:	menuGeneric(App),
+	:	MenuGeneric(App),
 		connectButtonDisplayed(false)
 {
 
@@ -53,7 +53,7 @@ void menuServerBrowser::logic()
 		}
 
 	}
-	menuGeneric::logic();
+	MenuGeneric::logic();
 }
 
 void menuServerBrowser::toThis()
