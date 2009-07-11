@@ -4,7 +4,7 @@
 #include "menuGeneric.hpp"
 #include "serverListModel.hpp"
 
-class menuServerBrowser : public menuGeneric
+class menuServerBrowser : public MenuGeneric
 {
 public:
 	menuServerBrowser(sf::RenderWindow &App);

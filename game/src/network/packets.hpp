@@ -185,8 +185,14 @@ struct serverEntry
 	unsigned short port;
 };
 
-/*
-Contains as many servers as possble.
+enum
+{
+	//!The number of packets to be used in the serversListPacket
+	numberOfPacketInServerListPacket = 32
+};
+
+/*!
+Contains as many servers as possble, up to numberOfPacketInServerListPacket
 from master server to client.
 Size: 197
 */
@@ -194,7 +200,7 @@ struct serversListPacket
 {
 	packetIDs packetID;
 	unsigned char numServers;
-	serverEntry serverList[32];
+	serverEntry serverList[numberOfPacketInServerListPacket];
 };
 
 struct getFullServerInfoPacket

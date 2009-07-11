@@ -17,7 +17,7 @@ ClientSprite::~ClientSprite()
 
 void ClientSprite::update()
 {
-	SetSubRect(XYWHToLTRB(sprite.Animations[currentAnimationID].startX + (currentFrame * sprite.Animations[currentAnimationID].width) + (currentFrame * sprite.Animations[currentAnimationID].padding), sprite.Animations[currentAnimationID].startY, sprite.Animations[currentAnimationID].width, sprite.Animations[currentAnimationID].height));
+	SetSubRect(XYWHToLTRB(sprite->Animations[currentAnimationID].startX + (currentFrame * sprite->Animations[currentAnimationID].width) + (currentFrame * sprite->Animations[currentAnimationID].padding), sprite->Animations[currentAnimationID].startY, sprite->Animations[currentAnimationID].width, sprite->Animations[currentAnimationID].height));
 	FlipX(flipped);
 }
 

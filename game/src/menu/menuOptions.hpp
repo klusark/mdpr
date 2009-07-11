@@ -4,7 +4,7 @@
 #include "menuGeneric.hpp"
 #include "filteredTextField.hpp"
 
-class menuOptions : public menuGeneric
+class menuOptions : public MenuGeneric
 {
 public:
 	menuOptions(sf::RenderWindow &App);

@@ -7,7 +7,7 @@
 
 #include "clientSpriteManager.hpp"
 
-ClientSpriteManager sprite;
+Poco::SharedPtr<ClientSpriteManager> sprite;
 
 ClientSpriteManager::ClientSpriteManager()
 	:	active(false){

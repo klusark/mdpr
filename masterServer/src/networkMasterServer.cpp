@@ -7,6 +7,7 @@
 #include "networkMasterServer.hpp"
 #include "network/packets.hpp"
 
+//Use the Poco::Util::Application main macro
 POCO_SERVER_MAIN(NetworkMasterServer)
 
 NetworkMasterServer::NetworkMasterServer() 
@@ -20,7 +21,8 @@ NetworkMasterServer::~NetworkMasterServer()
 
 void NetworkMasterServer::initialize(Poco::Util::Application& self)
 {
-	loadConfiguration(); // load default configuration files, if present
+	//load default configuration files, if present
+	loadConfiguration();
 	Poco::Util::ServerApplication::initialize(self);
 	logger().information("starting up");
 }
@@ -35,16 +37,18 @@ int NetworkMasterServer::main(const std::vector<std::string>& args)
 	// set-up a SocketReactor...
 	Poco::Net::SocketReactor reactor;
 	reactor.addEventHandler(socket, Poco::NObserver<NetworkMasterServer, Poco::Net::ReadableNotification>(*this, &NetworkMasterServer::onReceivePacket));
-	// run the reactor in its own thread so that we can wait for 
-	// a termination request
+
+	// run the reactor in its own thread so that we can wait for a termination request
 	Poco::Thread thread;
 	thread.start(reactor);
 	// wait for CTRL-C or kill
 	waitForTerminationRequest();
 	// Stop the SocketReactor
 	reactor.stop();
+	//wait for the thread to finish
 	thread.join();
 
+	//Return that everything was fine
 	return Application::EXIT_OK;
 }
 
@@ -82,10 +86,11 @@ void NetworkMasterServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::Readabl
 					//make sure that the port is also the same.
 					if (packet->port == serverList[i].port){
 						//it is so ignore the packet
-						return;
+						//return;
 					}
 				}
 			}
+			//Inform the user of the new server that has been added
 			logger().information("Added new server: " + socketAddress.toString());
 			serverEntry newEntry;
 			memcpy(newEntry.ip, IP, 4);
@@ -99,26 +104,33 @@ void NetworkMasterServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::Readabl
 	case getServersPacketID:
 		{
 			serversListPacket *packets;
+			//Inform the user of the query from a game client
 			logger().information("Query From: " + socketAddress.toString());
 
-			unsigned int numPackets = int(ceil(float(serverList.size())/32));
+			//calculate the number of packets that will be needed
+			unsigned int numPackets = int(ceil(float(serverList.size())/numberOfPacketInServerListPacket));
+			//Create all the packets
 			packets = new serversListPacket[numPackets];
+			//Loop though the packets and fill them with information
 			for (unsigned int x = 0; x < numPackets; ++x){
-				unsigned int end = (x+1) * 32;
-				if ((x + 1) * 32 > serverList.size()){
+				unsigned int end = (x+1) * numberOfPacketInServerListPacket;
+				if ((x + 1) * numberOfPacketInServerListPacket > serverList.size()){
 					end = serverList.size();
 				}
-				for (unsigned int i = x * 32; i < end; ++i){
-					memcpy((void *)&packets[x].serverList[i - x * 32], (void *)&serverList[i], 6);
+				for (unsigned int i = x * numberOfPacketInServerListPacket; i < end; ++i){
+					memcpy((void *)&packets[x].serverList[i - x * numberOfPacketInServerListPacket], (void *)&serverList[i], 6);
 				}
 				packets[x].packetID = serversListPacketID;
-				packets[x].numServers = end - x * 32;
+				packets[x].numServers = end - x * numberOfPacketInServerListPacket;
 				socket.sendTo((const void *)&packets[x], sizeof(serversListPacket), socketAddress);
 			}
+			//free the packets from memory
+			delete[] packets;
 			
 		}
 		break;
 	default:
+		//The magic number on the packet does not match any know magic number
 		logger().warning("Unknown packet received");
 		break;
 

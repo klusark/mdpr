@@ -114,8 +114,8 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 			{
 				spriteCreationPacket *packet = (spriteCreationPacket *)buffer;
 				Poco::SharedPtr<ClientSprite> newSprite(new ClientSprite(packet->name));
-				newSprite->SetImage(*sprite.Images[packet->spriteType].get());
-				sprite.registerSprite(newSprite);
+				newSprite->SetImage(*sprite->Images[packet->spriteType].get());
+				sprite->registerSprite(newSprite);
 				
 			}
 			break;
@@ -134,20 +134,20 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				
 
 				Image->SetSmooth(false);
-				sprite.Images[packet->spriteTypeID] = Image;
+				sprite->Images[packet->spriteTypeID] = Image;
 			}
 			break;
 		case animationCreationPacketID:
 			{
 				animationCreationPacket *packet = (animationCreationPacket *)buffer;
-				sprite.Animations[packet->animationID] = *packet;
+				sprite->Animations[packet->animationID] = *packet;
 			}
 			break;
 		case spritePosPacketID:
 			{
 				spritePosPacket *packet = (spritePosPacket *)buffer;
-				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
-				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
+				Poco::ScopedLock<Poco::Mutex> lock(sprite->spriteMutex);
+				if (sprite->Sprites.find(packet->spriteID) == sprite->Sprites.end()){
 					cannotFindSpritePacket newPacket;
 					newPacket.packetID = cannotFindSpritePacketID;
 					newPacket.spriteID = packet->spriteID;
@@ -155,20 +155,20 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 					//std::cout << "Could not find sprite" << std::endl;
 					break;
 				}
-				sprite.Sprites[packet->spriteID]->SetX(packet->x);
-				sprite.Sprites[packet->spriteID]->SetY(packet->y);
-				sprite.Sprites[packet->spriteID]->flipped = packet->flipped;
+				sprite->Sprites[packet->spriteID]->SetX(packet->x);
+				sprite->Sprites[packet->spriteID]->SetY(packet->y);
+				sprite->Sprites[packet->spriteID]->flipped = packet->flipped;
 			}
 			break;
 		case spriteDeletionPacketID:
 			{
 				spriteDeletionPacket *packet = (spriteDeletionPacket *)buffer;
-				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
+				if (sprite->Sprites.find(packet->spriteID) == sprite->Sprites.end()){
 					Poco::Util::Application::instance().logger().warning("Can not find sprite");
 					//std::cout << "Can not find sprite" << std::endl;
 				}
-				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
-				sprite.Sprites.erase(sprite.Sprites.find(packet->spriteID));
+				Poco::ScopedLock<Poco::Mutex> lock(sprite->spriteMutex);
+				sprite->Sprites.erase(sprite->Sprites.find(packet->spriteID));
 
 				
 			}
@@ -188,26 +188,26 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 		case animationChangePacketID:
 			{
 				animationChangePacket *packet = (animationChangePacket *)buffer;
-				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
-				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
+				Poco::ScopedLock<Poco::Mutex> lock(sprite->spriteMutex);
+				if (sprite->Sprites.find(packet->spriteID) == sprite->Sprites.end()){
 					Poco::Util::Application::instance().logger().warning("Can not find sprite");
 					break;
 				}
-				sprite.Sprites[packet->spriteID]->currentAnimationID = packet->animationID;
+				sprite->Sprites[packet->spriteID]->currentAnimationID = packet->animationID;
 			}
 			break;
 		case positionAndFrameUpdatePacketID:
 			{
 				positionAndFrameUpdatePacket *packet = (positionAndFrameUpdatePacket *)buffer;
-				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
-				if (sprite.Sprites.find(packet->spriteID) == sprite.Sprites.end()){
+				Poco::ScopedLock<Poco::Mutex> lock(sprite->spriteMutex);
+				if (sprite->Sprites.find(packet->spriteID) == sprite->Sprites.end()){
 					Poco::Util::Application::instance().logger().warning("Can not find sprite");
 					break;
 				}
-				sprite.Sprites[packet->spriteID]->SetX(packet->x);
-				sprite.Sprites[packet->spriteID]->SetY(packet->y);
-				sprite.Sprites[packet->spriteID]->flipped = packet->flipped;
-				sprite.Sprites[packet->spriteID]->currentFrame = packet->currentFrame;
+				sprite->Sprites[packet->spriteID]->SetX(packet->x);
+				sprite->Sprites[packet->spriteID]->SetY(packet->y);
+				sprite->Sprites[packet->spriteID]->flipped = packet->flipped;
+				sprite->Sprites[packet->spriteID]->currentFrame = packet->currentFrame;
 			}
 			break;
 		case serversListPacketID:

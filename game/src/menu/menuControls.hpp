@@ -4,7 +4,7 @@
 #include "menuGeneric.hpp"
 #include "controlChangeButton.hpp"
 
-class menuControls : public menuGeneric
+class menuControls : public MenuGeneric
 {
 public:
 	menuControls(sf::RenderWindow &App);

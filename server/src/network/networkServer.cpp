@@ -306,10 +306,11 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 			break;
 
 		}
-	}catch (Poco::Net::ConnectionResetException&){
-		if (!(Players.find(socketAddress.port()) == Players.end())){
-
-			disconnect(socketAddress.port());
+	}catch (Poco::Net::ConnectionResetException& e){
+		unsigned short port = socketAddress.port();
+		if (!(Players.find(port) == Players.end())){
+		
+			disconnect(port);
 
 		}
 	}catch (Poco::Exception& e){

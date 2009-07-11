@@ -11,13 +11,13 @@
 #include <guichan/sfml/sfmlimageloader.hpp>
 #include <guichan/sfml/sfmlfont.hpp>
 
-class menuGeneric
+class MenuGeneric
 	:	public gcn::Gui, 
 		public gcn::ActionListener
 {
 public:
-	menuGeneric(sf::RenderWindow &App);
-	~menuGeneric();
+	MenuGeneric(sf::RenderWindow &App);
+	~MenuGeneric();
 	virtual void onChange();
 	gcn::SFMLGraphics	graphics;
 	gcn::SFMLInput		input;

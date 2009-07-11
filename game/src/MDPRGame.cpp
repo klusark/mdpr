@@ -93,36 +93,40 @@ int MDPRGame::main(const std::vector<std::string>& args)
 	controls.use =		config().getString("mdpr.controls.use").c_str()[0];
 	propertyFile->setInt("stats.TotalTimesRun", propertyFile->getInt("stats.TotalTimesRun", 0)+1);
 	MDPR = this;
-	App.Create(sf::VideoMode(config().getInt("graphics.width"), config().getInt("graphics.height"), config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing")));
+	App.Create(sf::VideoMode(320, 200, config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close|sf::Style::Resize, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing")));
+	view.SetFromRect(sf::FloatRect(0, 0, 320, 200));
+	view.Zoom(1.0f);
+	App.SetView(view);
+	//App.SetSize(640, 400);
 	App.EnableKeyRepeat(false);
 	App.UseVerticalSync(config().getBool("graphics.VerticalSync"));
+	App.SetFramerateLimit(config().getInt("graphics.FrameLimit"));
 
-	//myNetworkClient = new NetworkClient;
-	//Poco::SharedPtr<NetworkClient> newClient(new NetworkClient);
-	myNetworkClient.assign(new NetworkClient);// = newClient;
+	myNetworkClient.assign(new NetworkClient);
 	myNetworkClient->connectToMaster();
 
-	Poco::SharedPtr<menuManager> newMenu(new menuManager(App));
-	menu = newMenu;
+	menu.assign(new MenuManager(App));
 
-	sprite.setActive(true);
+	sprite.assign(new ClientSpriteManager);
+
+	sprite->setActive(true);
 
 	App.SetActive(false);
 
 	Poco::RunnableAdapter<MDPRGame> drawThreadAdapter(*this, &MDPRGame::drawThread);
-	//pool.start(drawThreadAdapter);
+	pool.start(drawThreadAdapter);
 	Poco::RunnableAdapter<MDPRGame> updateThreadAdapter(*this, &MDPRGame::updateThread);
 	pool.start(updateThreadAdapter);
-
+	sf::Event Event;
 	while(!quit)
 	{
-		
-		sf::Event Event;
 		
 		while (App.GetEvent(Event)){
 			// Window closed
 			if (Event.Type == sf::Event::Closed){
 				quit = true;
+			}else if (Event.Type == sf::Event::Resized){
+				std::cout << "Resize" << std::endl;
 			}
 
 			if (myNetworkClient->connected){
@@ -162,9 +166,9 @@ void MDPRGame::drawThread()
 			App.Clear(sf::Color(0,0,0));
 
 
-			if (sprite.isActive()){
-				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
-				sprite.draw(App);
+			if (sprite->isActive()){
+				Poco::ScopedLock<Poco::Mutex> lock(sprite->spriteMutex);
+				sprite->draw(App);
 			}
 
 			Frames++;
@@ -208,11 +212,11 @@ void MDPRGame::updateThread()
 				Frames = 0;
 			}
 			menu->logic();
-			if (sprite.isActive()){
-				Poco::ScopedLock<Poco::Mutex> lock(sprite.spriteMutex);
-				sprite.update();
+			if (sprite->isActive()){
+				Poco::ScopedLock<Poco::Mutex> lock(sprite->spriteMutex);
+				sprite->update();
 			}
-			sf::Sleep(0.001f);
+			sf::Sleep(0.01f);
 		}
 	}catch(gcn::Exception except){
 		Poco::Util::Application::instance().logger().error(except.getMessage());

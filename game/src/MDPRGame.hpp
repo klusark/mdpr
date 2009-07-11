@@ -43,6 +43,8 @@ public:
 	
 	//!the render window collected though the constructor
 	sf::RenderWindow App;
+
+	sf::View view;
 	
 	//!The name of the player
 	std::string playerName;
