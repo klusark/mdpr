@@ -42,6 +42,7 @@ NetworkClient::NetworkClient()
 NetworkClient::~NetworkClient()
 {
 	reactor.stop();
+	thread.join();
 }
 
 void NetworkClient::connectToServer(std::string ip, std::string port)
@@ -83,14 +84,15 @@ void NetworkClient::connectToMaster()
 	getServersPacket packet;
 	packet.packetID = getServersPacketID;
 	Poco::Net::SocketAddress masterServerAddress(Poco::Util::Application::instance().config().getString("master.ip"), Poco::Util::Application::instance().config().getString("master.port"));
-	
+	try{
 	socket.sendTo((const void *)&packet, 4, masterServerAddress);
+	}catch(...){}
 }
 
 void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotification>& pNf)
 {
 	Poco::Net::SocketAddress socketAddress;
-	socket.receiveFrom(buffer, BUFFER_SIZE, socketAddress);
+	
 	/*totalBytesRecived += bytesReceived;
 	bytesInLastFive += bytesReceived;
 	float time = timer.GetElapsedTime();
@@ -105,6 +107,7 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 		
 	}else{*/
 	try{
+		socket.receiveFrom(buffer, BUFFER_SIZE, socketAddress);
 		packetIDs packetID;
 		memcpy(&packetID, buffer, 4);
 
@@ -299,7 +302,9 @@ void NetworkClient::serverListUpdateThread(Poco::Timer&)
 		Poco::Net::SocketAddress address(ip, serversToUpdate[i][0].entry.port);
 		getFullServerInfoPacket packet;
 		packet.packetID = getFullServerInfoPacketID;
-		socket.sendTo((const void *)&packet, 4, address);
+		try{
+			socket.sendTo((const void *)&packet, 4, address);
+		}catch(...){}
 		serversToUpdate[i].erase(serversToUpdate[i].begin());
 	}
 }

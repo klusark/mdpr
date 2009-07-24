@@ -21,6 +21,7 @@ public:
 	bool isActive();
 	void setActive(bool toggle);
 	void draw();
+	void handleEvent(sf::Event& Event);
 	Poco::Mutex menuMutex;
 	sf::RenderWindow &App;
 	gcn::SFMLFont font;
@@ -30,9 +31,9 @@ public:
 	Poco::SharedPtr<MenuGeneric> currentMenu;
 	bool active;
 
-	CEGUI::System* mSystem;
-	CEGUI::OpenGLRenderer* mRenderer;
-	CEGUI::WindowManager* mWindowManager;
+	CEGUI::System* MenuSystem;
+	CEGUI::OpenGLRenderer* GUIRenderer;
+	CEGUI::WindowManager* MenuWindowManager;
 	const sf::Input* mInput;
 
 	typedef std::map<sf::Key::Code, CEGUI::Key::Scan> KeyMap;
@@ -44,6 +45,7 @@ public:
 	CEGUI::Key::Scan toCEGUIKey(sf::Key::Code Code);
 	CEGUI::MouseButton toCEGUIMouseButton(sf::Mouse::Button Button);
 	void initializeMaps();
+	bool button(const CEGUI::EventArgs& e);
 };
 
 extern Poco::SharedPtr<MenuManager> menu;

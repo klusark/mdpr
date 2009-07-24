@@ -2,6 +2,8 @@
 #include <Poco/Thread.h>
 #include <Poco/Net/DatagramSocket.h>
 
+#include <sstream>
+
 #include <cmath>
 
 #include "networkMasterServer.hpp"
@@ -67,12 +69,13 @@ void NetworkMasterServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::Readabl
 		{
 			serverInfoPacket *packet = (serverInfoPacket *)buffer;
 			//Check if the port is below 1024 and if it is, disallow it
+			
 			if (packet->port < 1024){
-				char charPort[6];
-				//copy the port into a char string
-				sprintf(charPort, "%d", packet->port);
+				std::stringstream ss;
+				ss << packet->port;
+				std::string stringPort = ss.str();
 				//Tell the log
-				logger().warning("A server at: " + socketAddress.toString() + " tried to list the port: " + charPort);
+				logger().warning("A server at: " + socketAddress.toString() + " tried to list the port: " + stringPort);
 				return;
 			}
 			
@@ -86,7 +89,7 @@ void NetworkMasterServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::Readabl
 					//make sure that the port is also the same.
 					if (packet->port == serverList[i].port){
 						//it is so ignore the packet
-						//return;
+						return;
 					}
 				}
 			}
