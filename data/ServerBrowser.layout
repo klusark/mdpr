@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultGUISheet" Name="ServerBrowser" >
+        <Property Name="Text" Value="Server Browser" />
+        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Window Type="WindowsLook/Button" Name="ServerBrowser/ConnectButton" >
+            <Property Name="Text" Value="Connect" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.542188,0},{0.452083,0},{0.792188,0},{0.702084,0}}" />
+        </Window>
+        <Window Type="WindowsLook/Listbox" Name="ServerBrowser/ServerList" >
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.134375,0},{0.33125,0},{0.384375,0},{0.581251,0}}" />
+        </Window>
+    </Window>
+</GUILayout>
