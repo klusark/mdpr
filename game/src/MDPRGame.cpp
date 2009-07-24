@@ -93,10 +93,10 @@ int MDPRGame::main(const std::vector<std::string>& args)
 	controls.use =		config().getString("mdpr.controls.use").c_str()[0];
 	propertyFile->setInt("stats.TotalTimesRun", propertyFile->getInt("stats.TotalTimesRun", 0)+1);
 	MDPR = this;
-	App.Create(sf::VideoMode(320, 200, config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close|sf::Style::Resize, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing")));
-	view.SetFromRect(sf::FloatRect(0, 0, 320, 200));
-	view.Zoom(1.0f);
-	App.SetView(view);
+	App.Create(sf::VideoMode(800, 600, config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close|sf::Style::Resize, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing")));
+	//view.SetFromRect(sf::FloatRect(0, 0, 640, 400));
+	//view.Zoom(1.0f);
+	//App.SetView(view);
 	//App.SetSize(640, 400);
 	App.EnableKeyRepeat(false);
 	App.UseVerticalSync(config().getBool("graphics.VerticalSync"));
@@ -136,7 +136,7 @@ int MDPRGame::main(const std::vector<std::string>& args)
 					myNetworkClient->sendKeyPress(Event.Key.Code, false);
 				}
 			}else{
-				menu->currentMenu->input.pushEvent(Event, App.GetInput());
+				menu->handleEvent(Event);
 			}
 
 		}
