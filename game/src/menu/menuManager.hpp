@@ -24,7 +24,6 @@ public:
 	void handleEvent(sf::Event& Event);
 	Poco::Mutex menuMutex;
 	sf::RenderWindow &App;
-	gcn::SFMLFont font;
 
 	typedef std::map<std::string, Poco::SharedPtr<MenuGeneric> > menuContainer;
 	menuContainer menus;

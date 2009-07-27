@@ -30,7 +30,17 @@ MDPRGame *MDPR;
 	return 0;
 }*/
 
-POCO_APP_MAIN(MDPRGame)
+int main(int argc, char** argv)
+{
+	Poco::AutoPtr<MDPRGame> pApp = new MDPRGame;
+	try{						
+		pApp->init(argc, argv);	
+	}catch (Poco::Exception& exc){
+		pApp->logger().log(exc);
+		return Poco::Util::Application::EXIT_CONFIG;
+	}
+	return pApp->run();
+}
 
 bool MDPRGame::quit = false;
 
@@ -93,7 +103,7 @@ int MDPRGame::main(const std::vector<std::string>& args)
 	controls.use =		config().getString("mdpr.controls.use").c_str()[0];
 	propertyFile->setInt("stats.TotalTimesRun", propertyFile->getInt("stats.TotalTimesRun", 0)+1);
 	MDPR = this;
-	App.Create(sf::VideoMode(800, 600, config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close|sf::Style::Resize, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing")));
+	App.Create(sf::VideoMode(800, 600, config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing")));
 	//view.SetFromRect(sf::FloatRect(0, 0, 640, 400));
 	//view.Zoom(1.0f);
 	//App.SetView(view);
@@ -186,9 +196,6 @@ void MDPRGame::drawThread()
 			App.Display();
 			//sf::Sleep(0.01f);
 		}
-	}catch(gcn::Exception except){
-		logger().error(except.getMessage());
-		//std::cout << except.getMessage() << std::endl;
 	}catch (std::exception& e){
 		logger().error(e.what());
 		//std::cout << "Exception: " << e.what() << std::endl;
@@ -218,9 +225,6 @@ void MDPRGame::updateThread()
 			}
 			sf::Sleep(0.01f);
 		}
-	}catch(gcn::Exception except){
-		Poco::Util::Application::instance().logger().error(except.getMessage());
-		//std::cout << except.getMessage() << std::endl;
 	}catch (std::exception& e){
 		Poco::Util::Application::instance().logger().error(e.what());
 		//std::cout << "Exception: " << e.what() << std::endl;

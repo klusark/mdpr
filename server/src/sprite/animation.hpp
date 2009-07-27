@@ -8,8 +8,10 @@
 
 struct AnimationInfoContainer
 {
-	AnimationInfoContainer():reverseOnFinish(false),
-		pauseOnFinish(false),padding(0){}
+	AnimationInfoContainer()
+		:	reverseOnFinish(false),
+			pauseOnFinish(false),
+			padding(0){}
 	int delay, frames, startx, starty, width, height, padding;
 	bool pauseOnFinish, reverseOnFinish;
 	sf::IntRect collisionRect;
@@ -37,6 +39,4 @@ public:
 	AnimationInfoContainer OriginalAnimationInfo;
 };
 
-
-
-#endif // ifndef animation_hpp
+#endif // #ifndef animation_hpp

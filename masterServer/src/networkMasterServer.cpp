@@ -1,12 +1,16 @@
 #include <Poco/NObserver.h>
 #include <Poco/Thread.h>
 #include <Poco/Net/DatagramSocket.h>
+#include <Poco/Net/ServerSocket.h>
+#include <Poco/Net/HTTPServer.h>
 
 #include <sstream>
 
 #include <cmath>
 
 #include "networkMasterServer.hpp"
+#include "RequestHandlerFactory.hpp"
+#include "RequestHandleFunctions.hpp"
 #include "network/packets.hpp"
 
 //Use the Poco::Util::Application main macro
@@ -43,6 +47,14 @@ int NetworkMasterServer::main(const std::vector<std::string>& args)
 	// run the reactor in its own thread so that we can wait for a termination request
 	Poco::Thread thread;
 	thread.start(reactor);
+
+	FillMap();
+	// start the http server
+	Poco::Net::ServerSocket svs(80);
+	// set-up a HTTPServer instance
+	Poco::Net::HTTPServer srv(new RequestHandlerFactory, svs, new Poco::Net::HTTPServerParams);
+	srv.start();
+
 	// wait for CTRL-C or kill
 	waitForTerminationRequest();
 	// Stop the SocketReactor
