@@ -40,45 +40,61 @@ public:
 	*/
 	~NetworkServer();
 
+	//!The main function for the server called by the Poco::Util::Application stuff
+	/*!
+	@param args the arguments from the command line
+	*/
 	int main(const std::vector<std::string>& args);
 	
 protected:
 	//!Initializes the server
 	void initialize(Poco::Util::Application& self);
 
-	/*!
-	Called when a packet is received
-	*/
+	//!Called when a packet is received
 	void onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotification>&);
 
-	/*!
-	Called when there is an error
-	*/
+	//!Called when there is an error
 	void onError(const Poco::AutoPtr<Poco::Net::ErrorNotification>&);
 
-	
+	//!Removes any player that has not sent a packet
+	/*!
+	@param timer a copy of the timer
+	*/
 	void removeIdlePlayers(Poco::Timer& timer);
 
+	//!Updates the sprites and sends them to the clients
+	/*!
+	@param timer a copy of the timer
+	*/
 	void spriteUpdate(Poco::Timer& timer);
+
+	//!Updates the master server
+	/*!
+	@param timer a copy of the timer
+	*/
 	void masterServerUpdate(Poco::Timer& timer);
 
-	Poco::Timer spriteUpdateTimer;
-	Poco::Timer masterServerUpdateTimer;
-
-	void ioServiceThread();
-
+	//!Disconnects a player
+	/*!
+	@param playerID the player to disconnect
+	*/
 	void disconnect(unsigned short playerID);
 
-	//Poco::TaskManager taskManager;
+	//!the timer for sprite updates
+	Poco::Timer spriteUpdateTimer;
+
+	//!the timer for master server updates
+	Poco::Timer masterServerUpdateTimer;
 
 	unsigned short posUpdate;
 
+	//!The max amount of player
 	unsigned short maxPlayers;
+
+	//!The current number of players
 	unsigned short currentPlayers;
 
 	serverInfoPacket packetServerInfo;
-
-	static const unsigned short numIOServiceThreads = 8;
 
 	sf::Clock timer;
 
@@ -86,12 +102,10 @@ protected:
 	{
 	public:
 		playerInfo(){}
-//		void disconnect(const boost::system::error_code& e);
 		std::string name;
 		Poco::SharedPtr<genericSprite> playerSprite;
 		Poco::Net::SocketAddress address;
 		bool stillAlive;
-
 	};
 
 	typedef std::map<unsigned short, Poco::SharedPtr<playerInfo> > playerContainer;
@@ -102,12 +116,11 @@ protected:
 		BUFFER_SIZE = 256
 	};
 	Poco::Net::SocketAddress masterServerAddress;
-	//Poco::Net::SocketAddress socketAddress;
 	Poco::Net::DatagramSocket socket;
 	char* buffer;
 
-
 };
+
 extern Poco::SharedPtr<NetworkServer> server;
 
 #endif // #ifndef networkServer_hpp

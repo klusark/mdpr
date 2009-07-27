@@ -1,11 +1,6 @@
 #include <Poco/SharedPtr.h>
 #include <Poco/Util/Application.h>
 #include "menuManager.hpp"
-#include "menuMain.hpp"
-#include "menuOptions.hpp"
-#include "menuInGame.hpp"
-#include "menuServerBrowser.hpp"
-#include "menuControls.hpp"
 #include <CEGUIDefaultResourceProvider.h>
 #include <CEGUI.h>
 #include <elements/CEGUITabControl.h>
@@ -14,26 +9,8 @@ Poco::SharedPtr<MenuManager> menu;
 
 MenuManager::MenuManager(sf::RenderWindow &App)
 	:	active(false),
-		App(App),
-		font("data/mdpr/marshmallowDuel.ttf", 20)
+		App(App)
 {
-	gcn::Widget::setGlobalFont(&font);
-	Poco::SharedPtr<MenuGeneric> mainMenu(new menuMain(App));
-	menus["menuMain"] = mainMenu;
-
-	Poco::SharedPtr<MenuGeneric> optionsMenu(new menuOptions(App));
-	menus["menuOptions"] = optionsMenu;
-
-	Poco::SharedPtr<MenuGeneric> inGameMenu(new menuInGame(App));
-	menus["menuInGame"] = inGameMenu;
-
-	Poco::SharedPtr<MenuGeneric> serverBrowserMenu(new menuServerBrowser(App));
-	menus["menuServerBrowser"] = serverBrowserMenu;
-
-	Poco::SharedPtr<MenuGeneric> controlsMenu(new menuControls(App));
-	menus["menuControls"] = controlsMenu;
-
-	changeCurrentMenu("menuMain");
 
 	mInput = &App.GetInput();
 	initializeMaps();
@@ -41,7 +18,7 @@ MenuManager::MenuManager(sf::RenderWindow &App)
 
 	try
 	{
-		GUIRenderer = new CEGUI::OpenGLRenderer(0, App.GetWidth(), App.GetWidth());
+		GUIRenderer = new CEGUI::OpenGLRenderer(0, App.GetWidth(), App.GetHeight());
 		MenuSystem = new CEGUI::System(GUIRenderer);
 		MenuWindowManager = CEGUI::WindowManager::getSingletonPtr();
 		CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*> (MenuSystem->getResourceProvider());
@@ -51,20 +28,23 @@ MenuManager::MenuManager(sf::RenderWindow &App)
 		CEGUI::FontManager::getSingleton().createFont("DejaVuSans-10.font");
 		CEGUI::Window* sheet = MenuWindowManager->loadWindowLayout("mdpr.layout");
 		MenuSystem->setGUISheet(sheet);
+		//MenuSystem->setDefaultMouseCursor("WindowsLook", "MouseArrow");
 
 		CEGUI::TabControl *tc = static_cast<CEGUI::TabControl *>(MenuWindowManager->getWindow("MainTabbedWindow"));
+		
 
 		// Add some pages to tab control
 		CEGUI::String prefix = "MainTabbedWindow/";
 		tc->addTab(MenuWindowManager->loadWindowLayout("ServerBrowser.layout", prefix));
 		tc->addTab(MenuWindowManager->loadWindowLayout("Options.layout", prefix));
-		CEGUI::WindowManager::WindowIterator it =  CEGUI::WindowManager::getSingleton().getIterator();
+		/*CEGUI::WindowManager::WindowIterator it =  CEGUI::WindowManager::getSingleton().getIterator();
         for(; !it.isAtEnd() ; ++it) {
             const char* windowName = it.getCurrentValue()->getName().c_str();
             printf("Name: %s\n", windowName);
-        }
-		static_cast<CEGUI::PushButton *> (MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ConnectButton"))->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::SubscriberSlot(&MenuManager::button, this));
-
+        }*/
+		static_cast<CEGUI::PushButton*>(MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ConnectButton"))->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::SubscriberSlot(&MenuManager::button, this));
+		CEGUI::Listbox* box = static_cast<CEGUI::Listbox*>(MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ServerList"));
+		//box->
 	}
 	catch (CEGUI::Exception& e)
 	{

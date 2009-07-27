@@ -1,6 +1,7 @@
 #include <exception>
 #include <SFML/System/Sleep.hpp>
 #include <Poco/NObserver.h>
+#include <sstream>
 
 #include "enumerations.hpp"
 #include "MDPRGame.hpp"
@@ -62,21 +63,19 @@ void NetworkClient::connectToServer(std::string ip, std::string port)
 
 void NetworkClient::connectToServer(serverEntry entry)
 {
-	std::string ip = "";
-	char segment[4];
+	std::stringstream ipstream;
+
 	for (int x = 0; x < 4; ++x){
-		
-		sprintf(segment, "%d", entry.ip[x]);
-		ip += segment;
+		ipstream << entry.ip[x];
 		if (x != 3){
-			ip += ".";
+			ipstream << ".";
 		}
 	}
-	char portChar[6];
-	std::string port;
-	sprintf(portChar, "%d", entry.port);
-	port = portChar;
-	connectToServer(ip, port);
+	
+	std::stringstream portstream;
+	portstream << entry.port;
+
+	connectToServer(ipstream.str(), portstream.str());
 }
 
 void NetworkClient::connectToMaster()
@@ -290,16 +289,15 @@ void NetworkClient::serverListUpdateThread(Poco::Timer&)
 {
 	int i = 0;
 	while (serversToUpdate[i].size() != 0){
-		std::string ip;
-		char segment[4];
+		std::stringstream ss;
 		for (int x = 0; x < 4; ++x){
-			sprintf(segment, "%d", serversToUpdate[i][0].entry.ip[x]);
-			ip += segment;
+			
+			ss << serversToUpdate[i][0].entry.ip[x];
 			if (x != 3){
-				ip += ".";
+				ss << ".";
 			}
 		}
-		Poco::Net::SocketAddress address(ip, serversToUpdate[i][0].entry.port);
+		Poco::Net::SocketAddress address(ss.str(), serversToUpdate[i][0].entry.port);
 		getFullServerInfoPacket packet;
 		packet.packetID = getFullServerInfoPacketID;
 		try{

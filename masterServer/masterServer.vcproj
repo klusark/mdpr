@@ -172,6 +172,18 @@
 				RelativePath=".\src\networkMasterServer.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\src\RequestHandleFunctions.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\RequestHandler.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\RequestHandlerFactory.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -184,6 +196,18 @@
 			</File>
 			<File
 				RelativePath="..\game\src\network\packets.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\RequestHandleFunctions.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\RequestHandler.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\RequestHandlerFactory.hpp"
 				>
 			</File>
 		</Filter>

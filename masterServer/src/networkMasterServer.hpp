@@ -4,6 +4,7 @@
 #include <Poco/Net/SocketReactor.h>
 #include <Poco/Net/SocketNotification.h>
 #include <Poco/Util/ServerApplication.h>
+#include <Poco/Net/DatagramSocket.h>
 
 #include <vector>
 #include "network/packets.hpp"
@@ -20,6 +21,13 @@ public:
 
 	//!Equivilent to a global main.
 	int main(const std::vector<std::string>& args);
+
+	//!the container for holding the server
+	typedef std::vector<serverEntry> serverListContainer;
+
+	//!the serverListContainer of servers
+	serverListContainer serverList;
+
 protected:
 	//!Called when a packet is received
 	void onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotification>& pNf);
@@ -27,11 +35,7 @@ protected:
 	//!initializes the application
 	void initialize(Poco::Util::Application& self);
 
-	//!the container for holding the server
-	typedef std::vector<serverEntry> serverListContainer;
 
-	//!the serverListContainer of servers
-	serverListContainer serverList;
 
 	enum
 	{

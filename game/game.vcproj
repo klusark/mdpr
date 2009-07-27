@@ -63,7 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sfml-system-d.lib sfml-window-d.lib sfml-graphics-d.lib guichand.lib guichan_sfmld.lib CEGUIBase_d.lib OpenGLGUIRenderer_d.lib"
+				AdditionalDependencies="sfml-system-d.lib sfml-window-d.lib sfml-graphics-d.lib CEGUIBase_d.lib OpenGLGUIRenderer_d.lib"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -213,11 +213,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sfml-system.lib sfml-main.lib sfml-window.lib sfml-graphics.lib guichan.lib guichan_sfml.lib"
+				AdditionalDependencies="sfml-main.lib sfml-system.lib sfml-window.lib sfml-graphics.lib CEGUIBase.lib OpenGLGUIRenderer.lib"
 				ModuleDefinitionFile=""
-				SubSystem="1"
+				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				EntryPointSymbol=""
 				RandomizedBaseAddress="1"
 				TargetMachine="1"
 			/>
@@ -373,47 +374,7 @@
 				Name="Menu"
 				>
 				<File
-					RelativePath=".\src\menu\controlChangeButton.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\filteredTextField.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuControls.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuGeneric.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuInGame.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuMain.hpp"
-					>
-				</File>
-				<File
 					RelativePath=".\src\menu\menuManager.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuOptions.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuProfile.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuServerBrowser.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\serverListModel.hpp"
 					>
 				</File>
 			</Filter>
@@ -465,47 +426,7 @@
 				Name="Menu"
 				>
 				<File
-					RelativePath=".\src\menu\controlChangeButton.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\filteredTextField.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuControls.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuGeneric.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuInGame.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuMain.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\src\menu\menuManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuOptions.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuProfile.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\menuServerBrowser.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\menu\serverListModel.cpp"
 					>
 				</File>
 			</Filter>
