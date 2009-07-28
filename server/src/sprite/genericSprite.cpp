@@ -37,98 +37,11 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType)
 		wasKeyLocked(false)
 {
 
+	//make the sprite really far away
 	SetX((unsigned short)-1);
 	SetY((unsigned short)-1);
 
-	std::string file = "data/mdpr/sprites/" + spriteType + "/" + spriteType + ".sprite";
-	std::ifstream spriteFileStream(file.c_str());
-	if (!spriteFileStream.is_open()){
-		noAnimation = true;
-		return;
-	}
-
-	Poco::Util::PropertyFileConfiguration *propertyFile = new Poco::Util::PropertyFileConfiguration(spriteFileStream);
-
-	std::string str = propertyFile->getString("animation");
-	std::string image = propertyFile->getString("image");
-	spawnEffect = propertyFile->getString("spawnEffect", "");
-
-	std::vector<std::string> animations;
-	int cutAt;
-	while((cutAt = str.find_first_of(",")) != str.npos ){
-		if(cutAt > 0){
-			animations.push_back(str.substr(0, cutAt));
-		}
-		str = str.substr(cutAt+1);
-	}
-	if(str.length() > 0){
-		animations.push_back(str);
-	}
-	
-	/*std::ifstream spriteFileStream(file.c_str());
-	if (!spriteFileStream.is_open()){
-		noAnimation = true;
-		return;
-	}*/
-
-	/*
-	spriteConfig.add_options()
-		("animation",	boost::program_options::value<std::vector<std::string> >(&animations),	"")
-		("image",		boost::program_options::value<std::string>(&image),						"")
-		("spawnEffect",	boost::program_options::value<std::string>(&spawnEffect),				"");
-
-
-*/
-	{
-		
-		std::string fullImageName = "mdpr/sprites/" + spriteType + "/" + image;
-
-		unsigned short spriteID = stringToCRC(spriteType);
-		spriteManager::spriteTypeContainer::iterator iter = sprite.SpriteTypes.find(spriteID);
-		if (iter == sprite.SpriteTypes.end()){
-			sprite.SpriteTypes[spriteID] = fullImageName;
-		}
-	}
-
-	std::vector<std::string>::iterator iter;
-	for (iter = animations.begin(); iter < animations.end(); ++iter){
-
-		
-		Poco::SharedPtr<Animation> newAnimation(new Animation(*iter));
-		
-		std::string animationFileName = "data/mdpr/sprites/" + spriteType + "/" + *iter + ".animation";
-		Poco::Util::PropertyFileConfiguration *animationPropertyFile = new Poco::Util::PropertyFileConfiguration(animationFileName);
-		newAnimation->AnimationInfo.delay	= animationPropertyFile->getInt("delay");
-		newAnimation->AnimationInfo.frames	= animationPropertyFile->getInt("frames");
-		newAnimation->AnimationInfo.startx	= animationPropertyFile->getInt("startx");
-		newAnimation->AnimationInfo.starty	= animationPropertyFile->getInt("starty");
-		newAnimation->AnimationInfo.width	= animationPropertyFile->getInt("width");
-		newAnimation->AnimationInfo.height	= animationPropertyFile->getInt("height");
-		newAnimation->AnimationInfo.padding	= animationPropertyFile->getInt("padding", 0);
-		newAnimation->AnimationInfo.reverseOnFinish			= animationPropertyFile->getBool("reverseOnFinish", false);
-		newAnimation->AnimationInfo.pauseOnFinish			= animationPropertyFile->getBool("pauseOnFinish", false);
-		newAnimation->AnimationInfo.collisionRect.Top		= animationPropertyFile->getInt("collision.rect.top");
-		newAnimation->AnimationInfo.collisionRect.Bottom	= animationPropertyFile->getInt("collision.rect.bottom");
-		newAnimation->AnimationInfo.collisionRect.Right		= animationPropertyFile->getInt("collision.rect.right");
-		newAnimation->AnimationInfo.collisionRect.Left		= animationPropertyFile->getInt("collision.rect.left");
-
-		unsigned int animationName = stringToCRC(*iter);
-		Animations[animationName] = newAnimation;
-
-		spriteManager::animationPacketContainer::iterator iter = sprite.Animations.find(animationName);
-		if (iter == sprite.Animations.end()){
-			animationCreationPacket packet;
-			packet.packetID		= animationCreationPacketID;
-			packet.animationID	= animationName;
-			packet.height		= newAnimation->AnimationInfo.height;
-			packet.width		= newAnimation->AnimationInfo.width;
-			packet.padding		= newAnimation->AnimationInfo.padding;
-			packet.startX		= newAnimation->AnimationInfo.startx;
-			packet.startY		= newAnimation->AnimationInfo.starty;
-			sprite.Animations[packet.animationID] = packet;
-		}
-			
-	}
+	loadSprites();
 }
 
 genericSprite::~genericSprite()
@@ -190,6 +103,80 @@ void genericSprite::death(unsigned short cause)
 	SetX(unsigned short(-1));
 	SetY(unsigned short(-1));
 	
+}
+
+void genericSprite::loadSprites()
+{
+	//load the sprite from a file
+	//TODO: add theme support
+	std::string file = "data/mdpr/sprites/" + spriteTypeName + "/" + spriteTypeName + ".sprite";
+	std::ifstream spriteFileStream(file.c_str());
+	if (!spriteFileStream.is_open()){
+		//If the file was not found make this sprite not be animated
+		noAnimation = true;
+		return;
+	}
+
+	Poco::Util::PropertyFileConfiguration *propertyFile = new Poco::Util::PropertyFileConfiguration(spriteFileStream);
+
+	std::string str = propertyFile->getString("animation");
+	std::string image = propertyFile->getString("image");
+	spawnEffect = propertyFile->getString("spawnEffect", "");
+
+	std::vector<std::string> animations = splitString(str, ",");
+	
+	{
+		
+		std::string fullImageName = "mdpr/sprites/" + spriteTypeName + "/" + image;
+
+		unsigned short spriteID = stringToCRC(spriteTypeName);
+		spriteManager::spriteTypeContainer::iterator iter = sprite.SpriteTypes.find(spriteID);
+		if (iter == sprite.SpriteTypes.end()){
+			sprite.SpriteTypes[spriteID] = fullImageName;
+		}
+	}
+
+	
+	for (unsigned int i = 0; i < animations.size(); ++i){
+		loadSprite(animations[i]);
+	}
+}
+
+void genericSprite::loadSprite(std::string name)
+{
+	Poco::SharedPtr<Animation> newAnimation(new Animation(name));
+	
+	std::string animationFileName = "data/mdpr/sprites/" + spriteTypeName + "/" + name + ".animation";
+	Poco::Util::PropertyFileConfiguration *animationPropertyFile = new Poco::Util::PropertyFileConfiguration(animationFileName);
+	newAnimation->AnimationInfo.delay	= animationPropertyFile->getInt("delay");
+	newAnimation->AnimationInfo.frames	= animationPropertyFile->getInt("frames");
+	newAnimation->AnimationInfo.startx	= animationPropertyFile->getInt("startx");
+	newAnimation->AnimationInfo.starty	= animationPropertyFile->getInt("starty");
+	newAnimation->AnimationInfo.width	= animationPropertyFile->getInt("width");
+	newAnimation->AnimationInfo.height	= animationPropertyFile->getInt("height");
+	newAnimation->AnimationInfo.padding	= animationPropertyFile->getInt("padding", 0);
+	newAnimation->AnimationInfo.reverseOnFinish			= animationPropertyFile->getBool("reverseOnFinish", false);
+	newAnimation->AnimationInfo.pauseOnFinish			= animationPropertyFile->getBool("pauseOnFinish", false);
+	newAnimation->AnimationInfo.collisionRect.Top		= animationPropertyFile->getInt("collision.rect.top");
+	newAnimation->AnimationInfo.collisionRect.Bottom	= animationPropertyFile->getInt("collision.rect.bottom");
+	newAnimation->AnimationInfo.collisionRect.Right		= animationPropertyFile->getInt("collision.rect.right");
+	newAnimation->AnimationInfo.collisionRect.Left		= animationPropertyFile->getInt("collision.rect.left");
+
+	unsigned int animationName = stringToCRC(name);
+	Animations[animationName] = newAnimation;
+
+	spriteManager::animationPacketContainer::iterator iter = sprite.Animations.find(animationName);
+	if (iter == sprite.Animations.end()){
+		animationCreationPacket packet;
+		packet.packetID		= animationCreationPacketID;
+		packet.animationID	= animationName;
+		packet.height		= newAnimation->AnimationInfo.height;
+		packet.width		= newAnimation->AnimationInfo.width;
+		packet.padding		= newAnimation->AnimationInfo.padding;
+		packet.startX		= newAnimation->AnimationInfo.startx;
+		packet.startY		= newAnimation->AnimationInfo.starty;
+		sprite.Animations[packet.animationID] = packet;
+	}
 }
 
 float genericSprite::getXAccel()
