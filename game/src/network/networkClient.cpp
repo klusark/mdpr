@@ -9,6 +9,7 @@
 #include "sprite/clientSpriteManager.hpp"
 #include "packets.hpp"
 #include "networkClient.hpp"
+#include "menu/menuManager.hpp"
 
 //using boost::asio::ip::udp;
 
@@ -66,7 +67,7 @@ void NetworkClient::connectToServer(serverEntry entry)
 	std::stringstream ipstream;
 
 	for (int x = 0; x < 4; ++x){
-		ipstream << entry.ip[x];
+		ipstream << (int)entry.ip[x];
 		if (x != 3){
 			ipstream << ".";
 		}
@@ -233,6 +234,7 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				newEntry.maxPlayers = packet->maxPlayers;
 				newEntry.numPlayers = packet->numPlayers;
 				newEntry.serverName = packet->serverName;
+				menu->addServer(newEntry);
 				serverList.push_back(newEntry);
 
 			}
@@ -287,22 +289,28 @@ void NetworkClient::sendKeyPress(sf::Key::Code key, bool down)
 
 void NetworkClient::serverListUpdateThread(Poco::Timer&)
 {
-	int i = 0;
-	while (serversToUpdate[i].size() != 0){
-		std::stringstream ss;
-		for (int x = 0; x < 4; ++x){
-			
-			ss << serversToUpdate[i][0].entry.ip[x];
-			if (x != 3){
-				ss << ".";
+	try{
+		int i = 0;
+		while (serversToUpdate[i].size() != 0){
+			std::stringstream ss;
+			for (int x = 0; x < 4; ++x){
+				//casted to an int to trick string stream into thinking that it is a number and not a character
+				ss << (int)serversToUpdate[i][0].entry.ip[x];
+				if (x != 3){
+					ss << ".";
+				}
 			}
+			Poco::Net::SocketAddress address(ss.str(), serversToUpdate[i][0].entry.port);
+			getFullServerInfoPacket packet;
+			packet.packetID = getFullServerInfoPacketID;
+			try{
+				socket.sendTo((const void *)&packet, 4, address);
+			}catch(...){
+				Poco::Util::Application::instance().logger().warning("serverListUpdateThread1");
+			}
+			serversToUpdate[i].erase(serversToUpdate[i].begin());
 		}
-		Poco::Net::SocketAddress address(ss.str(), serversToUpdate[i][0].entry.port);
-		getFullServerInfoPacket packet;
-		packet.packetID = getFullServerInfoPacketID;
-		try{
-			socket.sendTo((const void *)&packet, 4, address);
-		}catch(...){}
-		serversToUpdate[i].erase(serversToUpdate[i].begin());
+	}catch(...){
+		Poco::Util::Application::instance().logger().warning("serverListUpdateThread2");
 	}
 }
