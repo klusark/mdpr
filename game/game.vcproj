@@ -378,12 +378,28 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Profile"
+				>
+				<File
+					RelativePath=".\src\profile\Profile.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\profile\ProfileManager.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\icon.ico"
+				>
+			</File>
 			<File
 				RelativePath=".\version.rc"
 				>
@@ -427,6 +443,18 @@
 				>
 				<File
 					RelativePath=".\src\menu\menuManager.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Profile"
+				>
+				<File
+					RelativePath=".\src\profile\Profile.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\profile\ProfileManager.cpp"
 					>
 				</File>
 			</Filter>

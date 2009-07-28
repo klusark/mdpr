@@ -65,7 +65,7 @@ public:
 	struct
 	{
 		char up, down, left, right ,use;
-	}controls;
+	}controls, controls2;
 };
 
 extern MDPRGame *MDPR;

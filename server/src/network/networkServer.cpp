@@ -24,7 +24,8 @@ Poco::SharedPtr<NetworkServer> server;
 NetworkServer::NetworkServer() 
 	:	buffer(new char[BUFFER_SIZE]),
 		spriteUpdateTimer(250, 5),
-		masterServerUpdateTimer(200, 20000)
+		masterServerUpdateTimer(200, 20000),
+		removeIdlePlayersTimer(10000, 10000)
 {
 	posUpdate = 0;
 
@@ -107,6 +108,7 @@ int NetworkServer::main(const std::vector<std::string>& args)
 	// a termination request
 	
 	spriteUpdateTimer.start(Poco::TimerCallback<NetworkServer>(*this, &NetworkServer::spriteUpdate));
+	removeIdlePlayersTimer.start(Poco::TimerCallback<NetworkServer>(*this, &NetworkServer::removeIdlePlayers));
 	
 
 	Poco::Thread thread;
@@ -306,7 +308,7 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 			break;
 
 		}
-	}catch (Poco::Net::ConnectionResetException& e){
+	}catch (Poco::Net::ConnectionResetException&){
 		unsigned short port = socketAddress.port();
 		if (!(Players.find(port) == Players.end())){
 		

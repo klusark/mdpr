@@ -12,24 +12,7 @@
 
 MDPRGame *MDPR;
 
-/*int main(int argc, char** argv)
-{
-	try {
-		// Set display mode
-		sf::RenderWindow App;
-
-		Poco::SharedPtr<MDPRGame> newMDPR(new MDPRGame(App));
-		MDPR = newMDPR;
-
-		MDPR->run();
-	}catch (std::exception& e){
-		std::cout << "Exception: " << e.what() << std::endl;
-	}catch(gcn::Exception except){
-		std::cout << except.getMessage() << std::endl;
-	}
-	return 0;
-}*/
-
+//must implement it this way because poco does not like to seem win main...
 int main(int argc, char** argv)
 {
 	Poco::AutoPtr<MDPRGame> pApp = new MDPRGame;
@@ -52,7 +35,6 @@ MDPRGame::MDPRGame()
 
 void MDPRGame::initialize(Poco::Util::Application& self)
 {
-	//loadConfiguration();
 	propertyFile.assign(new Poco::Util::PropertyFileConfiguration);
 	propertyFile->load("mdpr.properties");
 	config().add(propertyFile, 0, false, true);
@@ -65,57 +47,43 @@ void MDPRGame::uninitialize()
 
 MDPRGame::~MDPRGame()
 {
-	//delete myNetworkClient;
 }
 
 int MDPRGame::main(const std::vector<std::string>& args)
 {
-	/*{
-		boost::program_options::options_description config("Configuration");
-		config.add_options()
-			("playerName",		boost::program_options::value<std::string>(&playerName),"")
-			("serverIP",		boost::program_options::value<std::string>(&serverIP), 	"")
-			("width",			boost::program_options::value<unsigned int>(&width), 	"")
-			("height",			boost::program_options::value<unsigned int>(&height), 	"")
-			("controls.up",		boost::program_options::value<char>(&controls.up),		"")
-			("controls.down",	boost::program_options::value<char>(&controls.down), 	"")
-			("controls.left",	boost::program_options::value<char>(&controls.left), 	"")
-			("controls.right",	boost::program_options::value<char>(&controls.right), 	"")
-			("controls.use",	boost::program_options::value<char>(&controls.use),	"");
+	controls.up =		config().getString("mdpr.player1.controls.up").c_str()[0];
+	controls.down =		config().getString("mdpr.player1.controls.down").c_str()[0];
+	controls.left =		config().getString("mdpr.player1.controls.left").c_str()[0];
+	controls.right =	config().getString("mdpr.player1.controls.right").c_str()[0];
+	controls.use =		config().getString("mdpr.player1.controls.use").c_str()[0];
 
-		boost::program_options::variables_map configVariableMap;
-
-		boost::program_options::options_description configFileOptions;
-		configFileOptions.add(config);
-
-		std::ifstream configFileStream("conf");
-		if (!configFileStream.is_open()){
-			return;
-		}
-
-		boost::program_options::store(parse_config_file(configFileStream, configFileOptions), configVariableMap);
-		notify(configVariableMap);
-	}*/
-	controls.up =		config().getString("mdpr.controls.up").c_str()[0];
-	controls.down =		config().getString("mdpr.controls.down").c_str()[0];
-	controls.left =		config().getString("mdpr.controls.left").c_str()[0];
-	controls.right =	config().getString("mdpr.controls.right").c_str()[0];
-	controls.use =		config().getString("mdpr.controls.use").c_str()[0];
+	controls2.up=		config().getString("mdpr.player2.controls.up").c_str()[0];
+	controls2.down =	config().getString("mdpr.player2.controls.down").c_str()[0];
+	controls2.left =	config().getString("mdpr.player2.controls.left").c_str()[0];
+	controls2.right =	config().getString("mdpr.player2.controls.right").c_str()[0];
+	controls2.use =		config().getString("mdpr.player2.controls.use").c_str()[0];
+	
 	propertyFile->setInt("stats.TotalTimesRun", propertyFile->getInt("stats.TotalTimesRun", 0)+1);
 	MDPR = this;
 	App.Create(sf::VideoMode(800, 600, config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing")));
-	//view.SetFromRect(sf::FloatRect(0, 0, 640, 400));
+	//float orrigRatio = (float)320/(float)200;
+	float currentRatio = (float)App.GetWidth()/(float)App.GetHeight();
+	float correctY = 320/currentRatio;
+	view.SetFromRect(sf::FloatRect(0, 0, 320, correctY));
 	//view.Zoom(1.0f);
-	//App.SetView(view);
+	App.SetView(view);
 	//App.SetSize(640, 400);
 	App.EnableKeyRepeat(false);
 	App.UseVerticalSync(config().getBool("graphics.VerticalSync"));
 	App.SetFramerateLimit(config().getInt("graphics.FrameLimit"));
 
+	menu.assign(new MenuManager(App));
+	menu->setActive(true);
+
 	myNetworkClient.assign(new NetworkClient);
 	myNetworkClient->connectToMaster();
 
-	menu.assign(new MenuManager(App));
+	
 
 	sprite.assign(new ClientSpriteManager);
 
@@ -190,9 +158,9 @@ void MDPRGame::drawThread()
 				Clock.Reset();
 				Frames = 0;
 			}
-			//if (menu->isActive()){
+			if (menu->isActive()){
 				menu->draw();
-			//}
+			}
 			App.Display();
 			//sf::Sleep(0.01f);
 		}
@@ -204,8 +172,9 @@ void MDPRGame::drawThread()
 
 void MDPRGame::updateThread()
 {
+	int Frames = 0;
 	try {
-		int Frames = 0;
+		
 		float seconds, fps = 0;
 		sf::Clock clock;
 		while (!quit){
@@ -218,7 +187,6 @@ void MDPRGame::updateThread()
 				clock.Reset();
 				Frames = 0;
 			}
-			menu->logic();
 			if (sprite->isActive()){
 				Poco::ScopedLock<Poco::Mutex> lock(sprite->spriteMutex);
 				sprite->update();

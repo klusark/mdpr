@@ -86,6 +86,9 @@ protected:
 	//!the timer for master server updates
 	Poco::Timer masterServerUpdateTimer;
 
+	//!the timer for master server updates
+	Poco::Timer removeIdlePlayersTimer;
+
 	unsigned short posUpdate;
 
 	//!The max amount of player

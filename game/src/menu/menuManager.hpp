@@ -8,6 +8,7 @@
 #include <string>
 #include <CEGUI.h>
 #include <openglrenderer.h>
+#include "network/packets.hpp"
 
 class MenuGeneric;
 
@@ -22,6 +23,10 @@ public:
 	void setActive(bool toggle);
 	void draw();
 	void handleEvent(sf::Event& Event);
+
+	//!Add a new server to the server list
+	void addServer(fullServerEntry entry);
+
 	Poco::Mutex menuMutex;
 	sf::RenderWindow &App;
 

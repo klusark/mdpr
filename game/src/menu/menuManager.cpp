@@ -1,6 +1,7 @@
 #include <Poco/SharedPtr.h>
 #include <Poco/Util/Application.h>
 #include "menuManager.hpp"
+#include "MDPRGame.hpp"
 #include <CEGUIDefaultResourceProvider.h>
 #include <CEGUI.h>
 #include <elements/CEGUITabControl.h>
@@ -32,19 +33,23 @@ MenuManager::MenuManager(sf::RenderWindow &App)
 
 		CEGUI::TabControl *tc = static_cast<CEGUI::TabControl *>(MenuWindowManager->getWindow("MainTabbedWindow"));
 		
-
 		// Add some pages to tab control
 		CEGUI::String prefix = "MainTabbedWindow/";
 		tc->addTab(MenuWindowManager->loadWindowLayout("ServerBrowser.layout", prefix));
 		tc->addTab(MenuWindowManager->loadWindowLayout("Options.layout", prefix));
+		tc->addTab(MenuWindowManager->loadWindowLayout("Profiles.layout", prefix));
+
+
 		/*CEGUI::WindowManager::WindowIterator it =  CEGUI::WindowManager::getSingleton().getIterator();
         for(; !it.isAtEnd() ; ++it) {
             const char* windowName = it.getCurrentValue()->getName().c_str();
             printf("Name: %s\n", windowName);
         }*/
 		static_cast<CEGUI::PushButton*>(MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ConnectButton"))->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::SubscriberSlot(&MenuManager::button, this));
-		CEGUI::Listbox* box = static_cast<CEGUI::Listbox*>(MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ServerList"));
-		//box->
+
+		CEGUI::MultiColumnList* box = static_cast<CEGUI::MultiColumnList*>(MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ServerList"));
+		box->setSelectionMode(CEGUI::MultiColumnList::SelectionMode::RowSingle);
+
 	}
 	catch (CEGUI::Exception& e)
 	{
@@ -55,7 +60,12 @@ MenuManager::MenuManager(sf::RenderWindow &App)
 
 bool MenuManager::button(const CEGUI::EventArgs& e)
 {
-	printf("Pressed");
+	CEGUI::MultiColumnList* box = static_cast<CEGUI::MultiColumnList*>(MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ServerList"));
+	CEGUI::ListboxItem* text = box->getFirstSelectedItem();
+	unsigned int test = text->getID();
+	MDPR->myNetworkClient->connectToServer(MDPR->myNetworkClient->serverList[test].entry);
+	setActive(false);
+
 	return true;
 }
 
@@ -63,15 +73,31 @@ MenuManager::~MenuManager()
 {
 }
 
-void MenuManager::logic()
-{
-	currentMenu->logic();
-}
-
 void MenuManager::draw()
 {
-	//currentMenu->draw();
 	MenuSystem->renderGUI();
+}
+
+void MenuManager::addServer(fullServerEntry entry)
+{
+	CEGUI::MultiColumnList* box = static_cast<CEGUI::MultiColumnList*>(MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ServerList"));
+	unsigned int row = box->addRow();
+	CEGUI::ListboxTextItem* text = new CEGUI::ListboxTextItem(entry.serverName);
+	text->setTextColours(CEGUI::colour(0,0,0));
+	text->setSelectionBrushImage("WindowsLook", "MultiListSelectionBrush");
+	box->setItem(text, 0, row);
+
+	text = new CEGUI::ListboxTextItem("Todo");
+	text->setTextColours(CEGUI::colour(0,0,0));
+	text->setSelectionBrushImage("WindowsLook", "MultiListSelectionBrush");
+	box->setItem(text, 1, row);
+
+	text = new CEGUI::ListboxTextItem("Todo");
+	text->setTextColours(CEGUI::colour(0,0,0));
+	text->setSelectionBrushImage("WindowsLook", "MultiListSelectionBrush");
+	box->setItem(text, 2, row);
+
+	Poco::Util::Application::instance().logger().information("Done");
 }
 
 void MenuManager::handleEvent(sf::Event& Event)
