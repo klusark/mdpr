@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="Profiles" >
+        <Property Name="Text" Value="Profiles" />
+        <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Window Type="WindowsLook/Listbox" Name="Profiles/ProfileList" >
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.05,0},{0.4,0},{0.95,0}}" />
+        </Window>
+        <Window Type="WindowsLook/Button" Name="Profiles/SetDefault" >
+            <Property Name="Text" Value="Set Default" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.856252,0},{0.931666,0},{0.982501,0},{0.98,0}}" />
+        </Window>
+        <Window Type="WindowsLook/Button" Name="Profiles/AddToNextGame" >
+            <Property Name="Text" Value="Add To Next Game" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.792501,0},{0.865,0},{0.985002,0},{0.908333,0}}" />
+        </Window>
+    </Window>
+</GUILayout>

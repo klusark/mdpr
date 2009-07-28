@@ -8,6 +8,7 @@
 #include <Poco/ThreadPool.h>
 #include <Poco/Util/Application.h>
 #include <Poco/Util/PropertyFileConfiguration.h>
+#include "profile/ProfileManager.hpp"
 
 //!The main class for the game
 /*!
@@ -54,6 +55,8 @@ public:
 	
 	//!The port to connect to
 	std::string serverPort;
+
+	ProfileManager profileManager;
 
 	Poco::ThreadPool pool;
 

@@ -50,15 +50,24 @@ public:
 
 	//!Changes the current animation of the sprite
 	/*!
-	\param name name of the sprite that has already been converted into a unsigned int.
+	@param name name of the sprite that has already been converted into a unsigned int.
 	*/
 	void changeAnimation(unsigned int name);
 	
 	//!Changes the current animation of the sprite
 	/*!
-	\param name in name of the sprite in string form
+	@param name in name of the sprite in string form
 	*/
 	void changeAnimation(std::string name);
+
+	//!Loads all the sprites
+	void loadSprites();
+
+	//!Loads a sprite from file
+	/*!
+	@param name the name of the sprite to load
+	*/
+	void loadSprite(std::string name);
 
 	//!Kills the sprite
 	/*!

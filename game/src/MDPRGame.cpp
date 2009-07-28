@@ -65,14 +65,19 @@ int MDPRGame::main(const std::vector<std::string>& args)
 	
 	propertyFile->setInt("stats.TotalTimesRun", propertyFile->getInt("stats.TotalTimesRun", 0)+1);
 	MDPR = this;
+
+	//Clear
+	App.Clear();
+
 	App.Create(sf::VideoMode(800, 600, config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing")));
-	//float orrigRatio = (float)320/(float)200;
+	
+	//Then display it that that the screen is black when loading.
+	App.Display();
+
 	float currentRatio = (float)App.GetWidth()/(float)App.GetHeight();
 	float correctY = 320/currentRatio;
 	view.SetFromRect(sf::FloatRect(0, 0, 320, correctY));
-	//view.Zoom(1.0f);
 	App.SetView(view);
-	//App.SetSize(640, 400);
 	App.EnableKeyRepeat(false);
 	App.UseVerticalSync(config().getBool("graphics.VerticalSync"));
 	App.SetFramerateLimit(config().getInt("graphics.FrameLimit"));
@@ -83,7 +88,6 @@ int MDPRGame::main(const std::vector<std::string>& args)
 	myNetworkClient.assign(new NetworkClient);
 	myNetworkClient->connectToMaster();
 
-	
 
 	sprite.assign(new ClientSpriteManager);
 
