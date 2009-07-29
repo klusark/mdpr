@@ -124,9 +124,7 @@ void genericSprite::loadSprites()
 	spawnEffect = propertyFile->getString("spawnEffect", "");
 
 	std::vector<std::string> animations = splitString(str, ",");
-	
 	{
-		
 		std::string fullImageName = "mdpr/sprites/" + spriteTypeName + "/" + image;
 
 		unsigned short spriteID = stringToCRC(spriteTypeName);

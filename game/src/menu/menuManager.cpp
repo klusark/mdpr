@@ -10,7 +10,8 @@ Poco::SharedPtr<MenuManager> menu;
 
 MenuManager::MenuManager(sf::RenderWindow &App)
 	:	active(false),
-		App(App)
+		App(App),
+		menuMutex()
 {
 
 	mInput = &App.GetInput();
@@ -75,7 +76,9 @@ MenuManager::~MenuManager()
 
 void MenuManager::draw()
 {
+	menuMutex.lock();
 	MenuSystem->renderGUI();
+	menuMutex.unlock();
 }
 
 void MenuManager::addServer(fullServerEntry entry)
@@ -98,6 +101,18 @@ void MenuManager::addServer(fullServerEntry entry)
 	box->setItem(text, 2, row);
 
 	Poco::Util::Application::instance().logger().information("Done");
+}
+
+void MenuManager::resize(float x, float y)
+{
+	menuMutex.lock();
+	//GUIRenderer->grabTextures();
+
+	
+	
+	GUIRenderer->setDisplaySize(CEGUI::Size(x, y));
+	//GUIRenderer->restoreTextures();
+	menuMutex.unlock();
 }
 
 void MenuManager::handleEvent(sf::Event& Event)

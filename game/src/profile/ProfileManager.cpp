@@ -38,4 +38,6 @@ void ProfileManager::loadProfiles()
 
 void ProfileManager::loadProfile(std::string name)
 {
+	Profile newProfile;
+	profileList.push_back(newProfile);
 }

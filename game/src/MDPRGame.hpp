@@ -38,6 +38,8 @@ public:
 	
 	//!Draws the game
 	void drawThread();
+
+	void testThread();
 	
 	//!updates the sprites
 	void updateThread();
@@ -55,6 +57,8 @@ public:
 	
 	//!The port to connect to
 	std::string serverPort;
+
+	unsigned int lastWidth, lastHeight;
 
 	ProfileManager profileManager;
 
