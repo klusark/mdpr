@@ -69,14 +69,16 @@ int MDPRGame::main(const std::vector<std::string>& args)
 	//Clear
 	App.Clear();
 
-	App.Create(sf::VideoMode(800, 600, config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing")));
+	App.Create(sf::VideoMode(800, 600, config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close|sf::Style::Resize/*, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing"))*/);
+	lastWidth = 800;
+	lastHeight = 600;
 	
 	//Then display it that that the screen is black when loading.
 	App.Display();
 
 	float currentRatio = (float)App.GetWidth()/(float)App.GetHeight();
 	float correctY = 320/currentRatio;
-	view.SetFromRect(sf::FloatRect(0, 0, 320, correctY));
+	view.SetFromRect((sf::FloatRect(0, 0, 320, correctY)));
 	App.SetView(view);
 	App.EnableKeyRepeat(false);
 	App.UseVerticalSync(config().getBool("graphics.VerticalSync"));
@@ -99,6 +101,8 @@ int MDPRGame::main(const std::vector<std::string>& args)
 	pool.start(drawThreadAdapter);
 	Poco::RunnableAdapter<MDPRGame> updateThreadAdapter(*this, &MDPRGame::updateThread);
 	pool.start(updateThreadAdapter);
+
+
 	sf::Event Event;
 	while(!quit)
 	{
@@ -108,7 +112,7 @@ int MDPRGame::main(const std::vector<std::string>& args)
 			if (Event.Type == sf::Event::Closed){
 				quit = true;
 			}else if (Event.Type == sf::Event::Resized){
-				std::cout << "Resize" << std::endl;
+				//std::cout << "Resize" << std::endl;
 			}
 
 			if (myNetworkClient->connected){
@@ -135,6 +139,7 @@ void MDPRGame::quitGame()
 {
 	quit = true;
 }
+
 
 void MDPRGame::drawThread()
 {
@@ -195,10 +200,25 @@ void MDPRGame::updateThread()
 				Poco::ScopedLock<Poco::Mutex> lock(sprite->spriteMutex);
 				sprite->update();
 			}
-			sf::Sleep(0.01f);
+
+
+			if (lastWidth != App.GetWidth() || lastHeight != App.GetHeight()){
+				lastWidth = App.GetWidth();
+				lastHeight = App.GetHeight();
+
+				float currentRatio = (float)lastWidth/(float)lastHeight;
+				float correctY = 320/currentRatio;
+				view.SetFromRect((sf::FloatRect(0, 0, 320, correctY)));
+				if (menu->isActive()){
+					menu->resize(lastWidth, lastHeight);
+				}
+
+			}
+
+			sf::Sleep(0.001f);
 		}
 	}catch (std::exception& e){
-		Poco::Util::Application::instance().logger().error(e.what());
+		logger().error(e.what());
 		//std::cout << "Exception: " << e.what() << std::endl;
 	}
 }

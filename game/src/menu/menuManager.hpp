@@ -27,6 +27,8 @@ public:
 	//!Add a new server to the server list
 	void addServer(fullServerEntry entry);
 
+	void resize(float x, float y);
+
 	Poco::Mutex menuMutex;
 	sf::RenderWindow &App;
 
