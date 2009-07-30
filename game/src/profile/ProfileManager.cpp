@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "ProfileManager.hpp"
+#include "menu/menuManager.hpp"
 #include "helpers.hpp"
 
 ProfileManager::ProfileManager()
@@ -33,11 +34,13 @@ void ProfileManager::loadProfiles()
 
 	for (unsigned int i = 0; i < profiles.size(); ++i){
 		loadProfile(profiles[i]);
+		menu->addProfile(profileList[i]);
 	}
 }
 
 void ProfileManager::loadProfile(std::string name)
 {
 	Profile newProfile;
+	newProfile.name = name;
 	profileList.push_back(newProfile);
 }

@@ -49,7 +49,7 @@ MenuManager::MenuManager(sf::RenderWindow &App)
 		static_cast<CEGUI::PushButton*>(MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ConnectButton"))->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::SubscriberSlot(&MenuManager::button, this));
 
 		CEGUI::MultiColumnList* box = static_cast<CEGUI::MultiColumnList*>(MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ServerList"));
-		box->setSelectionMode(CEGUI::MultiColumnList::SelectionMode::RowSingle);
+		box->setSelectionMode(CEGUI::MultiColumnList::RowSingle);
 
 	}
 	catch (CEGUI::Exception& e)
@@ -79,6 +79,12 @@ void MenuManager::draw()
 	menuMutex.lock();
 	MenuSystem->renderGUI();
 	menuMutex.unlock();
+}
+
+void MenuManager::addProfile(Profile profile)
+{
+	CEGUI::Listbox* box = static_cast<CEGUI::Listbox*>(MenuWindowManager->getWindow("MainTabbedWindow/Profiles/ProfileList"));
+//	box->addItem(CEGUI::ListboxItem(profile.name));
 }
 
 void MenuManager::addServer(fullServerEntry entry)
@@ -159,18 +165,6 @@ CEGUI::MouseButton MenuManager::toCEGUIMouseButton(sf::Mouse::Button Button)
 	}
 
 	return mMouseButtonMap[Button];
-}
-
-void MenuManager::changeCurrentMenu(std::string menuName)
-{
-	menuContainer::iterator iterator = menus.find(menuName);
-	if (iterator != menus.end()){
-		currentMenu = iterator->second;
-		currentMenu->onChange();
-	}else{
-		Poco::Util::Application::instance().logger().warning("Could not find menu: " + menuName);
-		//std::cout << "Could not find menu." << std::endl;
-	}
 }
 
 bool MenuManager::isActive()

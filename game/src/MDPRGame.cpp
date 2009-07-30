@@ -9,6 +9,7 @@
 #include "menu/menuManager.hpp"
 #include "sprite/clientSpriteManager.hpp"
 #include "MDPRGame.hpp"
+#include "helpers.hpp"
 
 MDPRGame *MDPR;
 
@@ -57,28 +58,23 @@ int MDPRGame::main(const std::vector<std::string>& args)
 	controls.right =	config().getString("mdpr.player1.controls.right").c_str()[0];
 	controls.use =		config().getString("mdpr.player1.controls.use").c_str()[0];
 
-	controls2.up=		config().getString("mdpr.player2.controls.up").c_str()[0];
-	controls2.down =	config().getString("mdpr.player2.controls.down").c_str()[0];
-	controls2.left =	config().getString("mdpr.player2.controls.left").c_str()[0];
-	controls2.right =	config().getString("mdpr.player2.controls.right").c_str()[0];
-	controls2.use =		config().getString("mdpr.player2.controls.use").c_str()[0];
-	
 	propertyFile->setInt("stats.TotalTimesRun", propertyFile->getInt("stats.TotalTimesRun", 0)+1);
 	MDPR = this;
 
 	//Clear
 	App.Clear();
 
-	App.Create(sf::VideoMode(800, 600, config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close|sf::Style::Resize/*, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing"))*/);
-	lastWidth = 800;
-	lastHeight = 600;
+	App.Create(sf::VideoMode(800, 600, config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close|sf::Style::Resize, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing")));
+	lastWidth = 0;
+	lastHeight = 0;
 	
 	//Then display it that that the screen is black when loading.
 	App.Display();
 
-	float currentRatio = (float)App.GetWidth()/(float)App.GetHeight();
-	float correctY = 320/currentRatio;
-	view.SetFromRect((sf::FloatRect(0, 0, 320, correctY)));
+	//float currentRatio = (float)App.GetWidth()/(float)App.GetHeight();
+	//float correctY = 320/currentRatio;
+	//view.SetFromRect((sf::FloatRect(0, 0, 320, correctY)));
+	
 	App.SetView(view);
 	App.EnableKeyRepeat(false);
 	App.UseVerticalSync(config().getBool("graphics.VerticalSync"));
@@ -86,6 +82,8 @@ int MDPRGame::main(const std::vector<std::string>& args)
 
 	menu.assign(new MenuManager(App));
 	menu->setActive(true);
+
+	profileManager.assign(new ProfileManager);
 
 	myNetworkClient.assign(new NetworkClient);
 	myNetworkClient->connectToMaster();
@@ -144,23 +142,35 @@ void MDPRGame::quitGame()
 void MDPRGame::drawThread()
 {
 	try {
+		
 		App.SetActive(true);
 		int Frames = 0;
 		float seconds, fps = 0;
+		unsigned int mySpriteID = stringToCRC(Poco::Util::Application::instance().config().getString("mdpr.playerName"));
+		bool found = false;
+		ClientSprite* mySprite;
 
 		while (!quit){
 
 			App.Clear(sf::Color(0,0,0));
 
-
 			if (sprite->isActive()){
 				Poco::ScopedLock<Poco::Mutex> lock(sprite->spriteMutex);
+				
+				if (found){
+					sf::Vector2f test = (mySprite->GetPosition() - view.GetCenter()) + sf::Vector2f(12,12);
+					view.Move(test);
+				}else if ((sprite->Sprites.find(mySpriteID) != sprite->Sprites.end())){
+					found = true;
+					mySprite = sprite->Sprites[mySpriteID].get();
+				}
 				sprite->draw(App);
+				
 			}
 
 			Frames++;
 			seconds = Clock.GetElapsedTime();
-			if (seconds >= 5) {
+			if (seconds >= 5){
 				fps = Frames / seconds;
 				std::cout << Frames << " frames in " << seconds << " seconds = " << fps << " FPS" << std::endl;
 
@@ -170,6 +180,7 @@ void MDPRGame::drawThread()
 			if (menu->isActive()){
 				menu->draw();
 			}
+			
 			App.Display();
 			//sf::Sleep(0.01f);
 		}
@@ -183,13 +194,15 @@ void MDPRGame::updateThread()
 {
 	int Frames = 0;
 	try {
-		
 		float seconds, fps = 0;
 		sf::Clock clock;
+
+		unsigned int mySpriteID = stringToCRC(Poco::Util::Application::instance().config().getString("mdpr.playerName"));
+
 		while (!quit){
 			Frames++;
 			seconds = clock.GetElapsedTime();
-			if (seconds >= 5) {
+			if (seconds >= 5){
 				fps = Frames / seconds;
 				std::cout << Frames << " updates in " << seconds << " seconds = " << fps << " UPS" << std::endl;
 
@@ -207,15 +220,22 @@ void MDPRGame::updateThread()
 				lastHeight = App.GetHeight();
 
 				float currentRatio = (float)lastWidth/(float)lastHeight;
-				float correctY = 320/currentRatio;
-				view.SetFromRect((sf::FloatRect(0, 0, 320, correctY)));
+				float correctY = 8192/currentRatio;
+
+				view.SetFromRect((sf::FloatRect(0, 0, 8192, correctY)));
+
+				/*if (sprite->Sprites.find(mySpriteID) != sprite->Sprites.end()){
+					view.SetCenter(sprite->Sprites[mySpriteID]->GetPosition() + Vector);
+				}*/
+				view.Zoom(25.6f);
+
 				if (menu->isActive()){
-					menu->resize(lastWidth, lastHeight);
+					menu->resize((float)lastWidth, (float)lastHeight);
 				}
 
 			}
 
-			sf::Sleep(0.001f);
+			sf::Sleep(0.01f);
 		}
 	}catch (std::exception& e){
 		logger().error(e.what());

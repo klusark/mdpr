@@ -60,7 +60,7 @@ public:
 
 	unsigned int lastWidth, lastHeight;
 
-	ProfileManager profileManager;
+	Poco::SharedPtr<ProfileManager> profileManager;
 
 	Poco::ThreadPool pool;
 
@@ -72,7 +72,7 @@ public:
 	struct
 	{
 		char up, down, left, right ,use;
-	}controls, controls2;
+	}controls;
 };
 
 extern MDPRGame *MDPR;
