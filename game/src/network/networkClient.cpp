@@ -137,6 +137,7 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				
 
 				Image->SetSmooth(false);
+				Image->CreateMaskFromColor(sf::Color(255,255,255));
 				sprite->Images[packet->spriteTypeID] = Image;
 			}
 			break;

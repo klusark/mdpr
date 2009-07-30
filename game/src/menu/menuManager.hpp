@@ -9,6 +9,7 @@
 #include <CEGUI.h>
 #include <openglrenderer.h>
 #include "network/packets.hpp"
+#include "profile/Profile.hpp"
 
 class MenuGeneric;
 
@@ -17,15 +18,39 @@ class MenuManager
 public:
 	MenuManager(sf::RenderWindow &App);
 	~MenuManager();
-	void logic();
-	void changeCurrentMenu(std::string menuName);
+
+	//!check if the menu manager is active
+	/*
+	@return returns if the menu manager is active
+	*/
 	bool isActive();
+
+	//!sets the menu active or inactive
+	/*!
+	@param toggle the state to set the menu manager to
+	*/
 	void setActive(bool toggle);
+
+	//!draw the gui to the screen
 	void draw();
+
+	//!passes events from sfml to cegui
+	/*!
+	@param Event the event to pass
+	*/
 	void handleEvent(sf::Event& Event);
 
 	//!Add a new server to the server list
+	/*!
+	@param entry the entry to be added
+	*/
 	void addServer(fullServerEntry entry);
+
+	//!add a new profile to the profile list
+	/*!
+	@param profile the profile to be added
+	*/
+	void addProfile(Profile profile);
 
 	void resize(float x, float y);
 

@@ -31,6 +31,7 @@ void spriteCollision::update(int spriteID)
 						if (Sprites[spriteID]->GetPosition().y + height >= otherPosition.y){
 							Sprites[spriteID]->SetY(otherPosition.y - height);
 							Sprites[spriteID]->onGround = true;
+							Sprites[spriteID]->setYVelocity(0);
 						}
 					}
 				}else{
