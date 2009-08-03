@@ -64,16 +64,14 @@ int MDPRGame::main(const std::vector<std::string>& args)
 	//Clear
 	App.Clear();
 
-	App.Create(sf::VideoMode(800, 600, config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close|sf::Style::Resize, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing")));
+	App.Create(sf::VideoMode(config().getInt("graphics.width"), config().getInt("graphics.height"), config().getInt("graphics.bpp")), "Marshmallow Duel: Percy's Return", sf::Style::Close|sf::Style::Resize, sf::WindowSettings(24, 8, config().getInt("graphics.antialiasing")));
+	App.Clear();
 	lastWidth = 0;
 	lastHeight = 0;
 	
 	//Then display it that that the screen is black when loading.
 	App.Display();
 
-	//float currentRatio = (float)App.GetWidth()/(float)App.GetHeight();
-	//float correctY = 320/currentRatio;
-	//view.SetFromRect((sf::FloatRect(0, 0, 320, correctY)));
 	
 	App.SetView(view);
 	App.EnableKeyRepeat(false);
@@ -108,9 +106,8 @@ int MDPRGame::main(const std::vector<std::string>& args)
 		while (App.GetEvent(Event)){
 			// Window closed
 			if (Event.Type == sf::Event::Closed){
+				//Set quit to true causing all the threads to exit
 				quit = true;
-			}else if (Event.Type == sf::Event::Resized){
-				//std::cout << "Resize" << std::endl;
 			}
 
 			if (myNetworkClient->connected){
@@ -214,25 +211,25 @@ void MDPRGame::updateThread()
 				sprite->update();
 			}
 
+			unsigned int currentWidth = App.GetWidth(), currentHeight = App.GetHeight();
+			if (lastWidth != currentWidth || lastHeight != currentHeight){
+				lastWidth = currentWidth;
+				lastHeight = currentHeight;
 
-			if (lastWidth != App.GetWidth() || lastHeight != App.GetHeight()){
-				lastWidth = App.GetWidth();
-				lastHeight = App.GetHeight();
+				float currentRatio = (float)currentWidth/(float)currentHeight;
+				float correctY = 640/currentRatio;
 
-				float currentRatio = (float)lastWidth/(float)lastHeight;
-				float correctY = 8192/currentRatio;
-
-				view.SetFromRect((sf::FloatRect(0, 0, 8192, correctY)));
+				view.SetFromRect((sf::FloatRect(0, 0, 640, correctY)));
 
 				/*if (sprite->Sprites.find(mySpriteID) != sprite->Sprites.end()){
 					view.SetCenter(sprite->Sprites[mySpriteID]->GetPosition() + Vector);
 				}*/
-				view.Zoom(25.6f);
+				view.Zoom(2.0f);
 
 				if (menu->isActive()){
-					menu->resize((float)lastWidth, (float)lastHeight);
+					menu->resize((float)currentWidth, (float)currentHeight);
 				}
-
+				
 			}
 
 			sf::Sleep(0.01f);
