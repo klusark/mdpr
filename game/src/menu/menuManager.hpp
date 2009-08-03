@@ -2,16 +2,17 @@
 #define menuManager_hpp
 
 #include <map>
-#include "menuGeneric.hpp"
+//#include "menuGeneric.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <Poco/SharedPtr.h>
 #include <Poco/Mutex.h>
 #include <string>
 #include <CEGUI.h>
-#include <openglrenderer.h>
+#include <SFMLRenderer.hpp>
 #include "network/packets.hpp"
 #include "profile/Profile.hpp"
 
-class MenuGeneric;
+//class MenuGeneric;
 
 class MenuManager
 {
@@ -57,13 +58,13 @@ public:
 	Poco::Mutex menuMutex;
 	sf::RenderWindow &App;
 
-	typedef std::map<std::string, Poco::SharedPtr<MenuGeneric> > menuContainer;
-	menuContainer menus;
-	Poco::SharedPtr<MenuGeneric> currentMenu;
+//	typedef std::map<std::string, Poco::SharedPtr<MenuGeneric> > menuContainer;
+//	menuContainer menus;
+//	Poco::SharedPtr<MenuGeneric> currentMenu;
 	bool active;
 
 	CEGUI::System* MenuSystem;
-	CEGUI::OpenGLRenderer* GUIRenderer;
+	SFMLRenderer* GUIRenderer;
 	CEGUI::WindowManager* MenuWindowManager;
 	const sf::Input* mInput;
 

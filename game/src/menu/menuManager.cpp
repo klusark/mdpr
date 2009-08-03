@@ -5,6 +5,7 @@
 #include <CEGUIDefaultResourceProvider.h>
 #include <CEGUI.h>
 #include <elements/CEGUITabControl.h>
+#include "ListItem.hpp"
 
 Poco::SharedPtr<MenuManager> menu;
 
@@ -20,7 +21,7 @@ MenuManager::MenuManager(sf::RenderWindow &App)
 
 	try
 	{
-		GUIRenderer = new CEGUI::OpenGLRenderer(0, App.GetWidth(), App.GetHeight());
+		GUIRenderer = new SFMLRenderer(0, App.GetWidth(), App.GetHeight());
 		MenuSystem = new CEGUI::System(GUIRenderer);
 		MenuWindowManager = CEGUI::WindowManager::getSingletonPtr();
 		CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*> (MenuSystem->getResourceProvider());
@@ -84,27 +85,19 @@ void MenuManager::draw()
 void MenuManager::addProfile(Profile profile)
 {
 	CEGUI::Listbox* box = static_cast<CEGUI::Listbox*>(MenuWindowManager->getWindow("MainTabbedWindow/Profiles/ProfileList"));
-//	box->addItem(CEGUI::ListboxItem(profile.name));
+	box->addItem(new ListItem(profile.name));
 }
 
 void MenuManager::addServer(fullServerEntry entry)
 {
 	CEGUI::MultiColumnList* box = static_cast<CEGUI::MultiColumnList*>(MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ServerList"));
 	unsigned int row = box->addRow();
-	CEGUI::ListboxTextItem* text = new CEGUI::ListboxTextItem(entry.serverName);
-	text->setTextColours(CEGUI::colour(0,0,0));
-	text->setSelectionBrushImage("WindowsLook", "MultiListSelectionBrush");
-	box->setItem(text, 0, row);
+	
+	box->setItem(new ListItem(entry.serverName), 0, row);
 
-	text = new CEGUI::ListboxTextItem("Todo");
-	text->setTextColours(CEGUI::colour(0,0,0));
-	text->setSelectionBrushImage("WindowsLook", "MultiListSelectionBrush");
-	box->setItem(text, 1, row);
+	box->setItem(new ListItem("Todo"), 1, row);
 
-	text = new CEGUI::ListboxTextItem("Todo");
-	text->setTextColours(CEGUI::colour(0,0,0));
-	text->setSelectionBrushImage("WindowsLook", "MultiListSelectionBrush");
-	box->setItem(text, 2, row);
+	box->setItem(new ListItem("Todo"), 2, row);
 
 	Poco::Util::Application::instance().logger().information("Done");
 }
@@ -116,7 +109,10 @@ void MenuManager::resize(float x, float y)
 
 	
 	
-	GUIRenderer->setDisplaySize(CEGUI::Size(x, y));
+	//GUIRenderer->setDisplaySize(CEGUI::Size(x, y));
+	//delete GUIRenderer;
+	//GUIRenderer = new CEGUI::OpenGLRenderer(0, App.GetWidth(), App.GetHeight());
+
 	//GUIRenderer->restoreTextures();
 	menuMutex.unlock();
 }
