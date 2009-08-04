@@ -153,8 +153,6 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 		case connectPacketID:
 			
 			{
-				
-				//boost::mutex::scoped_lock lock(sprite.spriteMutex);
 				connectPacket *packet = (connectPacket *)buffer;
 				if (bytesReceived != sizeof(connectPacket) - 255 + packet->nameLength){
 					return;
@@ -186,69 +184,73 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				Poco::SharedPtr<playerInfo> player(new playerInfo);
 				player->address = socketAddress;
 				player->name = name;
+				player->stillAlive = true;
+				player->noSpriteUpdates = packet->noSpriteUpdates;
 
 				Poco::SharedPtr<genericSprite> newPlayer(new Player(name));
 				
 				sprite.registerSprite(newPlayer);
 				player->playerSprite = newPlayer;
 
-				{
-					//Send all the sprite types to the client
-					spriteManager::spriteTypeContainer::iterator iter;
-					for(iter = sprite.SpriteTypes.begin(); iter != sprite.SpriteTypes.end(); ++iter){
+				if (!player->noSpriteUpdates){
+					{
+						//Send all the sprite types to the client
+						spriteManager::spriteTypeContainer::iterator iter;
+						for(iter = sprite.SpriteTypes.begin(); iter != sprite.SpriteTypes.end(); ++iter){
 
-						spriteTypeCreationPacket packet;
-						packet.packetID = spriteTypeCreationPacketID;
-						packet.spriteTypeID = iter->first;
-						packet.fileNameLength = iter->second.length();
-						strcpy(packet.fileName, iter->second.c_str());
-						socket.sendTo((const void *)&packet, sizeof(spriteTypeCreationPacket) - 255 + packet.fileNameLength, player->address);
-					}
-				}
-
-				{
-					//Send all the animations to the client
-					spriteManager::animationPacketContainer::iterator iter;
-					for(iter = sprite.Animations.begin(); iter != sprite.Animations.end(); ++iter){
-						socket.sendTo((const void *)&iter->second, sizeof(animationCreationPacket), player->address);
-						
-					}
-				}
-				
-				{
-					//Send all the sprites to the client
-					spriteManager::spriteContainer::iterator iter;
-					for(iter = sprite.Sprites.begin(); iter != sprite.Sprites.end(); ++iter){
-						if(iter->second->nonNetworked){
-							continue;
+							spriteTypeCreationPacket packet;
+							packet.packetID = spriteTypeCreationPacketID;
+							packet.spriteTypeID = iter->first;
+							packet.fileNameLength = iter->second.length();
+							strcpy(packet.fileName, iter->second.c_str());
+							socket.sendTo((const void *)&packet, sizeof(spriteTypeCreationPacket) - 255 + packet.fileNameLength, player->address);
 						}
+					}
 
-						spriteCreationPacket packet;
-						packet.packetID = spriteCreationPacketID;
-						packet.spriteType = stringToCRC(iter->second->spriteTypeName);
-						packet.nameLength = iter->second->name.length();
-						strcpy(packet.name, iter->second->name.c_str());
+					{
+						//Send all the animations to the client
+						spriteManager::animationPacketContainer::iterator iter;
+						for(iter = sprite.Animations.begin(); iter != sprite.Animations.end(); ++iter){
+							socket.sendTo((const void *)&iter->second, sizeof(animationCreationPacket), player->address);
+							
+						}
+					}
+					
+					{
+						//Send all the sprites to the client
+						spriteManager::spriteContainer::iterator iter;
+						for(iter = sprite.Sprites.begin(); iter != sprite.Sprites.end(); ++iter){
+							if(iter->second->nonNetworked){
+								continue;
+							}
 
-						positionAndFrameUpdatePacket POSpacket;
-						POSpacket.packetID = positionAndFrameUpdatePacketID;
-						Position position = iter->second->GetPosition();
-						POSpacket.spriteID = iter->first;
+							spriteCreationPacket packet;
+							packet.packetID = spriteCreationPacketID;
+							packet.spriteType = stringToCRC(iter->second->spriteTypeName);
+							packet.nameLength = iter->second->name.length();
+							strcpy(packet.name, iter->second->name.c_str());
 
-						POSpacket.x = position.x;
-						POSpacket.y = position.y;
-						POSpacket.flipped = iter->second->flipped;
-						POSpacket.currentFrame = iter->second->currentAnimation->currentFrame;
+							positionAndFrameUpdatePacket POSpacket;
+							POSpacket.packetID = positionAndFrameUpdatePacketID;
+							Position position = iter->second->GetPosition();
+							POSpacket.spriteID = iter->first;
 
-						animationChangePacket AnimPacket;
-						AnimPacket.packetID = animationChangePacketID;
-						AnimPacket.spriteID = iter->first;
-						AnimPacket.animationID = iter->second->currentAnimation->CRCName;
+							POSpacket.x = position.x;
+							POSpacket.y = position.y;
+							POSpacket.flipped = iter->second->flipped;
+							POSpacket.currentFrame = iter->second->currentAnimation->currentFrame;
+
+							animationChangePacket AnimPacket;
+							AnimPacket.packetID = animationChangePacketID;
+							AnimPacket.spriteID = iter->first;
+							AnimPacket.animationID = iter->second->currentAnimation->CRCName;
 
 
-						socket.sendTo((const void *)&packet, sizeof(spriteCreationPacket) + packet.nameLength - 255, player->address);
-						socket.sendTo((const void *)&POSpacket, sizeof(positionAndFrameUpdatePacket), player->address);
-						socket.sendTo((const void *)&AnimPacket, sizeof(animationChangePacket), player->address);
-						
+							socket.sendTo((const void *)&packet, sizeof(spriteCreationPacket) + packet.nameLength - 255, player->address);
+							socket.sendTo((const void *)&POSpacket, sizeof(positionAndFrameUpdatePacket), player->address);
+							socket.sendTo((const void *)&AnimPacket, sizeof(animationChangePacket), player->address);
+							
+						}
 					}
 				}
 
@@ -389,8 +391,11 @@ void NetworkServer::spriteUpdate(Poco::Timer& timer)
 			}
 
 			playerContainer::iterator iter;
-			for( iter = Players.begin(); iter != Players.end(); ++iter ) {
-				if(useChangePacket){
+			for(iter = Players.begin(); iter != Players.end(); ++iter) {
+				if (iter->second->noSpriteUpdates){
+					continue;
+				}
+				if (useChangePacket){
 					socket.sendTo((const void *)&animationPacket, sizeof(animationPacket), iter->second->address);
 					
 				}
@@ -425,7 +430,9 @@ void NetworkServer::disconnect(unsigned short playerID)
 	packet.spriteID = stringToCRC(Players[playerID]->name);
 	playerContainer::iterator iter;
 	for (iter = Players.begin(); iter != Players.end(); ++iter){
-		
+		if (iter->second->noSpriteUpdates){
+			continue;
+		}
 		socket.sendTo((const void *)&packet, sizeof(spriteDeletionPacket), iter->second->address);
 	}
 	logger().information("Player " + Players[playerID]->playerSprite->name + " has disconnected");

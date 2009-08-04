@@ -28,12 +28,15 @@ class NetworkClient
 public:
 	NetworkClient();
 	~NetworkClient();
-	void connectToServer(std::string ip, std::string port);
-	void connectToServer(serverEntry entry);
+	void connectToServer(std::string ip, std::string port, bool noSpriteUpdate, std::string playerName);
+	void connectToServer(serverEntry entry, bool noSpriteUpdate, std::string playerName);
 
 	void connectToMaster();
 
 	void sendKeyPress(sf::Key::Code key, bool down);
+
+	bool isInGame() const {return inGame;};
+
 	bool connected;
 
 	//typedef std::vector<fullServerEntry> fullServerContainter;
@@ -41,22 +44,15 @@ public:
 	std::vector<fullServerEntry> serverList;
 
 	connectionState currentState;
+	Poco::Net::SocketAddress serverAddress;
+	Poco::Net::DatagramSocket socket;
 protected:
 	Poco::Thread thread;
-	Poco::Net::DatagramSocket socket;
 	Poco::Net::SocketReactor reactor;
 	bool inGame;
 	
 
 	sf::Clock timer;
-
-	Poco::Net::SocketAddress serverAddress;
-
-	//udp::endpoint receiverEndpoint;
-	//udp::endpoint masterServerEndpoint;
-
-	//boost::thread_group serverListUpdateThreads;
-	//boost::thread_group ioServiceThreadPool;
 
 	void onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotification>& pNf);
 	void handleSendTo();

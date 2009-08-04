@@ -110,11 +110,11 @@ int MDPRGame::main(const std::vector<std::string>& args)
 				quit = true;
 			}
 
-			if (myNetworkClient->connected){
+			if (profileManager->isConnected()){
 				if (Event.Type == sf::Event::KeyPressed){
-					myNetworkClient->sendKeyPress(Event.Key.Code, true);
+					profileManager->sendKeyPress(Event.Key.Code, true);
 				}else if (Event.Type == sf::Event::KeyReleased){
-					myNetworkClient->sendKeyPress(Event.Key.Code, false);
+					profileManager->sendKeyPress(Event.Key.Code, false);
 				}
 			}else{
 				menu->handleEvent(Event);
@@ -175,9 +175,11 @@ void MDPRGame::drawThread()
 				Frames = 0;
 			}
 			if (menu->isActive()){
+				App.SetView(App.GetDefaultView());
 				menu->draw();
+				App.SetView(view);
 			}
-			
+
 			App.Display();
 			//sf::Sleep(0.01f);
 		}
@@ -224,7 +226,7 @@ void MDPRGame::updateThread()
 				/*if (sprite->Sprites.find(mySpriteID) != sprite->Sprites.end()){
 					view.SetCenter(sprite->Sprites[mySpriteID]->GetPosition() + Vector);
 				}*/
-				view.Zoom(2.0f);
+				view.Zoom(1.0f);
 
 				if (menu->isActive()){
 					menu->resize((float)currentWidth, (float)currentHeight);

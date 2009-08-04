@@ -177,15 +177,6 @@ void genericSprite::loadSprite(std::string name)
 	}
 }
 
-float genericSprite::getXAccel()
-{
-	return xAccel;
-}
-
-float genericSprite::getYAccel()
-{
-	return yAccel;
-}
 
 void genericSprite::setXAccel(float xAccel)
 {
@@ -195,16 +186,6 @@ void genericSprite::setXAccel(float xAccel)
 void genericSprite::setYAccel(float yAccel)
 {
 	this->yAccel = yAccel;
-}
-
-float genericSprite::getXVelocity()
-{
-	return xVelocity;
-}
-
-float genericSprite::getYVelocity()
-{
-	return yVelocity;
 }
 
 void genericSprite::setXVelocity(float xVelocity)
@@ -225,16 +206,6 @@ void genericSprite::SetY(float newY)
 void genericSprite::SetX(float newX)
 {
 	x = newX;
-}
-
-float genericSprite::GetX()
-{
-	return x;
-}
-
-float genericSprite::GetY()
-{
-	return y;
 }
 
 Position genericSprite::GetPosition()
