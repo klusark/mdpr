@@ -21,7 +21,7 @@ MenuManager::MenuManager(sf::RenderWindow &App)
 
 	try
 	{
-		GUIRenderer = new SFMLRenderer(0, App.GetWidth(), App.GetHeight());
+		GUIRenderer = new CEGUI::OpenGLRenderer(0, App.GetWidth(), App.GetHeight());
 		MenuSystem = new CEGUI::System(GUIRenderer);
 		MenuWindowManager = CEGUI::WindowManager::getSingletonPtr();
 		CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*> (MenuSystem->getResourceProvider());
@@ -47,7 +47,8 @@ MenuManager::MenuManager(sf::RenderWindow &App)
             const char* windowName = it.getCurrentValue()->getName().c_str();
             printf("Name: %s\n", windowName);
         }*/
-		static_cast<CEGUI::PushButton*>(MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ConnectButton"))->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::SubscriberSlot(&MenuManager::button, this));
+		static_cast<CEGUI::PushButton*>(MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ConnectButton"))->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::SubscriberSlot(&MenuManager::ConnectButton, this));
+		static_cast<CEGUI::PushButton*>(MenuWindowManager->getWindow("MainTabbedWindow/Profiles/SelectProfileButton"))->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::SubscriberSlot(&MenuManager::SelectProfileButton, this));
 
 		CEGUI::MultiColumnList* box = static_cast<CEGUI::MultiColumnList*>(MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ServerList"));
 		box->setSelectionMode(CEGUI::MultiColumnList::RowSingle);
@@ -60,14 +61,40 @@ MenuManager::MenuManager(sf::RenderWindow &App)
 	}
 }
 
-bool MenuManager::button(const CEGUI::EventArgs& e)
+bool MenuManager::ConnectButton(const CEGUI::EventArgs& e)
 {
 	CEGUI::MultiColumnList* box = static_cast<CEGUI::MultiColumnList*>(MenuWindowManager->getWindow("MainTabbedWindow/ServerBrowser/ServerList"));
 	CEGUI::ListboxItem* text = box->getFirstSelectedItem();
-	unsigned int test = text->getID();
-	MDPR->myNetworkClient->connectToServer(MDPR->myNetworkClient->serverList[test].entry);
+	//check if anything was selected
+	if (text == 0){
+		return false;
+	}
+	unsigned int id = text->getID();
+	
+	MDPR->profileManager->connectToServer(MDPR->myNetworkClient->serverList[id].entry);
 	setActive(false);
 
+	return true;
+}
+
+bool MenuManager::SelectProfileButton(const CEGUI::EventArgs& e)
+{
+	CEGUI::Listbox* box = static_cast<CEGUI::Listbox*>(MenuWindowManager->getWindow("MainTabbedWindow/Profiles/ProfileList"));
+	CEGUI::ListboxItem* text = box->getFirstSelectedItem();
+	
+	//check if anything was selected
+	if (text == 0){
+		return false;
+	}
+	unsigned int id = text->getID();
+	CEGUI::String test = text->getText();
+
+	MDPR->profileManager->selectedProfileList.push_back((Profile *)text->getUserData());
+	CEGUI::Listbox* boxSelected = static_cast<CEGUI::Listbox*>(MenuWindowManager->getWindow("MainTabbedWindow/Profiles/SelectedProfileList"));
+	boxSelected->addItem(new ListItem(test, text->getUserData()));
+	box->removeItem(text);
+
+	
 	return true;
 }
 
@@ -82,10 +109,10 @@ void MenuManager::draw()
 	menuMutex.unlock();
 }
 
-void MenuManager::addProfile(Profile profile)
+void MenuManager::addProfile(Profile &profile)
 {
 	CEGUI::Listbox* box = static_cast<CEGUI::Listbox*>(MenuWindowManager->getWindow("MainTabbedWindow/Profiles/ProfileList"));
-	box->addItem(new ListItem(profile.name));
+	box->addItem(new ListItem(profile.name, (void *)&profile));
 }
 
 void MenuManager::addServer(fullServerEntry entry)

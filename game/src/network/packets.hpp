@@ -27,12 +27,13 @@ enum packetIDs
 };
 
 /*!
-Size: 6+nameLength
+Size: 7+nameLength
 Client -> Server
 */
 struct connectPacket
 {
 	packetIDs packetID;
+	bool noSpriteUpdates;
 	unsigned char nameLength;
 	char name[255];
 };

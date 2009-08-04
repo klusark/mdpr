@@ -108,7 +108,7 @@ protected:
 		std::string name;
 		Poco::SharedPtr<genericSprite> playerSprite;
 		Poco::Net::SocketAddress address;
-		bool stillAlive;
+		bool stillAlive, noSpriteUpdates;
 	};
 
 	typedef std::map<unsigned short, Poco::SharedPtr<playerInfo> > playerContainer;

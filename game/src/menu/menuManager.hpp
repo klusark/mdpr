@@ -8,9 +8,10 @@
 #include <Poco/Mutex.h>
 #include <string>
 #include <CEGUI.h>
-#include <SFMLRenderer.hpp>
+//#include <SFMLRenderer.hpp>
 #include "network/packets.hpp"
 #include "profile/Profile.hpp"
+#include <openglrenderer.h>
 
 //class MenuGeneric;
 
@@ -51,7 +52,7 @@ public:
 	/*!
 	@param profile the profile to be added
 	*/
-	void addProfile(Profile profile);
+	void addProfile(Profile &profile);
 
 	void resize(float x, float y);
 
@@ -64,7 +65,7 @@ public:
 	bool active;
 
 	CEGUI::System* MenuSystem;
-	SFMLRenderer* GUIRenderer;
+	CEGUI::OpenGLRenderer* GUIRenderer;
 	CEGUI::WindowManager* MenuWindowManager;
 	const sf::Input* mInput;
 
@@ -77,7 +78,8 @@ public:
 	CEGUI::Key::Scan toCEGUIKey(sf::Key::Code Code);
 	CEGUI::MouseButton toCEGUIMouseButton(sf::Mouse::Button Button);
 	void initializeMaps();
-	bool button(const CEGUI::EventArgs& e);
+	bool ConnectButton(const CEGUI::EventArgs& e);
+	bool SelectProfileButton(const CEGUI::EventArgs& e);
 };
 
 extern Poco::SharedPtr<MenuManager> menu;

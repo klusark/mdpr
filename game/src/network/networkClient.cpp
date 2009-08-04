@@ -11,7 +11,6 @@
 #include "networkClient.hpp"
 #include "menu/menuManager.hpp"
 
-//using boost::asio::ip::udp;
 
 NetworkClient::NetworkClient()
 	:	//socket(ioService, udp::endpoint()),
@@ -21,7 +20,7 @@ NetworkClient::NetworkClient()
 		bytesInLastFive(0),
 		currentState(idleState),
 		buffer(new char[BUFFER_SIZE]),
-		serverListUpdateTimer(200, 2)
+		serverListUpdateTimer(200, 200)
 {
 
 	reactor.addEventHandler(socket, Poco::NObserver<NetworkClient, Poco::Net::ReadableNotification>(*this, &NetworkClient::onReceivePacket));
@@ -47,13 +46,13 @@ NetworkClient::~NetworkClient()
 	thread.join();
 }
 
-void NetworkClient::connectToServer(std::string ip, std::string port)
+void NetworkClient::connectToServer(std::string ip, std::string port, bool noSpriteUpdate, std::string playerName)
 {
 	connectPacket packet;
 	packet.packetID = connectPacketID;
-	std::string name = Poco::Util::Application::instance().config().getString("mdpr.playerName");
-	packet.nameLength = name.length();
-	strcpy(packet.name, name.c_str());
+	packet.nameLength = playerName.length();
+	packet.noSpriteUpdates = noSpriteUpdate;
+	strcpy(packet.name, playerName.c_str());
 
 	serverAddress = Poco::Net::SocketAddress(ip, port);
 	
@@ -62,7 +61,7 @@ void NetworkClient::connectToServer(std::string ip, std::string port)
 	connected = true;
 }
 
-void NetworkClient::connectToServer(serverEntry entry)
+void NetworkClient::connectToServer(serverEntry entry, bool noSpriteUpdate, std::string playerName)
 {
 	std::stringstream ipstream;
 
@@ -76,7 +75,7 @@ void NetworkClient::connectToServer(serverEntry entry)
 	std::stringstream portstream;
 	portstream << entry.port;
 
-	connectToServer(ipstream.str(), portstream.str());
+	connectToServer(ipstream.str(), portstream.str(), noSpriteUpdate, playerName);
 }
 
 void NetworkClient::connectToMaster()

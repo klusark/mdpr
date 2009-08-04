@@ -7,17 +7,53 @@
         <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Window Type="WindowsLook/Listbox" Name="Profiles/ProfileList" >
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.05,0},{0.4,0},{0.95,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.03,0},{0.05,0},{0.4,0},{0.45,0}}" />
         </Window>
         <Window Type="WindowsLook/Button" Name="Profiles/SetDefault" >
             <Property Name="Text" Value="Set Default" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.856252,0},{0.931666,0},{0.982501,0},{0.98,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.1025,0},{0.45,0},{0.21,0},{0.49,0}}" />
         </Window>
-        <Window Type="WindowsLook/Button" Name="Profiles/AddToNextGame" >
-            <Property Name="Text" Value="Add To Next Game" />
+        <Window Type="WindowsLook/Button" Name="Profiles/SelectProfileButton" >
+            <Property Name="Text" Value="Select Profile" />
             <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="UnifiedAreaRect" Value="{{0.792501,0},{0.865,0},{0.985002,0},{0.908333,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.25,0},{0.45,0},{0.37,0},{0.49,0}}" />
+        </Window>
+        <Window Type="WindowsLook/StaticText" Name="Profiles/Text0" >
+            <Property Name="Text" Value="Available Players" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.1,0},{0.005,0},{0.25,0},{0.05,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="WindowsLook/StaticText" Name="Profiles/Text1" >
+            <Property Name="Text" Value="Selected Players" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.12,0},{0.495,0},{0.27,0},{0.540001,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="WindowsLook/Listbox" Name="Profiles/SelectedProfileList" >
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.03,0},{0.55,0},{0.4,0},{0.95,0}}" />
+        </Window>
+        <Window Type="WindowsLook/StaticText" Name="Profiles/Text2" >
+            <Property Name="Text" Value="Default Player:" />
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.39125,0},{0.451667,0},{0.52,0},{0.51,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="WindowsLook/StaticText" Name="Profiles/DefaultPlayer" >
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.52125,0},{0.45,0},{0.715,0},{0.518334,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+        </Window>
+        <Window Type="WindowsLook/Button" Name="Profiles/RemoveProfile" >
+            <Property Name="Text" Value="Remove Profile" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedAreaRect" Value="{{0.0825,0},{0.951666,0},{0.22375,0},{0.993333,0}}" />
         </Window>
     </Window>
 </GUILayout>

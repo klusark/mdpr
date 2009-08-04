@@ -8,6 +8,7 @@
 
 ProfileManager::ProfileManager()
 {
+	connected = false;
 	loadProfiles();
 }
 
@@ -33,14 +34,62 @@ void ProfileManager::loadProfiles()
 	std::vector<std::string> profiles =  splitString(str, ",");
 
 	for (unsigned int i = 0; i < profiles.size(); ++i){
-		loadProfile(profiles[i]);
-		menu->addProfile(profileList[i]);
+		loadProfile(profiles[i], *propertyFile);
+		menu->addProfile(*profileList[i].get());
 	}
 }
 
-void ProfileManager::loadProfile(std::string name)
+void ProfileManager::loadProfile(std::string name, Poco::Util::PropertyFileConfiguration& propertyFile)
 {
-	Profile newProfile;
-	newProfile.name = name;
+	
+	Poco::SharedPtr<Profile> newProfile;
+	newProfile.assign(new Profile);
+	newProfile->name = name;
+	newProfile->controls.up =		propertyFile.getString("profile." + name + ".controls.up").c_str()[0];
+	newProfile->controls.down =		propertyFile.getString("profile." + name + ".controls.down").c_str()[0];
+	newProfile->controls.left =		propertyFile.getString("profile." + name + ".controls.left").c_str()[0];
+	newProfile->controls.right =	propertyFile.getString("profile." + name + ".controls.right").c_str()[0];
+	newProfile->controls.use =		propertyFile.getString("profile." + name + ".controls.use").c_str()[0];
 	profileList.push_back(newProfile);
+}
+
+void ProfileManager::connectToServer(serverEntry entry)
+{
+	connected = true;
+	for (unsigned int i = 0; i < selectedProfileList.size(); ++i){
+		bool noSpriteUpdate = true;
+		if (i == 0){
+			noSpriteUpdate = false;
+		}
+		selectedProfileList[i]->networkClient.assign(new NetworkClient);
+		selectedProfileList[i]->networkClient->connectToServer(entry, noSpriteUpdate, selectedProfileList[i]->name);
+	}
+}
+
+void ProfileManager::sendKeyPress(sf::Key::Code key, bool down)
+{
+	for (unsigned int i = 0; i < selectedProfileList.size(); ++i){
+		NetworkClient* networkClient = selectedProfileList[i]->networkClient.get();
+		if (!networkClient->isInGame()){
+			continue;
+		}
+		keyPacket packet;
+		packet.packetID = keyPacketID;
+		packet.down = down;
+		if (key == selectedProfileList[i]->controls.right){
+			packet.key = keyRight;
+		}else if (key == selectedProfileList[i]->controls.left){
+			packet.key = keyLeft;
+		}else if (key == selectedProfileList[i]->controls.use){
+			packet.key = keyAction;
+		}else if (key == selectedProfileList[i]->controls.up){
+			packet.key = keyUp;
+		}else if (key == selectedProfileList[i]->controls.down){
+			packet.key = keyDown;
+		}else{
+			continue;
+		}
+
+		networkClient->socket.sendTo((const void *)&packet, 9, networkClient->serverAddress);
+	}
 }

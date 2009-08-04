@@ -136,20 +136,20 @@ public:
 	spriteStates currentState;
 
 	
-	float getXAccel();
-	float getYAccel();
+	float getXAccel() const {return xAccel;};
+	float getYAccel() const {return yAccel;};
 	void setXAccel(float xAccel);
 	void setYAccel(float yAccel);
 
-	float getXVelocity();
-	float getYVelocity();
+	float getXVelocity() const {return xVelocity;};
+	float getYVelocity() const {return yVelocity;};
 	void setXVelocity(float xVelocity);
 	void setYVelocity(float yVelocity);
 
 	void SetY(float);
 	void SetX(float);
-	float GetX();
-	float GetY();
+	float GetX() const {return x;};
+	float GetY() const {return y;};
 	Position GetPosition();
 	void SetPosition(Position);
 	void Move(float,float);
