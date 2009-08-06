@@ -3,12 +3,12 @@
 
 #include <map>
 
-class genericSprite;
+class GenericSprite;
 
 class spriteCollision
 {
 public:
-	typedef std::map<unsigned short, Poco::SharedPtr<genericSprite> > spriteContainer;
+	typedef std::map<unsigned short, Poco::SharedPtr<GenericSprite> > spriteContainer;
 	spriteCollision(spriteContainer &Sprites);
 	~spriteCollision();
 	void update(int spriteID);

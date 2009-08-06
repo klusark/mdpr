@@ -18,8 +18,8 @@
 
 #include "network/packets.hpp"
 
-class genericSprite;
-class spriteManager;
+class GenericSprite;
+class SpriteManager;
 
 //!The server
 /*!
@@ -106,7 +106,7 @@ protected:
 	public:
 		playerInfo(){}
 		std::string name;
-		Poco::SharedPtr<genericSprite> playerSprite;
+		Poco::SharedPtr<GenericSprite> playerSprite;
 		Poco::Net::SocketAddress address;
 		bool stillAlive, noSpriteUpdates;
 	};

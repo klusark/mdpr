@@ -34,7 +34,7 @@ NetworkServer::NetworkServer()
 		char buff[4];
 		sprintf(buff, "%d", i);
 		name += buff;
-		Poco::SharedPtr<genericSprite> newPlatform(new Platform(name));
+		Poco::SharedPtr<GenericSprite> newPlatform(new Platform(name));
 		newPlatform->SetY(100);
 		newPlatform->SetX((float)50 + (i*16));
 		sprite.registerSprite(newPlatform);
@@ -187,7 +187,7 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				player->stillAlive = true;
 				player->noSpriteUpdates = packet->noSpriteUpdates;
 
-				Poco::SharedPtr<genericSprite> newPlayer(new Player(name));
+				Poco::SharedPtr<GenericSprite> newPlayer(new Player(name));
 				
 				sprite.registerSprite(newPlayer);
 				player->playerSprite = newPlayer;
@@ -195,7 +195,7 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				if (!player->noSpriteUpdates){
 					{
 						//Send all the sprite types to the client
-						spriteManager::spriteTypeContainer::iterator iter;
+						SpriteManager::spriteTypeContainer::iterator iter;
 						for(iter = sprite.SpriteTypes.begin(); iter != sprite.SpriteTypes.end(); ++iter){
 
 							spriteTypeCreationPacket packet;
@@ -209,7 +209,7 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 
 					{
 						//Send all the animations to the client
-						spriteManager::animationPacketContainer::iterator iter;
+						SpriteManager::animationPacketContainer::iterator iter;
 						for(iter = sprite.Animations.begin(); iter != sprite.Animations.end(); ++iter){
 							socket.sendTo((const void *)&iter->second, sizeof(animationCreationPacket), player->address);
 							
@@ -218,7 +218,7 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 					
 					{
 						//Send all the sprites to the client
-						spriteManager::spriteContainer::iterator iter;
+						SpriteManager::spriteContainer::iterator iter;
 						for(iter = sprite.Sprites.begin(); iter != sprite.Sprites.end(); ++iter){
 							if(iter->second->nonNetworked){
 								continue;
@@ -351,8 +351,8 @@ void NetworkServer::spriteUpdate(Poco::Timer& timer)
 	try{
 		Poco::ScopedLock<Poco::Mutex>(sprite.spriteMutex);
 		sprite.update();
-		for(spriteManager::spriteContainer::iterator it = sprite.Sprites.begin(); it != sprite.Sprites.end(); ++it){
-			Poco::SharedPtr<genericSprite> currentSprite = it->second;
+		for(SpriteManager::spriteContainer::iterator it = sprite.Sprites.begin(); it != sprite.Sprites.end(); ++it){
+			Poco::SharedPtr<GenericSprite> currentSprite = it->second;
 			if (currentSprite->nonNetworked){
 				continue;
 			}

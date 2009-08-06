@@ -5,7 +5,7 @@
 
 
 Effect::Effect(const std::string &name)
-	:	genericSprite(name, "effect"),
+	:	GenericSprite(name, "effect"),
 		inUse(false)
 {
 
@@ -21,7 +21,7 @@ Effect::~Effect()
 
 void Effect::update()
 {
-	genericSprite::update();
+	GenericSprite::update();
 	if (currentAnimation->paused && inUse){
 		inUse = false;
 		currentAnimation->reset();

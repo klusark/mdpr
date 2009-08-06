@@ -44,7 +44,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="src"
-				PreprocessorDefinitions="_WIN32_WINNT=0x0501;_CRT_SECURE_NO_WARNINGS;SFML_DYNAMIC;NOMINMAX"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;SFML_DYNAMIC;NOMINMAX"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -63,7 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sfml-system-d.lib sfml-window-d.lib sfml-graphics-d.lib CEGUIBase_d.lib SFMLGUIRenderer.lib OpenGlGUIRenderer_d.lib"
+				AdditionalDependencies="sfml-system-d.lib sfml-window-d.lib sfml-graphics-d.lib CEGUIBase_d.lib OpenGlGUIRenderer_d.lib"
 				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -191,11 +191,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
+				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				FavorSizeOrSpeed="2"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="src"
-				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0501;SFML_DYNAMIC;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="_CRT_SECURE_NO_WARNINGS;SFML_DYNAMIC;NOMINMAX"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				WarningLevel="3"

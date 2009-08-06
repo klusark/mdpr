@@ -20,7 +20,7 @@ struct Position
 All sprites must inherit this class
 Provides movement, animation, and  access to colliiton
 */
-class genericSprite
+class GenericSprite
 {
 public:
 	//! The constructor.
@@ -30,10 +30,10 @@ public:
 	\param spriteType Name of the type of sprite. Used for loading the sprites details from a file. 
 	\param Image  The static image from the sprite class that inherits this one. 
 	*/
-	genericSprite(const std::string &name, std::string spriteType);
+	GenericSprite(const std::string &name, std::string spriteType);
 
 	//!The deconstructor
-	~genericSprite();
+	~GenericSprite();
 
 	//!Updates the sprite
 	/*!

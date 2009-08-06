@@ -6,7 +6,7 @@
 
 RegisterPowerup RegisterInvisibility("invisibility");
 
-Invisibility::Invisibility(genericSprite *owner)
+Invisibility::Invisibility(GenericSprite *owner)
 	:	genericPowerUp(owner)
 {
 }

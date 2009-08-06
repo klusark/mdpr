@@ -6,7 +6,7 @@
 class Chute : public genericPowerUp
 {
 public:
-	Chute(genericSprite *owner);
+	Chute(GenericSprite *owner);
 	~Chute();	
 	void onActionKey();
 	void update();

@@ -6,7 +6,7 @@
 
 RegisterPowerup RegisterMine("mine");
 
-Mine::Mine(genericSprite *owner)
+Mine::Mine(GenericSprite *owner)
 	:	genericPowerUp(owner)
 {
 }

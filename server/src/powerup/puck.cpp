@@ -6,7 +6,7 @@
 
 RegisterPowerup RegisterPuck("puck");
 
-Puck::Puck(genericSprite *owner)
+Puck::Puck(GenericSprite *owner)
 	:	genericPowerUp(owner)
 {
 }

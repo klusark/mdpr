@@ -5,7 +5,7 @@
 #include "powerup.hpp"
 #include "powerup/powerUpManager.hpp"
 
-class Bubble : public genericSprite
+class Bubble : public GenericSprite
 {
 public:
 	Bubble(const std::string &name);

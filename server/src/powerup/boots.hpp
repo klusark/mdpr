@@ -6,7 +6,7 @@
 class Boots : public genericPowerUp
 {
 public:
-	Boots(genericSprite *owner);
+	Boots(GenericSprite *owner);
 	~Boots();	
 	void onActionKey();
 	void update();

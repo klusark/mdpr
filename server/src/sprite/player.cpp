@@ -8,7 +8,7 @@
 #include "helpers.hpp"
 
 Player::Player(const std::string &name)
-	:	genericSprite(name, "player"),
+	:	GenericSprite(name, "player"),
 		rolling(false),
 		crouching(false),
 		running(false),
@@ -126,7 +126,7 @@ void Player::update()
 			setXVelocity(velocity);
 		}
 	}
-	genericSprite::update();
+	GenericSprite::update();
 }
 
 void Player::crouchingFinish()
@@ -152,7 +152,7 @@ void Player::rollingFinish()
 
 void Player::death(unsigned short cause)
 {
-	genericSprite::death(cause);
+	GenericSprite::death(cause);
 	/*if (cause == stringToCRC("gun")){
 		currentState = dyingState;
 		changeAnimation("dieGun");

@@ -7,7 +7,7 @@
 
 RegisterPowerup RegisterDeath("death");
 
-Death::Death(genericSprite *owner)
+Death::Death(GenericSprite *owner)
 	:	genericPowerUp(owner)
 {
 }

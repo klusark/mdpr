@@ -5,7 +5,7 @@
 
 #include "genericSprite.hpp"
 
-class selectionArea : public genericSprite
+class selectionArea : public GenericSprite
 {
 public:
 	selectionArea(const std::string &name, sf::IntRect rect);
@@ -14,7 +14,7 @@ public:
 	bool collisionChecked;
 	spriteTypes typeToSelect;
 	void update();
-	typedef std::vector<Poco::SharedPtr<genericSprite> > selectedSpriteContainer;
+	typedef std::vector<Poco::SharedPtr<GenericSprite> > selectedSpriteContainer;
 	selectedSpriteContainer selectedSprites;
 
 	//!Selects the closest sprite in the area
@@ -24,7 +24,7 @@ public:
 	\param pos the position to check from
 	\return pointer to the closest sprite
 	*/
-	Poco::SharedPtr<genericSprite> selectClosest(Position pos, bool x = true, bool y = true);
+	Poco::SharedPtr<GenericSprite> selectClosest(Position pos, bool x = true, bool y = true);
 
 	//!Selects the farthest sprite in th area
 	/*!
@@ -33,7 +33,7 @@ public:
 	\param pos the position to check from
 	\return pointer to the farthest sprite
 	*/
-	Poco::SharedPtr<genericSprite> selectFarthest(Position pos, bool x = true, bool y = true);
+	Poco::SharedPtr<GenericSprite> selectFarthest(Position pos, bool x = true, bool y = true);
 	
 };
 

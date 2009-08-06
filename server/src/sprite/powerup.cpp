@@ -4,7 +4,7 @@
 #include "helpers.hpp"
 
 PowerUp::PowerUp(const std::string &name)
-	:	genericSprite(name, "powerup")
+	:	GenericSprite(name, "powerup")
 {
 	spriteType = playerType;
 	//changeAnimation(stringToCRC("gun"));

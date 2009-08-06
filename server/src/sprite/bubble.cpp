@@ -9,7 +9,7 @@
 #include "bubble.hpp"
 
 Bubble::Bubble(const std::string &name)
-	:	genericSprite(name, "bubble"),
+	:	GenericSprite(name, "bubble"),
 		powerup(name+"powerup")
 {
 	spriteType = bubbleType;
@@ -47,7 +47,7 @@ void Bubble::update()
 		}
 	}
 	//powerup.update();
-	genericSprite::update();
+	GenericSprite::update();
 	powerup.SetPosition(GetPosition());
 }
 

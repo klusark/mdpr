@@ -6,7 +6,7 @@
 
 RegisterPowerup RegisterWarp("warp");
 
-Warp::Warp(genericSprite *owner)
+Warp::Warp(GenericSprite *owner)
 	:	genericPowerUp(owner)
 {
 }

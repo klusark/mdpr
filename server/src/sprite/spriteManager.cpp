@@ -9,27 +9,27 @@
 
 #include "spriteManager.hpp"
 
-spriteManager sprite;
+SpriteManager sprite;
 
-spriteManager::spriteManager()
+SpriteManager::SpriteManager()
 	:	active(false),
 		collision(Sprites),
 		myEffectManager(&sprite)
 {
 }
 
-spriteManager::~spriteManager()
+SpriteManager::~SpriteManager()
 {
 }
 
-void spriteManager::registerSprite(Poco::SharedPtr<genericSprite> sprite)
+void SpriteManager::registerSprite(Poco::SharedPtr<GenericSprite> sprite)
 {
 	//boost::mutex::scoped_lock lock(spriteMutex);
 
 	Sprites[stringToCRC(sprite->name)] = sprite;
 }
 
-void spriteManager::update()
+void SpriteManager::update()
 {
 	
 	collision.before();
@@ -45,7 +45,7 @@ void spriteManager::update()
 	}
 }
 
-void spriteManager::removeSprite(unsigned int spriteID)
+void SpriteManager::removeSprite(unsigned int spriteID)
 {
 	spriteContainer::iterator spriteToErase = Sprites.find(spriteID);
 	if (spriteToErase != Sprites.end()){
@@ -53,12 +53,12 @@ void spriteManager::removeSprite(unsigned int spriteID)
 	}
 }
 
-void spriteManager::removeSprite(std::string spriteID)
+void SpriteManager::removeSprite(std::string spriteID)
 {
 	removeSprite(stringToCRC(spriteID));
 }
 
-void spriteManager::spawn(Poco::SharedPtr<genericSprite> spriteToSpawn)
+void SpriteManager::spawn(Poco::SharedPtr<GenericSprite> spriteToSpawn)
 {
 	spriteToSpawn->currentState = aliveState;
 	spriteToSpawn->SetX(50);
@@ -68,12 +68,12 @@ void spriteManager::spawn(Poco::SharedPtr<genericSprite> spriteToSpawn)
 	myEffectManager.addEffect(spriteToSpawn->spawnEffect, pos.x, pos.y);
 }
 
-bool spriteManager::isActive()
+bool SpriteManager::isActive()
 {
     return active;
 }
 
-void spriteManager::setActive(bool toggle)
+void SpriteManager::setActive(bool toggle)
 {
     active = toggle;
 }

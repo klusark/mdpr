@@ -2,7 +2,7 @@
 #include "genericSprite.hpp"
 
 Platform::Platform(const std::string &name)
-	:	genericSprite(name, "platform")
+	:	GenericSprite(name, "platform")
 {
 
 	changeAnimation("platform");

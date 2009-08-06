@@ -4,13 +4,13 @@
 
 Animation::Animation(std::string name)
 	:	paused(false),
-		needsUpdate(false),
 		currentFrame(0),
 		updateTime(0),
 		name(name),
-		infoSaved(false),
-		needsReset(false),
-		playBackward(false)
+		playBackward(false),
+		reverseOnFinish(false),
+		pauseOnFinish(false),
+		padding(0)
 {
 	CRCName = stringToCRC(name);
 }
@@ -21,30 +21,26 @@ Animation::~Animation()
 
 sf::IntRect Animation::update()
 {
-	if(!infoSaved){
-		OriginalAnimationInfo = AnimationInfo;
-		infoSaved = true;
-	}
-	//sf::IntRect newRect(currentFrame * width + ((currentFrame + 1) * padding) + startx, starty, (width + currentFrame * width + (currentFrame+1 * padding)), starty + height);
+	
 	if (!paused){
 
 		updateTime += Clock.GetElapsedTime() * 1000;
 		Clock.Reset();
 
-		while(updateTime > AnimationInfo.delay){
+		while(updateTime > delay){
 
-			updateTime -= AnimationInfo.delay;
+			updateTime -= delay;
 			currentFrame = playBackward ? currentFrame -1 : currentFrame + 1;
 
-			if(currentFrame >= AnimationInfo.frames || currentFrame < 0)
+			if(currentFrame >= frames || currentFrame < 0)
 			{
 
-				currentFrame = playBackward ? AnimationInfo.frames - 1 : 0;
-				if (AnimationInfo.pauseOnFinish){
+				currentFrame = playBackward ? frames - 1 : 0;
+				if (pauseOnFinish){
 					pause();
-					currentFrame = playBackward ? 0 : AnimationInfo.frames - 1;
+					currentFrame = playBackward ? 0 : frames - 1;
 				}
-				if (AnimationInfo.reverseOnFinish){
+				if (reverseOnFinish){
 					playBackward = true;
 				}
 				onFinish();
@@ -53,7 +49,7 @@ sf::IntRect Animation::update()
 	}else{
 		Clock.Reset();
 	}
-	sf::IntRect newRect = XYWHToLTRB(AnimationInfo.startx + (currentFrame * AnimationInfo.width) + (currentFrame * AnimationInfo.padding), AnimationInfo.starty, AnimationInfo.width, AnimationInfo.height);
+	sf::IntRect newRect = XYWHToLTRB(startx + (currentFrame * width) + (currentFrame * padding), starty, width, height);
 	
 	return newRect;
 	
@@ -62,23 +58,18 @@ sf::IntRect Animation::update()
 void Animation::resume()
 {
 	paused = false;
-	needsUpdate = true;
 }
 
 void Animation::pause()
 {
 	paused = true;
-	needsUpdate = true;
 }
 
 void Animation::reset()
 {
-	//AnimationInfo = OriginalAnimationInfo;
 	currentFrame = 0;
 	Clock.Reset();
 	updateTime = 0;
 	paused = false;
 	playBackward = false;
-	//needsReset = true;
-	//needsUpdate = true;
 }

@@ -6,7 +6,7 @@
 
 RegisterPowerup RegisterTNT("TNT");
 
-TNT::TNT(genericSprite *owner)
+TNT::TNT(GenericSprite *owner)
 	:	genericPowerUp(owner)
 {
 }

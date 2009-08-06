@@ -12,12 +12,12 @@
 #include "effectManager.hpp"
 #include "network/packets.hpp"
 
-class spriteManager
+class SpriteManager
 {
 public:
-	spriteManager();
-	~spriteManager();
-	typedef std::map<unsigned short, Poco::SharedPtr<genericSprite> > spriteContainer;
+	SpriteManager();
+	~SpriteManager();
+	typedef std::map<unsigned short, Poco::SharedPtr<GenericSprite> > spriteContainer;
 	spriteContainer Sprites;
 
 	typedef std::map<unsigned short, std::string> spriteTypeContainer;
@@ -26,7 +26,7 @@ public:
 	typedef std::map<unsigned short, animationCreationPacket> animationPacketContainer;
 	animationPacketContainer Animations;
 
-	void registerSprite(Poco::SharedPtr<genericSprite> sprite);
+	void registerSprite(Poco::SharedPtr<GenericSprite> sprite);
 	void update();
 	bool isActive();
 	void setActive(bool toggle);
@@ -34,7 +34,7 @@ public:
 	void removeSprite(std::string spriteID);
 	Poco::Mutex spriteMutex;
 	spriteCollision collision;
-	void spawn(Poco::SharedPtr<genericSprite> spriteToSpawn);
+	void spawn(Poco::SharedPtr<GenericSprite> spriteToSpawn);
 
 	EffectManager myEffectManager;
 
@@ -44,7 +44,7 @@ private:
 	
 };
 
-extern spriteManager sprite;
+extern SpriteManager sprite;
 
 
 #endif // #ifndef spriteManager_hpp

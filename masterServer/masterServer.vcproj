@@ -110,9 +110,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
+				Optimization="3"
 				EnableIntrinsicFunctions="true"
-				FavorSizeOrSpeed="2"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="..\game\src"
 				PreprocessorDefinitions="_WIN32_WINNT=0x0501"
 				RuntimeLibrary="2"

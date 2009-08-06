@@ -4,7 +4,7 @@
 #include "genericSprite.hpp"
 #include <SFML/Graphics/Image.hpp>
 
-class PowerUp : public genericSprite
+class PowerUp : public GenericSprite
 {
 public:
 	PowerUp(const std::string &name);

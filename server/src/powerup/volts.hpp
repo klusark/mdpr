@@ -6,7 +6,7 @@
 class Volts : public genericPowerUp
 {
 public:
-	Volts(genericSprite *owner);
+	Volts(GenericSprite *owner);
 	~Volts();	
 	void onActionKey();
 	void update();
