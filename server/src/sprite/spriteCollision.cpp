@@ -21,9 +21,9 @@ void spriteCollision::update(int spriteID)
 	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
 		if (Sprites[spriteID]->spriteType == playerType){
 			if (iter->second->spriteType == platformType){
-				int height = Sprites[spriteID]->currentAnimation->AnimationInfo.collisionRect.Bottom;
-				int left = Sprites[spriteID]->currentAnimation->AnimationInfo.collisionRect.Left;
-				int width = Sprites[spriteID]->currentAnimation->AnimationInfo.collisionRect.GetWidth();
+				int height = Sprites[spriteID]->currentAnimation->collisionRect.Bottom;
+				int left = Sprites[spriteID]->currentAnimation->collisionRect.Left;
+				int width = Sprites[spriteID]->currentAnimation->collisionRect.GetWidth();
 				Position otherPosition = iter->second->GetPosition();
 
 				if (infos[spriteID]->y + height <= otherPosition.y){
@@ -41,7 +41,7 @@ void spriteCollision::update(int spriteID)
 		}else if (Sprites[spriteID]->spriteType == selectionAreaType){
 			selectionArea *area = dynamic_cast<selectionArea *>(Sprites[spriteID].get());
 			if (iter->second->spriteType == area->typeToSelect){
-				sf::IntRect collisionRect = iter->second->currentAnimation->AnimationInfo.collisionRect;
+				sf::IntRect collisionRect = iter->second->currentAnimation->collisionRect;
 				collisionRect.Offset(int(iter->second->GetPosition().x), int(iter->second->GetPosition().y));
 				
 				if (area->collisionRect.Intersects(collisionRect)){

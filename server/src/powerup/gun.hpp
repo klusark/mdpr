@@ -8,13 +8,13 @@
 class Gun : public genericPowerUp
 {
 public:
-	Gun(genericSprite *owner);
+	Gun(GenericSprite *owner);
 	~Gun();	
 	void onActionKey();
 	void update();
 	sf::Clock clock;
 	bool justShot;
-	Poco::SharedPtr<genericSprite> mySelectionArea;
+	Poco::SharedPtr<GenericSprite> mySelectionArea;
 };
 
 #endif // #ifndef gun_hpp

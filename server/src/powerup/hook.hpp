@@ -6,7 +6,7 @@
 class Hook : public genericPowerUp
 {
 public:
-	Hook(genericSprite *owner);
+	Hook(GenericSprite *owner);
 	~Hook();	
 	void onActionKey();
 	void update();

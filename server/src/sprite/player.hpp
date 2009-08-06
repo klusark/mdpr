@@ -4,7 +4,7 @@
 #include "genericSprite.hpp"
 #include "enumerations.hpp"
 
-class Player : public genericSprite
+class Player : public GenericSprite
 {
 public:
 	Player(const std::string &name);

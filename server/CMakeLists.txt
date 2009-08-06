@@ -1,8 +1,6 @@
 project( server )
 
 set(SOURCES
-	src/main.cpp
-
 	../game/src/helpers.cpp
 	../game/src/helpers.hpp
 

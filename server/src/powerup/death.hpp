@@ -6,7 +6,7 @@
 class Death : public genericPowerUp
 {
 public:
-	Death(genericSprite *owner);
+	Death(GenericSprite *owner);
 	~Death();	
 	void onActionKey();
 	void update();

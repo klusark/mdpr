@@ -6,7 +6,7 @@
 class Puck : public genericPowerUp
 {
 public:
-	Puck(genericSprite *owner);
+	Puck(GenericSprite *owner);
 	~Puck();	
 	void onActionKey();
 	void update();

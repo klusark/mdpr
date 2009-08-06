@@ -8,7 +8,7 @@
 
 RegisterPowerup RegisterGun("gun");
 
-Gun::Gun(genericSprite *owner)
+Gun::Gun(GenericSprite *owner)
 	:	genericPowerUp(owner),
 		justShot(false)
 {
@@ -36,7 +36,7 @@ void Gun::onActionKey()
 			newRect.Left = -640;
 			newRect.Right = int(owner->GetX());
 		}
-		Poco::SharedPtr<genericSprite> newSelectionArea(new selectionArea("gunShotSelectArea", newRect));
+		Poco::SharedPtr<GenericSprite> newSelectionArea(new selectionArea("gunShotSelectArea", newRect));
 		dynamic_cast<selectionArea *>(newSelectionArea.get())->typeToSelect = playerType;
 		mySelectionArea = newSelectionArea;
 		sprite.registerSprite(mySelectionArea);

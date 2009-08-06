@@ -52,12 +52,6 @@ MDPRGame::~MDPRGame()
 
 int MDPRGame::main(const std::vector<std::string>& args)
 {
-	controls.up =		config().getString("mdpr.player1.controls.up").c_str()[0];
-	controls.down =		config().getString("mdpr.player1.controls.down").c_str()[0];
-	controls.left =		config().getString("mdpr.player1.controls.left").c_str()[0];
-	controls.right =	config().getString("mdpr.player1.controls.right").c_str()[0];
-	controls.use =		config().getString("mdpr.player1.controls.use").c_str()[0];
-
 	propertyFile->setInt("stats.TotalTimesRun", propertyFile->getInt("stats.TotalTimesRun", 0)+1);
 	MDPR = this;
 

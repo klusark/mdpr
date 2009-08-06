@@ -6,7 +6,7 @@
 class Grenade : public genericPowerUp
 {
 public:
-	Grenade(genericSprite *owner);
+	Grenade(GenericSprite *owner);
 	~Grenade();	
 	void onActionKey();
 	void update();

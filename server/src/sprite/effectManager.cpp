@@ -4,7 +4,7 @@
 #include "effectManager.hpp"
 #include "helpers.hpp"
 
-EffectManager::EffectManager(spriteManager *SM)
+EffectManager::EffectManager(SpriteManager *SM)
 	:	active(false),
 		currentNumberEffects(0),
 		mySpriteManager(SM)
@@ -14,7 +14,7 @@ EffectManager::EffectManager(spriteManager *SM)
 		char buff[4];
 		sprintf(buff, "%d", currentNumberEffects);
 		name += buff;
-		Poco::SharedPtr<genericSprite> newEffect(new Effect(name));
+		Poco::SharedPtr<GenericSprite> newEffect(new Effect(name));
 		Effects.push_back(dynamic_cast<Effect *>(newEffect.get()));
 		mySpriteManager->registerSprite(newEffect);
 	}

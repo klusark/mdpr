@@ -6,7 +6,7 @@
 
 RegisterPowerup RegisterBoots("boots");
 
-Boots::Boots(genericSprite *owner)
+Boots::Boots(GenericSprite *owner)
 	:	genericPowerUp(owner)
 {
 }

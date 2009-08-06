@@ -14,7 +14,7 @@
 #include "genericSprite.hpp"
 #include "spriteManager.hpp"
 
-genericSprite::genericSprite(const std::string &name, std::string spriteType) 
+GenericSprite::GenericSprite(const std::string &name, std::string spriteType) 
 	:	name(name),
 		xVelocity(0),
 		yVelocity(0),
@@ -44,11 +44,11 @@ genericSprite::genericSprite(const std::string &name, std::string spriteType)
 	loadSprites();
 }
 
-genericSprite::~genericSprite()
+GenericSprite::~GenericSprite()
 {
 }
 
-void genericSprite::update()
+void GenericSprite::update()
 {
 	if(currentState == aliveState){
 		if(!noAnimation){
@@ -79,7 +79,7 @@ void genericSprite::update()
 	onGround = false;
 }
 
-void genericSprite::changeAnimation(unsigned int name)
+void GenericSprite::changeAnimation(unsigned int name)
 {
 	if (!animationLock){
 		if (Animations.find(name) != Animations.end()){
@@ -92,12 +92,12 @@ void genericSprite::changeAnimation(unsigned int name)
 	}
 }
 
-void genericSprite::changeAnimation(std::string name)
+void GenericSprite::changeAnimation(std::string name)
 {
 	changeAnimation(stringToCRC(name));
 }
 
-void genericSprite::death(unsigned short cause)
+void GenericSprite::death(unsigned short cause)
 {
 	currentState = deadState;
 	SetX(unsigned short(-1));
@@ -105,7 +105,7 @@ void genericSprite::death(unsigned short cause)
 	
 }
 
-void genericSprite::loadSprites()
+void GenericSprite::loadSprites()
 {
 	//load the sprite from a file
 	//TODO: add theme support
@@ -128,7 +128,7 @@ void genericSprite::loadSprites()
 		std::string fullImageName = "mdpr/sprites/" + spriteTypeName + "/" + image;
 
 		unsigned short spriteID = stringToCRC(spriteTypeName);
-		spriteManager::spriteTypeContainer::iterator iter = sprite.SpriteTypes.find(spriteID);
+		SpriteManager::spriteTypeContainer::iterator iter = sprite.SpriteTypes.find(spriteID);
 		if (iter == sprite.SpriteTypes.end()){
 			sprite.SpriteTypes[spriteID] = fullImageName;
 		}
@@ -140,75 +140,75 @@ void genericSprite::loadSprites()
 	}
 }
 
-void genericSprite::loadSprite(std::string name)
+void GenericSprite::loadSprite(std::string name)
 {
 	Poco::SharedPtr<Animation> newAnimation(new Animation(name));
 	
 	std::string animationFileName = "data/mdpr/sprites/" + spriteTypeName + "/" + name + ".animation";
 	Poco::Util::PropertyFileConfiguration *animationPropertyFile = new Poco::Util::PropertyFileConfiguration(animationFileName);
-	newAnimation->AnimationInfo.delay	= animationPropertyFile->getInt("delay");
-	newAnimation->AnimationInfo.frames	= animationPropertyFile->getInt("frames");
-	newAnimation->AnimationInfo.startx	= animationPropertyFile->getInt("startx");
-	newAnimation->AnimationInfo.starty	= animationPropertyFile->getInt("starty");
-	newAnimation->AnimationInfo.width	= animationPropertyFile->getInt("width");
-	newAnimation->AnimationInfo.height	= animationPropertyFile->getInt("height");
-	newAnimation->AnimationInfo.padding	= animationPropertyFile->getInt("padding", 0);
-	newAnimation->AnimationInfo.reverseOnFinish			= animationPropertyFile->getBool("reverseOnFinish", false);
-	newAnimation->AnimationInfo.pauseOnFinish			= animationPropertyFile->getBool("pauseOnFinish", false);
-	newAnimation->AnimationInfo.collisionRect.Top		= animationPropertyFile->getInt("collision.rect.top");
-	newAnimation->AnimationInfo.collisionRect.Bottom	= animationPropertyFile->getInt("collision.rect.bottom");
-	newAnimation->AnimationInfo.collisionRect.Right		= animationPropertyFile->getInt("collision.rect.right");
-	newAnimation->AnimationInfo.collisionRect.Left		= animationPropertyFile->getInt("collision.rect.left");
+	newAnimation->delay	= animationPropertyFile->getInt("delay");
+	newAnimation->frames	= animationPropertyFile->getInt("frames");
+	newAnimation->startx	= animationPropertyFile->getInt("startx");
+	newAnimation->starty	= animationPropertyFile->getInt("starty");
+	newAnimation->width	= animationPropertyFile->getInt("width");
+	newAnimation->height	= animationPropertyFile->getInt("height");
+	newAnimation->padding	= animationPropertyFile->getInt("padding", 0);
+	newAnimation->reverseOnFinish			= animationPropertyFile->getBool("reverseOnFinish", false);
+	newAnimation->pauseOnFinish			= animationPropertyFile->getBool("pauseOnFinish", false);
+	newAnimation->collisionRect.Top		= animationPropertyFile->getInt("collision.rect.top");
+	newAnimation->collisionRect.Bottom	= animationPropertyFile->getInt("collision.rect.bottom");
+	newAnimation->collisionRect.Right		= animationPropertyFile->getInt("collision.rect.right");
+	newAnimation->collisionRect.Left		= animationPropertyFile->getInt("collision.rect.left");
 
 	unsigned int animationName = stringToCRC(name);
 	Animations[animationName] = newAnimation;
 
-	spriteManager::animationPacketContainer::iterator iter = sprite.Animations.find(animationName);
+	SpriteManager::animationPacketContainer::iterator iter = sprite.Animations.find(animationName);
 	if (iter == sprite.Animations.end()){
 		animationCreationPacket packet;
 		packet.packetID		= animationCreationPacketID;
 		packet.animationID	= animationName;
-		packet.height		= newAnimation->AnimationInfo.height;
-		packet.width		= newAnimation->AnimationInfo.width;
-		packet.padding		= newAnimation->AnimationInfo.padding;
-		packet.startX		= newAnimation->AnimationInfo.startx;
-		packet.startY		= newAnimation->AnimationInfo.starty;
+		packet.height		= newAnimation->height;
+		packet.width		= newAnimation->width;
+		packet.padding		= newAnimation->padding;
+		packet.startX		= newAnimation->startx;
+		packet.startY		= newAnimation->starty;
 		sprite.Animations[packet.animationID] = packet;
 	}
 }
 
 
-void genericSprite::setXAccel(float xAccel)
+void GenericSprite::setXAccel(float xAccel)
 {
 	this->xAccel = xAccel;
 }
 
-void genericSprite::setYAccel(float yAccel)
+void GenericSprite::setYAccel(float yAccel)
 {
 	this->yAccel = yAccel;
 }
 
-void genericSprite::setXVelocity(float xVelocity)
+void GenericSprite::setXVelocity(float xVelocity)
 {
 	this->xVelocity = xVelocity;
 }
 
-void genericSprite::setYVelocity(float newyVelocity)
+void GenericSprite::setYVelocity(float newyVelocity)
 {
 	yVelocity = newyVelocity;
 }
 
-void genericSprite::SetY(float newY)
+void GenericSprite::SetY(float newY)
 {
 	y = newY;
 }
 
-void genericSprite::SetX(float newX)
+void GenericSprite::SetX(float newX)
 {
 	x = newX;
 }
 
-Position genericSprite::GetPosition()
+Position GenericSprite::GetPosition()
 {
 	Position pos;
 	pos.x = x;
@@ -216,13 +216,13 @@ Position genericSprite::GetPosition()
 	return pos;
 }
 
-void genericSprite::SetPosition(Position pos)
+void GenericSprite::SetPosition(Position pos)
 {
 	x = pos.x;
 	y = pos.y;
 }
 
-void genericSprite::Move(float xDir, float yDir)
+void GenericSprite::Move(float xDir, float yDir)
 {
 	x += xDir;
 	y += yDir;

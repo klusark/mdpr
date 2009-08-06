@@ -6,7 +6,7 @@
 
 RegisterPowerup RegisterVolts("volts");
 
-Volts::Volts(genericSprite *owner)
+Volts::Volts(GenericSprite *owner)
 	:	genericPowerUp(owner)
 {
 }

@@ -3,7 +3,7 @@
 
 #include "genericSprite.hpp"
 
-class Platform : public genericSprite
+class Platform : public GenericSprite
 {
 public:
 	Platform(const std::string &name);

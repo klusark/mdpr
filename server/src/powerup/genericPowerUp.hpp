@@ -3,17 +3,17 @@
 
 #include <Poco/SharedPtr.h>
 
-class genericSprite;
+class GenericSprite;
 
 class genericPowerUp
 {
 public:
-	genericPowerUp(genericSprite *owner);
+	genericPowerUp(GenericSprite *owner);
 	~genericPowerUp();
 	virtual void onActionKey();
 	virtual void update();
 
-	genericSprite *owner;
+	GenericSprite *owner;
 };
 
 #endif // ifndef genericPowerUp_hpp

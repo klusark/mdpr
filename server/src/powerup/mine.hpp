@@ -6,7 +6,7 @@
 class Mine : public genericPowerUp
 {
 public:
-	Mine(genericSprite *owner);
+	Mine(GenericSprite *owner);
 	~Mine();	
 	void onActionKey();
 	void update();

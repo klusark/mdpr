@@ -6,7 +6,7 @@
 
 RegisterPowerup RegisterHook("hook");
 
-Hook::Hook(genericSprite *owner)
+Hook::Hook(GenericSprite *owner)
 	:	genericPowerUp(owner)
 {
 }

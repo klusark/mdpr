@@ -6,7 +6,7 @@
 class TNT : public genericPowerUp
 {
 public:
-	TNT(genericSprite *owner);
+	TNT(GenericSprite *owner);
 	~TNT();	
 	void onActionKey();
 	void update();

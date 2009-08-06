@@ -189,7 +189,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				FavorSizeOrSpeed="2"
+				FavorSizeOrSpeed="1"
 				AdditionalIncludeDirectories="..\game\src;src"
 				PreprocessorDefinitions="_WIN32_WINNT=0x0501;SERVER;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"

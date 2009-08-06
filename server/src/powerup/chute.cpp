@@ -6,7 +6,7 @@
 
 RegisterPowerup RegisterChute("chute");
 
-Chute::Chute(genericSprite *owner)
+Chute::Chute(GenericSprite *owner)
 	:	genericPowerUp(owner)
 {
 }

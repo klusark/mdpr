@@ -3,7 +3,7 @@
 
 #include "genericSprite.hpp"
 
-class Effect : public genericSprite
+class Effect : public GenericSprite
 {
 public:
 	Effect(const std::string &name);

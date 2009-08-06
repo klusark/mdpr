@@ -7,7 +7,7 @@
 #include "spriteManager.hpp"
 
 selectionArea::selectionArea(const std::string &name, sf::IntRect rect)
-	:	genericSprite(name, "selectionArea"),
+	:	GenericSprite(name, "selectionArea"),
 		collisionChecked(false)
 {
 	currentState = aliveState;
@@ -24,10 +24,10 @@ selectionArea::~selectionArea()
 
 void selectionArea::update()
 {
-	genericSprite::update();
+	GenericSprite::update();
 }
 
-Poco::SharedPtr<genericSprite> selectionArea::selectClosest(Position pos, bool x, bool y)
+Poco::SharedPtr<GenericSprite> selectionArea::selectClosest(Position pos, bool x, bool y)
 {
 	unsigned short lowest;
 	//give the shortest a very high value
@@ -58,7 +58,7 @@ Poco::SharedPtr<genericSprite> selectionArea::selectClosest(Position pos, bool x
 	return selectedSprites[lowest];
 }
 
-Poco::SharedPtr<genericSprite> selectionArea::selectFarthest(Position pos, bool x, bool y)
+Poco::SharedPtr<GenericSprite> selectionArea::selectFarthest(Position pos, bool x, bool y)
 {
 	return selectedSprites[0];
 }

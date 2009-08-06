@@ -6,7 +6,7 @@
 class Invisibility : public genericPowerUp
 {
 public:
-	Invisibility(genericSprite *owner);
+	Invisibility(GenericSprite *owner);
 	~Invisibility();	
 	void onActionKey();
 	void update();

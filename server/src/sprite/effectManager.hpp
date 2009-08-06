@@ -7,12 +7,12 @@
 
 #include "effect.hpp"
 
-class spriteManager;
+class SpriteManager;
 
 class EffectManager
 {
 public:
-	EffectManager(spriteManager *SM);
+	EffectManager(SpriteManager *SM);
 	~EffectManager();
 	typedef std::vector<Effect *> effectContainer;
 
@@ -29,7 +29,7 @@ public:
 	unsigned short currentNumberEffects;
 
 private:
-	spriteManager *mySpriteManager;
+	SpriteManager *mySpriteManager;
     bool active;
 };
 

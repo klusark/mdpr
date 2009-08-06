@@ -6,7 +6,7 @@
 
 RegisterPowerup RegisterGrenade("grenade");
 
-Grenade::Grenade(genericSprite *owner)
+Grenade::Grenade(GenericSprite *owner)
 	:	genericPowerUp(owner)
 {
 }

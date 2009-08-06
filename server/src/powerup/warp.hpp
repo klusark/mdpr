@@ -6,7 +6,7 @@
 class Warp : public genericPowerUp
 {
 public:
-	Warp(genericSprite *owner);
+	Warp(GenericSprite *owner);
 	~Warp();	
 	void onActionKey();
 	void update();
