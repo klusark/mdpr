@@ -1,4 +1,4 @@
-#include <boost/bind.hpp>
+//#include <boost/bind.hpp>
 
 #include "player.hpp"
 #include "genericSprite.hpp"
@@ -6,6 +6,7 @@
 
 #include "powerup/puck.hpp"
 #include "helpers.hpp"
+#include "animation.hpp"
 
 Player::Player(const std::string &name)
 	:	GenericSprite(name, "player"),
@@ -96,7 +97,8 @@ void Player::update()
 					crouching = true;
 				}else if (crouching){
 					currentAnimation->resume();
-					currentAnimation->onFinish.connect(boost::bind(&Player::crouchingFinish, this));
+					//crouchingDown = true;
+					//currentAnimation->onFinish = &Player::crouchingFinish;//.connect(boost::bind(&Player::crouchingFinish, this));
 					//crouching = false;
 				}else if (keyMap[keyUp]){
 					jumpingUp = true;
@@ -115,7 +117,7 @@ void Player::update()
 				changeAnimation("run");
 			}else if (rolling && currentAnimation->name != "roll"){
 				changeAnimation("roll");
-				currentAnimation->onFinish.connect(boost::bind(&Player::rollingFinish, this));
+//				currentAnimation->onFinish.connect(boost::bind(&Player::rollingFinish, this));
 			}else if(crouching && currentAnimation->name != "crouch"){
 				changeAnimation("crouch");
 			}else if(jumpingUp && currentAnimation->name != "jumpUp"){
@@ -131,7 +133,7 @@ void Player::update()
 
 void Player::crouchingFinish()
 {
-	currentAnimation->onFinish.disconnect(boost::bind(&Player::crouchingFinish, this));
+//	currentAnimation->onFinish.disconnect(boost::bind(&Player::crouchingFinish, this));
 	currentAnimation->reset();
 	crouching = false;
 
@@ -148,6 +150,16 @@ void Player::rollingFinish()
 	currentAnimation->playBackward = true;
 	currentAnimation->pause();
 
+}
+
+void Player::onAnimationFinish()
+{
+	if (rolling == true){
+		rollingFinish();
+	}
+	if (crouching == true && !keyMap[keyDown]){
+		crouchingFinish();
+	}
 }
 
 void Player::death(unsigned short cause)

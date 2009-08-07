@@ -16,6 +16,7 @@
 #include "sprite/player.hpp"
 #include "sprite/platform.hpp"
 #include "sprite/bubble.hpp"
+#include "sprite/animation.hpp"
 
 POCO_SERVER_MAIN(NetworkServer)
 

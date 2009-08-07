@@ -1,8 +1,9 @@
 #include <string>
 #include "animation.hpp"
 #include "helpers.hpp"
+#include "genericSprite.hpp"
 
-Animation::Animation(std::string name)
+Animation::Animation(std::string name, GenericSprite *owner)
 	:	paused(false),
 		currentFrame(0),
 		updateTime(0),
@@ -10,9 +11,11 @@ Animation::Animation(std::string name)
 		playBackward(false),
 		reverseOnFinish(false),
 		pauseOnFinish(false),
-		padding(0)
+		padding(0),
+		owner(owner)
 {
 	CRCName = stringToCRC(name);
+
 }
 
 Animation::~Animation()
@@ -43,7 +46,7 @@ sf::IntRect Animation::update()
 				if (reverseOnFinish){
 					playBackward = true;
 				}
-				onFinish();
+				owner->onAnimationFinish();
 			}
 		}
 	}else{

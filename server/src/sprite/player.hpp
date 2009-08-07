@@ -12,7 +12,9 @@ public:
 	void update();
 	void crouchingFinish();
 	void rollingFinish();
-	void death(unsigned short cause); 
+	void death(unsigned short cause);
+
+	void onAnimationFinish();
 
 	bool keyMap[keyAction+1];
 	bool keyMapTwo[keyAction+1];

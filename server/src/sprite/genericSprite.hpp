@@ -6,9 +6,11 @@
 #include <map>
 #include "enumerations.hpp"
 
-#include "animation.hpp"
+//#include "animation.hpp"
 
 class genericPowerUp;
+
+class Animation;
 
 struct Position
 {
@@ -74,6 +76,8 @@ public:
 	\param cause the crc of the name of the cause
 	*/
 	virtual void death(unsigned short cause);
+
+	virtual void onAnimationFinish();
 
 	//!The name of the sprite
 	std::string name;

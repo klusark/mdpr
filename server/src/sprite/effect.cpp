@@ -1,8 +1,7 @@
 #include <SFML/Graphics/Image.hpp>
 
 #include "effect.hpp"
-#include "genericSprite.hpp"
-
+#include "animation.hpp"
 
 Effect::Effect(const std::string &name)
 	:	GenericSprite(name, "effect"),

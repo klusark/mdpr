@@ -2,9 +2,11 @@
 #define animation_hpp
 
 #include <SFML/System/Clock.hpp>
-#include <boost/signal.hpp>
+//#include <boost/signal.hpp>
 
 #include <SFML/Graphics/Rect.hpp>
+
+class GenericSprite;
 
 //!handles animations
 class Animation
@@ -14,7 +16,7 @@ public:
 	/*!
 	@param name the name of the animation
 	*/
-	Animation(std::string name);
+	Animation(std::string name, GenericSprite *owner);
 	~Animation();
 
 	//!update the animation
@@ -33,7 +35,9 @@ public:
 	void reset();
 
 	//!Signal that gets run when the animation ends
-	boost::signal<void ()> onFinish;
+	//boost::signal<void ()> onFinish;
+
+	//void (*onFinish)();
 
 	//!Name of the animation
 	std::string name;
@@ -76,6 +80,8 @@ public:
 
 	//!the rect for checking collisions
 	sf::IntRect collisionRect;
+
+	GenericSprite *owner;
 };
 
 #endif // #ifndef animation_hpp

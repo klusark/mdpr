@@ -5,6 +5,7 @@
 #include "network/packets.hpp"
 #include <map>
 #include <SFML/System/Vector2.hpp>
+#include "animation.hpp"
 
 spriteCollision::spriteCollision(spriteContainer &Sprites)
 	:	Sprites(Sprites)

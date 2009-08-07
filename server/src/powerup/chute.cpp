@@ -1,6 +1,5 @@
 #include <Poco/SharedPtr.h>
 
-#include "sprite/genericSprite.hpp"
 #include "powerUpManager.hpp"
 #include "chute.hpp"
 
