@@ -13,6 +13,7 @@
 #include "powerup/genericPowerUp.hpp"
 #include "genericSprite.hpp"
 #include "spriteManager.hpp"
+#include "animation.hpp"
 
 GenericSprite::GenericSprite(const std::string &name, std::string spriteType) 
 	:	name(name),
@@ -91,6 +92,9 @@ void GenericSprite::changeAnimation(unsigned int name)
 		}
 	}
 }
+void GenericSprite::onAnimationFinish()
+{
+}
 
 void GenericSprite::changeAnimation(std::string name)
 {
@@ -142,7 +146,7 @@ void GenericSprite::loadSprites()
 
 void GenericSprite::loadSprite(std::string name)
 {
-	Poco::SharedPtr<Animation> newAnimation(new Animation(name));
+	Poco::SharedPtr<Animation> newAnimation(new Animation(name, this));
 	
 	std::string animationFileName = "data/mdpr/sprites/" + spriteTypeName + "/" + name + ".animation";
 	Poco::Util::PropertyFileConfiguration *animationPropertyFile = new Poco::Util::PropertyFileConfiguration(animationFileName);

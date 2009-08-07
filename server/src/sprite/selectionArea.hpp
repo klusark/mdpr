@@ -2,6 +2,7 @@
 #define selectionArea_hpp
 
 #include <vector>
+#include <SFML/Graphics/Rect.hpp>
 
 #include "genericSprite.hpp"
 
