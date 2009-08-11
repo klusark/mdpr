@@ -137,7 +137,7 @@ void MDPRGame::drawThread()
 		App.SetActive(true);
 		int Frames = 0;
 		float seconds, fps = 0;
-		unsigned int mySpriteID = stringToCRC(Poco::Util::Application::instance().config().getString("mdpr.playerName"));
+		unsigned int mySpriteID = stringToCRC("klusark");
 		bool found = false;
 		ClientSprite* mySprite;
 
@@ -190,7 +190,7 @@ void MDPRGame::updateThread()
 		float seconds, fps = 0;
 		sf::Clock clock;
 
-		unsigned int mySpriteID = stringToCRC(Poco::Util::Application::instance().config().getString("mdpr.playerName"));
+		unsigned int mySpriteID = stringToCRC("klusark");
 
 		while (!quit){
 			Frames++;
@@ -220,7 +220,7 @@ void MDPRGame::updateThread()
 				/*if (sprite->Sprites.find(mySpriteID) != sprite->Sprites.end()){
 					view.SetCenter(sprite->Sprites[mySpriteID]->GetPosition() + Vector);
 				}*/
-				view.Zoom(1.0f);
+				view.Zoom(4.0f);
 
 				if (menu->isActive()){
 					menu->resize((float)currentWidth, (float)currentHeight);

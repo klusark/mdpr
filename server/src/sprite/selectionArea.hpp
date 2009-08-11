@@ -15,6 +15,10 @@ public:
 	bool collisionChecked;
 	spriteTypes typeToSelect;
 	void update();
+
+	static GenericSprite::collidesWithContainer colidesWith;
+	virtual GenericSprite::collidesWithContainer getCollidesWith() const {return colidesWith;};
+
 	typedef std::vector<Poco::SharedPtr<GenericSprite> > selectedSpriteContainer;
 	selectedSpriteContainer selectedSprites;
 

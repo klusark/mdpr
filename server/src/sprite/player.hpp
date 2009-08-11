@@ -16,9 +16,11 @@ public:
 
 	void onAnimationFinish();
 
+	static GenericSprite::collidesWithContainer colidesWith;
+	GenericSprite::collidesWithContainer getCollidesWith() const {return colidesWith;};
+
 	bool keyMap[keyAction+1];
 	bool keyMapTwo[keyAction+1];
-	//keysContainter keyMap;
 	bool rolling, running, crouching, idle, jumpingUp;
 	float velocity;
 

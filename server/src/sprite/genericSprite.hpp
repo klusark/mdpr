@@ -4,6 +4,7 @@
 #include <Poco/SharedPtr.h>
 #include <SFML/System/Clock.hpp>
 #include <map>
+#include <set>
 #include "enumerations.hpp"
 
 //#include "animation.hpp"
@@ -42,13 +43,6 @@ public:
 	Can be reimplemented in an inheritor for more updating control
 	*/
 	virtual void update();
-	
-	//!Draws the sprite to the screen
-	/*!
-	Can be reimplemented in an inheritor for more drawing control
-	\param App The render window to draw the sprite onto. 
-	*/
-	//virtual void draw(sf::RenderWindow &App);
 
 	//!Changes the current animation of the sprite
 	/*!
@@ -78,6 +72,10 @@ public:
 	virtual void death(unsigned short cause);
 
 	virtual void onAnimationFinish();
+
+	typedef std::set<unsigned short> collidesWithContainer;
+
+	virtual collidesWithContainer getCollidesWith(void) = 0;
 
 	//!The name of the sprite
 	std::string name;
@@ -134,6 +132,8 @@ public:
 
 	//!The amount of time it takes for this sprite to respawn.
 	unsigned short respawnTime; 
+
+
 	
 	float lastX, lastY;
 	int timesSkiped;
