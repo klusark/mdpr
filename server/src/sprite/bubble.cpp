@@ -8,6 +8,8 @@
 #include "powerup.hpp"
 #include "bubble.hpp"
 
+GenericSprite::collidesWithContainer Bubble::colidesWith;
+
 Bubble::Bubble(const std::string &name)
 	:	GenericSprite(name, "bubble"),
 		powerup(name+"powerup")
@@ -50,9 +52,3 @@ void Bubble::update()
 	GenericSprite::update();
 	powerup.SetPosition(GetPosition());
 }
-
-/*void Bubble::draw(sf::RenderWindow &App)
-{	
-	genericSprite::draw(App);
-	App.Draw(powerup);
-}*/

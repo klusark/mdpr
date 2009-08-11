@@ -3,6 +3,8 @@
 #include "network/packets.hpp"
 #include "helpers.hpp"
 
+GenericSprite::collidesWithContainer PowerUp::colidesWith;
+
 PowerUp::PowerUp(const std::string &name)
 	:	GenericSprite(name, "powerup")
 {

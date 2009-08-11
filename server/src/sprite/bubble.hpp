@@ -10,11 +10,12 @@ class Bubble : public GenericSprite
 public:
 	Bubble(const std::string &name);
 	~Bubble();
-	static sf::Image Image;
 	void update();
-	void draw(sf::RenderWindow &App);
+
+	static GenericSprite::collidesWithContainer colidesWith;
+	GenericSprite::collidesWithContainer getCollidesWith() const {return colidesWith;};
 	PowerUp powerup;
 	
 };
 
-#endif // ifndef bubble_hpp
+#endif // #ifndef bubble_hpp

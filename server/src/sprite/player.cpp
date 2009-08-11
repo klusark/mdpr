@@ -1,5 +1,3 @@
-//#include <boost/bind.hpp>
-
 #include "player.hpp"
 #include "genericSprite.hpp"
 #include "network/packets.hpp"
@@ -7,6 +5,8 @@
 #include "powerup/puck.hpp"
 #include "helpers.hpp"
 #include "animation.hpp"
+
+GenericSprite::collidesWithContainer Player::colidesWith;
 
 Player::Player(const std::string &name)
 	:	GenericSprite(name, "player"),

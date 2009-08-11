@@ -6,6 +6,8 @@
 #include "helpers.hpp"
 #include "spriteManager.hpp"
 
+GenericSprite::collidesWithContainer selectionArea::colidesWith;
+
 selectionArea::selectionArea(const std::string &name, sf::IntRect rect)
 	:	GenericSprite(name, "selectionArea"),
 		collisionChecked(false)
