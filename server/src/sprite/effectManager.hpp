@@ -30,7 +30,7 @@ public:
 
 private:
 	SpriteManager *mySpriteManager;
-    bool active;
+	bool active;
 };
 
 #endif // #ifndef effectManager_hpp

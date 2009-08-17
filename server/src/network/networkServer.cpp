@@ -40,7 +40,6 @@ NetworkServer::NetworkServer()
 		newPlatform->SetX((float)50 + (i*16));
 		sprite.registerSprite(newPlatform);
 	}
-
 	{
 	//	Poco::SharedPtr<genericSprite> newBubble(new Bubble("bubble0"));
 	//	sprite.registerSprite(newBubble);
@@ -96,7 +95,7 @@ int NetworkServer::main(const std::vector<std::string>& args)
 	}
 
 	packetServerInfo.packetID = serverInfoPacketID;
-	packetServerInfo.port = config().getInt("Server.port");
+	packetServerInfo.port = static_cast<unsigned int>(config().getInt("Server.port"));
 
 	Poco::Net::SocketAddress socketAddress("0.0.0.0", config().getInt("Server.port"));
 	// set-up a server socke
@@ -147,8 +146,8 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 			Players[socketAddress.port()]->stillAlive = true;
 		}
 
-		packetIDs packetID;
-		memcpy(&packetID, buffer, 4);
+		packetType packetID;
+		memcpy(&packetID, buffer, sizeof(packetType));
 		switch(packetID)
 		{
 		case connectPacketID:
@@ -301,7 +300,7 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				packet.maxPlayers = config().getInt("Server.MaxPlayers");
 				std::string serverName = config().getString("Server.name");
 				strcpy(packet.serverName, serverName.c_str());
-				packet.port = config().getInt("Server.port");
+				packet.port = static_cast<unsigned int>(config().getInt("Server.port"));
 
 				socket.sendTo((const void *)&packet, sizeof(fullServerInfoPacket) - 256 + serverName.length(), socketAddress);
 			}
@@ -343,7 +342,7 @@ void NetworkServer::removeIdlePlayers(Poco::Timer& timer)
 }
 
 
-void NetworkServer::spriteUpdate(Poco::Timer& timer)
+void NetworkServer::spriteUpdate(Poco::Timer&)
 {
 	/*if (error){
 		std::cout << "spriteUpdate: " << error.message() << std::endl;

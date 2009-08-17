@@ -346,10 +346,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\sprite\effect.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\src\powerup\genericPowerUp.cpp"
 					>
 				</File>
@@ -403,6 +399,10 @@
 				</File>
 				<File
 					RelativePath=".\src\sprite\bubble.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\sprite\effect.cpp"
 					>
 				</File>
 				<File

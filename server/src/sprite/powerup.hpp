@@ -9,8 +9,7 @@ public:
 	PowerUp(const std::string &name);
 	~PowerUp();
 
-	static GenericSprite::collidesWithContainer colidesWith;
-	virtual collidesWithContainer getCollidesWith(void) const {return colidesWith;};
+	collidesWithContainer getCollidesWith(); //const {return colidesWith;};
 
 };
 

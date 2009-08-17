@@ -72,9 +72,8 @@ void NetworkMasterServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::Readabl
 	//Put the packet into the buffer
 	socket.receiveFrom(buffer, BUFFER_SIZE, socketAddress);
 
-	packetIDs packetID;
-	//Copy the first 4 bytes out of the buffer for use in identifying the packet
-	memcpy(&packetID, buffer, 4);
+	packetType packetID;
+	memcpy(&packetID, buffer, sizeof(packetType));
 	switch(packetID)
 	{
 	case serverInfoPacketID:

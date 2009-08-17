@@ -16,8 +16,7 @@ public:
 
 	void onAnimationFinish();
 
-	static GenericSprite::collidesWithContainer colidesWith;
-	GenericSprite::collidesWithContainer getCollidesWith() const {return colidesWith;};
+	GenericSprite::collidesWithContainer getCollidesWith();
 
 	bool keyMap[keyAction+1];
 	bool keyMapTwo[keyAction+1];

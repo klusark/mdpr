@@ -8,7 +8,6 @@
 #include "powerup.hpp"
 #include "bubble.hpp"
 
-GenericSprite::collidesWithContainer Bubble::colidesWith;
 
 Bubble::Bubble(const std::string &name)
 	:	GenericSprite(name, "bubble"),
@@ -52,3 +51,14 @@ void Bubble::update()
 	GenericSprite::update();
 	powerup.SetPosition(GetPosition());
 }
+
+GenericSprite::collidesWithContainer Bubble::getCollidesWith()
+{
+	static GenericSprite::collidesWithContainer colidesWith;
+	static bool test;
+	if (!test){
+		colidesWith.insert(stringToCRC("test"));
+	}
+	return colidesWith;
+}
+

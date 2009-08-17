@@ -6,8 +6,6 @@
 #include "helpers.hpp"
 #include "spriteManager.hpp"
 
-GenericSprite::collidesWithContainer selectionArea::colidesWith;
-
 selectionArea::selectionArea(const std::string &name, sf::IntRect rect)
 	:	GenericSprite(name, "selectionArea"),
 		collisionChecked(false)
@@ -63,4 +61,11 @@ Poco::SharedPtr<GenericSprite> selectionArea::selectClosest(Position pos, bool x
 Poco::SharedPtr<GenericSprite> selectionArea::selectFarthest(Position pos, bool x, bool y)
 {
 	return selectedSprites[0];
+}
+
+GenericSprite::collidesWithContainer selectionArea::getCollidesWith()
+{
+	GenericSprite::collidesWithContainer colidesWith;
+	colidesWith.insert(stringToCRC("test"));
+	return colidesWith;
 }

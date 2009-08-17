@@ -16,8 +16,7 @@ public:
 	spriteTypes typeToSelect;
 	void update();
 
-	static GenericSprite::collidesWithContainer colidesWith;
-	virtual GenericSprite::collidesWithContainer getCollidesWith() const {return colidesWith;};
+	virtual GenericSprite::collidesWithContainer getCollidesWith();
 
 	typedef std::vector<Poco::SharedPtr<GenericSprite> > selectedSpriteContainer;
 	selectedSpriteContainer selectedSprites;

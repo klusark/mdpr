@@ -1,11 +1,10 @@
-#include <SFML/Graphics/Image.hpp>
-
 #include "effect.hpp"
 #include "animation.hpp"
+#include "helpers.hpp"
 
-Effect::Effect(const std::string &name)
-	:	GenericSprite(name, "effect"),
-		inUse(false)
+Effect::Effect(const std::string &name):
+GenericSprite(name, "effect"),
+inUse(false)
 {
 
 	changeAnimation("blank");
@@ -28,4 +27,11 @@ void Effect::update()
 		SetX((unsigned short)-1);
 		SetY((unsigned short)-1);
 	}
+}
+
+GenericSprite::collidesWithContainer Effect::getCollidesWith()
+{
+	GenericSprite::collidesWithContainer colidesWith;
+	colidesWith.insert(stringToCRC("test"));
+	return colidesWith;
 }

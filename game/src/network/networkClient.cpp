@@ -12,8 +12,7 @@
 #include "menu/menuManager.hpp"
 
 
-NetworkClient::NetworkClient()
-	:	//socket(ioService, udp::endpoint()),
+NetworkClient::NetworkClient():	
 		inGame(true),
 		connected(false),
 		totalBytesRecived(0),
@@ -92,23 +91,11 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 {
 	Poco::Net::SocketAddress socketAddress;
 	
-	/*totalBytesRecived += bytesReceived;
-	bytesInLastFive += bytesReceived;
-	float time = timer.GetElapsedTime();
-	if (time >= 5) {
-		float bps = bytesInLastFive/time;
-		std::cout << bytesInLastFive << " bytes in " << time << " seconds = " << bps << " BPS" << std::endl;
-		timer.Reset();
-		bytesInLastFive = 0;
-	}
-	if (error){
-		std::cout << error.message() << std::endl;
-		
-	}else{*/
 	try{
 		socket.receiveFrom(buffer, BUFFER_SIZE, socketAddress);
-		packetIDs packetID;
-		memcpy(&packetID, buffer, 4);
+
+		packetType packetID;
+		memcpy(&packetID, buffer, sizeof(packetType));
 
 		switch(packetID)
 		{
