@@ -25,14 +25,14 @@ enum packetIDs
 	getFullServerInfoPacketID,
 	fullServerInfoPacketID,
 };
-
+typedef unsigned char packetType;
 /*!
 Size: 7+nameLength
 Client -> Server
 */
 struct connectPacket
 {
-	packetIDs packetID;
+	packetType packetID;
 	bool noSpriteUpdates;
 	unsigned char nameLength;
 	char name[255];
@@ -44,7 +44,7 @@ Client <- Server
 */
 struct doneConnectingPacket
 {
-	packetIDs packetID;
+	packetType packetID;
 };
 
 /*!
@@ -54,7 +54,7 @@ Client <- Server
 */
 struct connectionAcceptedPacket
 {
-	packetIDs packetID;
+	packetType packetID;
 };
 
 /*!
@@ -64,7 +64,7 @@ Client <- Server
 */
 struct spriteTypeCreationPacket
 {
-	packetIDs packetID;
+	packetType packetID;
 	unsigned short spriteTypeID;
 	unsigned char fileNameLength;
 	char fileName[255];
@@ -77,7 +77,7 @@ Client <- Server
 */
 struct animationCreationPacket
 {
-	packetIDs packetID;
+	packetType packetID;
 	unsigned short animationID, startX, startY, width, height, padding;
 };
 
@@ -87,7 +87,7 @@ Client <- Server
 */
 struct spriteCreationPacket
 {
-	packetIDs packetID;
+	packetType packetID;
 	unsigned short spriteType;
 	unsigned char nameLength;
 	char name[255];
@@ -98,7 +98,7 @@ Size: 6
 */
 struct spriteDeletionPacket
 {
-	packetIDs packetID;
+	packetType packetID;
 	unsigned short spriteID;
 };
 
@@ -107,7 +107,7 @@ Size: 15
 */
 struct spritePosPacket
 {
-	packetIDs packetID;
+	packetType packetID;
 	float x;
 	float y;
 
@@ -120,7 +120,7 @@ Size: 8
 */
 struct errorPacket
 {
-	packetIDs packetID;
+	packetType packetID;
 	errorIDs errorID;
 };
 
@@ -129,7 +129,7 @@ Size: 9
 */
 struct keyPacket
 {
-	packetIDs packetID;
+	packetType packetID;
 	
 	keys key;
 	bool down;
@@ -140,7 +140,7 @@ Size: 8
 */
 struct animationChangePacket
 {
-	packetIDs packetID;
+	packetType packetID;
 
 	unsigned short spriteID;
 	unsigned short animationID;
@@ -151,7 +151,7 @@ Size: 16
 */
 struct positionAndFrameUpdatePacket
 {
-	packetIDs packetID;
+	packetType packetID;
 	float x;
 	float y;
 
@@ -162,14 +162,14 @@ struct positionAndFrameUpdatePacket
 
 struct cannotFindSpritePacket
 {
-	packetIDs packetID;
+	packetType packetID;
 	unsigned short spriteID;
 };
 
 struct serverInfoPacket
 {
-	packetIDs packetID;
-	short port;	
+	packetType packetID;
+	unsigned short port;	
 };
 
 /*
@@ -177,7 +177,7 @@ Send to master server to get list of servers
 */
 struct getServersPacket
 {
-	packetIDs packetID;
+	packetType packetID;
 };
 
 struct serverEntry
@@ -199,14 +199,14 @@ Size: 197
 */
 struct serversListPacket
 {
-	packetIDs packetID;
+	packetType packetID;
 	unsigned char numServers;
 	serverEntry serverList[numberOfPacketInServerListPacket];
 };
 
 struct getFullServerInfoPacket
 {
-	packetIDs packetID;
+	packetType packetID;
 };
 
 struct fullServerEntry
@@ -219,7 +219,7 @@ struct fullServerEntry
 
 struct fullServerInfoPacket
 {
-	packetIDs packetID;
+	packetType packetID;
 	unsigned short numPlayers, maxPlayers, port;
 	char serverName[256];
 };

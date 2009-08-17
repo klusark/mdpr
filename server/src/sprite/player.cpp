@@ -6,8 +6,6 @@
 #include "helpers.hpp"
 #include "animation.hpp"
 
-GenericSprite::collidesWithContainer Player::colidesWith;
-
 Player::Player(const std::string &name)
 	:	GenericSprite(name, "player"),
 		rolling(false),
@@ -174,3 +172,11 @@ void Player::death(unsigned short cause)
 		setXVelocity(0);
 	}*/
 }
+
+GenericSprite::collidesWithContainer Player::getCollidesWith()
+{
+	GenericSprite::collidesWithContainer colidesWith;
+	colidesWith.insert(stringToCRC("test"));
+	return colidesWith;
+}
+

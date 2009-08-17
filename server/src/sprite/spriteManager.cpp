@@ -12,9 +12,9 @@
 SpriteManager sprite;
 
 SpriteManager::SpriteManager()
-	:	active(false),
-		collision(Sprites),
-		myEffectManager(&sprite)
+:	active(false),
+collision(Sprites),
+myEffectManager(&sprite)
 {
 }
 
@@ -31,7 +31,7 @@ void SpriteManager::registerSprite(Poco::SharedPtr<GenericSprite> sprite)
 
 void SpriteManager::update()
 {
-	
+
 	collision.before();
 	spriteContainer::iterator iter;
 	for(iter = Sprites.begin(); iter != Sprites.end(); ++iter){
@@ -70,10 +70,10 @@ void SpriteManager::spawn(Poco::SharedPtr<GenericSprite> spriteToSpawn)
 
 bool SpriteManager::isActive()
 {
-    return active;
+	return active;
 }
 
 void SpriteManager::setActive(bool toggle)
 {
-    active = toggle;
+	active = toggle;
 }

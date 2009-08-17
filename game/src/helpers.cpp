@@ -10,7 +10,7 @@ unsigned short stringToCRC(std::string string)
 	Poco::Checksum checksum;
 	checksum.update(string);
 	//Converts it to a short. looses half the number... should still be enough variation
-	unsigned short val = checksum.checksum();
+	unsigned short val = static_cast<unsigned short>(checksum.checksum());
 	return val;
 }
 
@@ -23,7 +23,7 @@ sf::IntRect XYWHToLTRB(int x, int y, int w, int h)
 std::vector<std::string> splitString(std::string str, std::string delim)
 {
 	std::vector<std::string> cutString;
-	int cutAt;
+	unsigned int cutAt;
 	while((cutAt = str.find_first_of(delim)) != str.npos ){
 		if(cutAt > 0){
 			cutString.push_back(str.substr(0, cutAt));

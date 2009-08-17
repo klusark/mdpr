@@ -39,9 +39,7 @@ public:
 	EffectManager myEffectManager;
 
 private:
-    bool active;
-	
-	
+	bool active;
 };
 
 extern SpriteManager sprite;

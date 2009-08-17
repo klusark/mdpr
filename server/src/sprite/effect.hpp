@@ -10,8 +10,7 @@ public:
 	~Effect();
 	bool inUse;
 	void update();
-	static GenericSprite::collidesWithContainer colidesWith;
-	GenericSprite::collidesWithContainer getCollidesWith() const {return colidesWith;};
+	GenericSprite::collidesWithContainer getCollidesWith();
 	
 };
 

@@ -5,9 +5,9 @@
 #include "helpers.hpp"
 
 EffectManager::EffectManager(SpriteManager *SM)
-	:	active(false),
-		currentNumberEffects(0),
-		mySpriteManager(SM)
+:	active(false),
+currentNumberEffects(0),
+mySpriteManager(SM)
 {
 	for (;currentNumberEffects < initialNumberOfEffects; ++currentNumberEffects){
 		std::string name = "effect";
@@ -45,10 +45,10 @@ void EffectManager::addEffect(std::string effectID,	float x, float y)
 
 bool EffectManager::isActive()
 {
-    return active;
+	return active;
 }
 
 void EffectManager::setActive(bool toggle)
 {
-    active = toggle;
+	active = toggle;
 }

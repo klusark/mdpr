@@ -52,7 +52,9 @@ public:
 	float updateTime;
 
 	//!the current frame
-	unsigned char currentFrame;
+	unsigned char currentFrame,
+		//!The number of frames
+		frames;
 
 	//!ture if currently paused
 	bool paused, 
@@ -65,8 +67,6 @@ public:
 	
 	//!The delay between frames
 	int delay, 
-		//!The number of frames
-		frames, 
 		//!the x position in the image where this animaiton starts
 		startx, 
 		//!the y position in the image where this animaiton starts
