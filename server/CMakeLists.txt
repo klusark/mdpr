@@ -10,6 +10,8 @@ set(SOURCES
 
 	src/powerup/gun.cpp
 	src/powerup/gun.hpp
+	src/powerup/puck.cpp
+	src/powerup/puck.hpp
 	src/powerup/powerUpManager.cpp
 	src/powerup/powerUpManager.hpp
 	src/powerup/genericPowerUp.cpp
@@ -44,16 +46,13 @@ include_directories(
 	src
 )
 
-add_definitions( 
-	-DSERVER
+add_definitions(
 )
 
 add_executable(server ${SOURCES})
-FIND_PACKAGE( Boost 1.37 COMPONENTS system program_options thread signals)
 set(LINKFILES
 	optimized sfml-system
 	debug sfml-system-d
-	${Boost_LIBRARIES}
 )
 
 target_link_libraries(server ${LINKFILES})

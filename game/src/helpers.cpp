@@ -1,4 +1,3 @@
-//#include <boost/crc.hpp>
 #include <Poco/Checksum.h>
 #include <SFML/Graphics/Rect.hpp>
 #include <string>

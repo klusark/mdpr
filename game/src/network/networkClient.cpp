@@ -13,13 +13,13 @@
 
 
 NetworkClient::NetworkClient():	
-		inGame(true),
-		connected(false),
-		totalBytesRecived(0),
-		bytesInLastFive(0),
-		currentState(idleState),
-		buffer(new char[BUFFER_SIZE]),
-		serverListUpdateTimer(200, 200)
+inGame(true),
+connected(false),
+totalBytesRecived(0),
+bytesInLastFive(0),
+currentState(idleState),
+buffer(new char[BUFFER_SIZE]),
+serverListUpdateTimer(200, 200)
 {
 
 	reactor.addEventHandler(socket, Poco::NObserver<NetworkClient, Poco::Net::ReadableNotification>(*this, &NetworkClient::onReceivePacket));
@@ -27,16 +27,6 @@ NetworkClient::NetworkClient():
 	thread.start(reactor);
 
 	serverListUpdateTimer.start(Poco::TimerCallback<NetworkClient>(*this, &NetworkClient::serverListUpdateThread));
-	/*socket.async_receive_from(boost::asio::buffer(buffer), receiverEndpoint, boost::bind(&networkClient::onReceivePacket, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
-
-	for (short i = 0; i < numIOServiceThreads; ++i){
-		ioServiceThreadPool.create_thread(boost::bind(&networkClient::ioServiceThread, this));
-	}
-
-		
-	for (short i = 0; i < numServerUpdateThreads; ++i){
-		serverListUpdateThreads.create_thread(boost::bind(&networkClient::serverListUpdateThread, this, i));
-	}*/
 }
 
 NetworkClient::~NetworkClient()

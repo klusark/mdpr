@@ -11,8 +11,8 @@
 
 SpriteManager sprite;
 
-SpriteManager::SpriteManager()
-:	active(false),
+SpriteManager::SpriteManager():
+active(false),
 collision(Sprites),
 myEffectManager(&sprite)
 {
@@ -24,7 +24,6 @@ SpriteManager::~SpriteManager()
 
 void SpriteManager::registerSprite(Poco::SharedPtr<GenericSprite> sprite)
 {
-	//boost::mutex::scoped_lock lock(spriteMutex);
 
 	Sprites[stringToCRC(sprite->name)] = sprite;
 }

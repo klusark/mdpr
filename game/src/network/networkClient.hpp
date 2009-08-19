@@ -1,9 +1,6 @@
 #ifndef networkClient_hpp
 #define networkClient_hpp
 
-//#include <boost/asio.hpp>
-//#include <boost/thread.hpp>
-
 #include <SFML/Window/Event.hpp>
 
 #include <SFML/System/Clock.hpp>
@@ -50,7 +47,7 @@ protected:
 	Poco::Thread thread;
 	Poco::Net::SocketReactor reactor;
 	bool inGame;
-	
+
 
 	sf::Clock timer;
 
@@ -59,7 +56,7 @@ protected:
 	void serverListUpdateThread(Poco::Timer&);
 
 	static const unsigned short numServerUpdateThreads = 1;
-	
+
 	static const unsigned short numIOServiceThreads = 5;
 
 	Poco::Timer serverListUpdateTimer;

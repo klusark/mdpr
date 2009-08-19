@@ -1,4 +1,4 @@
-project( game )
+project(game)
 
 set(SOURCES 
 	src/MDPRGame.cpp
@@ -8,36 +8,18 @@ set(SOURCES
 	src/network/networkClient.hpp
 	src/network/packets.hpp
 	
-	src/menu/menuGeneric.hpp
-	src/menu/menuMain.hpp
 	src/menu/menuManager.hpp
-	src/menu/menuOptions.hpp
-	src/menu/menuProfile.hpp
-	src/menu/menuGeneric.cpp
-	src/menu/menuMain.cpp
 	src/menu/menuManager.cpp
-	src/menu/menuOptions.cpp
-	src/menu/menuProfile.cpp
-	src/menu/menuControls.cpp
-	src/menu/menuControls.hpp
-	src/menu/menuInGame.cpp
-	src/menu/menuInGame.hpp
-	src/menu/menuServerBrowser.cpp
-	src/menu/menuServerBrowser.hpp
-	src/menu/button.cpp
-	src/menu/button.hpp
-	src/menu/filteredTextField.cpp
-	src/menu/filteredTextField.hpp
-	src/menu/serverListModel.cpp
-	src/menu/serverListModel.hpp
-	src/menu/controlChangeButton.cpp
-	src/menu/controlChangeButton.hpp
-
 
 	src/sprite/clientSprite.cpp
 	src/sprite/clientSprite.hpp
 	src/sprite/clientSpriteManager.cpp
 	src/sprite/clientSpriteManager.hpp
+	
+	src/profile/Profile.cpp
+	src/profile/Profile.hpp
+	src/profile/ProfileManager.cpp
+	src/profile/ProfileManager.hpp
 
 	src/helpers.cpp
 	src/helpers.hpp
@@ -50,27 +32,24 @@ include_directories(
 add_definitions( 
 	-DSFML_DYNAMIC
 	-D_CRT_SECURE_NO_WARNINGS
-	-D_WIN32_WINNT=0x0501
+	-DNOMINMAX
 )
 
-add_executable( game ${SOURCES} )
+add_executable(game ${SOURCES})
 
-SET(Boost_USE_MULTITHREAD ON)
 
-FIND_PACKAGE( Boost 1.39 COMPONENTS system program_options thread signals)
 
 set(LINKFILES
-	optimized sfml-graphics
-	debug sfml-graphics-d
-	optimized sfml-window
-	debug sfml-window-d
-	optimized sfml-system
-	debug sfml-system-d
-	optimized guichan
-	debug guichand
-	optimized guichan_sfml
-	debug guichan_sfmld
-	${Boost_LIBRARIES}
+	optimized	sfml-graphics
+	debug 		sfml-graphics-d
+	optimized 	sfml-window
+	debug 		sfml-window-d
+	optimized 	sfml-system
+	debug		sfml-system-d
+	optimized 	CEGUIBase
+	debug 		CEGUIBase_d
+	optimized 	OpenGlGUIRenderer
+	debug 		OpenGlGUIRenderer_d
 )
 
 target_link_libraries( game ${LINKFILES} )
