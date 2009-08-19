@@ -2,8 +2,6 @@
 #define animation_hpp
 
 #include <SFML/System/Clock.hpp>
-//#include <boost/signal.hpp>
-
 #include <SFML/Graphics/Rect.hpp>
 
 class GenericSprite;
@@ -33,11 +31,6 @@ public:
 
 	//!resets the animation to the initial satate
 	void reset();
-
-	//!Signal that gets run when the animation ends
-	//boost::signal<void ()> onFinish;
-
-	//void (*onFinish)();
 
 	//!Name of the animation
 	std::string name;

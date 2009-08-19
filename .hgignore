@@ -9,3 +9,6 @@ glob:*.dir
 glob:CMakeCache.txt
 glob:*.cmake
 glob:doxygen
+glob:ALL_BUILD.vcproj
+glob:CEGUI.log
+glob:ZERO_CHECK.vcproj

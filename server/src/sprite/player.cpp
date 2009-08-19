@@ -96,7 +96,6 @@ void Player::update()
 				}else if (crouching){
 					currentAnimation->resume();
 					//crouchingDown = true;
-					//currentAnimation->onFinish = &Player::crouchingFinish;//.connect(boost::bind(&Player::crouchingFinish, this));
 					//crouching = false;
 				}else if (keyMap[keyUp]){
 					jumpingUp = true;
@@ -115,7 +114,6 @@ void Player::update()
 				changeAnimation("run");
 			}else if (rolling && currentAnimation->name != "roll"){
 				changeAnimation("roll");
-//				currentAnimation->onFinish.connect(boost::bind(&Player::rollingFinish, this));
 			}else if(crouching && currentAnimation->name != "crouch"){
 				changeAnimation("crouch");
 			}else if(jumpingUp && currentAnimation->name != "jumpUp"){
@@ -131,7 +129,6 @@ void Player::update()
 
 void Player::crouchingFinish()
 {
-//	currentAnimation->onFinish.disconnect(boost::bind(&Player::crouchingFinish, this));
 	currentAnimation->reset();
 	crouching = false;
 
