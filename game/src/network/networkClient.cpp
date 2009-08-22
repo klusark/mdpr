@@ -106,12 +106,12 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				fileName += "data/";
 				fileName += packet->fileName;
 				if (!Image->LoadFromFile(fileName)){
-					std::exception exception;
-					//exception.
-					throw exception;
+					getImagePacket newPacket;
+					newPacket.packetID = getImagePacketID;
+					newPacket.spriteID = packet->spriteTypeID;
+					socket.sendTo((const void *)&newPacket, sizeof(getImagePacketID), socketAddress);
 				}
 				
-
 				Image->SetSmooth(false);
 				Image->CreateMaskFromColor(sf::Color(255,255,255));
 				sprite->Images[packet->spriteTypeID] = Image;

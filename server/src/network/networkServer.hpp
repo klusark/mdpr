@@ -17,6 +17,7 @@
 #include <Poco/Timer.h>
 
 #include "network/packets.hpp"
+#include "PlayerConnection.hpp"
 
 class GenericSprite;
 class SpriteManager;
@@ -111,7 +112,7 @@ protected:
 		bool stillAlive, noSpriteUpdates;
 	};
 
-	typedef std::map<unsigned short, Poco::SharedPtr<playerInfo> > playerContainer;
+	typedef std::map<unsigned short, Poco::SharedPtr<PlayerConnection> > playerContainer;
 	playerContainer Players;
 
 	enum
