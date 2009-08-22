@@ -4,12 +4,14 @@
 #include <Poco/Thread.h>
 #include <Poco/Net/NetException.h>
 #include <Poco/ScopedLock.h>
+#include <cstring>
 
 #include <map>
 #include <vector>
 #include <cmath>
 
 #include "networkServer.hpp"
+#include "PlayerConnection.hpp"
 #include "network/packets.hpp"
 #include "sprite/spriteManager.hpp"
 #include "sprite/genericSprite.hpp"
@@ -22,11 +24,11 @@ POCO_SERVER_MAIN(NetworkServer)
 
 Poco::SharedPtr<NetworkServer> server;
 
-NetworkServer::NetworkServer() 
-	:	buffer(new char[BUFFER_SIZE]),
-		spriteUpdateTimer(250, 5),
-		masterServerUpdateTimer(200, 20000),
-		removeIdlePlayersTimer(10000, 10000)
+NetworkServer::NetworkServer():
+buffer(new char[BUFFER_SIZE]),
+spriteUpdateTimer(250, 5),
+masterServerUpdateTimer(200, 20000),
+removeIdlePlayersTimer(10000, 10000)
 {
 	posUpdate = 0;
 
@@ -41,8 +43,8 @@ NetworkServer::NetworkServer()
 		sprite.registerSprite(newPlatform);
 	}
 	{
-	//	Poco::SharedPtr<genericSprite> newBubble(new Bubble("bubble0"));
-	//	sprite.registerSprite(newBubble);
+		//	Poco::SharedPtr<genericSprite> newBubble(new Bubble("bubble0"));
+		//	sprite.registerSprite(newBubble);
 	}
 }
 
@@ -104,12 +106,10 @@ int NetworkServer::main(const std::vector<std::string>& args)
 	Poco::Net::SocketReactor reactor;
 	reactor.addEventHandler(socket, Poco::NObserver<NetworkServer, Poco::Net::ReadableNotification>	(*this, &NetworkServer::onReceivePacket));
 	reactor.addEventHandler(socket, Poco::NObserver<NetworkServer, Poco::Net::ErrorNotification>	(*this, &NetworkServer::onError));
-	// run the reactor in its own thread so that we can wait for
-	// a termination request
-	
+
 	spriteUpdateTimer.start(Poco::TimerCallback<NetworkServer>(*this, &NetworkServer::spriteUpdate));
 	removeIdlePlayersTimer.start(Poco::TimerCallback<NetworkServer>(*this, &NetworkServer::removeIdlePlayers));
-	
+
 
 	Poco::Thread thread;
 	thread.start(reactor);
@@ -139,11 +139,11 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 {
 	Poco::Net::SocketAddress socketAddress;
 	int bytesReceived;
-	
+
 	try{
 		bytesReceived = socket.receiveFrom(buffer, BUFFER_SIZE, socketAddress);
 		if (Players.find(socketAddress.port()) != Players.end()){
-			Players[socketAddress.port()]->stillAlive = true;
+			Players[socketAddress.port()]->SetAlive(true);
 		}
 
 		packetType packetID;
@@ -151,7 +151,7 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 		switch(packetID)
 		{
 		case connectPacketID:
-			
+
 			{
 				connectPacket *packet = (connectPacket *)buffer;
 				if (bytesReceived != sizeof(connectPacket) - 255 + packet->nameLength){
@@ -181,18 +181,13 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 					socket.sendTo((const void *)&packet, sizeof(connectionAcceptedPacket), socketAddress);
 				}
 
-				Poco::SharedPtr<playerInfo> player(new playerInfo);
-				player->address = socketAddress;
-				player->name = name;
-				player->stillAlive = true;
-				player->noSpriteUpdates = packet->noSpriteUpdates;
-
 				Poco::SharedPtr<GenericSprite> newPlayer(new Player(name));
-				
 				sprite.registerSprite(newPlayer);
-				player->playerSprite = newPlayer;
 
-				if (!player->noSpriteUpdates){
+				Poco::SharedPtr<PlayerConnection> player(new PlayerConnection(socketAddress, name, packet->noSpriteUpdates, newPlayer.get()));
+
+
+				if (!player->GetNoSpriteUpdates()){
 					{
 						//Send all the sprite types to the client
 						SpriteManager::spriteTypeContainer::iterator iter;
@@ -201,9 +196,10 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 							spriteTypeCreationPacket packet;
 							packet.packetID = spriteTypeCreationPacketID;
 							packet.spriteTypeID = iter->first;
-							packet.fileNameLength = iter->second.length();
+							packet.fileNameLength = iter->second.length() + 1;
 							strcpy(packet.fileName, iter->second.c_str());
-							socket.sendTo((const void *)&packet, sizeof(spriteTypeCreationPacket) - 255 + packet.fileNameLength, player->address);
+							size_t size = sizeof(spriteTypeCreationPacket) - 255 + packet.fileNameLength;
+							socket.sendTo((const void *)&packet, size, player->GetSocketAddress());
 						}
 					}
 
@@ -211,11 +207,11 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 						//Send all the animations to the client
 						SpriteManager::animationPacketContainer::iterator iter;
 						for(iter = sprite.Animations.begin(); iter != sprite.Animations.end(); ++iter){
-							socket.sendTo((const void *)&iter->second, sizeof(animationCreationPacket), player->address);
-							
+							socket.sendTo((const void *)&iter->second, sizeof(animationCreationPacket), player->GetSocketAddress());
+
 						}
 					}
-					
+
 					{
 						//Send all the sprites to the client
 						SpriteManager::spriteContainer::iterator iter;
@@ -227,7 +223,7 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 							spriteCreationPacket packet;
 							packet.packetID = spriteCreationPacketID;
 							packet.spriteType = stringToCRC(iter->second->spriteTypeName);
-							packet.nameLength = iter->second->name.length();
+							packet.nameLength = iter->second->name.length() + 1;
 							strcpy(packet.name, iter->second->name.c_str());
 
 							positionAndFrameUpdatePacket POSpacket;
@@ -246,10 +242,10 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 							AnimPacket.animationID = iter->second->currentAnimation->CRCName;
 
 
-							socket.sendTo((const void *)&packet, sizeof(spriteCreationPacket) + packet.nameLength - 255, player->address);
-							socket.sendTo((const void *)&POSpacket, sizeof(positionAndFrameUpdatePacket), player->address);
-							socket.sendTo((const void *)&AnimPacket, sizeof(animationChangePacket), player->address);
-							
+							socket.sendTo((const void *)&packet, sizeof(spriteCreationPacket) - 255 + packet.nameLength, player->GetSocketAddress());
+							socket.sendTo((const void *)&POSpacket, sizeof(positionAndFrameUpdatePacket), player->GetSocketAddress());
+							socket.sendTo((const void *)&AnimPacket, sizeof(animationChangePacket), player->GetSocketAddress());
+
 						}
 					}
 				}
@@ -261,23 +257,23 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 
 						spriteCreationPacket packet;
 						packet.packetID = spriteCreationPacketID;
-						packet.spriteType = player->playerSprite->spriteType;
-						packet.spriteType = stringToCRC(player->playerSprite->spriteTypeName);
-						packet.nameLength = player->playerSprite->name.length();
-						strcpy(packet.name, player->playerSprite->name.c_str());
-						socket.sendTo((const void *)&packet, sizeof(spriteCreationPacket) - 255 + packet.nameLength, iter->second->address);
-					
+						packet.spriteType = player->GetSprite()->spriteType;
+						packet.spriteType = stringToCRC(player->GetSprite()->spriteTypeName);
+						packet.nameLength = player->GetSprite()->name.length() + 1;
+						strcpy(packet.name, player->GetSprite()->name.c_str());
+						socket.sendTo((const void *)&packet, sizeof(spriteCreationPacket) - 255 + packet.nameLength, iter->second->GetSocketAddress());
+
 					}
 				}
 
 				Players[socketAddress.port()] = player;
-				logger().information("Player " + player->name + " connected from " + player->address.toString());
+				logger().information("Player " + player->GetName() + " connected from " + player->GetSocketAddress().toString());
 
 				{
 					//Send the done connecting packet to tell the client that all the info has been sent
 					doneConnectingPacket packet;
 					packet.packetID = doneConnectingPacketID;
-					socket.sendTo((const void *)&packet, 4, player->address);
+					socket.sendTo((const void *)&packet, 4, player->GetSocketAddress());
 				}			
 			}
 			break;
@@ -287,8 +283,8 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				if (Players.find(socketAddress.port()) == Players.end()){
 					break;
 				}
-				dynamic_cast<Player *>(Players[socketAddress.port()]->playerSprite.get())->keyMap[packet->key] = packet->down;
-				dynamic_cast<Player *>(Players[socketAddress.port()]->playerSprite.get())->keyMapTwo[packet->key] = packet->down;
+				dynamic_cast<Player *>(Players[socketAddress.port()]->GetSprite())->keyMap[packet->key] = packet->down;
+				dynamic_cast<Player *>(Players[socketAddress.port()]->GetSprite())->keyMapTwo[packet->key] = packet->down;
 			}
 			break;
 		case getFullServerInfoPacketID:
@@ -302,7 +298,7 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				strcpy(packet.serverName, serverName.c_str());
 				packet.port = static_cast<unsigned int>(config().getInt("Server.port"));
 
-				socket.sendTo((const void *)&packet, sizeof(fullServerInfoPacket) - 256 + serverName.length(), socketAddress);
+				socket.sendTo((const void *)&packet, sizeof(fullServerInfoPacket) - 255 + serverName.length() + 1, socketAddress);
 			}
 			break;
 		default:
@@ -313,7 +309,7 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 	}catch (Poco::Net::ConnectionResetException&){
 		unsigned short port = socketAddress.port();
 		if (!(Players.find(port) == Players.end())){
-		
+
 			disconnect(port);
 
 		}
@@ -332,11 +328,11 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 void NetworkServer::removeIdlePlayers(Poco::Timer& timer)
 {
 	for (NetworkServer::playerContainer::iterator it = Players.begin(); it != Players.end(); ++it){
-		if (!it->second->stillAlive){
+		if (!it->second->IsAlive()){
 			disconnect(it->first);
 			break;
 		}else{
-			it->second->stillAlive = false;
+			it->second->SetAlive(false);
 		}
 	}
 }
@@ -345,8 +341,8 @@ void NetworkServer::removeIdlePlayers(Poco::Timer& timer)
 void NetworkServer::spriteUpdate(Poco::Timer&)
 {
 	/*if (error){
-		std::cout << "spriteUpdate: " << error.message() << std::endl;
-		return;
+	std::cout << "spriteUpdate: " << error.message() << std::endl;
+	return;
 	}*/
 	try{
 		Poco::ScopedLock<Poco::Mutex>(sprite.spriteMutex);
@@ -372,7 +368,7 @@ void NetworkServer::spriteUpdate(Poco::Timer&)
 			positionAndFrameUpdatePacket packet;
 			packet.packetID = positionAndFrameUpdatePacketID;
 			packet.spriteID = it->first;
-			
+
 			packet.x = position.x;
 			packet.y = position.y;
 			packet.flipped = currentSprite->flipped;
@@ -392,14 +388,14 @@ void NetworkServer::spriteUpdate(Poco::Timer&)
 
 			playerContainer::iterator iter;
 			for(iter = Players.begin(); iter != Players.end(); ++iter) {
-				if (iter->second->noSpriteUpdates){
+				if (iter->second->GetNoSpriteUpdates()){
 					continue;
 				}
 				if (useChangePacket){
-					socket.sendTo((const void *)&animationPacket, sizeof(animationPacket), iter->second->address);
-					
+					socket.sendTo((const void *)&animationPacket, sizeof(animationPacket), iter->second->GetSocketAddress());
+
 				}
-				socket.sendTo((const void *)&packet, sizeof(positionAndFrameUpdatePacket), iter->second->address);
+				socket.sendTo((const void *)&packet, sizeof(positionAndFrameUpdatePacket), iter->second->GetSocketAddress());
 			}
 		}
 	}catch (Poco::Exception& e){
@@ -427,16 +423,16 @@ void NetworkServer::disconnect(unsigned short playerID)
 		logger().error("Could not find player" + playerID);
 		return;
 	}
-	packet.spriteID = stringToCRC(Players[playerID]->name);
+	packet.spriteID = stringToCRC(Players[playerID]->GetName());
 	playerContainer::iterator iter;
 	for (iter = Players.begin(); iter != Players.end(); ++iter){
-		if (iter->second->noSpriteUpdates){
+		if (iter->second->GetNoSpriteUpdates()){
 			continue;
 		}
-		socket.sendTo((const void *)&packet, sizeof(spriteDeletionPacket), iter->second->address);
+		socket.sendTo((const void *)&packet, sizeof(spriteDeletionPacket), iter->second->GetSocketAddress());
 	}
-	logger().information("Player " + Players[playerID]->playerSprite->name + " has disconnected");
+	logger().information("Player " + Players[playerID]->GetName() + " has disconnected");
 	sprite.removeSprite(packet.spriteID);
 	Players.erase(playerID);
-	
+
 }

@@ -24,8 +24,12 @@ enum packetIDs
 	serversListPacketID,
 	getFullServerInfoPacketID,
 	fullServerInfoPacketID,
+	getImagePacketID,
+	imagePacketID,
 };
+
 typedef unsigned char packetType;
+
 /*!
 Size: 7+nameLength
 Client -> Server
@@ -222,6 +226,12 @@ struct fullServerInfoPacket
 	packetType packetID;
 	unsigned short numPlayers, maxPlayers, port;
 	char serverName[256];
+};
+
+struct getImagePacket
+{
+	packetType packetID;
+	unsigned short spriteID;
 };
 
 #endif // #ifndef packets_hpp

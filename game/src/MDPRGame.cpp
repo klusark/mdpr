@@ -148,13 +148,13 @@ void MDPRGame::drawThread()
 			if (sprite->isActive()){
 				Poco::ScopedLock<Poco::Mutex> lock(sprite->spriteMutex);
 				
-				if (found){
+				/*if (found){
 					sf::Vector2f test = (mySprite->GetPosition() - view.GetCenter()) + sf::Vector2f(12,12);
 					view.Move(test);
 				}else if ((sprite->Sprites.find(mySpriteID) != sprite->Sprites.end())){
 					found = true;
 					mySprite = sprite->Sprites[mySpriteID].get();
-				}
+				}*/
 				sprite->draw(App);
 				
 			}
@@ -190,7 +190,7 @@ void MDPRGame::updateThread()
 		float seconds, fps = 0;
 		sf::Clock clock;
 
-		unsigned int mySpriteID = stringToCRC("klusark");
+		//unsigned int mySpriteID = stringToCRC("klusark");
 
 		while (!quit){
 			Frames++;
@@ -220,7 +220,7 @@ void MDPRGame::updateThread()
 				/*if (sprite->Sprites.find(mySpriteID) != sprite->Sprites.end()){
 					view.SetCenter(sprite->Sprites[mySpriteID]->GetPosition() + Vector);
 				}*/
-				view.Zoom(4.0f);
+				view.Zoom(1.0f);
 
 				if (menu->isActive()){
 					menu->resize((float)currentWidth, (float)currentHeight);

@@ -52,7 +52,7 @@ int NetworkMasterServer::main(const std::vector<std::string>& args)
 	// start the http server
 	Poco::Net::ServerSocket svs(80);
 	// set-up a HTTPServer instance
-	Poco::Net::HTTPServer srv(new RequestHandlerFactory, svs, new Poco::Net::HTTPServerParams);
+	Poco::Net::HTTPServer srv(new RequestHandlerFactory, svs, new Poco::Net::HTTPServerParams());
 	srv.start();
 
 	// wait for CTRL-C or kill
