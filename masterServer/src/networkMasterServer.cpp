@@ -43,6 +43,14 @@ int NetworkMasterServer::main(const std::vector<std::string>& args)
 	// set-up a SocketReactor...
 	Poco::Net::SocketReactor reactor;
 	reactor.addEventHandler(socket, Poco::NObserver<NetworkMasterServer, Poco::Net::ReadableNotification>(*this, &NetworkMasterServer::onReceivePacket));
+	serverEntry newEntry;
+	newEntry.ip[0] = 24;
+	newEntry.ip[1] = 85;
+	newEntry.ip[2] = 90;
+	newEntry.ip[3] = 142;
+
+	newEntry.port = 9935;
+	serverList.push_back(newEntry);
 
 	// run the reactor in its own thread so that we can wait for a termination request
 	Poco::Thread thread;

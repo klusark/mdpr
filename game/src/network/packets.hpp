@@ -26,6 +26,7 @@ enum packetIDs
 	fullServerInfoPacketID,
 	getImagePacketID,
 	imagePacketID,
+	testPacketID,
 };
 
 typedef unsigned char packetType;
@@ -59,6 +60,7 @@ Client <- Server
 struct connectionAcceptedPacket
 {
 	packetType packetID;
+	unsigned short port;
 };
 
 /*!

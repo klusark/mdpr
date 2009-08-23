@@ -122,6 +122,7 @@ protected:
 	Poco::Net::SocketAddress masterServerAddress;
 	Poco::Net::DatagramSocket socket;
 	char* buffer;
+	unsigned short currentPlayerNumber;
 
 };
 
