@@ -28,7 +28,8 @@ NetworkServer::NetworkServer():
 buffer(new char[BUFFER_SIZE]),
 spriteUpdateTimer(250, 5),
 masterServerUpdateTimer(200, 20000),
-removeIdlePlayersTimer(10000, 10000)
+removeIdlePlayersTimer(10000, 25000),
+currentPlayerNumber(0)
 {
 	posUpdate = 0;
 
@@ -104,9 +105,9 @@ int NetworkServer::main(const std::vector<std::string>& args)
 	socket.bind(socketAddress, true);
 	// set-up a SocketReactor...
 	Poco::Net::SocketReactor reactor;
-	reactor.addEventHandler(socket, Poco::NObserver<NetworkServer, Poco::Net::ReadableNotification>	(*this, &NetworkServer::onReceivePacket));
-	reactor.addEventHandler(socket, Poco::NObserver<NetworkServer, Poco::Net::ErrorNotification>	(*this, &NetworkServer::onError));
 
+	reactor.addEventHandler(socket, Poco::NObserver<NetworkServer, Poco::Net::ErrorNotification>	(*this, &NetworkServer::onError));
+	reactor.addEventHandler(socket, Poco::NObserver<NetworkServer, Poco::Net::ReadableNotification>	(*this, &NetworkServer::onReceivePacket));
 	spriteUpdateTimer.start(Poco::TimerCallback<NetworkServer>(*this, &NetworkServer::spriteUpdate));
 	removeIdlePlayersTimer.start(Poco::TimerCallback<NetworkServer>(*this, &NetworkServer::removeIdlePlayers));
 
@@ -170,85 +171,22 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 					errorPacket packet;
 					packet.packetID = errorPacketID;
 					packet.errorID = nameInUse;
-					socket.sendTo((const void *)&packet, 8, socketAddress);
+					socket.sendTo((const void *)&packet, sizeof(errorPacket), socketAddress);
 					break;
-				}
-
-				{
-					//Sends the connection accepted packet to tell the client that they have succesfuly joined the server.
-					connectionAcceptedPacket packet;
-					packet.packetID = connectionAcceptedPacketID;
-					socket.sendTo((const void *)&packet, sizeof(connectionAcceptedPacket), socketAddress);
 				}
 
 				Poco::SharedPtr<GenericSprite> newPlayer(new Player(name));
 				sprite.registerSprite(newPlayer);
 
 				Poco::SharedPtr<PlayerConnection> player(new PlayerConnection(socketAddress, name, packet->noSpriteUpdates, newPlayer.get()));
-
-
-				if (!player->GetNoSpriteUpdates()){
-					{
-						//Send all the sprite types to the client
-						SpriteManager::spriteTypeContainer::iterator iter;
-						for(iter = sprite.SpriteTypes.begin(); iter != sprite.SpriteTypes.end(); ++iter){
-
-							spriteTypeCreationPacket packet;
-							packet.packetID = spriteTypeCreationPacketID;
-							packet.spriteTypeID = iter->first;
-							packet.fileNameLength = iter->second.length() + 1;
-							strcpy(packet.fileName, iter->second.c_str());
-							size_t size = sizeof(spriteTypeCreationPacket) - 255 + packet.fileNameLength;
-							socket.sendTo((const void *)&packet, size, player->GetSocketAddress());
-						}
-					}
-
-					{
-						//Send all the animations to the client
-						SpriteManager::animationPacketContainer::iterator iter;
-						for(iter = sprite.Animations.begin(); iter != sprite.Animations.end(); ++iter){
-							socket.sendTo((const void *)&iter->second, sizeof(animationCreationPacket), player->GetSocketAddress());
-
-						}
-					}
-
-					{
-						//Send all the sprites to the client
-						SpriteManager::spriteContainer::iterator iter;
-						for(iter = sprite.Sprites.begin(); iter != sprite.Sprites.end(); ++iter){
-							if(iter->second->nonNetworked){
-								continue;
-							}
-
-							spriteCreationPacket packet;
-							packet.packetID = spriteCreationPacketID;
-							packet.spriteType = stringToCRC(iter->second->spriteTypeName);
-							packet.nameLength = iter->second->name.length() + 1;
-							strcpy(packet.name, iter->second->name.c_str());
-
-							positionAndFrameUpdatePacket POSpacket;
-							POSpacket.packetID = positionAndFrameUpdatePacketID;
-							Position position = iter->second->GetPosition();
-							POSpacket.spriteID = iter->first;
-
-							POSpacket.x = position.x;
-							POSpacket.y = position.y;
-							POSpacket.flipped = iter->second->flipped;
-							POSpacket.currentFrame = iter->second->currentAnimation->currentFrame;
-
-							animationChangePacket AnimPacket;
-							AnimPacket.packetID = animationChangePacketID;
-							AnimPacket.spriteID = iter->first;
-							AnimPacket.animationID = iter->second->currentAnimation->CRCName;
-
-
-							socket.sendTo((const void *)&packet, sizeof(spriteCreationPacket) - 255 + packet.nameLength, player->GetSocketAddress());
-							socket.sendTo((const void *)&POSpacket, sizeof(positionAndFrameUpdatePacket), player->GetSocketAddress());
-							socket.sendTo((const void *)&AnimPacket, sizeof(animationChangePacket), player->GetSocketAddress());
-
-						}
-					}
+				{
+					//Sends the connection accepted packet to tell the client that they have succesfuly joined the server.
+					connectionAcceptedPacket packet;
+					packet.packetID = connectionAcceptedPacketID;
+					packet.port = player->GetSocket().address().port();
+					socket.sendTo((const void *)&packet, sizeof(connectionAcceptedPacket), socketAddress);
 				}
+				
 
 				{
 					//Send the new player to all the already connected players
@@ -265,26 +203,7 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 
 					}
 				}
-
-				Players[socketAddress.port()] = player;
-				logger().information("Player " + player->GetName() + " connected from " + player->GetSocketAddress().toString());
-
-				{
-					//Send the done connecting packet to tell the client that all the info has been sent
-					doneConnectingPacket packet;
-					packet.packetID = doneConnectingPacketID;
-					socket.sendTo((const void *)&packet, 4, player->GetSocketAddress());
-				}			
-			}
-			break;
-		case keyPacketID:
-			{
-				keyPacket *packet = (keyPacket *)buffer;
-				if (Players.find(socketAddress.port()) == Players.end()){
-					break;
-				}
-				dynamic_cast<Player *>(Players[socketAddress.port()]->GetSprite())->keyMap[packet->key] = packet->down;
-				dynamic_cast<Player *>(Players[socketAddress.port()]->GetSprite())->keyMapTwo[packet->key] = packet->down;
+				Players[currentPlayerNumber++] = player;
 			}
 			break;
 		case getFullServerInfoPacketID:
@@ -299,6 +218,7 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				packet.port = static_cast<unsigned int>(config().getInt("Server.port"));
 
 				socket.sendTo((const void *)&packet, sizeof(fullServerInfoPacket) - 255 + serverName.length() + 1, socketAddress);
+				logger().information("Get Full Server Info");
 			}
 			break;
 		default:
@@ -306,13 +226,13 @@ void NetworkServer::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 			break;
 
 		}
-	}catch (Poco::Net::ConnectionResetException&){
+	/*}catch (Poco::Net::ConnectionResetException&){
 		unsigned short port = socketAddress.port();
 		if (!(Players.find(port) == Players.end())){
 
 			disconnect(port);
 
-		}
+		}*/
 	}catch (Poco::Exception& e){
 		std::string message = "Poco::Exception: "; 
 		message += e.what();

@@ -215,7 +215,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="sfml-main.lib sfml-system.lib sfml-window.lib sfml-graphics.lib CEGUIBase.lib OpenGLGUIRenderer.lib"
 				ModuleDefinitionFile=""
-				SubSystem="2"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				EntryPointSymbol=""

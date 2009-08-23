@@ -104,8 +104,8 @@ void GenericSprite::changeAnimation(std::string name)
 void GenericSprite::death(unsigned short cause)
 {
 	currentState = deadState;
-	SetX(unsigned short(-1));
-	SetY(unsigned short(-1));
+	SetX((unsigned short)-1);
+	SetY((unsigned short)-1);
 	
 }
 

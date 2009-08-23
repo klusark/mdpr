@@ -2,6 +2,7 @@
 #include <SFML/System/Sleep.hpp>
 #include <Poco/NObserver.h>
 #include <sstream>
+#include <iostream>
 
 #include "enumerations.hpp"
 #include "MDPRGame.hpp"
@@ -10,7 +11,7 @@
 #include "packets.hpp"
 #include "networkClient.hpp"
 #include "menu/menuManager.hpp"
-
+#include "helpers.hpp"
 
 NetworkClient::NetworkClient():	
 inGame(true),
@@ -92,6 +93,9 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 		case spriteCreationPacketID:
 			{
 				spriteCreationPacket *packet = (spriteCreationPacket *)buffer;
+				if (sprite->Sprites.find(stringToCRC(packet->name)) != sprite->Sprites.end()){
+					break;
+				}
 				Poco::SharedPtr<ClientSprite> newSprite(new ClientSprite(packet->name));
 				newSprite->SetImage(*sprite->Images[packet->spriteType].get());
 				sprite->registerSprite(newSprite);
@@ -131,7 +135,7 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 					cannotFindSpritePacket newPacket;
 					newPacket.packetID = cannotFindSpritePacketID;
 					newPacket.spriteID = packet->spriteID;
-					socket.sendTo((const void *)&newPacket, sizeof(cannotFindSpritePacket), socketAddress);
+					socket.sendTo((const void *)&newPacket, sizeof(cannotFindSpritePacket), serverAddress);
 					//std::cout << "Could not find sprite" << std::endl;
 					break;
 				}
@@ -170,7 +174,7 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				animationChangePacket *packet = (animationChangePacket *)buffer;
 				Poco::ScopedLock<Poco::Mutex> lock(sprite->spriteMutex);
 				if (sprite->Sprites.find(packet->spriteID) == sprite->Sprites.end()){
-					Poco::Util::Application::instance().logger().warning("Can not find sprite");
+					//Poco::Util::Application::instance().logger().warning("Can not find sprite");
 					break;
 				}
 				sprite->Sprites[packet->spriteID]->currentAnimationID = packet->animationID;
@@ -181,7 +185,11 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 				positionAndFrameUpdatePacket *packet = (positionAndFrameUpdatePacket *)buffer;
 				Poco::ScopedLock<Poco::Mutex> lock(sprite->spriteMutex);
 				if (sprite->Sprites.find(packet->spriteID) == sprite->Sprites.end()){
-					Poco::Util::Application::instance().logger().warning("Can not find sprite");
+					cannotFindSpritePacket newPacket;
+					newPacket.packetID = cannotFindSpritePacketID;
+					newPacket.spriteID = packet->spriteID;
+					socket.sendTo((const void *)&newPacket, sizeof(cannotFindSpritePacket), serverAddress);
+					//Poco::Util::Application::instance().logger().warning("Can not find sprite");
 					break;
 				}
 				sprite->Sprites[packet->spriteID]->SetX(packet->x);
@@ -217,7 +225,14 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 			}
 			break;
 		case connectionAcceptedPacketID:
-
+			//update the address with the private address
+			{
+				connectionAcceptedPacket *packet = (connectionAcceptedPacket *)buffer;
+			
+				serverAddress = Poco::Net::SocketAddress(splitString(serverAddress.toString(), ":")[0], packet->port);
+				unsigned char test = testPacketID;
+				socket.sendTo((void *)&test, 1, serverAddress);
+			}
 			break;
 		case doneConnectingPacketID:
 			currentState = connectedState;
@@ -239,31 +254,6 @@ void NetworkClient::onReceivePacket(const Poco::AutoPtr<Poco::Net::ReadableNotif
 	}
 }
 
-void NetworkClient::sendKeyPress(sf::Key::Code key, bool down)
-{
-	if (!inGame){
-		return;
-	}
-	keyPacket packet;
-	packet.packetID = keyPacketID;
-	packet.down = down;
-	if (key == MDPR->controls.right){
-		packet.key = keyRight;
-	}else if (key == MDPR->controls.left){
-		packet.key = keyLeft;
-	}else if (key == MDPR->controls.use){
-		packet.key = keyAction;
-	}else if (key == MDPR->controls.up){
-		packet.key = keyUp;
-	}else if (key == MDPR->controls.down){
-		packet.key = keyDown;
-	}else{
-		return;
-	}
-
-	socket.sendTo((const void *)&packet, 9, serverAddress);
-}
-
 void NetworkClient::serverListUpdateThread(Poco::Timer&)
 {
 	try{
@@ -281,7 +271,7 @@ void NetworkClient::serverListUpdateThread(Poco::Timer&)
 			getFullServerInfoPacket packet;
 			packet.packetID = getFullServerInfoPacketID;
 			try{
-				socket.sendTo((const void *)&packet, 4, address);
+				socket.sendTo((const void *)&packet, sizeof(getFullServerInfoPacket), address);
 			}catch(...){
 				Poco::Util::Application::instance().logger().warning("serverListUpdateThread1");
 			}
